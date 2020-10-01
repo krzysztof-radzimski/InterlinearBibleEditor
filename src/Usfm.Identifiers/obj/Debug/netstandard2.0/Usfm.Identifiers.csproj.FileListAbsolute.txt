@@ -1,0 +1,9 @@
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\bin\Debug\netstandard2.0\Usfm.Identifiers.deps.json
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\bin\Debug\netstandard2.0\Usfm.Identifiers.dll
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\bin\Debug\netstandard2.0\Usfm.Identifiers.pdb
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\obj\Debug\netstandard2.0\Usfm.Identifiers.csprojAssemblyReference.cache
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\obj\Debug\netstandard2.0\Usfm.Identifiers.AssemblyInfoInputs.cache
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\obj\Debug\netstandard2.0\Usfm.Identifiers.AssemblyInfo.cs
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\obj\Debug\netstandard2.0\Usfm.Identifiers.csproj.CoreCompileInputs.cache
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\obj\Debug\netstandard2.0\Usfm.Identifiers.dll
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\obj\Debug\netstandard2.0\Usfm.Identifiers.pdb

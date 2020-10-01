@@ -1,0 +1,8 @@
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\bin\Debug\net461\Usfm.Identifiers.dll
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\bin\Debug\net461\Usfm.Identifiers.pdb
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\obj\Debug\net461\Usfm.Identifiers.csprojAssemblyReference.cache
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\obj\Debug\net461\Usfm.Identifiers.AssemblyInfoInputs.cache
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\obj\Debug\net461\Usfm.Identifiers.AssemblyInfo.cs
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\obj\Debug\net461\Usfm.Identifiers.csproj.CoreCompileInputs.cache
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\obj\Debug\net461\Usfm.Identifiers.dll
+C:\Users\krzysztof.radzimski\Documents\GitHub\Usfm\src\Usfm.Identifiers\obj\Debug\net461\Usfm.Identifiers.pdb
