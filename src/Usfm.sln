@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Usfm.Identifiers", "Usfm.Identifiers\Usfm.Identifiers.csproj", "{22E0D0AF-777C-4BB7-94B7-D1F1CCB2A987}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Usfm.Identifiers", "Usfm.Identifiers\Usfm.Identifiers.csproj", "{22E0D0AF-777C-4BB7-94B7-D1F1CCB2A987}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root", "Root", "{7B0B3254-AB07-4311-AE6A-6370AC142B4F}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
