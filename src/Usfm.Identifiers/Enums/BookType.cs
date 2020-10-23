@@ -9,53 +9,40 @@ using Usfm.Identifiers.Attributes;
 namespace Usfm.Identifiers {
     public enum BookType {
         None = 0,
+        [BaseName(Name = "Book of")]
+        [BaseName(Name = "Księga", Language = Language.pl)]
         Book,
-        Proverbs,
+
+        [BaseName(Name = "Gospel of")]
+        [BaseName(Name = "Ewangelia wg św.", Language = Language.pl)]
         Gospel,
+        
+        [BaseName(Name = "")]
+        [BaseName(Name = "List", Language = Language.pl)]
         Letter,
+        
+        [BaseName(Name = "")]
+        [BaseName(Name = "List św. Pawła", Language = Language.pl)]
         PaulsLetter,
+
+        [BaseName(Name = "")]
+        [BaseName(Name = "List św. Jakuba", Language = Language.pl)]
         JamesLetter,
+
+        [BaseName(Name = "")]
+        [BaseName(Name = "List św. Piotra", Language = Language.pl)]
         PetersLetter,
+
+        [BaseName(Name = "")]
+        [BaseName(Name = "List św. Jana", Language = Language.pl)]
         JohnsLetter,
+
+        [BaseName(Name = "")]
+        [BaseName(Name = "List św. Judy", Language = Language.pl)]
         JudsLetter,
+
+        [BaseName(Name = "Revelation")]
+        [BaseName(Name = "Objawienie", Language = Language.pl)]
         Eschatology
-    }
-    public enum BookPart {
-        None = 0,
-
-        [BookPartName("First", "First")]
-        [BookPartName("Pierwszy", "Pierwsza", Language = Language.pl)]
-        First = 1,
-
-        [BookPartName("Second", "Second")]
-        [BookPartName("Drugi", "Druga", Language = Language.pl)]
-        Second = 2,
-
-        [BookPartName("Third", "Third")]
-        [BookPartName("Trzeci", "Trzecia", Language = Language.pl)]
-        Third = 3,
-
-        [BookPartName("Fourth", "Fourth")]
-        [BookPartName("Czwarty", "Czwarta", Language = Language.pl)]
-        Fourth = 4,
-
-        [BookPartName("Fifth", "Fifth")]
-        [BookPartName("Piąty", "Piąta", Language = Language.pl)]
-        Fifth = 5,
-
-        [BookPartName("Sixth", "Sixth")]
-        [BookPartName("Szósty", "Szósta", Language = Language.pl)]
-        Sixth = 6
-    }
-
-    public enum LetterType {        
-        None,
-       
-        [BaseName(Name ="")]
-        [BaseName(Name = "", Language = Language.pl)]
-        Ordinary,
-        [BaseName(Name = " to the ")]
-        [BaseName(Name = " do ", Language = Language.pl)]
-        Addressed
     }
 }

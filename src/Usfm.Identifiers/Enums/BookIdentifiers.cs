@@ -36,7 +36,7 @@ namespace Usfm.Identifiers {
 
         [BookName("Psalms", "Psa")] [BookName("Psalmy", "Ps", Language = Language.pl)] [BookType("19")] OT_PSA,
 
-        [BookName("Proverbs", "Pro")] [BookName("Przysłów", "Prz", Language = Language.pl)] [BookType("20", BookType = BookType.Proverbs)] OT_PRO,
+        [BookName("Proverbs", "Pro")] [BookName("Przysłów", "Prz", Language = Language.pl)] [BookType("20", BookType = BookType.Book)] OT_PRO,
         [BookName("Ecclesiastes", "Ecc")] [BookName("Kaznodziei", "Kzn", Language = Language.pl)] [BookType("21", BookType = BookType.Book)] OT_ECC,
         [BookName("Song of Songs", "Sng")] [BookName("Pieśń nad pieśniami", "Pnp", Language = Language.pl)] [BookType("22")] OT_SNG,
 
@@ -86,75 +86,81 @@ namespace Usfm.Identifiers {
         [BookName("2 John", "2Jn")] [BookName("Jana", "2J", Language = Language.pl)] [BookType("64", BookType = BookType.JohnsLetter, LetterType = LetterType.Ordinary, BookPart = BookPart.Second)] NT_2JN,
         [BookName("3 John", "3Jn")] [BookName("Jana", "3J", Language = Language.pl)] [BookType("65", BookType = BookType.JohnsLetter, LetterType = LetterType.Ordinary, BookPart = BookPart.Third)] NT_3JN,
         [BookName("Jude", "Jud")] [BookName("Judy", "Jd", Language = Language.pl)] [BookType("66", BookType = BookType.JudsLetter, LetterType = LetterType.Ordinary)] NT_JUD,
-        [BookName("Revelation", "Rev")] [BookName("Objawienie Jana", "Obj", Language = Language.pl)] [BookType("67", BookType = BookType.Eschatology)] NT_REV,
+        [BookName("John", "Rev")] [BookName("Jana", "Obj", Language = Language.pl)] [BookType("67", BookType = BookType.Eschatology)] NT_REV,
 
         // -----------------------------------------
         // Deuterocanonical books and apocrites
         // -----------------------------------------
 
-        [BookName("Tobit", "Tob")] [BookName("Tobiasza", "Tob", Language = Language.pl)] [BookType("68", Deuterocanonical = true, BookType = BookType.Book)] DC_TOB,
-        [BookName("Judith", "Jdt")] [BookName("Judyty", "Jdt", Language = Language.pl)] [BookType("69", Deuterocanonical = true, BookType = BookType.Book)] DC_JDT,
-        [BookName("Esther", "Esg")] [BookName("Estery", "Esg", Language = Language.pl)] [BookType("70", Deuterocanonical = true, BookType = BookType.Book)] DC_ESG,
-        [BookName("Wisdom of Solomon", "Wis")] [BookName("Mądrości", "Mdr", Language = Language.pl)] [BookType("71", Deuterocanonical = true, BookType = BookType.Book)] DC_WIS,
-        [BookName("Sirach", "Sir")] [BookName("Mądrość Syraha", "Syr", Language = Language.pl)] [BookType("72", Deuterocanonical = true)] DC_SIR,
-        [BookName("Baruch", "Bar")] [BookName("Barucha", "Bar", Language = Language.pl)] [BookType("73", Deuterocanonical = true, BookType = BookType.Book)] DC_BAR,
-        [BookName("Jeremiah", "Lje")] [BookName("Jeremiasza", "Lje", Language = Language.pl)] [BookType("74", Deuterocanonical = true, BookType = BookType.Letter, LetterType = LetterType.Ordinary)] DC_LJE,
+        [BookName("Tobit", "Tob")] [BookName("Tobiasza", "Tob", Language = Language.pl)] [BookType("68", Deuterocanonical = DeuterocanonicalType.Deuterocanonical, BookType = BookType.Book)] DC_TOB,
+        [BookName("Judith", "Jdt")] [BookName("Judyty", "Jdt", Language = Language.pl)] [BookType("69", Deuterocanonical = DeuterocanonicalType.Deuterocanonical, BookType = BookType.Book)] DC_JDT,
+        [BookName("Esther", "Esg")] [BookName("Estery", "Esg", Language = Language.pl)] [BookType("70", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book)] DC_ESG,
+        [BookName("Wisdom of Solomon", "Wis")] [BookName("Mądrości", "Mdr", Language = Language.pl)] [BookType("71", Deuterocanonical = DeuterocanonicalType.Deuterocanonical, BookType = BookType.Book)] DC_WIS,
+        // Ecclesiasticus or Jesus son of Sirach
+        [BookName("Sirach", "Sir")] [BookName("Mądrość Syraha", "Syr", Language = Language.pl)] [BookType("72", Deuterocanonical = DeuterocanonicalType.Deuterocanonical)] DC_SIR,
+        // 5 chapters in Orthodox Bibles (LJE is separate); 6 chapters in Catholic Bibles (includes LJE); called 1 Baruch in Syriac Bibles
+        [BookName("Baruch", "Bar")] [BookName("Barucha", "Bar", Language = Language.pl)] [BookType("73", Deuterocanonical = DeuterocanonicalType.Deuterocanonical, BookType = BookType.Book)] DC_BAR,
+        // Sometimes included in Baruch; called ‘Rest of Jeremiah’ in Ethiopia
+        [BookName("Jeremiah", "Lje")] [BookName("Jeremiasza", "Lje", Language = Language.pl)] [BookType("74", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Letter, LetterType = LetterType.Ordinary)] DC_LJE,
 
         // Daniel appendix
-        [BookName("Song of the 3 Young Men", "S3y")] [BookName("Pieśń 3 młodzieńców", "S3y", Language = Language.pl)] [BookType("75", Deuterocanonical = true)] DC_S3Y,
-        [BookName("Susanna", "Sus")] [BookName("Zuzanna", "Zuz", Language = Language.pl)] [BookType("76", Deuterocanonical = true)] DC_SUS,
-        [BookName("Bel and the Dragon", "Bel")] [BookName("Bel i Wąż", "Bar", Language = Language.pl)] [BookType("77", Deuterocanonical = true)] DC_BEL,
+        // Includes the Prayer of Azariah; sometimes included in Greek Daniel
+        [BookName("Song of the 3 Young Men", "S3y")] [BookName("Pieśń 3 młodzieńców", "S3y", Language = Language.pl)] [BookType("75", Deuterocanonical = DeuterocanonicalType.Deuterocanonical)] DC_S3Y,
+        // Sometimes included in Greek Daniel
+        [BookName("Susanna", "Sus")] [BookName("Zuzanna", "Zuz", Language = Language.pl)] [BookType("76", Deuterocanonical = DeuterocanonicalType.Deuterocanonical)] DC_SUS,
+        // Sometimes included in Greek Daniel; called ‘Rest of Daniel’ in Ethiopia
+        [BookName("Bel and the Dragon", "Bel")] [BookName("Bel i Wąż", "Bar", Language = Language.pl)] [BookType("77", Deuterocanonical = DeuterocanonicalType.Deuterocanonical)] DC_BEL,
 
-        [BookName("Maccabees", "1Ma")] [BookName("Machabejska", "1Ma", Language = Language.pl)] [BookType("78", Deuterocanonical = true, BookType = BookType.Book, BookPart = BookPart.First)] DC_1MA,
-        [BookName("Maccabees", "2Ma")] [BookName("Machabejska", "2Ma", Language = Language.pl)] [BookType("79", Deuterocanonical = true, BookType = BookType.Book, BookPart = BookPart.Second)] DC_2MA,
-        [BookName("Maccabees", "3Ma")] [BookName("Machabejska", "3Ma", Language = Language.pl)] [BookType("80", Deuterocanonical = true, BookType = BookType.Book, BookPart = BookPart.Third)] DC_3MA,
-        [BookName("Maccabees", "4Ma")] [BookName("Machabejska", "4Ma", Language = Language.pl)] [BookType("81", Deuterocanonical = true, BookType = BookType.Book, BookPart = BookPart.Fourth)] DC_4MA,
+        [BookName("Maccabees", "1Ma")] [BookName("Machabejska", "1Ma", Language = Language.pl)] [BookType("78", Deuterocanonical = DeuterocanonicalType.Deuterocanonical, BookType = BookType.Book, BookPart = BookPart.First)] DC_1MA,
+        [BookName("Maccabees", "2Ma")] [BookName("Machabejska", "2Ma", Language = Language.pl)] [BookType("79", Deuterocanonical = DeuterocanonicalType.Deuterocanonical, BookType = BookType.Book, BookPart = BookPart.Second)] DC_2MA,
+        [BookName("Maccabees", "3Ma")] [BookName("Machabejska", "3Ma", Language = Language.pl)] [BookType("80", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book, BookPart = BookPart.Third)] DC_3MA,
+        [BookName("Maccabees", "4Ma")] [BookName("Machabejska", "4Ma", Language = Language.pl)] [BookType("81", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book, BookPart = BookPart.Fourth)] DC_4MA,
 
         // The 9 chapter book of Greek Ezra in the LXX, called ‘2 Esdras’ in Russian Bibles, and called ‘3 Esdras’ in the Vulgate; when Ezra - Nehemiah is one book use EZR
-        [BookName("Esdras", "1Es")] [BookName("Ezdrasza", "1Es", Language = Language.pl)] [BookType("82", Deuterocanonical = true, BookType = BookType.Book, BookPart = BookPart.First)] DC_1ES,
+        [BookName("Esdras", "1Es")] [BookName("Ezdrasza", "1Es", Language = Language.pl)] [BookType("82", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book, BookPart = BookPart.First)] DC_1ES,
         // The 16 chapter book of Latin Esdras called ‘3 Esdras’ in Russian Bibles and called ‘4 Esdras’ in the Vulgate; for the 12 chapter Apocalypse of Ezra use EZA
-        [BookName("Esdras", "2Es")] [BookName("Ezdrasza", "2Es", Language = Language.pl)] [BookType("83", Deuterocanonical = true, BookType = BookType.Book, BookPart = BookPart.Second)] DC_2ES,
+        [BookName("Esdras", "2Es")] [BookName("Ezdrasza", "2Es", Language = Language.pl)] [BookType("83", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book, BookPart = BookPart.Second)] DC_2ES,
 
         // Sometimes appended to 2 Chronicles, included in Orthodox Bibles
-        [BookName("Prayer of Manasseh", "Man")] [BookName("Modlitwa Manassesa", "Man", Language = Language.pl)] [BookType("84", Deuterocanonical = true)] DC_MAN,
+        [BookName("Prayer of Manasseh", "Man")] [BookName("Modlitwa Manassesa", "Man", Language = Language.pl)] [BookType("84", Deuterocanonical = DeuterocanonicalType.Apocrypha)] DC_MAN,
         // An additional Psalm in the Septuagint, appended to Psalms in Orthodox Bibles
-        [BookName("Psalm", "Ps2")] [BookName("Psalmy", "Ps2", Language = Language.pl)] [BookType("85", Deuterocanonical = true)] DC_PS2,
+        [BookName("Psalm", "Ps2")] [BookName("Psalmy", "Ps2", Language = Language.pl)] [BookType("85", Deuterocanonical = DeuterocanonicalType.Apocrypha)] DC_PS2,
         // A book in some editions of the Septuagint; Odes has different contents in Greek, Russian, and Syriac traditions
-        [BookName("Odae/Odes", "Oda")] [BookName("Ody", "Oda", Language = Language.pl)] [BookType("86", Deuterocanonical = true)] DC_ODA,
+        [BookName("Odae/Odes", "Oda")] [BookName("Ody", "Oda", Language = Language.pl)] [BookType("86", Deuterocanonical = DeuterocanonicalType.Apocrypha)] DC_ODA,
         // A book in some editions of the Septuagint, but not printed in modern Bibles
-        [BookName("Psalms of Solomon", "Pss")] [BookName("Psalmy Salomona", "Pss", Language = Language.pl)] [BookType("87", Deuterocanonical = true)] DC_PSS,
+        [BookName("Psalms of Solomon", "Pss")] [BookName("Psalmy Salomona", "Pss", Language = Language.pl)] [BookType("87", Deuterocanonical = DeuterocanonicalType.Apocrypha)] DC_PSS,
 
         // 12 chapter book of Ezra Apocalypse; called ‘3 Ezra’ in the Armenian Bible, called ‘Ezra Shealtiel’ in the Ethiopian Bible; formerly called 4ES; called ‘2 Esdras’ when it includes 5 Ezra and 6 Ezra
-        [BookName("Ezra Apocalypse", "Eza")] [BookName("Apokalipsa Ezdrasza", "Eza", Language = Language.pl)] [BookType("A4", Deuterocanonical = true)] DC_EZA,
+        [BookName("Ezra Apocalypse", "Eza")] [BookName("Apokalipsa Ezdrasza", "Eza", Language = Language.pl)] [BookType("A4", Deuterocanonical = DeuterocanonicalType.Apocrypha)] DC_EZA,
         //2 chapter Latin preface to Ezra Apocalypse; formerly called 5ES
-        [BookName("Esdras", "5Ez")] [BookName("5 Ezdrasza", "5Ez")] [BookType("A5", Deuterocanonical = true, BookType = BookType.Book, BookPart = BookPart.Fifth)] DC_5EZ,
+        [BookName("Esdras", "5Ez")] [BookName("5 Ezdrasza", "5Ez")] [BookType("A5", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book, BookPart = BookPart.Fifth)] DC_5EZ,
         //2 chapter Latin conclusion to Ezra Apocalypse; formerly called 6ES
-        [BookName("Esdras", "6Ez")] [BookType("A6", Deuterocanonical = true, BookType = BookType.Book, BookPart = BookPart.Sixth)] DC_6EZ,
+        [BookName("Esdras", "6Ez")] [BookType("A6", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book, BookPart = BookPart.Sixth)] DC_6EZ,
 
         // The 14 chapter version of Daniel from the Septuagint including Greek additions
-        [BookName("Daniel", "Dag")] [BookName("Daniela", "Dag")] [BookType("B2", Deuterocanonical = true)] DC_DAG,
+        [BookName("Daniel", "Dag")] [BookName("Daniela", "Dag")] [BookType("B2", Deuterocanonical = DeuterocanonicalType.Apocrypha)] DC_DAG,
         // Additional Psalms 152-155 found in West Syriac manuscripts
-        [BookName("Psalms", "Ps3")] [BookName("Psalmy", "Ps3", Language = Language.pl)] [BookType("B3", Deuterocanonical = true, BookType = BookType.Book)] DC_PS3,
+        [BookName("Psalms", "Ps3")] [BookName("Psalmy", "Ps3", Language = Language.pl)] [BookType("B3", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book)] DC_PS3,
         // The Apocalypse of Baruch in Syriac Bibles
-        [BookName("Baruch", "2Ba")] [BookName("Barucha", "2Ba")] [BookType("B4", Deuterocanonical = true, BookType = BookType.Book, BookPart = BookPart.Second)] DC_2BA,
+        [BookName("Baruch", "2Ba")] [BookName("Barucha", "2Ba")] [BookType("B4", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book, BookPart = BookPart.Second)] DC_2BA,
         // Sometimes appended to 2 Baruch; sometimes separate in Syriac Bibles
-        [BookName("Letter of Baruch", "Lba")] [BookType("B5", Deuterocanonical = true)] DC_LBA,
+        [BookName("Letter of Baruch", "Lba")] [BookType("B5", Deuterocanonical = DeuterocanonicalType.Apocrypha)] DC_LBA,
         // Ancient Hebrew book used in the Ethiopian Bible
-        [BookName("Jubilees", "Jub")] [BookName("Jubileuszów", "Jub", Language = Language.pl)] [BookType("B6", Deuterocanonical = true, BookType = BookType.Book)] DC_JUB,
+        [BookName("Jubilees", "Jub")] [BookName("Jubileuszów", "Jub", Language = Language.pl)] [BookType("B6", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book)] DC_JUB,
         // Sometimes called ‘1 Enoch’; ancient Hebrew book in the Ethiopian Bible
-        [BookName("Enoch", "Eno")] [BookName("Henoha", "Hen", Language = Language.pl)] [BookType("B7", Deuterocanonical = true, BookType = BookType.Book)] DC_ENO,
+        [BookName("Enoch", "Eno")] [BookName("Henoha", "Hen", Language = Language.pl)] [BookType("B7", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book)] DC_ENO,
         // Book of Mekabis of Benjamin in the Ethiopian Bible
-        [BookName("1 Meqabyan/Mekabis", "1Mq")] [BookName("Mekabiego", "1Mq", Language = Language.pl)] [BookType("B8", Deuterocanonical = true, BookType = BookType.Book, BookPart = BookPart.First)] DC_1MQ,
+        [BookName("1 Meqabyan/Mekabis", "1Mq")] [BookName("Mekabiego", "1Mq", Language = Language.pl)] [BookType("B8", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book, BookPart = BookPart.First)] DC_1MQ,
         // Book of Mekabis of Moab in the Ethiopian Bible
-        [BookName("2 Meqabyan/Mekabis", "2Mq")] [BookName("Mekabiego", "2Mq", Language = Language.pl)] [BookType("B9", Deuterocanonical = true, BookType = BookType.Book, BookPart = BookPart.Second)] DC_2MQ,
+        [BookName("2 Meqabyan/Mekabis", "2Mq")] [BookName("Mekabiego", "2Mq", Language = Language.pl)] [BookType("B9", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book, BookPart = BookPart.Second)] DC_2MQ,
         // Book of Meqabyan in the Ethiopian Bible
-        [BookName("3 Meqabyan/Mekabis", "3Mq")] [BookName("Mekabiego", "3Mq", Language = Language.pl)] [BookType("C0", Deuterocanonical = true, BookType = BookType.Book, BookPart = BookPart.Third)] DC_3MQ,
+        [BookName("3 Meqabyan/Mekabis", "3Mq")] [BookName("Mekabiego", "3Mq", Language = Language.pl)] [BookType("C0", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book, BookPart = BookPart.Third)] DC_3MQ,
 
         // Proverbs part 2: Used in the Ethiopian Bible
-        [BookName("Reproof", "Rep")] [BookName("Nagany", "Rep", Language = Language.pl)] [BookType("C1", Deuterocanonical = true)] DC_REP,
+        [BookName("Reproof", "Rep")] [BookName("Nagany", "Rep", Language = Language.pl)] [BookType("C1", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book)] DC_REP,
         // Paralipomenon of Jeremiah, called ‘Rest of the Words of Baruch’ in Ethiopia; may include or exclude the Letter of Jeremiah as chapter 1, used in the Ethiopian Bible
-        [BookName("Baruch", "4Ba")] [BookName("Barucha", "4Ba", Language = Language.pl)] [BookType("C2", Deuterocanonical = true, BookType = BookType.Book, BookPart = BookPart.Fourth)] DC_4BA,
+        [BookName("Baruch", "4Ba")] [BookName("Barucha", "4Ba", Language = Language.pl)] [BookType("C2", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Book, BookPart = BookPart.Fourth)] DC_4BA,
         // A Latin Vulgate book, found in the Vulgate and some medieval Catholic translations
-        [BookName("Letter to the Laodiceans", "Lao")] [BookName("Laodycejczyków", "Lao", Language = Language.pl)] [BookType("C3", Deuterocanonical = true, BookType = BookType.Letter, LetterType = LetterType.Addressed)] DC_LAO
+        [BookName("Letter to the Laodiceans", "Lao")] [BookName("Laodycejczyków", "Lao", Language = Language.pl)] [BookType("C3", Deuterocanonical = DeuterocanonicalType.Apocrypha, BookType = BookType.Letter, LetterType = LetterType.Addressed)] DC_LAO
     }
 }

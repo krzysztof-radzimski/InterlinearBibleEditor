@@ -8,12 +8,8 @@ using System;
 
 namespace Usfm.Identifiers.Attributes {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
-    public class BookNameAttribute : BaseNameAttribute {
-        public string Description { get; set; }
-        public string ShortName { get; set; }
-        public BookNameAttribute(string name, string shortName) {
-            Name = name;
-            ShortName = shortName;
-        }
+    public class BaseNameAttribute : Attribute {
+        public string Name { get; set; }
+        public Language Language { get; set; } = Language.en;
     }
 }

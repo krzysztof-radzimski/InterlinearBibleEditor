@@ -13,7 +13,7 @@ namespace Usfm.Identifiers.Attributes {
         public BookType BookType { get; set; }
         public BookPart BookPart { get; set; }
         public LetterType LetterType { get; set; }
-        public bool Deuterocanonical { get; set; }
+        public DeuterocanonicalType Deuterocanonical { get; set; }
         public BookTypeAttribute() { }
         public BookTypeAttribute(string bookNumber) : this() {
             BookNumber = bookNumber;

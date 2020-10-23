@@ -8,12 +8,11 @@ using System;
 
 namespace Usfm.Identifiers.Attributes {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
-    public class BookNameAttribute : BaseNameAttribute {
-        public string Description { get; set; }
-        public string ShortName { get; set; }
-        public BookNameAttribute(string name, string shortName) {
+    public class BookPartNameAttribute : BaseNameAttribute {
+        public string NameFeminine { get; set; }
+        public BookPartNameAttribute(string name, string feminine) {
             Name = name;
-            ShortName = shortName;
+            NameFeminine = feminine;
         }
     }
 }
