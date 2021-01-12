@@ -27,6 +27,10 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(ParentBook), ref parentBook, value); }
         }
 
+        [Association("ChapterVerses")]
+        public XPCollection<Verse> Verses {
+            get { return GetCollection<Verse>(nameof(Verses)); }
+        }
 
         public Chapter(Session session) : base(session) { }
     }

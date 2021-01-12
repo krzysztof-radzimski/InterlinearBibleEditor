@@ -1,6 +1,7 @@
 ﻿using DevExpress.Xpo;
 using DevExpress.Xpo.DB;
 using DevExpress.Xpo.Metadata;
+using IBE.Data.Model;
 using System;
 using System.Configuration;
 
@@ -8,8 +9,15 @@ namespace IBE.Data {
     public static class ConnectionHelper {
 
         static readonly Type[] PersistentTypes = new Type[]{
-            //typeof(Order),
-            //typeof(Customer)
+            typeof(Book),
+            typeof(BookStatus),
+            typeof(Chapter),
+            typeof(Subtitle),
+            typeof(Translation),
+            typeof(Verse),
+            typeof(VerseVersion),
+            typeof(VerseWord),
+            typeof(VerseWordReference)
         };
 
         public static void Connect(bool threadSafe = true) {

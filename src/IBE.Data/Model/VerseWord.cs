@@ -17,27 +17,27 @@ namespace IBE.Data.Model {
             get { return numberOfVerseWord; }
             set { SetPropertyValue(nameof(NumberOfVerseWord), ref numberOfVerseWord, value); }
         }
-               
+
         public string StrongCode {
             get { return strongCode; }
             set { SetPropertyValue(nameof(StrongCode), ref strongCode, value); }
         }
-      
+
         public string SourceWord {
             get { return sourceWord; }
             set { SetPropertyValue(nameof(SourceWord), ref sourceWord, value); }
         }
-     
+
         public string Transliteration {
             get { return transliteration; }
             set { SetPropertyValue(nameof(Transliteration), ref transliteration, value); }
         }
-                
+
         public string GrammarCode {
             get { return grammarCode; }
             set { SetPropertyValue(nameof(GrammarCode), ref grammarCode, value); }
         }
-        
+
         public string Translation {
             get { return translation; }
             set { SetPropertyValue(nameof(Translation), ref translation, value); }
@@ -58,16 +58,16 @@ namespace IBE.Data.Model {
             get { return parentVerse; }
             set { SetPropertyValue(nameof(ParentVerse), ref parentVerse, value); }
         }
-        
+
         [Size(SizeAttribute.Unlimited)]
         public string FootnoteText {
             get { return footnoteText; }
             set { SetPropertyValue(nameof(FootnoteText), ref footnoteText, value); }
         }
 
-        [Association("VerseWordReferences")]
-        public XPCollection<Verse> References {
-            get { return GetCollection<Verse>(nameof(References)); }
+        [Association("VerseWordReferences", UseAssociationNameAsIntermediateTableName = true)]
+        public XPCollection<VerseWordReference> References {
+            get { return GetCollection<VerseWordReference>(nameof(References)); }
         }
 
         public VerseWord(Session session) : base(session) { }

@@ -10,7 +10,7 @@ namespace IBE.Data.Import {
     public abstract class BaseImporter : IDisposable {
         protected const string INTERNAL_SEPARATOR = "/";
         protected const string WINDOWS_SEPARATOR = "\\";
-
+        protected const char HARD_SPACE = '\u00A0';
         protected IEnumerable<ArchiveItem> GetAllFiles(string zipFilePath) {
             if (String.IsNullOrEmpty(zipFilePath)) {
                 throw new ArgumentNullException("zipFilePath");
