@@ -4,7 +4,7 @@ namespace IBE.Data.Model {
     public class VerseWord : XPObject {
         private int numberOfVerseWord;
         private Verse parentVerse;
-        private string strongCode;
+        private StrongCode strongCode;
         private string sourceWord;
         private string transliteration;
         private string grammarCode;
@@ -18,7 +18,8 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(NumberOfVerseWord), ref numberOfVerseWord, value); }
         }
 
-        public string StrongCode {
+        [Association("StrongsVerseWords")]
+        public StrongCode StrongCode {
             get { return strongCode; }
             set { SetPropertyValue(nameof(StrongCode), ref strongCode, value); }
         }

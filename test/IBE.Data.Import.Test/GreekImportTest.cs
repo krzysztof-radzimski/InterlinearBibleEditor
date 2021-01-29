@@ -11,7 +11,7 @@ namespace IBE.Data.Import.Test {
             var uow = new UnitOfWork();
             uow.BeginTransaction();
             new GreekImporter().Import(@"C:\Users\krzysztof.radzimski\Documents\GitHub\InterlinearBibleEditor\epub\28th-Novum-Testamentum-Graece-Nestle-Aland.epub", uow);
-            uow.CommitTransaction();
+            uow.CommitChanges();
         }
     }
 }

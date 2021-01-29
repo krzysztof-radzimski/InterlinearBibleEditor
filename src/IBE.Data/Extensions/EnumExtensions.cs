@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
+
+namespace IBE.Data.Extensions {
+    public static class EnumExtensions {
+        public static string GetDescription(this Enum value) {
+            try {
+                FieldInfo fi = value.GetType().GetField(value.ToString());
+                DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+                return (attributes.Length > 0) ? attributes[0].Description : value.ToString();
+            }
+            catch {
+                return string.Empty;
+            }
+        }
+        public static string GetCategory(this Enum value) {
+            try {
+                FieldInfo fi = value.GetType().GetField(value.ToString());
+                CategoryAttribute[] attributes = (CategoryAttribute[])fi.GetCustomAttributes(typeof(CategoryAttribute), false);
+                return (attributes.Length > 0) ? attributes[0].Category : value.ToString();
+            }
+            catch {
+                return string.Empty;
+            }
+        }
+
+        public static IEnumerable<string> GetEnumDescriptions<T>() where T : IConvertible {
+            var l = new List<string>();
+
+            var v = GetEnumValues<T>();
+            foreach (var e in v) {
+                l.Add((e as Enum).GetDescription());
+            }
+
+            return l;
+        }
+
+        public static IEnumerable<T> GetEnumValues<T>() where T : IConvertible {
+            List<T> l = new List<T>();
+
+            Array al = Enum.GetValues(typeof(T));
+            foreach (var p in al) {
+                T e = (T)p;
+                l.Add(e);
+            }
+
+            return l;
+        }
+
+        public static T GetEnumByDescription<T>(this string description) {
+            if (!typeof(T).IsEnum) {
+                throw new InvalidEnumArgumentException("The specified type is not an enum");
+            }
+
+            foreach (T item in Enum.GetValues(typeof(T))) {
+                if (string.Compare((item as Enum).GetDescription(), description, true) == 0) {
+                    return item;
+                }
+            }
+            return default(T);
+        }
+    }
+}
