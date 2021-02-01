@@ -7,7 +7,7 @@ namespace IBE.Data.Model {
         private StrongCode strongCode;
         private string sourceWord;
         private string transliteration;
-        private string grammarCode;
+        private GrammarCode grammarCode;
         private string footnoteText;
         private string translation;
         private bool citation;
@@ -34,7 +34,8 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(Transliteration), ref transliteration, value); }
         }
 
-        public string GrammarCode {
+        [Association("VerseWordGrammarCodes")]
+        public GrammarCode GrammarCode {
             get { return grammarCode; }
             set { SetPropertyValue(nameof(GrammarCode), ref grammarCode, value); }
         }
@@ -65,7 +66,7 @@ namespace IBE.Data.Model {
             get { return footnoteText; }
             set { SetPropertyValue(nameof(FootnoteText), ref footnoteText, value); }
         }
-
+                
         [Association("VerseWordReferences", UseAssociationNameAsIntermediateTableName = true)]
         public XPCollection<VerseWordReference> References {
             get { return GetCollection<VerseWordReference>(nameof(References)); }

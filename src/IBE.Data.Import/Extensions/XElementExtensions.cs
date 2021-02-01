@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -51,6 +52,32 @@ namespace IBE.Data.Import.Extensions {
             }
 
             return defaultValue;
+        }
+        public static string InnerText(this XElement element) {
+            string s = String.Empty;
+
+            if (element == null) {                return s;            }
+
+            if (element.HasElements) {
+                XElement x = element.Clone();
+                x.Descendants().Remove();
+                s = x.Value;
+            }
+            else {
+                s = element.Value;
+            }
+
+            return s.Trim();
+        }
+        public static XElement Clone(this XElement x) {
+            if (x.IsNotNull()) {
+                try {
+                    return XElement.Parse(x.ToString().Trim());
+                }
+                catch {}
+            }
+
+            return null;
         }
     }
 }

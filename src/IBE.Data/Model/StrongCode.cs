@@ -1,5 +1,4 @@
 ﻿using DevExpress.Xpo;
-using System.ComponentModel;
 
 namespace IBE.Data.Model {
     public class StrongCode : XPObject {
@@ -88,43 +87,5 @@ namespace IBE.Data.Model {
                 return base.ToString();
             }
         }
-    }
-
-    public class StrongCodeReferences : XPObject {
-        private Language lang;
-        private int code;
-        private StrongCode parent;
-
-        public Language Lang {
-            get { return lang; }
-            set { SetPropertyValue(nameof(Lang), ref lang, value); }
-        }
-
-        public int Code {
-            get { return code; }
-            set { SetPropertyValue(nameof(Code), ref code, value); }
-        }
-
-        [Association("StrongsCodesReferences")]
-        public StrongCode Parent {
-            get { return parent; }
-            set { SetPropertyValue(nameof(Parent), ref parent, value); }
-        }
-
-        public StrongCodeReferences(Session session) : base(session) { }
-    }
-
-        public enum Language {
-        None,
-        [Category("H")]
-        Hebrew,
-        [Category("G")]
-        Greek,
-        [Category("L")]
-        Latin,
-        [Category("EN")]
-        English,
-        [Category("PL")]
-        Polish
     }
 }
