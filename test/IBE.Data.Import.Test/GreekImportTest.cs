@@ -13,5 +13,14 @@ namespace IBE.Data.Import.Test {
             new GreekImporter().Import(@"C:\Users\krzysztof.radzimski\Documents\GitHub\InterlinearBibleEditor\epub\28th-Novum-Testamentum-Graece-Nestle-Aland.epub", uow);
             uow.CommitChanges();
         }
+
+        [TestMethod]
+        public void ImportGreekStrong() {
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            uow.BeginTransaction();
+            new GreekStrongsImporter().Import(@"C:\Users\krzysztof.radzimski\Documents\GitHub\InterlinearBibleEditor\epub\strongsgreek.xml", uow);
+            uow.CommitChanges();
+        }
     }
 }

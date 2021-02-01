@@ -10,7 +10,7 @@ namespace IBE.Data.Import {
     /// <summary>
     /// Importer bazując na pliku 28th-Novum-Testamentum-Graece-Nestle-Aland.epub
     ///  zawierającym tekst nowego testamentu w wersji Nestle-Aland co ważne z akcentami
-    ///  uzupełnia tabele z listą ksiąg, rozdziałów, wersetó i śródtytułów w języku polskim.
+    ///  uzupełnia tabele z listą ksiąg, rozdziałów, wersetów i śródtytułów w języku polskim.
     /// </summary>
     public class GreekImporter : BaseImporter {
         public override void Import(string filePath, UnitOfWork uow) {

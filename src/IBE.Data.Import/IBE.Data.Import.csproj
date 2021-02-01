@@ -26,11 +26,6 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-
-    <None Include="..\..\epub\28th-Novum-Testamentum-Graece-Nestle-Aland.epub">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
