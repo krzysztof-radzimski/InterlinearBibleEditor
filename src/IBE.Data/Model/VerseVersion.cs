@@ -20,7 +20,7 @@ namespace IBE.Data.Model {
         [Association("VerseVersions")]
         public Verse ParentVerse {
             get { return parentVerse; }
-            set { SetPropertyValue(nameof(TranslationName), ref parentVerse, value); }
+            set { SetPropertyValue(nameof(ParentVerse), ref parentVerse, value); }
         }
 
         public VerseVersion(Session session) : base(session) { }

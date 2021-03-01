@@ -16,6 +16,7 @@ namespace IBE.Data.Model {
         private string subject;
         private int numberOfChapters;
         private BookStatus status;
+        private string color;
 
         public int NumberOfBook {
             get { return numberOfBook; }
@@ -104,6 +105,31 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(Status), ref status, value); }
         }
 
+        public string Color {
+            get { return color; }
+            set { SetPropertyValue(nameof(Color), ref color, value); }
+        }
+
         public Book(Session session) : base(session) { }
+
+        public override string ToString() {
+            return BookName;
+        }
+    }
+
+    public class BookInfo {
+        public int Id { get; private set; }
+        public string Caption { get; private set; }
+        public int NumberOfChapters { get; private set; }
+
+        private BookInfo() { }
+        public BookInfo(Book book) : this() {
+            this.Id = book.Oid;
+            this.Caption = book.ToString();
+            this.NumberOfChapters = book.NumberOfChapters;
+        }
+        public override string ToString() {
+            return Caption;
+        }
     }
 }

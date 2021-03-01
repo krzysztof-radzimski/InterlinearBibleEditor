@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 
 namespace IBE.Data.Import {
-    public abstract class BaseImporter : IDisposable {
+    public abstract class BaseImporter : IImporter {
         protected const string INTERNAL_SEPARATOR = "/";
         protected const string WINDOWS_SEPARATOR = "\\";
         protected const char HARD_SPACE = '\u00A0';
