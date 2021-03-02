@@ -1,11 +1,8 @@
 ﻿using DevExpress.Xpo;
 using IBE.Data.Model;
 using Microsoft.Data.Sqlite;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace IBE.Data.Import {
     public class TranslationImporter : IImporter {
@@ -29,7 +26,7 @@ namespace IBE.Data.Import {
 
                             if (name == "description") { translation.Description = value; }
                             if (name == "detailed_info") { translation.DetailedInfo = value; }
-                            if (name == "language") { translation.Language = value; }
+                            if (name == "language") { translation.Language = value.GetLanguage(); }
                             if (name == "chapter_string") { translation.ChapterString = value; }
                             if (name == "chapter_string_ps") { translation.ChapterPsalmString = value; }
                         }
@@ -162,7 +159,7 @@ namespace IBE.Data.Import {
         private BookStatus GetBookStatus(UnitOfWork uow) {
             return new XPCollection<BookStatus>(uow).FirstOrDefault();
         }
-
+                
         public void Dispose() {
 
         }

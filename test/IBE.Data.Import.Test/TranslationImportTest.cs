@@ -15,7 +15,7 @@ namespace IBE.Data.Import.Test {
             var uow = new UnitOfWork();
             uow.BeginTransaction();
             new TranslationImporter().Import(@"C:\Users\krzysztof.radzimski\Documents\GitHub\InterlinearBibleEditor\epub\SNP'18.SQLite3", uow);
-            uow.RollbackTransaction();
+            uow.CommitChanges();
         }
     }
 }

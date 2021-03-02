@@ -7,7 +7,7 @@ namespace IBE.Data.Model {
         private string introduction;
         private string chapterString;
         private string chapterPsalmString;
-        private string language;
+        private Language language;
         private string detailedInfo;
 
         public string Name {
@@ -26,7 +26,7 @@ namespace IBE.Data.Model {
             get { return chapterPsalmString; }
             set { SetPropertyValue(nameof(ChapterPsalmString), ref chapterPsalmString, value); }
         }
-        public string Language {
+        public Language Language {
             get { return language; }
             set { SetPropertyValue(nameof(Language), ref language, value); }
         }

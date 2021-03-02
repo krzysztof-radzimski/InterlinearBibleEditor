@@ -6,6 +6,7 @@ namespace IBE.Data.Model {
         private Translation translationName;
         private Verse parentVerse;
 
+        [Size(SizeAttribute.Unlimited)]
         public string Text {
             get { return text; }
             set { SetPropertyValue(nameof(Text), ref text, value); }

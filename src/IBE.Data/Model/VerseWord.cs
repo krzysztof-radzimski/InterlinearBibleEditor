@@ -65,12 +65,7 @@ namespace IBE.Data.Model {
         public string FootnoteText {
             get { return footnoteText; }
             set { SetPropertyValue(nameof(FootnoteText), ref footnoteText, value); }
-        }
-                
-        [Association("VerseWordReferences", UseAssociationNameAsIntermediateTableName = true)]
-        public XPCollection<VerseWordReference> References {
-            get { return GetCollection<VerseWordReference>(nameof(References)); }
-        }
+        }              
 
         public VerseWord(Session session) : base(session) { }
     }

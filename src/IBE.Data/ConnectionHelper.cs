@@ -17,7 +17,11 @@ namespace IBE.Data {
             typeof(Verse),
             typeof(VerseVersion),
             typeof(VerseWord),
-            typeof(VerseWordReference)
+            typeof(Commentary),
+            typeof(CommentaryItem),
+            typeof(StrongCode),
+            typeof(StrongCodeReferences),
+            typeof(GrammarCode)
         };
 
         public static void Connect(bool threadSafe = true) {

@@ -15,13 +15,7 @@ namespace IBE.Data.Model {
         public Chapter ParentChapter {
             get { return parentChapter; }
             set { SetPropertyValue(nameof(ParentChapter), ref parentChapter, value); }
-        }
-
-        [Size(SizeAttribute.Unlimited)]
-        public string Commentary {
-            get { return commentary; }
-            set { SetPropertyValue(nameof(Commentary), ref commentary, value); }
-        }
+        }       
 
         [Association("VerseWords")]
         public XPCollection<VerseWord> VerseWords {
