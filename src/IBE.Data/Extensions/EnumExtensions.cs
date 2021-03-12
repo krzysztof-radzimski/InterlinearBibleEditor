@@ -1,4 +1,17 @@
-﻿using System;
+﻿/*=====================================================================================
+
+	Interlinear Bible Editor
+	.NET Windows Forms Interlinear Bible wysiwyg desktop editor project.
+		
+    MIT License
+    https://github.com/krzysztof-radzimski/InterlinearBibleEditor/blob/main/LICENSE
+
+	Autor: 2009-2021 ITORG Krzysztof Radzimski
+	http://itorg.pl
+
+  ===================================================================================*/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;

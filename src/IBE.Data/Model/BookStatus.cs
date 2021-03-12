@@ -1,14 +1,22 @@
-﻿using DevExpress.Xpo;
+﻿/*=====================================================================================
+
+	Interlinear Bible Editor
+	.NET Windows Forms Interlinear Bible wysiwyg desktop editor project.
+		
+    MIT License
+    https://github.com/krzysztof-radzimski/InterlinearBibleEditor/blob/main/LICENSE
+
+	Autor: 2009-2021 ITORG Krzysztof Radzimski
+	http://itorg.pl
+
+  ===================================================================================*/
+
+using DevExpress.Xpo;
 
 namespace IBE.Data.Model {
     public class BookStatus : XPObject {
-        private string statusName;
         private BiblePart biblePart;
         private CanonType canonType;
-        public string StatusName {
-            get { return statusName; }
-            set { SetPropertyValue(nameof(StatusName), ref statusName, value); }
-        }
         public BiblePart BiblePart {
             get { return biblePart; }
             set { SetPropertyValue(nameof(BiblePart), ref biblePart, value); }
@@ -19,8 +27,8 @@ namespace IBE.Data.Model {
         }
 
         [Association("StatusBooks")]
-        public XPCollection<Book> Books {
-            get { return GetCollection<Book>(nameof(Books)); }
+        public XPCollection<BookBase> Books {
+            get { return GetCollection<BookBase>(nameof(Books)); }
         }
 
         public BookStatus(Session session) : base(session) { }

@@ -1,4 +1,17 @@
-﻿using DevExpress.Xpo;
+﻿/*=====================================================================================
+
+	Interlinear Bible Editor
+	.NET Windows Forms Interlinear Bible wysiwyg desktop editor project.
+		
+    MIT License
+    https://github.com/krzysztof-radzimski/InterlinearBibleEditor/blob/main/LICENSE
+
+	Autor: 2009-2021 ITORG Krzysztof Radzimski
+	http://itorg.pl
+
+  ===================================================================================*/
+
+using DevExpress.Xpo;
 
 namespace IBE.Data.Model {
     public class Chapter : XPObject {
@@ -30,6 +43,16 @@ namespace IBE.Data.Model {
         [Association("ChapterVerses")]
         public XPCollection<Verse> Verses {
             get { return GetCollection<Verse>(nameof(Verses)); }
+        }
+
+        [NonPersistent]
+        public Translation ParentTranslation {
+            get {
+                if (ParentBook != null) {
+                    return ParentBook.ParentTranslation;
+                }
+                return default;
+            }
         }
 
         public Chapter(Session session) : base(session) { }

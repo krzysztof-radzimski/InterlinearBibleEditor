@@ -1,4 +1,18 @@
-﻿using DevExpress.Xpo;
+﻿/*=====================================================================================
+
+	Interlinear Bible Editor
+	.NET Windows Forms Interlinear Bible wysiwyg desktop editor project.
+		
+    MIT License
+    https://github.com/krzysztof-radzimski/InterlinearBibleEditor/blob/main/LICENSE
+
+	Autor: 2009-2021 ITORG Krzysztof Radzimski
+	http://itorg.pl
+
+  ===================================================================================*/
+
+using DevExpress.Xpo;
+using System.ComponentModel;
 
 namespace IBE.Data.Model {
     public class Translation : XPObject {
@@ -8,6 +22,7 @@ namespace IBE.Data.Model {
         private string chapterString;
         private string chapterPsalmString;
         private Language language;
+        private TranslationType type;
         private string detailedInfo;
 
         public string Name {
@@ -31,6 +46,11 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(Language), ref language, value); }
         }
 
+        public TranslationType Type {
+            get { return type; }
+            set { SetPropertyValue(nameof(Type), ref type, value); }
+        }
+
         [Size(SizeAttribute.Unlimited)]
         public string Introduction {
             get { return introduction; }
@@ -43,11 +63,24 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(DetailedInfo), ref detailedInfo, value); }
         }
 
-        [Association("VerseTranslations")]
-        public XPCollection<VerseVersion> VerseVersions {
-            get { return GetCollection<VerseVersion>(nameof(VerseVersions)); }
+        [Association("BookTranslations")]
+        public XPCollection<Book> Books {
+            get { return GetCollection<Book>(nameof(Books)); }
         }
 
         public Translation(Session session) : base(session) { }
+    }
+
+    public enum TranslationType {
+        [Description("")]
+        None = 0,
+        [Description("Przekład interlinearny")]
+        Interlinear = 1,
+        [Description("Przekład literacki")]
+        Default = 2,
+        [Description("Przekład dynamiczny")]
+        Dynamic = 3,
+        [Description("Przekład dosłowny")]
+        Literal = 4
     }
 }

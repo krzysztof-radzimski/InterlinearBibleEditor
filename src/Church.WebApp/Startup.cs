@@ -41,9 +41,20 @@ namespace IBE.WebApp {
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(
+                    name: "bible",
+                    pattern: "{translationName}/{book?}/{chapter?}/{verse?}",
+                    defaults: new { controller = "Translation", action = "Index" }
+                );
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            var path= $"{env.ContentRootPath}\\Data\\IBE.SQLite3";
+           
+            var connectionString = $"XpoProvider=SQLite;data source={path}";
+            Data.ConnectionHelper.Connect(connectionString: connectionString);
         }
     }
 }

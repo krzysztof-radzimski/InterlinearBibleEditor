@@ -1,4 +1,18 @@
-﻿using DevExpress.Xpo;
+﻿/*=====================================================================================
+
+	Interlinear Bible Editor
+	.NET Windows Forms Interlinear Bible wysiwyg desktop editor project.
+		
+    MIT License
+    https://github.com/krzysztof-radzimski/InterlinearBibleEditor/blob/main/LICENSE
+
+	Autor: 2009-2021 ITORG Krzysztof Radzimski
+	http://itorg.pl
+
+  ===================================================================================*/
+
+using DevExpress.Xpo;
+using IBE.Data.Import.Extensions;
 using Ionic.Zip;
 using System;
 using System.Collections.Generic;
@@ -11,6 +25,15 @@ namespace IBE.Data.Import {
         protected const string INTERNAL_SEPARATOR = "/";
         protected const string WINDOWS_SEPARATOR = "\\";
         protected const char HARD_SPACE = '\u00A0';
+        protected string ExtractAndGetFirstArchiveItemFilePath(string zipFilePath) {
+            if (!zipFilePath.ToLower().EndsWith(".zip")) { throw new Exception("The specified file is not a zip archive!"); }
+            var zipFiles = GetAllFiles(zipFilePath);
+            if (zipFilePath.IsNull() || zipFilePath.Length == 0) { throw new Exception("The specified file is not a valid zip archive!"); }
+            var a = zipFiles.First();
+            var fileName = Path.Combine(Path.GetTempPath(), a.FileName);
+            File.WriteAllBytes(fileName, a.FileData);
+            return fileName;
+        }
         protected IEnumerable<ArchiveItem> GetAllFiles(string zipFilePath) {
             if (String.IsNullOrEmpty(zipFilePath)) {
                 throw new ArgumentNullException("zipFilePath");
@@ -71,7 +94,6 @@ namespace IBE.Data.Import {
 
             return l;
         }
-
         protected IEnumerable<string> FindPattern(string zipFilePath, string pattern) {
             var l = new List<string>();
             var reg = new System.Text.RegularExpressions.Regex(pattern);
@@ -222,7 +244,7 @@ namespace IBE.Data.Import {
             return m;
         }
 
-        public abstract void Import(string filePath, UnitOfWork uow);
+        public abstract void Import(string zipFilePath, UnitOfWork uow);
 
         public void Dispose() { }
     }

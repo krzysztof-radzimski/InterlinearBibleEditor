@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace IBE.Data.Import.Extensions {
-    public static  class StringExtensions {
+    public static class StringExtensions {
         public static bool IsNotNullOrEmpty(this string text) {
             return !String.IsNullOrEmpty(text);
         }
@@ -126,6 +126,35 @@ namespace IBE.Data.Import.Extensions {
             }
 
             return s + text;
+        }
+        public static bool StartWithAny(this string text, params string[] starts) {
+            if (text != null && starts != null && starts.Length > 0) {
+                foreach (var start in starts) {
+                    if (text.StartsWith(start)) {
+                        return true;
+                    }
+                }
+            }
+            return default;
+        }
+        public static bool EndsWithAny(this string text, params string[] ends) {
+            if (text != null && ends != null && ends.Length > 0) {
+                foreach (var end in ends) {
+                    if (text.EndsWith(end)) {
+                        return true;
+                    }
+                }
+            }
+            return default;
+        }
+
+        public static string RemoveAny(this string text, params string[] e) {
+            if (text.IsNotNull() && e.IsNotNull() && e.Length > 0) {
+                foreach (var c in e) {
+                    text = text.Replace(c, String.Empty);
+                }
+            }
+            return text;
         }
     }
 }

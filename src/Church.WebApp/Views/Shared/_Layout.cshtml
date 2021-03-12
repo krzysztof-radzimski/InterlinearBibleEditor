@@ -60,6 +60,36 @@
                         <li class="nav-item">
                             <a class="nav-link" href="https://www.youtube.com/channel/UCD1go_K0JxyNkuss9mZ-8HQ" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
                         </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-bible"></i> Biblia
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li class="dropdown-item"><a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">Przekłady dosłowne</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PBD">Nowy Testament Dosłowny EIB <span class="badge bg-success text-white">zalecany</span></a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PBPW">Grecko-polski Nowy Testament Popowski-Wojciechowski <span class="badge bg-secondary">Katolicki</span></a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="dropdown-item"><a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">Przekłady literackie</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="SNP18">Biblia EIB <span class="badge bg-success text-white">zalecana</span></a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="BW">Biblia Warszawska</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="UBG18">Uwspółcześniona Biblia Gdańska</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="NBG12">Nowa Biblia Gdańska</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="BG">Biblia Gdańska</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PBW">Nowy Testament na współczesny język polski</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="BT99">Biblia Tysiąclecia V <span class="badge bg-secondary">Katolicka</span></a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="BJW">Biblia Jakuba Wujka <span class="badge bg-secondary">Katolicka</span></a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PBP">Nowy Testament Popowskiego <span class="badge bg-secondary">Katolicki</span></a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PAU">Biblia Paulistów - Edycja Świętego Pawła <span class="badge bg-secondary">Katolicka</span></a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="POZ75">Biblia Poznańska <span class="badge bg-secondary">Katolicka</span></a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="EKU18">Biblia Ekumeniczna</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="dropdown-item"><a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">Przekłady dynamiczne</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PSZ">Nowy Testament Słowo Życia</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="EDB">Ewangelie dla badaczy</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PNS1997">Przekład Nowego Świata</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -68,8 +98,10 @@
     <div class="container" style="margin-top: 5em;">
         <main role="main" class="card border-0 shadow mt-5">
             @RenderSection("Main", false)
-            <div class="card-body p-5">
-                @RenderBody()
+            <div class="bg-bible">
+                <div class="card-body p-5" style="position: relative;">
+                    @RenderBody()
+                </div>
             </div>
         </main>
 

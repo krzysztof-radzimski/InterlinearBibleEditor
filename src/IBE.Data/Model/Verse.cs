@@ -1,10 +1,23 @@
-﻿using DevExpress.Xpo;
+﻿/*=====================================================================================
+
+	Interlinear Bible Editor
+	.NET Windows Forms Interlinear Bible wysiwyg desktop editor project.
+		
+    MIT License
+    https://github.com/krzysztof-radzimski/InterlinearBibleEditor/blob/main/LICENSE
+
+	Autor: 2009-2021 ITORG Krzysztof Radzimski
+	http://itorg.pl
+
+  ===================================================================================*/
+
+using DevExpress.Xpo;
 
 namespace IBE.Data.Model {
     public class Verse : XPObject {
-        private int numberOfVerse;
-        private string commentary;
+        private int numberOfVerse;        
         private Chapter parentChapter;
+        private string text;
 
         public int NumberOfVerse {
             get { return numberOfVerse; }
@@ -22,15 +35,37 @@ namespace IBE.Data.Model {
             get { return GetCollection<VerseWord>(nameof(VerseWords)); }
         }
 
-        [Association("VerseVersions")]
-        public XPCollection<VerseVersion> VerseVersions {
-            get { return GetCollection<VerseVersion>(nameof(VerseVersions)); }
+        /// <summary>
+        /// Treść wersetu jeżeli nie jest to przekład interlinearny. Treść zapisywana jest w pseudo-HTML
+        /// </summary>
+        [Size(SizeAttribute.Unlimited)]
+        public string Text {
+            get { return text; }
+            set { SetPropertyValue(nameof(Text), ref text, value); }
+        }
+
+        [NonPersistent]
+        public Translation ParentTranslation {
+            get {
+                if (ParentChapter != null) {
+                    return ParentChapter.ParentTranslation;
+                }
+                return default;
+            }
         }
 
         public Verse(Session session) : base(session) { }
 
+        public string GetLink() {
+            var result = string.Empty;
+            if (ParentChapter != null && parentChapter.ParentBook != null) {
+                result= $@"<a class=""verse-reference"" href=""B:{ParentChapter.ParentBook.NumberOfBook} {parentChapter.NumberOfChapter}:{NumberOfVerse}"">{GetShortcut()}</a>";
+            }
+            return result;
+        }
+
         public string GetShortcut() {
-            string result = "";
+            var result = string.Empty;
             if (ParentChapter != null && parentChapter.ParentBook != null) {
                 result = $"{parentChapter.ParentBook.BookShortcut} {parentChapter.NumberOfChapter}:{NumberOfVerse}";
             }
