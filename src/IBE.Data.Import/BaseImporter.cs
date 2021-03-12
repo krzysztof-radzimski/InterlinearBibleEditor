@@ -12,7 +12,7 @@
   ===================================================================================*/
 
 using DevExpress.Xpo;
-using IBE.Data.Import.Extensions;
+using IBE.Common.Extensions;
 using Ionic.Zip;
 using System;
 using System.Collections.Generic;

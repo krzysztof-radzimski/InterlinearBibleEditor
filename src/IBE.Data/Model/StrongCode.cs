@@ -12,7 +12,7 @@
   ===================================================================================*/
 
 using DevExpress.Xpo;
-using IBE.Data.Extensions;
+using IBE.Common.Extensions;
 
 namespace IBE.Data.Model {
     public class StrongCode : XPObject {

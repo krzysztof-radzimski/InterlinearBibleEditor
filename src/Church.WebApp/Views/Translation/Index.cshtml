@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Biblia";
+    var selectedVerses = new List<int>();
 }
 
 @model Church.WebApp.Controllers.TranslationControllerModel
@@ -11,24 +12,24 @@ else if (String.IsNullOrEmpty(Model.Book)) {
 
     ViewData["Title"] = Model.Translation.Description;
 
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 
         @switch (Model.Translation.Type) {
             case IBE.Data.Model.TranslationType.Dynamic: {
-                @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"">Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie</div>")
-                break;
-            }
-            case IBE.Data.Model.TranslationType.Literal: {
-                @Html.Raw(@"<div class=""alert alert-success mb-0"" role=""alert"">Przekład dosłowny</div>")
-                break;
-            }
-            case IBE.Data.Model.TranslationType.Default: {
-                @Html.Raw(@"<div class=""alert alert-info mb-0"" role=""alert"">Przekład literacki</div>")
-                break;
-            }
+            @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"">Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie</div>")
+            break;
         }
-        
-        </div>
+    case IBE.Data.Model.TranslationType.Literal: {
+    @Html.Raw(@"<div class=""alert alert-success mb-0"" role=""alert"">Przekład dosłowny</div>")
+    break;
+}
+case IBE.Data.Model.TranslationType.Default: {
+@Html.Raw(@"<div class=""alert alert-info mb-0"" role=""alert"">Przekład literacki</div>")
+break;
+}
+}
+
+    </div>
 
     <h1 class="text-center p-2">@Model.Translation.Description</h1>
     <div class="container">
@@ -44,7 +45,7 @@ else if (String.IsNullOrEmpty(Model.Book)) {
     </div>
 
     <p>
-        <br/>
+        <br />
         * Prezentowane treści należą do ich właścicieli i wydawców. Tekst pobrany z udostępnionych zasobów programu <a href="https://mybible.zone/">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a>
         <br />
         @if (Model.Translation.DetailedInfo != null) {
@@ -60,18 +61,18 @@ else {
 
         @switch (Model.Translation.Type) {
             case IBE.Data.Model.TranslationType.Dynamic: {
-                @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"">Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie</div>")
-                break;
-            }
-            case IBE.Data.Model.TranslationType.Literal: {
-                @Html.Raw(@"<div class=""alert alert-success mb-0"" role=""alert"">Przekład dosłowny</div>")
-                break;
-            }
-            case IBE.Data.Model.TranslationType.Default: {
-                @Html.Raw(@"<div class=""alert alert-info mb-0"" role=""alert"">Przekład literacki</div>")
-                break;
-            }
+            @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"">Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie</div>")
+            break;
         }
+    case IBE.Data.Model.TranslationType.Literal: {
+    @Html.Raw(@"<div class=""alert alert-success mb-0"" role=""alert"">Przekład dosłowny</div>")
+    break;
+}
+case IBE.Data.Model.TranslationType.Default: {
+@Html.Raw(@"<div class=""alert alert-info mb-0"" role=""alert"">Przekład literacki</div>")
+break;
+}
+}
 
         @if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
             <div class="alert alert-warning mb-0" role="alert">Uwaga! @book.BaseBook.BookTitle jest księgą wtórnie-kanoniczną</div>
@@ -131,17 +132,46 @@ else {
     var footNoteRefIndex = 0;
     var footNotes = new List<string>();
 
+    string[] modelVerses = null;
+    if (!String.IsNullOrEmpty(Model.Verse)) {
+        var activeVerse = String.Empty;
+        modelVerses = Model.Verse.Split(',');
+        foreach (var modelVerse in modelVerses) {
+            if (!String.IsNullOrEmpty(modelVerse)) {
+                selectedVerses.Add(Convert.ToInt32(modelVerse.Trim()));
+            }
+        }
+    }
+
     <div class="lh-lg fs-5" style="text-align: justify">
         @foreach (var verse in chapter.Verses) {
             if (chapter.Subtitles != null && chapter.Subtitles.Count > 0) {
                 var subtitles = chapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).OrderBy(x => x.Level);
                 if (subtitles.Count() > 0) {
                     foreach (var story in subtitles) {
+
+                        var storyText = story.Text;
+                        // <x>230 1-41</x>
+                        if (storyText.Contains("<x>")) {
+                            var pattern = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+\-[0-9]+)\<\/x\>";
+                            var regex = new System.Text.RegularExpressions.Regex(pattern);
+                            var match = regex.Match(storyText.Trim());
+                            if (match.Success) {
+                                storyText = $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(match.Groups["book"].Value)).First().BookName} {match.Groups["num"].Value})";
+                            }
+                        }
+
+                        if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+                            storyText = System.Text.RegularExpressions.Regex.Replace(storyText, @"\sPAN(A)?(EM)?(U)?", delegate (System.Text.RegularExpressions.Match m) {
+                                return " JAHWE";
+                            });
+                        }
+
                         if (story.Level == 1) {
-                            <h4 class="text-center p-2">@story.Text</h4>
+                            <h4 class="text-center p-2">@storyText</h4>
                         }
                         else {
-                            <h5 class="text-center p-2">@story.Text</h5>
+                            <h5 class="text-center p-2">@storyText</h5>
                         }
                     }
                 }
@@ -194,10 +224,19 @@ else {
             }
 
             // Słowa Jezusa
-            text = text.Replace("<J>", @"<span class=""text-danger bg-light"">").Replace("</J>", "</span>");
+            text = text.Replace("<J>", @"<span class=""text-danger"">").Replace("</J>", "</span>");
 
             // Elementy dodane
             text = text.Replace("<n>", @"<span class=""text-muted"">").Replace("</n>", "</span>");
+
+            text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
+
+            // zamiana na imię Boże
+            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+                text = System.Text.RegularExpressions.Regex.Replace(text, @"\s(?<name>PAN(A)?(EM)?(U)?)[\s\,\.\:]", delegate (System.Text.RegularExpressions.Match m) {
+                    return " JAHWE" + m.Value.Last();
+                });
+            }
 
             // usuwam sierotki
             text = System.Text.RegularExpressions.Regex.Replace(text, @"\s[a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
@@ -210,7 +249,12 @@ else {
             }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
 
-            <span><a name="Verse_@verse.NumberOfVerse" /><span class="fw-bold">@verse.NumberOfVerse</span>.&nbsp;@Html.Raw(text.Trim())&nbsp;</span>
+            var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "background-color: #fffee3;" : " ";
+
+            <span id="span-verse-@verse.NumberOfVerse" style="@activeVerse">
+                <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
+                <span class="fw-bold">@verse.NumberOfVerse</span><span>.&nbsp;@Html.Raw(text.Trim())&nbsp;</span>
+            </span>
         }
 
         @if (footNotes.Count > 0) {
@@ -281,4 +325,29 @@ else {
             @Html.Raw(Model.Translation.DetailedInfo)
         }
     </p>
+
+    @section Scripts {
+
+        @if (!String.IsNullOrEmpty(Model.Verse)) {
+
+            <script>
+    docReady(function () {
+        setTimeout(function () {
+
+            const topNavId = 'top-nav';
+            const topNav = document.getElementById(topNavId);
+
+            const id = 'Verse_@selectedVerses.First()';
+            const yOffset = -(topNav.offsetHeight); //-55;
+            const element = document.getElementById(id);
+            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }, 1000);
+    });
+            </script>
+
+        }
+
+    }
 }

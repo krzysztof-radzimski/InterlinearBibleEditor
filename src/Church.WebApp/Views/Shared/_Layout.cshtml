@@ -31,7 +31,7 @@
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v9.0" nonce="TGe91ewv"></script>
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mb-5 shadow">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mb-5 shadow" id="top-nav">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-cross"></i> Kościół Chrześcijan Baptystów</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">O nas</a>
-                        </li>                       
+                        </li>
                         <li class="nav-item">
                             <div class="btn-group" role="group" aria-label="Przyciski">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" title="Polityka prywatności"><i class="fas fa-user-shield"></i></a>&nbsp;&nbsp;
@@ -80,18 +80,24 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="POZ75">Biblia Poznańska <span class="badge bg-secondary">Katolicka</span></a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="EKU18">Biblia Ekumeniczna</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><h6 class="dropdown-header disabled">Przekłady dynamiczne</h6></li>                                
+                                <li><h6 class="dropdown-header disabled">Przekłady dynamiczne</h6></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PSZ">Nowy Testament Słowo Życia</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="EDB">Ewangelie dla badaczy</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PNS1997">Przekład Nowego Świata</a></li>
                             </ul>
                         </li>
                     </ul>
+
+
+                    <form class="d-flex" id="search-form" method="post" enctype="multipart/form-data" asp-controller="Search" asp-action="Index">
+                        <input id="search-input-text" name="text" class="form-control me-2" type="search" placeholder="Szukaj w Biblii" aria-label="Szukaj w Biblii" />
+                        <button id="search-button" class="btn btn-outline-success" type="submit">Szukaj</button>                        
+                    </form>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container" style="margin-top: 5em;">
+    <div class="container" style="margin-top: 5em;" id="main-container">
         <main role="main" class="card border-0 shadow mt-5">
             @RenderSection("Main", false)
             <div class="bg-bible">

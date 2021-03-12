@@ -4,16 +4,16 @@
     <TargetFrameworks>netstandard2.1;netstandard2.0;net48;net461</TargetFrameworks>
     <Authors>Krzysztof Radzimski</Authors>
     <Company>ITORG Krzysztof Radzimski</Company>
-    <Description>IBE data access classes.</Description>
+    <Description>IBE common classes.</Description>
     <Copyright>ITORG Krzysztof Radzimski</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>bible.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/krzysztof-radzimski/InterlinearBibleEditor.git</RepositoryUrl>
     <RepositoryType>GIT</RepositoryType>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageReleaseNotes>IBE data access classes.</PackageReleaseNotes>
+    <PackageReleaseNotes>IBE common classes.</PackageReleaseNotes>
     <SignAssembly>false</SignAssembly>
-    <PackageId>IBE.Data</PackageId>
+    <PackageId>IBE.Common</PackageId>
     <Product>IBE</Product>
     <PackageProjectUrl>https://github.com/krzysztof-radzimski/InterlinearBibleEditor</PackageProjectUrl>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
@@ -26,11 +26,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Extensions\**" />
     <Compile Remove="packages\**" />
-    <EmbeddedResource Remove="Extensions\**" />
     <EmbeddedResource Remove="packages\**" />
-    <None Remove="Extensions\**" />
     <None Remove="packages\**" />
   </ItemGroup>
 
@@ -39,15 +36,6 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="DevExpress.Xpo" Version="20.2.5" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\IBE.Common\IBE.Common.csproj" />
   </ItemGroup>
 
 </Project>

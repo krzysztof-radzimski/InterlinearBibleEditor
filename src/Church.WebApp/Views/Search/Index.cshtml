@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Wyszukiwanie";
+
+}
+@using IBE.Common.Extensions
+@model Church.WebApp.Controllers.SearchResultsModel
+
+@if (Model != null) {
+
+    <p>
+        Szukane słowa:
+        @if (Model.Words != null && Model.Words.Count() > 0) {
+            foreach (var word in Model.Words) {
+                if (word != Model.Words.Last()) {
+                    @Html.Raw($"{word}, ")
+                }
+                else {
+                    @Html.Raw($"{word}.")
+                }
+            }
+        }
+    </p>
+    @if (Model.Words != null && Model.Words.Count() > 0) {
+
+        var result = Model.GroupBy(x => x.Translation);
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            @foreach (var item in result) {
+                var _active = item == result.First() ? " active" : "";
+                var _true = item == result.First() ? "true" : "false";
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link@_active" id="@item.Key.ToLower()-tab" data-bs-toggle="tab" data-bs-target="#@item.Key.ToLower()" type="button" role="tab" aria-controls="@item.Key.ToLower()" aria-selected="@_true">@item.Key</button>
+                </li>
+            }
+
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            @foreach (var item in result) {
+                var _active = item == result.First() ? " active" : "";
+                <div class="tab-pane shadow-sm p-3 mb-5 bg-body rounded fade@_active" id="@item.Key.ToLower()" role="tabpanel" aria-labelledby="@item.Key.ToLower()-tab">
+                    <h4>@item.First().TranslationName</h4>
+
+                    @foreach (var verse in item) {
+                        var text = verse.VerseText.RemovePolishChars();
+                        foreach (var word in Model.Words) {
+                            text = text.Replace(word, $@"<mark>{word}</mark>", StringComparison.CurrentCultureIgnoreCase);
+                        }
+
+                        <p><a href="../@verse.Translation/@verse.Book/@verse.Chapter/@verse.Verse" class="text-decoration-none">@verse.BookShortcut @verse.Chapter:@verse.Verse</a>&nbsp;@Html.Raw(text)</p>
+                    }
+
+                </div>
+            }
+
+        </div>
+
+        @section Scripts {
+
+            <script>
+                docReady(function () {
+                    setTimeout(function () {
+                        var firstTabEl = document.querySelector('#myTab li:first-child button');
+                        var firstTab = new bootstrap.Tab(firstTabEl);
+
+                        firstTab.show();
+                    }, 1000);
+                });
+            </script>
+
+        }
+
+    }
+}
+else {
+    <h4>Wyszukiwanie</h4>
+    <p>Brak wyników</p>
+}
