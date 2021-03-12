@@ -11,6 +11,25 @@ else if (String.IsNullOrEmpty(Model.Book)) {
 
     ViewData["Title"] = Model.Translation.Description;
 
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+
+        @switch (Model.Translation.Type) {
+            case IBE.Data.Model.TranslationType.Dynamic: {
+                @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"">Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie</div>")
+                break;
+            }
+            case IBE.Data.Model.TranslationType.Literal: {
+                @Html.Raw(@"<div class=""alert alert-success mb-0"" role=""alert"">Przekład dosłowny</div>")
+                break;
+            }
+            case IBE.Data.Model.TranslationType.Default: {
+                @Html.Raw(@"<div class=""alert alert-info mb-0"" role=""alert"">Przekład literacki</div>")
+                break;
+            }
+        }
+        
+        </div>
+
     <h1 class="text-center p-2">@Model.Translation.Description</h1>
     <div class="container">
         <div class="row border bg-light justify-content-center">
@@ -25,6 +44,7 @@ else if (String.IsNullOrEmpty(Model.Book)) {
     </div>
 
     <p>
+        <br/>
         * Prezentowane treści należą do ich właścicieli i wydawców. Tekst pobrany z udostępnionych zasobów programu <a href="https://mybible.zone/">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a>
         <br />
         @if (Model.Translation.DetailedInfo != null) {
@@ -37,20 +57,21 @@ else {
     ViewData["Title"] = Model.Translation.Description + " - " + book.BaseBook.BookTitle;
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+
         @switch (Model.Translation.Type) {
             case IBE.Data.Model.TranslationType.Dynamic: {
-            <div class="alert alert-danger mb-0" role="alert">Przekład dynamiczny może zawierać tendencyjne dalekie od oryginału tłumaczenie</div>
-            break;
+                @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"">Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie</div>")
+                break;
+            }
+            case IBE.Data.Model.TranslationType.Literal: {
+                @Html.Raw(@"<div class=""alert alert-success mb-0"" role=""alert"">Przekład dosłowny</div>")
+                break;
+            }
+            case IBE.Data.Model.TranslationType.Default: {
+                @Html.Raw(@"<div class=""alert alert-info mb-0"" role=""alert"">Przekład literacki</div>")
+                break;
+            }
         }
-    case IBE.Data.Model.TranslationType.Literal: {
-    <div class="alert alert-success mb-0" role="alert">Przekład dosłowny</div>
-    break;
-}
-case IBE.Data.Model.TranslationType.Default: {
-<div class="alert alert-info mb-0" role="alert">Przekład literacki</div>
-break;
-}
-}
 
         @if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
             <div class="alert alert-warning mb-0" role="alert">Uwaga! @book.BaseBook.BookTitle jest księgą wtórnie-kanoniczną</div>

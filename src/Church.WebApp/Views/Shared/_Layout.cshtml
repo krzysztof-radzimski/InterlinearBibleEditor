@@ -38,7 +38,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div id="navbarText" class="collapse navbar-collapse">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 navbar-nav-scroll">
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WhatWeBelieve">W co wierzymy?</a>
                         </li>
@@ -47,18 +47,14 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">O nas</a>
-                        </li>
+                        </li>                       
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" title="Polityka prywatności"><i class="fas fa-user-shield"></i></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://m.me/koscioljezusa" target="_blank" title="Wyślij wiadomość"><i class="fab fa-facebook-messenger"></i></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://www.facebook.com/koscioljezusa" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://www.youtube.com/channel/UCD1go_K0JxyNkuss9mZ-8HQ" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                            <div class="btn-group" role="group" aria-label="Przyciski">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" title="Polityka prywatności"><i class="fas fa-user-shield"></i></a>&nbsp;&nbsp;
+                                <a class="nav-link" href="https://m.me/koscioljezusa" target="_blank" title="Wyślij wiadomość"><i class="fab fa-facebook-messenger"></i></a>&nbsp;&nbsp;
+                                <a class="nav-link" href="https://www.facebook.com/koscioljezusa" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>&nbsp;&nbsp;
+                                <a class="nav-link" href="https://www.youtube.com/channel/UCD1go_K0JxyNkuss9mZ-8HQ" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>&nbsp;&nbsp;
+                            </div>
                         </li>
 
                         <li class="nav-item dropdown">
@@ -66,11 +62,11 @@
                                 <i class="fas fa-bible"></i> Biblia
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li class="dropdown-item"><a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">Przekłady dosłowne</a></li>
+                                <li><h6 class="dropdown-header disabled">Przekłady dosłowne</h6></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PBD">Nowy Testament Dosłowny EIB <span class="badge bg-success text-white">zalecany</span></a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PBPW">Grecko-polski Nowy Testament Popowski-Wojciechowski <span class="badge bg-secondary">Katolicki</span></a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PBPW">Grecko-polski Nowy Testament <span class="badge bg-secondary">Katolicki</span></a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li class="dropdown-item"><a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">Przekłady literackie</a></li>
+                                <li><h6 class="dropdown-header disabled">Przekłady literackie</h6></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="SNP18">Biblia EIB <span class="badge bg-success text-white">zalecana</span></a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="BW">Biblia Warszawska</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="UBG18">Uwspółcześniona Biblia Gdańska</a></li>
@@ -84,7 +80,7 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="POZ75">Biblia Poznańska <span class="badge bg-secondary">Katolicka</span></a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="EKU18">Biblia Ekumeniczna</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li class="dropdown-item"><a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">Przekłady dynamiczne</a></li>
+                                <li><h6 class="dropdown-header disabled">Przekłady dynamiczne</h6></li>                                
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PSZ">Nowy Testament Słowo Życia</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="EDB">Ewangelie dla badaczy</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="PNS1997">Przekład Nowego Świata</a></li>
