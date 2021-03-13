@@ -11,10 +11,8 @@
 
   ===================================================================================*/
 
-using DevExpress.Data.Filtering;
 using DevExpress.Xpo;
 using IBE.Common.Extensions;
-using IBE.Data.ExpressionFunctions;
 using IBE.Data.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -36,9 +34,23 @@ namespace Church.WebApp.Controllers {
         [HttpPost]
         public IActionResult Index(string text) {
             if (!String.IsNullOrEmpty(text) && text.Length > 3) {
-                var words = text.RemovePolishChars().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                var words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
                 var view = new XPView(new UnitOfWork(), typeof(Verse));
+
+                var critera = String.Empty;
+                foreach (var word in words) {
+
+                    critera += $"Contains(Lower([Text]),'{word}')";
+
+                    if (word != words.Last()) {
+                        critera += " AND ";
+                    }
+                }
+
+                view.CriteriaString = critera;
+
+
                 view.Properties.Add(new ViewProperty("NumberOfBook", SortDirection.None, "[ParentChapter.ParentBook.NumberOfBook]", false, true));
                 view.Properties.Add(new ViewProperty("BookShortcut", SortDirection.None, "[ParentChapter.ParentBook.BookShortcut]", false, true));
                 view.Properties.Add(new ViewProperty("NumberOfChapter", SortDirection.None, "[ParentChapter.NumberOfChapter]", false, true));
@@ -48,8 +60,7 @@ namespace Church.WebApp.Controllers {
                 view.Properties.Add(new ViewProperty("Translation", SortDirection.None, "[ParentChapter.ParentBook.ParentTranslation.Name]", false, true));
 
                 var model = new SearchResultsModel(words);
-                foreach (ViewRecord record in view) {
-                    if (record["VerseText"].ToString().RemovePolishChars().ContainsAllInTable(words)) {
+                foreach (ViewRecord record in view) {                    
                         model.Add(new SearchItemModel() {
                             Book = record["NumberOfBook"].ToInt(),
                             BookShortcut = record["BookShortcut"].ToString(),
@@ -58,25 +69,8 @@ namespace Church.WebApp.Controllers {
                             TranslationName = record["TranslationName"].ToString(),
                             Translation = record["Translation"].ToString().Replace("'", ""),
                             VerseText = record["VerseText"].ToString()
-                        });
-                    }
+                        });                 
                 }
-
-
-                //var list = new XPQuery<Verse>(new UnitOfWork()).ToList();
-                //var results = list.Where(x => ContainsInTableFunction.ContainsInTable(x.Text, words));
-
-                //foreach (var item in results) {
-                //    model.Add(new SearchItemModel() {
-                //        Book = item.ParentChapter.ParentBook.NumberOfBook,
-                //        BookShortcut = item.ParentChapter.ParentBook.BookShortcut,
-                //        Chapter = item.ParentChapter.NumberOfChapter,
-                //        Verse = item.NumberOfVerse,
-                //        TranslationName = item.ParentTranslation.Description,
-                //        Translation = item.ParentTranslation.Name.Replace("'", ""),
-                //        VerseText = item.Text
-                //    });
-                //}
 
                 return View(model);
             }

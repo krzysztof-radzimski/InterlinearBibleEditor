@@ -43,8 +43,9 @@
                     <h4>@item.First().TranslationName</h4>
 
                     @foreach (var verse in item) {
-                        var text = verse.VerseText.RemovePolishChars();
+                        var text = verse.VerseText;
                         foreach (var word in Model.Words) {
+                            if (word.Contains("ma") || word.Contains("ar")) { continue; }
                             text = text.Replace(word, $@"<mark>{word}</mark>", StringComparison.CurrentCultureIgnoreCase);
                         }
 

@@ -4,6 +4,7 @@
 }
 
 @model Church.WebApp.Controllers.TranslationControllerModel
+@using IBE.Common.Extensions
 
 @if (Model == null) {
     <h1>Nie przekazano nazwy przekładu</h1>
@@ -55,282 +56,305 @@ break;
 }
 else {
     IBE.Data.Model.Book book = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(Model.Book)).FirstOrDefault();
-    ViewData["Title"] = Model.Translation.Description + " - " + book.BaseBook.BookTitle;
+    if (book.IsNotNull()) {
+        ViewData["Title"] = Model.Translation.Description + " - " + book.BaseBook.BookTitle;
 
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 
-        @switch (Model.Translation.Type) {
-            case IBE.Data.Model.TranslationType.Dynamic: {
-            @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"">Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie</div>")
-            break;
-        }
-    case IBE.Data.Model.TranslationType.Literal: {
-    @Html.Raw(@"<div class=""alert alert-success mb-0"" role=""alert"">Przekład dosłowny</div>")
-    break;
-}
+            @switch (Model.Translation.Type) {
+                case IBE.Data.Model.TranslationType.Dynamic: {
+                @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"">Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie</div>")
+                break;
+            }
+        case IBE.Data.Model.TranslationType.Literal: {
+        @Html.Raw(@"<div class=""alert alert-success mb-0"" role=""alert"">Przekład dosłowny</div>")
+        break;
+    }
 case IBE.Data.Model.TranslationType.Default: {
 @Html.Raw(@"<div class=""alert alert-info mb-0"" role=""alert"">Przekład literacki</div>")
 break;
 }
 }
 
-        @if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
-            <div class="alert alert-warning mb-0" role="alert">Uwaga! @book.BaseBook.BookTitle jest księgą wtórnie-kanoniczną</div>
+            @if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
+                <div class="alert alert-warning mb-0" role="alert">Uwaga! @book.BaseBook.BookTitle jest księgą wtórnie-kanoniczną</div>
+            }
+            else if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.Apocrypha) {
+                <div class="alert alert-warning mb-0" role="alert">Uwaga! @book.BaseBook.BookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej</div>
+            }
+
+
+            <button class="btn btn-secondary dropdown-toggle my-dropdown" type="button" id="dropdownMenuButtonTranslations" data-bs-toggle="dropdown" aria-expanded="false">
+                Inny przekład
+            </button>
+            <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations">
+                @foreach (var _trans in Model.Translations) {
+                    var _active = String.Empty;
+                    if (_trans.Name == Model.Translation.Name) {
+                        _active = " active";
+                    }
+
+                <li>
+                    @if (Model.Verse.IsNotNullOrEmpty()) {
+                        <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_trans.Name.Replace("'", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@_trans.Description</a>
+                    }
+                    else {
+                        <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_trans.Name.Replace("'", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@_trans.Description</a>
+                    }
+                </li>
+                }
+            </ul>
+
+            <button class="btn btn-secondary dropdown-toggle my-dropdown" type="button" id="dropdownMenuButtonBooks" data-bs-toggle="dropdown" aria-expanded="false">
+                Wybór księgi
+            </button>
+            <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonBooks">
+                @foreach (var _book in Model.Translation.Books) {
+                    var _active = String.Empty;
+                    if (_book.NumberOfBook == book.NumberOfBook) {
+                        _active = " active";
+                    }
+
+                    var _secondCanon = String.Empty;
+                    if (_book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
+                        _secondCanon = " text-warning bg-dark";
+                    }
+
+                    <li><a class="dropdown-item@_active@_secondCanon" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "")" asp-route-book="@_book.NumberOfBook" asp-route-chapter="1">@_book.BaseBook.BookTitle</a></li>
+                }
+            </ul>
+
+
+            <button class="btn btn-secondary dropdown-toggle my-dropdown" type="button" id="dropdownMenuButtonChapters" data-bs-toggle="dropdown" aria-expanded="false">
+                Wybór rozdziału
+            </button>
+            <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonChapters">
+                @for (int i = 1; i <= book.NumberOfChapters; i++) {
+                    var _active = String.Empty;
+                    if (i == Convert.ToInt32(Model.Chapter)) {
+                        _active = " active";
+                    }
+
+                    <li><a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i">@i</a></li>
+                }
+            </ul>
+        </div>
+
+        <h1 class="text-center p-2"><a class="text-decoration-none text-dark" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "")" asp-route-book="@null">@Model.Translation.Description</a></h1>
+        <h2 class="text-center p-2">@book.BaseBook.BookTitle</h2>
+
+
+        if (book.NumberOfBook == 230) {
+            <h2 class="text-center p-2">@Model.Translation.ChapterPsalmString @Model.Chapter</h2>
         }
-        else if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.Apocrypha) {
-            <div class="alert alert-warning mb-0" role="alert">Uwaga! @book.BaseBook.BookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej</div>
+        else {
+            <h2 class="text-center p-2">@Model.Translation.ChapterString @Model.Chapter</h2>
         }
 
-        <button class="btn btn-secondary dropdown-toggle " type="button" id="dropdownMenuButtonBooks" data-bs-toggle="dropdown" aria-expanded="false">
-            Wybór księgi
-        </button>
-        <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonBooks">
-            @foreach (var _book in Model.Translation.Books) {
-                var _active = String.Empty;
-                if (_book.NumberOfBook == book.NumberOfBook) {
-                    _active = " active";
+        var chapter = book.Chapters.Where(x => x.NumberOfChapter == Convert.ToInt32(Model.Chapter)).FirstOrDefault();
+        var footNoteIndex = 1;
+        var footNoteRefIndex = 0;
+        var footNotes = new List<string>();
+
+        string[] modelVerses = null;
+        if (!String.IsNullOrEmpty(Model.Verse)) {
+            var activeVerse = String.Empty;
+            modelVerses = Model.Verse.Split(',');
+            foreach (var modelVerse in modelVerses) {
+                if (!String.IsNullOrEmpty(modelVerse)) {
+                    selectedVerses.Add(Convert.ToInt32(modelVerse.Trim()));
+                }
+            }
+        }
+
+        <div class="lh-lg fs-5" style="text-align: justify; max-width: 800px; margin: auto;">
+            @foreach (var verse in chapter.Verses) {
+                if (chapter.Subtitles != null && chapter.Subtitles.Count > 0) {
+                    var subtitles = chapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).OrderBy(x => x.Level);
+                    if (subtitles.Count() > 0) {
+                        foreach (var story in subtitles) {
+
+                            var storyText = story.Text;
+                            // <x>230 1-41</x>
+                            if (storyText.Contains("<x>")) {
+                                var pattern = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+\-[0-9]+)\<\/x\>";
+                                var regex = new System.Text.RegularExpressions.Regex(pattern);
+                                var match = regex.Match(storyText.Trim());
+                                if (match.Success) {
+                                    storyText = $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(match.Groups["book"].Value)).First().BookName} {match.Groups["num"].Value})";
+                                }
+                            }
+
+                            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+                                storyText = System.Text.RegularExpressions.Regex.Replace(storyText, @"\sPAN(A)?(EM)?(U)?", delegate (System.Text.RegularExpressions.Match m) {
+                                    return " JAHWE";
+                                });
+                            }
+
+                            if (story.Level == 1) {
+                                <h4 class="text-center p-2">@storyText</h4>
+                            }
+                            else {
+                                <h5 class="text-center p-2">@storyText</h5>
+                            }
+                        }
+                    }
                 }
 
-                var _secondCanon = String.Empty;
-                if (_book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
-                    _secondCanon = " text-warning bg-dark";
-                }
+                var text = " " + verse.Text;
+                if (text.Contains("<n>")) {
+                    var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/";
+                    var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
+                    var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
+                    var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
+                    var footNoteTextPattern = $@"\<n\>{f1}(\s+)?({f2})?(\s+)?({f3})?\</n\>";
 
-                <li><a class="dropdown-item@_active@_secondCanon" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "")" asp-route-book="@_book.NumberOfBook" asp-route-chapter="1">@_book.BaseBook.BookTitle</a></li>
-            }
-        </ul>
+                    var f1Index = 0;
+                    var f2Index = 0;
+                    var f3Index = 0;
 
-
-        <button class="btn btn-secondary dropdown-toggle " type="button" id="dropdownMenuButtonChapters" data-bs-toggle="dropdown" aria-expanded="false">
-            Wybór rozdziału
-        </button>
-        <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonChapters">
-            @for (int i = 1; i <= book.NumberOfChapters; i++) {
-                var _active = String.Empty;
-                if (i == Convert.ToInt32(Model.Chapter)) {
-                    _active = " active";
-                }
-
-                <li><a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i">@i</a></li>
-            }
-        </ul>
-    </div>
-
-    <h1 class="text-center p-2"><a class="text-decoration-none text-dark" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "")" asp-route-book="@null">@Model.Translation.Description</a></h1>
-    <h2 class="text-center p-2">@book.BaseBook.BookTitle</h2>
-
-
-    if (book.NumberOfBook == 230) {
-        <h2 class="text-center p-2">@Model.Translation.ChapterPsalmString @Model.Chapter</h2>
-    }
-    else {
-        <h2 class="text-center p-2">@Model.Translation.ChapterString @Model.Chapter</h2>
-    }
-
-    var chapter = book.Chapters.Where(x => x.NumberOfChapter == Convert.ToInt32(Model.Chapter)).FirstOrDefault();
-    var footNoteIndex = 1;
-    var footNoteRefIndex = 0;
-    var footNotes = new List<string>();
-
-    string[] modelVerses = null;
-    if (!String.IsNullOrEmpty(Model.Verse)) {
-        var activeVerse = String.Empty;
-        modelVerses = Model.Verse.Split(',');
-        foreach (var modelVerse in modelVerses) {
-            if (!String.IsNullOrEmpty(modelVerse)) {
-                selectedVerses.Add(Convert.ToInt32(modelVerse.Trim()));
-            }
-        }
-    }
-
-    <div class="lh-lg fs-5" style="text-align: justify">
-        @foreach (var verse in chapter.Verses) {
-            if (chapter.Subtitles != null && chapter.Subtitles.Count > 0) {
-                var subtitles = chapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).OrderBy(x => x.Level);
-                if (subtitles.Count() > 0) {
-                    foreach (var story in subtitles) {
-
-                        var storyText = story.Text;
-                        // <x>230 1-41</x>
-                        if (storyText.Contains("<x>")) {
-                            var pattern = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+\-[0-9]+)\<\/x\>";
-                            var regex = new System.Text.RegularExpressions.Regex(pattern);
-                            var match = regex.Match(storyText.Trim());
-                            if (match.Success) {
-                                storyText = $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(match.Groups["book"].Value)).First().BookName} {match.Groups["num"].Value})";
+                    text = System.Text.RegularExpressions.Regex.Replace(text, footNoteTextPattern, delegate (System.Text.RegularExpressions.Match m) {
+                        if (m.Groups != null && m.Groups.Count > 0) {
+                            if (m.Groups["f1"] != null && m.Groups["f1"].Success) {
+                                footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}""/>{footNoteIndex})&nbsp;{m.Groups["f1"].Value}</p>");
+                                f1Index = footNoteIndex;
+                                footNoteIndex++;
+                            }
+                            if (m.Groups["f2"] != null && m.Groups["f2"].Success) {
+                                footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}""/>{footNoteIndex})&nbsp;{m.Groups["f2"].Value}</p>");
+                                f2Index = footNoteIndex;
+                                footNoteIndex++;
+                            }
+                            if (m.Groups["f3"] != null && m.Groups["f3"].Success) {
+                                footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}""/>{footNoteIndex})&nbsp;{m.Groups["f3"].Value}</p>");
+                                f3Index = footNoteIndex;
+                                footNoteIndex++;
                             }
                         }
 
-                        if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
-                            storyText = System.Text.RegularExpressions.Regex.Replace(storyText, @"\sPAN(A)?(EM)?(U)?", delegate (System.Text.RegularExpressions.Match m) {
-                                return " JAHWE";
-                            });
-                        }
+                        var result = String.Empty;
+                        return result;
+                    }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                        if (story.Level == 1) {
-                            <h4 class="text-center p-2">@storyText</h4>
-                        }
-                        else {
-                            <h5 class="text-center p-2">@storyText</h5>
-                        }
-                    }
+                    var footNotePattern = @"(\*)+";
+                    text = System.Text.RegularExpressions.Regex.Replace(text, footNotePattern, delegate (System.Text.RegularExpressions.Match m) {
+                        if (m.Value == "*") { footNoteRefIndex = f1Index; }
+                        if (m.Value == "**") { footNoteRefIndex = f2Index; }
+                        if (m.Value == "***") { footNoteRefIndex = f3Index; }
+                        var result = $@"<a style=""vertical-align: super;"" class=""fs-6 text-decoration-none"" href=""#footNote{footNoteRefIndex}"">{footNoteRefIndex}</a>";
+
+                        return result;
+                    }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
                 }
-            }
 
-            var text = " " + verse.Text;
-            if (text.Contains("<n>")) {
-                var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/";
-                var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
-                var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
-                var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
-                var footNoteTextPattern = $@"\<n\>{f1}(\s+)?({f2})?(\s+)?({f3})?\</n\>";
+                // Słowa Jezusa
+                text = text.Replace("<J>", @"<span class=""text-danger"">").Replace("</J>", "</span>");
 
-                var f1Index = 0;
-                var f2Index = 0;
-                var f3Index = 0;
+                // Elementy dodane
+                text = text.Replace("<n>", @"<span class=""text-muted"">").Replace("</n>", "</span>");
 
-                text = System.Text.RegularExpressions.Regex.Replace(text, footNoteTextPattern, delegate (System.Text.RegularExpressions.Match m) {
-                    if (m.Groups != null && m.Groups.Count > 0) {
-                        if (m.Groups["f1"] != null && m.Groups["f1"].Success) {
-                            footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}""/>{footNoteIndex})&nbsp;{m.Groups["f1"].Value}</p>");
-                            f1Index = footNoteIndex;
-                            footNoteIndex++;
-                        }
-                        if (m.Groups["f2"] != null && m.Groups["f2"].Success) {
-                            footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}""/>{footNoteIndex})&nbsp;{m.Groups["f2"].Value}</p>");
-                            f2Index = footNoteIndex;
-                            footNoteIndex++;
-                        }
-                        if (m.Groups["f3"] != null && m.Groups["f3"].Success) {
-                            footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}""/>{footNoteIndex})&nbsp;{m.Groups["f3"].Value}</p>");
-                            f3Index = footNoteIndex;
-                            footNoteIndex++;
-                        }
-                    }
+                text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
 
-                    var result = String.Empty;
-                    return result;
+                // zamiana na imię Boże
+                if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+                    text = System.Text.RegularExpressions.Regex.Replace(text, @"\s(?<name>PAN(A)?(EM)?(U)?)[\s\,\.\:]", delegate (System.Text.RegularExpressions.Match m) {
+                        return " JAHWE" + m.Value.Last();
+                    });
+                }
+
+                // usuwam sierotki
+                text = System.Text.RegularExpressions.Regex.Replace(text, @"\s[a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                    return " " + m.Value.Trim() + "&nbsp;";
                 }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                var footNotePattern = @"(\*)+";
-                text = System.Text.RegularExpressions.Regex.Replace(text, footNotePattern, delegate (System.Text.RegularExpressions.Match m) {
-                    if (m.Value == "*") { footNoteRefIndex = f1Index; }
-                    if (m.Value == "**") { footNoteRefIndex = f2Index; }
-                    if (m.Value == "***") { footNoteRefIndex = f3Index; }
-                    var result = $@"<a style=""vertical-align: super;"" class=""fs-6 text-decoration-none"" href=""#footNote{footNoteRefIndex}"">{footNoteRefIndex}</a>";
-
-                    return result;
+                // usuwam puste przypisy
+                text = System.Text.RegularExpressions.Regex.Replace(text, @"\[[0-9]+\]", delegate (System.Text.RegularExpressions.Match m) {
+                    return String.Empty;
                 }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+
+                var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "background-color: #fffee3;" : " ";
+
+                <span id="span-verse-@verse.NumberOfVerse" style="@activeVerse">
+                    <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
+                    <span class="fw-bold">@verse.NumberOfVerse</span><span>.&nbsp;@Html.Raw(text.Trim())&nbsp;</span>
+                </span>
             }
 
-            // Słowa Jezusa
-            text = text.Replace("<J>", @"<span class=""text-danger"">").Replace("</J>", "</span>");
-
-            // Elementy dodane
-            text = text.Replace("<n>", @"<span class=""text-muted"">").Replace("</n>", "</span>");
-
-            text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
-
-            // zamiana na imię Boże
-            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
-                text = System.Text.RegularExpressions.Regex.Replace(text, @"\s(?<name>PAN(A)?(EM)?(U)?)[\s\,\.\:]", delegate (System.Text.RegularExpressions.Match m) {
-                    return " JAHWE" + m.Value.Last();
-                });
+            @if (footNotes.Count > 0) {
+                <hr style="max-width: 30%;" />
+                <div class="lh-sm fs-6" style="text-align: left">
+                    @foreach (var item in footNotes) {
+                        @Html.Raw(item)
+                    }
+                </div>
             }
 
-            // usuwam sierotki
-            text = System.Text.RegularExpressions.Regex.Replace(text, @"\s[a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                return " " + m.Value.Trim() + "&nbsp;";
-            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        </div>
 
-            // usuwam puste przypisy
-            text = System.Text.RegularExpressions.Regex.Replace(text, @"\[[0-9]+\]", delegate (System.Text.RegularExpressions.Match m) {
-                return String.Empty;
-            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        <div>&nbsp;</div>
 
+        var _disabledStart = chapter.NumberOfChapter == 1 ? " disabled" : "";
+        var _disabledEnd = chapter.NumberOfChapter == book.NumberOfChapters ? " disabled" : "";
 
-            var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "background-color: #fffee3;" : " ";
-
-            <span id="span-verse-@verse.NumberOfVerse" style="@activeVerse">
-                <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
-                <span class="fw-bold">@verse.NumberOfVerse</span><span>.&nbsp;@Html.Raw(text.Trim())&nbsp;</span>
-            </span>
+        var tableOfNumber = new List<int>();
+        if ((chapter.NumberOfChapter - 3) > 1) {
+            tableOfNumber.Add(chapter.NumberOfChapter - 3);
+        }
+        if ((chapter.NumberOfChapter - 2) > 1) {
+            tableOfNumber.Add(chapter.NumberOfChapter - 2);
+        }
+        if ((chapter.NumberOfChapter - 1) > 1) {
+            tableOfNumber.Add(chapter.NumberOfChapter - 1);
+        }
+        tableOfNumber.Add(chapter.NumberOfChapter);
+        if ((chapter.NumberOfChapter + 1) <= book.NumberOfChapters) {
+            tableOfNumber.Add(chapter.NumberOfChapter + 1);
+        }
+        if ((chapter.NumberOfChapter + 2) <= book.NumberOfChapters) {
+            tableOfNumber.Add(chapter.NumberOfChapter + 2);
+        }
+        if ((chapter.NumberOfChapter + 3) <= book.NumberOfChapters) {
+            tableOfNumber.Add(chapter.NumberOfChapter + 3);
         }
 
-        @if (footNotes.Count > 0) {
-            <hr style="max-width: 30%;" />
-            <div class="lh-sm fs-6" style="text-align: left">
-                @foreach (var item in footNotes) {
-                    @Html.Raw(item)
-                }
-            </div>
-        }
-
-    </div>
-
-    <div>&nbsp;</div>
-
-    var _disabledStart = chapter.NumberOfChapter == 1 ? " disabled" : "";
-    var _disabledEnd = chapter.NumberOfChapter == book.NumberOfChapters ? " disabled" : "";
-
-    var tableOfNumber = new List<int>();
-    if ((chapter.NumberOfChapter - 3) > 1) {
-        tableOfNumber.Add(chapter.NumberOfChapter - 3);
-    }
-    if ((chapter.NumberOfChapter - 2) > 1) {
-        tableOfNumber.Add(chapter.NumberOfChapter - 2);
-    }
-    if ((chapter.NumberOfChapter - 1) > 1) {
-        tableOfNumber.Add(chapter.NumberOfChapter - 1);
-    }
-    tableOfNumber.Add(chapter.NumberOfChapter);
-    if ((chapter.NumberOfChapter + 1) <= book.NumberOfChapters) {
-        tableOfNumber.Add(chapter.NumberOfChapter + 1);
-    }
-    if ((chapter.NumberOfChapter + 2) <= book.NumberOfChapters) {
-        tableOfNumber.Add(chapter.NumberOfChapter + 2);
-    }
-    if ((chapter.NumberOfChapter + 3) <= book.NumberOfChapters) {
-        tableOfNumber.Add(chapter.NumberOfChapter + 3);
-    }
-
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center pagination-sm">
-            <li class="page-item@_disabledStart">
-                <a class="page-link" aria-label="Poprzedni" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@(chapter.NumberOfChapter-1)">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-
-            @foreach (var i in tableOfNumber) {
-                var _active = i == chapter.NumberOfChapter ? " active" : "";
-                var _activeTextColor = i == chapter.NumberOfChapter ? " text-light" : "text-dark";
-                <li class="page-item@_active">
-                    <a class="page-link @_activeTextColor" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i">@i</a>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center pagination-sm">
+                <li class="page-item@_disabledStart">
+                    <a class="page-link" aria-label="Poprzedni" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@(chapter.NumberOfChapter - 1)">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
                 </li>
+
+                @foreach (var i in tableOfNumber) {
+                    var _active = i == chapter.NumberOfChapter ? " active" : "";
+                    var _activeTextColor = i == chapter.NumberOfChapter ? " text-light" : "text-dark";
+                    <li class="page-item@_active">
+                        <a class="page-link @_activeTextColor" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i">@i</a>
+                    </li>
+                }
+
+                <li class="page-item">
+                    <a class="page-link@_disabledEnd" aria-label="Next" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@(chapter.NumberOfChapter + 1)">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <p>
+            * Prezentowane treści należą do ich właścicieli i wydawców. Tekst pobrany z udostępnionych zasobów programu <a href="https://mybible.zone/">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a>
+            <br />
+            @if (Model.Translation.DetailedInfo != null) {
+                @Html.Raw(Model.Translation.DetailedInfo)
             }
+        </p>
 
-            <li class="page-item">
-                <a class="page-link@_disabledEnd" aria-label="Next" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@(chapter.NumberOfChapter+1)">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+        @section Scripts {
 
-    <p>
-        * Prezentowane treści należą do ich właścicieli i wydawców. Tekst pobrany z udostępnionych zasobów programu <a href="https://mybible.zone/">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a>
-        <br />
-        @if (Model.Translation.DetailedInfo != null) {
-            @Html.Raw(Model.Translation.DetailedInfo)
-        }
-    </p>
+            @if (!String.IsNullOrEmpty(Model.Verse)) {
 
-    @section Scripts {
-
-        @if (!String.IsNullOrEmpty(Model.Verse)) {
-
-            <script>
+                <script>
     docReady(function () {
         setTimeout(function () {
 
@@ -344,10 +368,10 @@ break;
 
             window.scrollTo({ top: y, behavior: 'smooth' });
         }, 1000);
+
     });
-            </script>
+                </script>
 
-        }
-
-    }
+            }
+        }}
 }

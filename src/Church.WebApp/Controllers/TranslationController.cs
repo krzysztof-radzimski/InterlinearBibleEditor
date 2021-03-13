@@ -17,6 +17,7 @@ using IBE.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -40,7 +41,17 @@ namespace Church.WebApp.Controllers {
                 else {
                     var translation = new XPQuery<Translation>(new UnitOfWork()).Where(x => x.Name.Replace("'", "") == translationName).FirstOrDefault();
                     if (translation != null) {
-                        return View(new TranslationControllerModel(translation, book, chapter, verse));
+                        var result = new TranslationControllerModel(translation, book, chapter, verse);
+
+                        var view = new XPView(new UnitOfWork(), typeof(Translation));
+                        view.CriteriaString = $"[Books][[NumberOfBook] = '{book}']";
+                        view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
+                        view.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
+                        foreach (ViewRecord item in view) {
+                            result.Translations.Add(new TranslationInfo() { Name = item["Name"].ToString(), Description = item["Description"].ToString() });
+                        }
+
+                        return View(result);
                     }
                 }
             }
@@ -54,12 +65,17 @@ namespace Church.WebApp.Controllers {
         public string Book { get; }
         public string Chapter { get; }
         public string Verse { get; }
-
+        public List<TranslationInfo> Translations { get; }
         public TranslationControllerModel(Translation t, string b = null, string c = null, string v = null) {
             Translation = t;
             Book = b;
             Chapter = c;
             Verse = v;
+            Translations = new List<TranslationInfo>();
         }
+    }
+    public class TranslationInfo {
+        public string Name { get; set; }
+        public string Description { get; set; }
     }
 }
