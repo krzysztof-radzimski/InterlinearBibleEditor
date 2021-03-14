@@ -84,10 +84,10 @@ break;
             }
 
 
-            <button class="btn btn-secondary dropdown-toggle my-dropdown" type="button" id="dropdownMenuButtonTranslations" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-primary dropdown-toggle my-dropdown" type="button" id="dropdownMenuButtonTranslations" data-bs-toggle="dropdown" aria-expanded="false">
                 Inny przekład
             </button>
-            <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations">
+            <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations">
                 @foreach (var _trans in Model.Translations) {
                     var _active = String.Empty;
                     if (_trans.Name == Model.Translation.Name) {
@@ -105,7 +105,7 @@ break;
                 }
             </ul>
 
-            <button class="btn btn-secondary dropdown-toggle my-dropdown" type="button" id="dropdownMenuButtonBooks" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-warning dropdown-toggle my-dropdown" type="button" id="dropdownMenuButtonBooks" data-bs-toggle="dropdown" aria-expanded="false">
                 Wybór księgi
             </button>
             <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonBooks">
@@ -125,7 +125,7 @@ break;
             </ul>
 
 
-            <button class="btn btn-secondary dropdown-toggle my-dropdown" type="button" id="dropdownMenuButtonChapters" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-info dropdown-toggle my-dropdown" type="button" id="dropdownMenuButtonChapters" data-bs-toggle="dropdown" aria-expanded="false">
                 Wybór rozdziału
             </button>
             <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonChapters">
@@ -178,15 +178,23 @@ break;
                             // <x>230 1-41</x>
                             if (storyText.Contains("<x>")) {
                                 var pattern = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+\-[0-9]+)\<\/x\>";
+                                var pattern2 = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+(\s)?\:(\s)?[0-9]+\-[0-9]+)\<\/x\>";
                                 var regex = new System.Text.RegularExpressions.Regex(pattern);
                                 var match = regex.Match(storyText.Trim());
                                 if (match.Success) {
                                     storyText = $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(match.Groups["book"].Value)).First().BookName} {match.Groups["num"].Value})";
                                 }
+                                else {
+                                    regex = new System.Text.RegularExpressions.Regex(pattern2);
+                                    match = regex.Match(storyText.Trim());
+                                    if (match.Success) {
+                                        storyText = $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(match.Groups["book"].Value)).First().BookName} {match.Groups["num"].Value})";
+                                    }
+                                }
                             }
 
                             if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
-                                storyText = System.Text.RegularExpressions.Regex.Replace(storyText, @"\sPAN(A)?(EM)?(U)?", delegate (System.Text.RegularExpressions.Match m) {
+                                storyText = System.Text.RegularExpressions.Regex.Replace(storyText, @"\sPAN(A)?(EM)?(U)?(IE)?", delegate (System.Text.RegularExpressions.Match m) {
                                     return " JAHWE";
                                 });
                             }
@@ -257,7 +265,7 @@ break;
 
                 // zamiana na imię Boże
                 if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
-                    text = System.Text.RegularExpressions.Regex.Replace(text, @"\s(?<name>PAN(A)?(EM)?(U)?)[\s\,\.\:]", delegate (System.Text.RegularExpressions.Match m) {
+                    text = System.Text.RegularExpressions.Regex.Replace(text, @"\s(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:]", delegate (System.Text.RegularExpressions.Match m) {
                         return " JAHWE" + m.Value.Last();
                     });
                 }

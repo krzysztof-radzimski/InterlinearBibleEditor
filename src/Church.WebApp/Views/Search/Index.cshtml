@@ -49,7 +49,7 @@
                             text = text.Replace(word, $@"<mark>{word}</mark>", StringComparison.CurrentCultureIgnoreCase);
                         }
 
-                        <p><a href="../@verse.Translation/@verse.Book/@verse.Chapter/@verse.Verse" class="text-decoration-none">@verse.BookShortcut @verse.Chapter:@verse.Verse</a>&nbsp;@Html.Raw(text)</p>
+                        <p><a href="../@verse.Translation/@verse.Book/@verse.Chapter/@verse.Verse" class="text-decoration-none" target="_blank">@verse.BookShortcut @verse.Chapter:@verse.Verse</a>&nbsp;@Html.Raw(text)</p>
                     }
 
                 </div>
