@@ -118,7 +118,7 @@ figure {
         width: 100%;
         height: 100%;
         opacity: 0.05;
-      /*  background-image: url('../img/background-bible.jpg');
+        /*  background-image: url('../img/background-bible.jpg');
         background-repeat: no-repeat;
         background-position: 50% 0;
         background-size: cover;*/
@@ -137,8 +137,8 @@ figure {
         display: none;
     }
 
-    #WalicowLogo {
-        width: 200% !important;
+    .dropdown-item {
+        white-space: normal !important;
     }
 
     #Brama {

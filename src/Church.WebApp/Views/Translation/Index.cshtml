@@ -53,34 +53,34 @@ break;
         </div>
     </div>
 
-    @if (Model.Translation.Introduction.IsNotNullOrEmpty()) {        
-<div class="lh-lg fs-6" style="text-align: justify; max-width: 800px; margin: auto;">
+    @if (Model.Translation.Introduction.IsNotNullOrEmpty()) {
+        <div class="lh-lg fs-6" style="text-align: justify; max-width: 800px; margin: auto;">
 
-    <br/>
-    <h4 class="text-center">Wprowadzenie</h4>
-    @{var textIntroduction = System.Text.RegularExpressions.Regex.Replace(Model.Translation.Introduction, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-            return " " + m.Value.Trim() + "&nbsp;";
-        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            <br />
+            <h4 class="text-center">Wprowadzenie</h4>
+            @{var textIntroduction = System.Text.RegularExpressions.Regex.Replace(Model.Translation.Introduction, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                    return " " + m.Value.Trim() + "&nbsp;";
+                }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            }
+            @Html.Raw(textIntroduction)
+        </div>
     }
-    @Html.Raw(textIntroduction)
-</div>
-    }
 
-<div class="lh-lg fs-6" style="text-align: justify; max-width: 800px; margin: auto;">
-    <br />
-    <h4 class="text-center">Prawa autorskie i szczegółowe informacje</h4>
-    @if (Model.Translation.DetailedInfo != null) {
-        var textDetailedInfo = System.Text.RegularExpressions.Regex.Replace(Model.Translation.DetailedInfo, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-            return " " + m.Value.Trim() + "&nbsp;";
-        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    <div class="lh-lg fs-6" style="text-align: justify; max-width: 800px; margin: auto;">
+        <br />
+        <h4 class="text-center">Prawa autorskie i szczegółowe informacje</h4>
+        @if (Model.Translation.DetailedInfo != null) {
+            var textDetailedInfo = System.Text.RegularExpressions.Regex.Replace(Model.Translation.DetailedInfo, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                return " " + m.Value.Trim() + "&nbsp;";
+            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-        @Html.Raw(textDetailedInfo)
+            @Html.Raw(textDetailedInfo)
 
-    }
-    <p>
-        * Prezentowane treści należą do ich właścicieli i&nbsp;wydawców. Tekst pobrany z&nbsp;udostępnionych zasobów programu <a href="https://mybible.zone/">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a>
-    </p>
-</div>
+        }
+        <p>
+            * Prezentowane treści należą do ich właścicieli i&nbsp;wydawców. Tekst pobrany z&nbsp;udostępnionych zasobów programu <a href="https://mybible.zone/">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a>
+        </p>
+    </div>
 }
 else {
     //
@@ -220,7 +220,8 @@ break;
                     //
                     // Słowa wersetu
                     //
-                    foreach (var word in verse.VerseWords) {
+                    var words = verse.VerseWords.OrderBy(x => x.NumberOfVerseWord);
+                    foreach (var word in words) {
                         //var isPenultimate = verse.VerseWords.Count > 2 && word == verse.VerseWords[verse.VerseWords.Count - 2];
                         //var penultimateWidth = isPenultimate ? "max-width: 200px;" : String.Empty;
                         var isFirst = word == verse.VerseWords.First();
@@ -252,7 +253,7 @@ break;
                                 var bookShortcut = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
                                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
                                 var verseStart = m.Groups["verseStart"].Value.ToInt();
-                               
+
 
                                 return $"<a href=\"../{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
                             });
@@ -266,36 +267,37 @@ break;
                         }
 
                         var translationFontWeight = word.Citation ? "font-weight: bold;" : "font-weight: 400;";
+                        var translationFontColor = word.WordOfJesus ? "text-danger" : "";
 
-            <div class="col pb-3" style="padding-left: 0 !important; max-width: 230px; @activeVerse">
-                <div class="container" style="position: relative">
-                    @if (isFirst) {
-                        //
-                        // Numer wersetu
-                        //
+                        <div class="col pb-3" style="padding-left: 0 !important; max-width: 235px; @activeVerse">
+                            <div class="container" style="position: relative">
+                                @if (isFirst) {
+                                    //
+                                    // Numer wersetu
+                                    //
 
-                        <div style="position: absolute; left: -20px; font-weight: bold;">
-                            <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
-                            @verse.ParentChapter.NumberOfChapter,@verse.NumberOfVerse
+                                    <div style="position: absolute; left: -20px; font-weight: bold;">
+                                        <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
+                                        @verse.ParentChapter.NumberOfChapter,@verse.NumberOfVerse
+                                    </div>
+                                }
+                                @{
+                                    //
+                                    // Kody stronga
+                                    //
+                                }
+                                <div class="row" style="font-size: 50%; padding-left: 0 !important;">
+                                    <div class="col">
+                                        @Html.Raw(sc)
+                                        <br />
+                                        @Html.Raw(gc)
+                                    </div>
+                                </div>
+                                <div class="row" style="font-weight: 200;"><div class="col">@word.SourceWord</div></div>
+                                <div class="row" style="font-size: 80%; font-weight: 200;"><div class="col">@word.Transliteration</div></div>
+                                <div class="row @translationFontColor" style="@translationFontWeight position: relative; min-width: 70px;"><div class="col">@Html.Raw(translation)</div></div>
+                            </div>
                         </div>
-                    }
-                    @{
-                        //
-                        // Kody stronga
-                        //
-                    }
-                    <div class="row" style="font-size: 50%; padding-left: 0 !important;">
-                        <div class="col">
-                            @Html.Raw(sc)
-                            <br />
-                            @Html.Raw(gc)
-                        </div>
-                    </div>
-                    <div class="row" style="font-weight: 200;"><div class="col">@word.SourceWord</div></div>
-                    <div class="row" style="font-size: 80%; font-weight: 200;"><div class="col">@word.Transliteration</div></div>
-                    <div class="row" style="@translationFontWeight position: relative; min-width: 60px;"><div class="col">@Html.Raw(translation)</div></div>
-                </div>
-            </div>
                     }
                 }
 
@@ -544,5 +546,6 @@ break;
                 </script>
 
             }
-        }}
+        }
+    }
 }

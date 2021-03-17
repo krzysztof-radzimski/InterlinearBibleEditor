@@ -33,10 +33,11 @@ namespace IBE.WindowsClient {
             this.editChapter = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
             this.txtVerse = new DevExpress.XtraBars.BarEditItem();
             this.editVerse = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
-            this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.btnNextVerse = new DevExpress.XtraBars.BarButtonItem();
             this.btnPreviousVerse = new DevExpress.XtraBars.BarButtonItem();
+            this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.btnAddWord = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editBook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editChapter)).BeginInit();
@@ -54,9 +55,10 @@ namespace IBE.WindowsClient {
             this.txtChapter,
             this.txtVerse,
             this.btnNextVerse,
-            this.btnPreviousVerse});
+            this.btnPreviousVerse,
+            this.btnAddWord});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 7;
+            this.ribbonControl1.MaxItemId = 8;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
@@ -127,24 +129,6 @@ namespace IBE.WindowsClient {
             this.editVerse.Name = "editVerse";
             this.editVerse.EditValueChanged += new System.EventHandler(this.editVerse_EditValueChanged);
             // 
-            // rpHome
-            // 
-            this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
-            this.ribbonPageGroup1});
-            this.rpHome.Name = "rpHome";
-            this.rpHome.Text = "Home";
-            // 
-            // ribbonPageGroup1
-            // 
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnSaveVerse);
-            this.ribbonPageGroup1.ItemLinks.Add(this.txtBook, true);
-            this.ribbonPageGroup1.ItemLinks.Add(this.txtChapter);
-            this.ribbonPageGroup1.ItemLinks.Add(this.txtVerse);
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnPreviousVerse, true);
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnNextVerse);
-            this.ribbonPageGroup1.Name = "ribbonPageGroup1";
-            this.ribbonPageGroup1.Text = "ribbonPageGroup1";
-            // 
             // btnNextVerse
             // 
             this.btnNextVerse.Caption = "Next verse";
@@ -162,6 +146,33 @@ namespace IBE.WindowsClient {
             this.btnPreviousVerse.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnPreviousVerse.ImageOptions.SvgImage")));
             this.btnPreviousVerse.Name = "btnPreviousVerse";
             this.btnPreviousVerse.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnPreviousVerse_ItemClick);
+            // 
+            // rpHome
+            // 
+            this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
+            this.ribbonPageGroup1});
+            this.rpHome.Name = "rpHome";
+            this.rpHome.Text = "Home";
+            // 
+            // ribbonPageGroup1
+            // 
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnSaveVerse);
+            this.ribbonPageGroup1.ItemLinks.Add(this.txtBook, true);
+            this.ribbonPageGroup1.ItemLinks.Add(this.txtChapter);
+            this.ribbonPageGroup1.ItemLinks.Add(this.txtVerse);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnPreviousVerse, true);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnNextVerse);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnAddWord, true);
+            this.ribbonPageGroup1.Name = "ribbonPageGroup1";
+            this.ribbonPageGroup1.Text = "ribbonPageGroup1";
+            // 
+            // btnAddWord
+            // 
+            this.btnAddWord.Caption = "Add Word";
+            this.btnAddWord.Id = 7;
+            this.btnAddWord.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAddWord.ImageOptions.SvgImage")));
+            this.btnAddWord.Name = "btnAddWord";
+            this.btnAddWord.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAddWord_ItemClick);
             // 
             // InterlinearEditorForm
             // 
@@ -195,5 +206,6 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit editVerse;
         private DevExpress.XtraBars.BarButtonItem btnNextVerse;
         private DevExpress.XtraBars.BarButtonItem btnPreviousVerse;
+        private DevExpress.XtraBars.BarButtonItem btnAddWord;
     }
 }

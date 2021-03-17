@@ -33,20 +33,22 @@ namespace IBE.WindowsClient.Controls {
             this.colTranslationName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colVerseText = new DevExpress.XtraGrid.Columns.GridColumn();
             this.tabNavigationPage2 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
-            this.wbStrong = new System.Windows.Forms.WebBrowser();
+            this.wbStrong = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tabNavigationPage3 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
-            this.wbGrammarCodes = new System.Windows.Forms.WebBrowser();
-            this.splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
+            this.wbGrammarCodes = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tabNavigationPage4 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             this.cbStartFromNewLine = new DevExpress.XtraEditors.CheckEdit();
+            this.splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
             ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).BeginInit();
             this.tabPane1.SuspendLayout();
             this.tabNavigationPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridTranslations)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTranslations)).BeginInit();
             this.tabNavigationPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.wbStrong)).BeginInit();
             this.tabNavigationPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.wbGrammarCodes)).BeginInit();
             this.tabNavigationPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
@@ -84,7 +86,7 @@ namespace IBE.WindowsClient.Controls {
             // 
             // tabNavigationPage1
             // 
-            this.tabNavigationPage1.Caption = "Tłumaczenia";
+            this.tabNavigationPage1.Caption = "Translations";
             this.tabNavigationPage1.Controls.Add(this.gridTranslations);
             this.tabNavigationPage1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabNavigationPage1.ImageOptions.SvgImage")));
             this.tabNavigationPage1.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
@@ -160,16 +162,19 @@ namespace IBE.WindowsClient.Controls {
             // 
             // wbStrong
             // 
+            this.wbStrong.CreationProperties = null;
+            this.wbStrong.DefaultBackgroundColor = System.Drawing.Color.White;
             this.wbStrong.Dock = System.Windows.Forms.DockStyle.Fill;
             this.wbStrong.Location = new System.Drawing.Point(0, 0);
-            this.wbStrong.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbStrong.Name = "wbStrong";
             this.wbStrong.Size = new System.Drawing.Size(974, 372);
             this.wbStrong.TabIndex = 0;
+            this.wbStrong.ZoomFactor = 1D;
+            this.wbStrong.CoreWebView2InitializationCompleted += new System.EventHandler<Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs>(this.wbStrong_CoreWebView2InitializationCompleted);
             // 
             // tabNavigationPage3
             // 
-            this.tabNavigationPage3.Caption = "Kod gramatyczny";
+            this.tabNavigationPage3.Caption = "Grammar Code";
             this.tabNavigationPage3.Controls.Add(this.wbGrammarCodes);
             this.tabNavigationPage3.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabNavigationPage3.ImageOptions.SvgImage")));
             this.tabNavigationPage3.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
@@ -180,25 +185,19 @@ namespace IBE.WindowsClient.Controls {
             // 
             // wbGrammarCodes
             // 
+            this.wbGrammarCodes.CreationProperties = null;
+            this.wbGrammarCodes.DefaultBackgroundColor = System.Drawing.Color.White;
             this.wbGrammarCodes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.wbGrammarCodes.Location = new System.Drawing.Point(0, 0);
-            this.wbGrammarCodes.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbGrammarCodes.Name = "wbGrammarCodes";
             this.wbGrammarCodes.Size = new System.Drawing.Size(974, 372);
             this.wbGrammarCodes.TabIndex = 0;
-            // 
-            // splitterControl1
-            // 
-            this.splitterControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitterControl1.Location = new System.Drawing.Point(0, 220);
-            this.splitterControl1.Name = "splitterControl1";
-            this.splitterControl1.Size = new System.Drawing.Size(974, 10);
-            this.splitterControl1.TabIndex = 2;
-            this.splitterControl1.TabStop = false;
+            this.wbGrammarCodes.ZoomFactor = 1D;
+            this.wbGrammarCodes.CoreWebView2InitializationCompleted += new System.EventHandler<Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs>(this.wbGrammarCodes_CoreWebView2InitializationCompleted);
             // 
             // tabNavigationPage4
             // 
-            this.tabNavigationPage4.Caption = "Ustawienia";
+            this.tabNavigationPage4.Caption = "Settings";
             this.tabNavigationPage4.Controls.Add(this.tablePanel1);
             this.tabNavigationPage4.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabNavigationPage4.ImageOptions.SvgImage")));
             this.tabNavigationPage4.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
@@ -240,6 +239,15 @@ namespace IBE.WindowsClient.Controls {
             this.cbStartFromNewLine.Size = new System.Drawing.Size(958, 18);
             this.cbStartFromNewLine.TabIndex = 0;
             // 
+            // splitterControl1
+            // 
+            this.splitterControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.splitterControl1.Location = new System.Drawing.Point(0, 220);
+            this.splitterControl1.Name = "splitterControl1";
+            this.splitterControl1.Size = new System.Drawing.Size(974, 10);
+            this.splitterControl1.TabIndex = 2;
+            this.splitterControl1.TabStop = false;
+            // 
             // VerseEditorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -256,7 +264,9 @@ namespace IBE.WindowsClient.Controls {
             ((System.ComponentModel.ISupportInitialize)(this.gridTranslations)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTranslations)).EndInit();
             this.tabNavigationPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.wbStrong)).EndInit();
             this.tabNavigationPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.wbGrammarCodes)).EndInit();
             this.tabNavigationPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
@@ -277,10 +287,10 @@ namespace IBE.WindowsClient.Controls {
         private DevExpress.XtraEditors.SplitterControl splitterControl1;
         private DevExpress.XtraGrid.Columns.GridColumn colTranslationName;
         private DevExpress.XtraGrid.Columns.GridColumn colVerseText;
-        private System.Windows.Forms.WebBrowser wbStrong;
-        private System.Windows.Forms.WebBrowser wbGrammarCodes;
         private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavigationPage4;
         private DevExpress.Utils.Layout.TablePanel tablePanel1;
         private DevExpress.XtraEditors.CheckEdit cbStartFromNewLine;
+        private Microsoft.Web.WebView2.WinForms.WebView2 wbStrong;
+        private Microsoft.Web.WebView2.WinForms.WebView2 wbGrammarCodes;
     }
 }

@@ -7,6 +7,7 @@ using IBE.Common.Extensions;
 using IBE.Data.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,16 +18,37 @@ namespace IBE.WindowsClient.Controls {
         public Verse Verse { get; }
         public event EventHandler<StrongCode> StrongClick;
         public event EventHandler<GrammarCode> GrammarCodeClick;
+
+        public FlowLayoutPanel VerseWordsControl { get { return flowLayoutPanel; } }
         public VerseEditorControl() {
             InitializeComponent();
         }
 
         public VerseEditorControl(Verse verse) : this() {
-            Verse = verse;            
+            Verse = verse;
+        }
+
+        public bool IsModified() {
+            foreach (var item in flowLayoutPanel.Controls) {
+                if (item is VerseWordEditorControl) {
+                    if ((item as VerseWordEditorControl).Modified) {
+                        return true;
+                    }
+                }
+            }
+            return default;
         }
 
         private void VerseEditorControl_Load(object sender, EventArgs e) {
             LoadData();
+        }
+
+        public VerseWordEditorControl CreateVerseWordControl(VerseWord word) {
+            var control = new VerseWordEditorControl(word);
+            control.StrongClick += Control_StrongClick;
+            control.GrammarCodeClick += Control_GrammarCodeClick;
+            control.DeleteClick += Control_DeleteClick;
+            return control;
         }
 
         private void LoadData() {
@@ -34,16 +56,14 @@ namespace IBE.WindowsClient.Controls {
             isLoading = true;
             gridViewTranslations.LoadingPanelVisible = true;
             Application.DoEvents();
-            
+
             cbStartFromNewLine.DataBindings.Add("Checked", Verse, "StartFromNewLine");
 
             var getControls = Task.Factory.StartNew(() => {
                 var wordControls = new List<VerseWordEditorControl>();
-
-                foreach (var word in Verse.VerseWords) {
-                    var control = new VerseWordEditorControl(word);
-                    control.StrongClick += Control_StrongClick;
-                    control.GrammarCodeClick += Control_GrammarCodeClick;
+                var words = Verse.VerseWords.OrderBy(x => x.NumberOfVerseWord);
+                foreach (var word in words) {
+                    var control = CreateVerseWordControl(word);
                     wordControls.Add(control);
                 }
 
@@ -53,7 +73,7 @@ namespace IBE.WindowsClient.Controls {
             getControls.ContinueWith((x) => {
                 this.SafeInvoke(f => {
                     foreach (var control in x.Result) {
-                        f.flowLayoutPanel.Controls.Add(control);                        
+                        f.flowLayoutPanel.Controls.Add(control);
                     }
                 });
             });
@@ -98,7 +118,15 @@ namespace IBE.WindowsClient.Controls {
             });
         }
 
-        
+        private void Control_DeleteClick(object sender, VerseWord e) {
+            e.Delete();
+            (e.Session as UnitOfWork).CommitChanges();
+
+            var control = sender as VerseWordEditorControl;
+            flowLayoutPanel.Controls.Remove(control);
+            control.Dispose();
+            control = null;
+        }
 
         public void Save() {
             gridViewTranslations.Focus();
@@ -118,21 +146,23 @@ namespace IBE.WindowsClient.Controls {
         }
 
         private void Control_StrongClick(object sender, StrongCode e) {
-            wbStrong.DocumentText = $@"
-<!DOCTYPE html>
+            //            wbStrong.DocumentText = $@"
+            //<!DOCTYPE html>
 
-<html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
-<head>
-    <meta charset=""utf-8"" />
-    <title>Strong</title>
-</head>
-<body>
-<h2>{e.SourceWord}</h2>
-<h3>{e.ShortDefinition}</h3>
-<p>{e.Definition}</p>
-</body>
-</html>
-";
+            //<html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
+            //<head>
+            //    <meta charset=""utf-8"" />
+            //    <title>Strong</title>
+            //</head>
+            //<body>
+            //<h2>{e.SourceWord}</h2>
+            //<h3>{e.ShortDefinition}</h3>
+            //<p>{e.Definition}</p>
+            //</body>
+            //</html>
+            //";
+
+            wbStrong.Source = new Uri($"https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=G{e.Code}&t=MGNT");
             tabPane1.SelectedPage = tabNavigationPage2;
             if (StrongClick.IsNotNull()) {
                 StrongClick(this, e);
@@ -140,21 +170,22 @@ namespace IBE.WindowsClient.Controls {
         }
 
         private void Control_GrammarCodeClick(object sender, GrammarCode e) {
-            wbGrammarCodes.DocumentText = $@"
-<!DOCTYPE html>
+            //            wbGrammarCodes.DocumentText = $@"
+            //<!DOCTYPE html>
 
-<html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
-<head>
-    <meta charset=""utf-8"" />
-    <title>Strong</title>
-</head>
-<body>
-<h2>{e.GrammarCodeVariant1}</h2>
-<h3>{e.ShortDefinition}</h3>
-<p>{e.GrammarCodeDescription}</p>
-</body>
-</html>
-";
+            //<html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
+            //<head>
+            //    <meta charset=""utf-8"" />
+            //    <title>Strong</title>
+            //</head>
+            //<body>
+            //<h2>{e.GrammarCodeVariant1}</h2>
+            //<h3>{e.ShortDefinition}</h3>
+            //<p>{e.GrammarCodeDescription}</p>
+            //</body>
+            //</html>
+            //";
+            wbGrammarCodes.Source = new Uri($"http://www.modernliteralversion.org/bibles/bs2/RMAC/{e.GrammarCodeVariant1}.htm");
             tabPane1.SelectedPage = tabNavigationPage3;
             if (GrammarCodeClick.IsNotNull()) {
                 GrammarCodeClick(this, e);
@@ -180,6 +211,87 @@ namespace IBE.WindowsClient.Controls {
             public string VerseText { get; set; }
         }
 
-      
+        private void wbStrong_CoreWebView2InitializationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs e) {
+            wbStrong.CoreWebView2.DOMContentLoaded += CoreWebView2_DOMContentLoaded;
+        }
+
+        private void CoreWebView2_DOMContentLoaded(object sender, Microsoft.Web.WebView2.Core.CoreWebView2DOMContentLoadedEventArgs e) {
+            var script = @"
+var appBar = document.getElementById('appBar');
+if (appBar != undefined) {
+    appBar.parentElement.removeChild(appBar);
+}
+
+var menuTop = document.getElementById('menuTop');
+if (menuTop != undefined) {
+    menuTop.parentElement.removeChild(menuTop);
+}
+
+var contextBarT = document.getElementById('contextBarT');
+if (contextBarT != undefined) {
+    contextBarT.parentElement.removeChild(contextBarT);
+}
+
+var bodyCol2 = document.getElementById('bodyCol2');
+if (bodyCol2 != undefined) {
+    bodyCol2.parentElement.removeChild(bodyCol2);
+}
+
+var theFoot = document.getElementById('theFoot');
+if (theFoot != undefined) {
+    theFoot.parentElement.removeChild(theFoot);
+}
+
+var cookiewrapper = document.getElementById('cookie-wrapper');
+if (cookiewrapper != undefined) {
+    cookiewrapper.parentElement.removeChild(cookiewrapper);
+}
+
+var yuigen80 = document.getElementById('yui-gen80');
+if (yuigen80 != undefined) {
+    yuigen80.parentElement.removeChild(yuigen80);
+}
+var dView = document.getElementById('dView');
+if (dView != undefined) {
+    dView.parentElement.removeChild(dView);
+}
+
+var whole = document.getElementById('whole');
+if (whole != undefined) {
+    whole.setAttribute('style', 'padding-top: 0;');
+}";
+            wbStrong.CoreWebView2.ExecuteScriptAsync(script);
+        }
+
+        private void wbGrammarCodes_CoreWebView2InitializationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs e) {
+            wbGrammarCodes.CoreWebView2.DOMContentLoaded += CoreWebView2_DOMContentLoaded1;
+        }
+
+        private void CoreWebView2_DOMContentLoaded1(object sender, Microsoft.Web.WebView2.Core.CoreWebView2DOMContentLoadedEventArgs e) {
+            var script = @"
+var tr = document.getElementsByTagName('tr')[0];
+if (tr != undefined) {
+    tr.parentElement.removeChild(tr);
+}
+
+var br = document.getElementsByTagName('br')[0];
+if (br != undefined) {
+    br.parentElement.removeChild(br);
+}
+var br = document.getElementsByTagName('br')[0];
+if (br != undefined) {
+    br.parentElement.removeChild(br);
+}
+var br = document.getElementsByTagName('br')[0];
+if (br != undefined) {
+    br.parentElement.removeChild(br);
+}
+var br = document.getElementsByTagName('br')[0];
+if (br != undefined) {
+    br.parentElement.removeChild(br);
+}
+";
+            wbGrammarCodes.CoreWebView2.ExecuteScriptAsync(script);
+        }
     }
 }

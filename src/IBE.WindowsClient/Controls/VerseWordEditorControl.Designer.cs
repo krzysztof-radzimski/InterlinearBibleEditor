@@ -27,6 +27,7 @@ namespace IBE.WindowsClient.Controls {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VerseWordEditorControl));
             this.tablePanel = new DevExpress.Utils.Layout.TablePanel();
+            this.btnDelete = new DevExpress.XtraEditors.SimpleButton();
             this.standaloneBarDockControl1 = new DevExpress.XtraBars.StandaloneBarDockControl();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
@@ -58,6 +59,7 @@ namespace IBE.WindowsClient.Controls {
             this.tablePanel.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 50F)});
+            this.tablePanel.Controls.Add(this.btnDelete);
             this.tablePanel.Controls.Add(this.standaloneBarDockControl1);
             this.tablePanel.Controls.Add(this.lblNumberOfVerseWord);
             this.tablePanel.Controls.Add(this.txtFootnoteText);
@@ -81,8 +83,22 @@ namespace IBE.WindowsClient.Controls {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel.Size = new System.Drawing.Size(270, 250);
+            this.tablePanel.Size = new System.Drawing.Size(270, 262);
             this.tablePanel.TabIndex = 0;
+            // 
+            // btnDelete
+            // 
+            this.tablePanel.SetColumn(this.btnDelete, 1);
+            this.btnDelete.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnDelete.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDelete.ImageOptions.SvgImage")));
+            this.btnDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.btnDelete.Location = new System.Drawing.Point(246, 3);
+            this.btnDelete.Name = "btnDelete";
+            this.tablePanel.SetRow(this.btnDelete, 0);
+            this.btnDelete.Size = new System.Drawing.Size(21, 23);
+            this.btnDelete.TabIndex = 9;
+            this.btnDelete.TabStop = false;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // standaloneBarDockControl1
             // 
@@ -91,7 +107,7 @@ namespace IBE.WindowsClient.Controls {
             this.standaloneBarDockControl1.CausesValidation = false;
             this.tablePanel.SetColumn(this.standaloneBarDockControl1, 0);
             this.tablePanel.SetColumnSpan(this.standaloneBarDockControl1, 2);
-            this.standaloneBarDockControl1.Location = new System.Drawing.Point(3, 137);
+            this.standaloneBarDockControl1.Location = new System.Drawing.Point(3, 147);
             this.standaloneBarDockControl1.Manager = this.barManager1;
             this.standaloneBarDockControl1.Name = "standaloneBarDockControl1";
             this.tablePanel.SetRow(this.standaloneBarDockControl1, 5);
@@ -148,7 +164,7 @@ namespace IBE.WindowsClient.Controls {
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 250);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 262);
             this.barDockControlBottom.Manager = this.barManager1;
             this.barDockControlBottom.Size = new System.Drawing.Size(270, 0);
             // 
@@ -158,7 +174,7 @@ namespace IBE.WindowsClient.Controls {
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
             this.barDockControlLeft.Manager = this.barManager1;
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 250);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 262);
             // 
             // barDockControlRight
             // 
@@ -166,19 +182,18 @@ namespace IBE.WindowsClient.Controls {
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(270, 0);
             this.barDockControlRight.Manager = this.barManager1;
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 250);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 262);
             // 
             // lblNumberOfVerseWord
             // 
             this.lblNumberOfVerseWord.Appearance.Options.UseTextOptions = true;
-            this.lblNumberOfVerseWord.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.lblNumberOfVerseWord.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.tablePanel.SetColumn(this.lblNumberOfVerseWord, 0);
-            this.tablePanel.SetColumnSpan(this.lblNumberOfVerseWord, 2);
             this.lblNumberOfVerseWord.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblNumberOfVerseWord.Location = new System.Drawing.Point(3, 3);
             this.lblNumberOfVerseWord.Name = "lblNumberOfVerseWord";
             this.tablePanel.SetRow(this.lblNumberOfVerseWord, 0);
-            this.lblNumberOfVerseWord.Size = new System.Drawing.Size(264, 13);
+            this.lblNumberOfVerseWord.Size = new System.Drawing.Size(129, 23);
             this.lblNumberOfVerseWord.TabIndex = 8;
             this.lblNumberOfVerseWord.Text = "1";
             // 
@@ -186,7 +201,7 @@ namespace IBE.WindowsClient.Controls {
             // 
             this.tablePanel.SetColumn(this.txtFootnoteText, 0);
             this.tablePanel.SetColumnSpan(this.txtFootnoteText, 2);
-            this.txtFootnoteText.Location = new System.Drawing.Point(3, 191);
+            this.txtFootnoteText.Location = new System.Drawing.Point(3, 201);
             this.txtFootnoteText.Name = "txtFootnoteText";
             this.tablePanel.SetRow(this.txtFootnoteText, 7);
             this.txtFootnoteText.Size = new System.Drawing.Size(264, 51);
@@ -196,7 +211,7 @@ namespace IBE.WindowsClient.Controls {
             // cbCitation
             // 
             this.tablePanel.SetColumn(this.cbCitation, 1);
-            this.cbCitation.Location = new System.Drawing.Point(138, 167);
+            this.cbCitation.Location = new System.Drawing.Point(138, 177);
             this.cbCitation.Name = "cbCitation";
             this.cbCitation.Properties.Caption = "In citation";
             this.tablePanel.SetRow(this.cbCitation, 6);
@@ -207,7 +222,7 @@ namespace IBE.WindowsClient.Controls {
             // cbWordOfJesus
             // 
             this.tablePanel.SetColumn(this.cbWordOfJesus, 0);
-            this.cbWordOfJesus.Location = new System.Drawing.Point(3, 167);
+            this.cbWordOfJesus.Location = new System.Drawing.Point(3, 177);
             this.cbWordOfJesus.Name = "cbWordOfJesus";
             this.cbWordOfJesus.Properties.Caption = "Word of Jesus";
             this.tablePanel.SetRow(this.cbWordOfJesus, 6);
@@ -219,7 +234,7 @@ namespace IBE.WindowsClient.Controls {
             // 
             this.tablePanel.SetColumn(this.txtTranslation, 0);
             this.tablePanel.SetColumnSpan(this.txtTranslation, 2);
-            this.txtTranslation.Location = new System.Drawing.Point(3, 103);
+            this.txtTranslation.Location = new System.Drawing.Point(3, 113);
             this.txtTranslation.Name = "txtTranslation";
             this.txtTranslation.Properties.Appearance.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.txtTranslation.Properties.Appearance.Options.UseFont = true;
@@ -237,7 +252,7 @@ namespace IBE.WindowsClient.Controls {
             this.tablePanel.SetColumn(this.lblGrammarCode, 1);
             this.lblGrammarCode.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblGrammarCode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGrammarCode.Location = new System.Drawing.Point(138, 49);
+            this.lblGrammarCode.Location = new System.Drawing.Point(138, 59);
             this.lblGrammarCode.Name = "lblGrammarCode";
             this.lblGrammarCode.Padding = new System.Windows.Forms.Padding(3);
             this.tablePanel.SetRow(this.lblGrammarCode, 2);
@@ -258,7 +273,7 @@ namespace IBE.WindowsClient.Controls {
             this.tablePanel.SetColumnSpan(this.lblTransliteration, 2);
             this.lblTransliteration.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblTransliteration.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTransliteration.Location = new System.Drawing.Point(3, 74);
+            this.lblTransliteration.Location = new System.Drawing.Point(3, 84);
             this.lblTransliteration.Name = "lblTransliteration";
             this.lblTransliteration.Padding = new System.Windows.Forms.Padding(3);
             this.tablePanel.SetRow(this.lblTransliteration, 3);
@@ -276,7 +291,7 @@ namespace IBE.WindowsClient.Controls {
             this.tablePanel.SetColumn(this.lblStrong, 0);
             this.lblStrong.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblStrong.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStrong.Location = new System.Drawing.Point(3, 49);
+            this.lblStrong.Location = new System.Drawing.Point(3, 59);
             this.lblStrong.Name = "lblStrong";
             this.lblStrong.Padding = new System.Windows.Forms.Padding(3);
             this.tablePanel.SetRow(this.lblStrong, 2);
@@ -294,12 +309,13 @@ namespace IBE.WindowsClient.Controls {
             this.tablePanel.SetColumn(this.lblGreekWord, 0);
             this.tablePanel.SetColumnSpan(this.lblGreekWord, 2);
             this.lblGreekWord.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblGreekWord.Location = new System.Drawing.Point(3, 22);
+            this.lblGreekWord.Location = new System.Drawing.Point(3, 32);
             this.lblGreekWord.Name = "lblGreekWord";
             this.tablePanel.SetRow(this.lblGreekWord, 1);
             this.lblGreekWord.Size = new System.Drawing.Size(264, 21);
             this.lblGreekWord.TabIndex = 0;
             this.lblGreekWord.Text = "none";
+            this.lblGreekWord.DoubleClick += new System.EventHandler(this.lblGreekWord_DoubleClick);
             // 
             // VerseWordEditorControl
             // 
@@ -311,7 +327,7 @@ namespace IBE.WindowsClient.Controls {
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
             this.Name = "VerseWordEditorControl";
-            this.Size = new System.Drawing.Size(270, 250);
+            this.Size = new System.Drawing.Size(270, 262);
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel)).EndInit();
             this.tablePanel.ResumeLayout(false);
             this.tablePanel.PerformLayout();
@@ -345,5 +361,6 @@ namespace IBE.WindowsClient.Controls {
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
+        private DevExpress.XtraEditors.SimpleButton btnDelete;
     }
 }

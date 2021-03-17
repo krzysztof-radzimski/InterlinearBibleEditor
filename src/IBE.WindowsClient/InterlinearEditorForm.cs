@@ -102,8 +102,10 @@ namespace IBE.WindowsClient {
                 var verseNumber = arg.NewValue.ToInt();
                 var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
                 if (currentControl.IsNotNull()) {
-                    if (XtraMessageBox.Show("Do you want to save your changes before opening a new verse?", "Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
-                        currentControl.Save();
+                    if (currentControl.IsModified()) {
+                        if (XtraMessageBox.Show("Do you want to save your changes before opening a new verse?", "Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                            currentControl.Save();
+                        }
                     }
                     this.Controls.Remove(currentControl);
                     currentControl.Dispose();
@@ -144,6 +146,42 @@ namespace IBE.WindowsClient {
             if (verse > 0) {
                 txtVerse.EditValue = verse;
                 editVerse_EditValueChanged(editVerse, new DevExpress.XtraEditors.Controls.ChangingEventArgs(oldValue, verse));
+            }
+        }
+
+        private void btnAddWord_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            if (currentControl.IsNotNull()) {
+                var position = XtraInputBox.Show("Indicate the word index :", "Insert new word at index", "1");
+                if (position.IsNotNullOrEmpty()) {
+                    var index = position.ToInt();
+                    foreach (var item in currentControl.Verse.VerseWords) {
+                        if (item.NumberOfVerseWord >= index) {
+                            item.NumberOfVerseWord++;
+                        }
+                    }
+
+                    var word = new VerseWord(Uow) {
+                        ParentVerse = currentControl.Verse,
+                        Translation = String.Empty,
+                        Transliteration = String.Empty,
+                        Citation = false,
+                        StrongCode = null,
+                        FootnoteText = String.Empty,
+                        GrammarCode = null,
+                        NumberOfVerseWord = index,
+                        SourceWord = String.Empty,
+                        WordOfJesus = false
+                    };
+                    word.Save();
+
+                    var control = currentControl.CreateVerseWordControl(word);
+                    currentControl.VerseWordsControl.Controls.Add(control);
+                    currentControl.VerseWordsControl.Controls.SetChildIndex(control, index - 1);
+
+                    currentControl.Verse.Save();
+                    Uow.CommitChanges();
+                }
             }
         }
     }
