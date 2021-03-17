@@ -27,12 +27,10 @@ namespace IBE.WindowsClient {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
-            this.btnEditBook = new DevExpress.XtraBars.BarButtonItem();
-            this.btnShowViewer = new DevExpress.XtraBars.BarButtonItem();
+            this.btnTranslations = new DevExpress.XtraBars.BarButtonItem();
+            this.btnInterlinearEditor = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            this.rpEditor = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            this.ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
@@ -47,15 +45,14 @@ namespace IBE.WindowsClient {
             this.ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.ribbonControl1.ExpandCollapseItem,
             this.ribbonControl1.SearchEditItem,
-            this.btnEditBook,
-            this.btnShowViewer});
+            this.btnTranslations,
+            this.btnInterlinearEditor});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 5;
+            this.ribbonControl1.MaxItemId = 7;
             this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
-            this.rpHome,
-            this.rpEditor});
+            this.rpHome});
             this.ribbonControl1.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonControlStyle.Office2019;
             this.ribbonControl1.ShowApplicationButton = DevExpress.Utils.DefaultBoolean.False;
             this.ribbonControl1.ShowExpandCollapseButton = DevExpress.Utils.DefaultBoolean.False;
@@ -64,21 +61,21 @@ namespace IBE.WindowsClient {
             this.ribbonControl1.Size = new System.Drawing.Size(1125, 67);
             this.ribbonControl1.StatusBar = this.ribbonStatusBar1;
             // 
-            // btnEditBook
+            // btnTranslations
             // 
-            this.btnEditBook.Caption = "Books";
-            this.btnEditBook.Id = 3;
-            this.btnEditBook.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnEditBook.ImageOptions.SvgImage")));
-            this.btnEditBook.Name = "btnEditBook";
-            this.btnEditBook.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnEditBook_ItemClick);
+            this.btnTranslations.Caption = "Translations";
+            this.btnTranslations.Id = 3;
+            this.btnTranslations.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnTranslations.ImageOptions.SvgImage")));
+            this.btnTranslations.Name = "btnTranslations";
+            this.btnTranslations.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnTranslations_ItemClick);
             // 
-            // btnShowViewer
+            // btnInterlinearEditor
             // 
-            this.btnShowViewer.Caption = "Show Bible viewer";
-            this.btnShowViewer.Id = 4;
-            this.btnShowViewer.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnShowViewer.ImageOptions.SvgImage")));
-            this.btnShowViewer.Name = "btnShowViewer";
-            this.btnShowViewer.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnShowViewer_ItemClick);
+            this.btnInterlinearEditor.Caption = "InterlinearEditor";
+            this.btnInterlinearEditor.Id = 6;
+            this.btnInterlinearEditor.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnInterlinearEditor.ImageOptions.SvgImage")));
+            this.btnInterlinearEditor.Name = "btnInterlinearEditor";
+            this.btnInterlinearEditor.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnInterlinearEditor_ItemClick);
             // 
             // rpHome
             // 
@@ -89,22 +86,10 @@ namespace IBE.WindowsClient {
             // 
             // ribbonPageGroup1
             // 
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnShowViewer);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnTranslations);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnInterlinearEditor);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
-            // 
-            // rpEditor
-            // 
-            this.rpEditor.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
-            this.ribbonPageGroup2});
-            this.rpEditor.Name = "rpEditor";
-            this.rpEditor.Text = "Editor";
-            // 
-            // ribbonPageGroup2
-            // 
-            this.ribbonPageGroup2.ItemLinks.Add(this.btnEditBook);
-            this.ribbonPageGroup2.Name = "ribbonPageGroup2";
-            this.ribbonPageGroup2.Text = "ribbonPageGroup2";
             // 
             // ribbonStatusBar1
             // 
@@ -131,6 +116,7 @@ namespace IBE.WindowsClient {
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.StatusBar = this.ribbonStatusBar1;
             this.Text = "Form1";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).EndInit();
             this.ResumeLayout(false);
@@ -144,11 +130,9 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.Ribbon.RibbonPage rpHome;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
         private DevExpress.XtraBars.Ribbon.RibbonStatusBar ribbonStatusBar1;
-        private DevExpress.XtraBars.BarButtonItem btnEditBook;
-        private DevExpress.XtraBars.Ribbon.RibbonPage rpEditor;
-        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup2;
+        private DevExpress.XtraBars.BarButtonItem btnTranslations;
         private DevExpress.XtraTabbedMdi.XtraTabbedMdiManager xtraTabbedMdiManager1;
-        private DevExpress.XtraBars.BarButtonItem btnShowViewer;
+        private DevExpress.XtraBars.BarButtonItem btnInterlinearEditor;
     }
 }
 

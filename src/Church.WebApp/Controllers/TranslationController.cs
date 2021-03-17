@@ -13,12 +13,10 @@
 
 using DevExpress.Xpo;
 using IBE.Data.Model;
-using IBE.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Church.WebApp.Controllers {
@@ -33,13 +31,13 @@ namespace Church.WebApp.Controllers {
             if (!String.IsNullOrEmpty(translationName)) {
                 // wyświetlamy listę ksiąg z tego przekładu
                 if (String.IsNullOrEmpty(book)) {
-                    var translation = new XPQuery<Translation>(new UnitOfWork()).Where(x => x.Name.Replace("'", "") == translationName).FirstOrDefault();
+                    var translation = new XPQuery<Translation>(new UnitOfWork()).Where(x => x.Name.Replace("'", "").Replace("+", "") == translationName).FirstOrDefault();
                     if (translation != null) {
                         return View(new TranslationControllerModel(translation));
                     }
                 }
                 else {
-                    var translation = new XPQuery<Translation>(new UnitOfWork()).Where(x => x.Name.Replace("'", "") == translationName).FirstOrDefault();
+                    var translation = new XPQuery<Translation>(new UnitOfWork()).Where(x => x.Name.Replace("'", "").Replace("+", "") == translationName).FirstOrDefault();
                     if (translation != null) {
                         var result = new TranslationControllerModel(translation, book, chapter, verse);
 

@@ -63,6 +63,7 @@ namespace IBE.Data.Model {
             get { return GetCollection<Book>(nameof(TranslationBooks)); }
         }
 
+        public BookBase() : base(new UnitOfWork()) { }
         public BookBase(Session session) : base(session) { }
 
         public override string ToString() {

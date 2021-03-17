@@ -24,6 +24,8 @@ namespace IBE.Data.Model {
         private Language language;
         private TranslationType type;
         private string detailedInfo;
+        private bool catolic;
+        private bool recommended;
 
         public string Name {
             get { return name; }
@@ -51,6 +53,16 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(Type), ref type, value); }
         }
 
+        public bool Catolic {
+            get { return catolic; }
+            set { SetPropertyValue(nameof(Catolic), ref catolic, value); }
+        }
+
+        public bool Recommended {
+            get { return recommended; }
+            set { SetPropertyValue(nameof(Recommended), ref recommended, value); }
+        }
+
         [Size(SizeAttribute.Unlimited)]
         public string Introduction {
             get { return introduction; }
@@ -68,6 +80,7 @@ namespace IBE.Data.Model {
             get { return GetCollection<Book>(nameof(Books)); }
         }
 
+        public Translation() : base(new UnitOfWork()) { }
         public Translation(Session session) : base(session) { }
     }
 

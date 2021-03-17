@@ -67,6 +67,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\IBE.Common\IBE.Common.csproj">
+      <Project>{FA1C9CBA-B5CF-4BEA-971D-9A5731E85B8A}</Project>
+      <Name>IBE.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\IBE.Data.Import\IBE.Data.Import.csproj">
       <Project>{4ff8e428-5d1a-41d5-82aa-b2eb2094b21a}</Project>
       <Name>IBE.Data.Import</Name>

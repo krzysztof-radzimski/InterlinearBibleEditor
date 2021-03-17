@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 
 namespace IBE.Data.Import {
-    public abstract class BaseImporter : IImporter {
+    public abstract class BaseImporter<T> where T : class, new() {
         protected const string INTERNAL_SEPARATOR = "/";
         protected const string WINDOWS_SEPARATOR = "\\";
         protected const char HARD_SPACE = '\u00A0';
@@ -244,7 +244,7 @@ namespace IBE.Data.Import {
             return m;
         }
 
-        public abstract void Import(string zipFilePath, UnitOfWork uow);
+        public abstract T Import(string zipFilePath, UnitOfWork uow);
 
         public void Dispose() { }
     }

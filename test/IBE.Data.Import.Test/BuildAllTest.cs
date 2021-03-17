@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.IO;
 
 namespace IBE.Data.Import.Test {
@@ -32,6 +31,10 @@ namespace IBE.Data.Import.Test {
             trans.Import_PNS1997();
             trans.Import_POZ75();
             trans.Import_PSZ();
+
+            // interlinearna 
+            trans.Import_TRO();
+            trans.Import_IBHP();
         }
     }
 }

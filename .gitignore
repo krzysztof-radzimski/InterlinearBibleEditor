@@ -17,6 +17,7 @@
 mono_crash.*
 
 # Build results
+db/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -348,3 +349,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+*.SQLite3
+db/IBE.SQLite3

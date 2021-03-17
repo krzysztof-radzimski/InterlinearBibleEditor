@@ -15,9 +15,10 @@ using DevExpress.Xpo;
 
 namespace IBE.Data.Model {
     public class Verse : XPObject {
-        private int numberOfVerse;        
+        private int numberOfVerse;
         private Chapter parentChapter;
         private string text;
+        private bool startFromNewLine;
 
         public int NumberOfVerse {
             get { return numberOfVerse; }
@@ -28,7 +29,7 @@ namespace IBE.Data.Model {
         public Chapter ParentChapter {
             get { return parentChapter; }
             set { SetPropertyValue(nameof(ParentChapter), ref parentChapter, value); }
-        }       
+        }
 
         [Association("VerseWords")]
         public XPCollection<VerseWord> VerseWords {
@@ -42,6 +43,11 @@ namespace IBE.Data.Model {
         public string Text {
             get { return text; }
             set { SetPropertyValue(nameof(Text), ref text, value); }
+        }
+
+        public bool StartFromNewLine {
+            get { return startFromNewLine; }
+            set { SetPropertyValue(nameof(StartFromNewLine), ref startFromNewLine, value); }
         }
 
         [NonPersistent]
@@ -59,7 +65,7 @@ namespace IBE.Data.Model {
         public string GetLink() {
             var result = string.Empty;
             if (ParentChapter != null && parentChapter.ParentBook != null) {
-                result= $@"<a class=""verse-reference"" href=""B:{ParentChapter.ParentBook.NumberOfBook} {parentChapter.NumberOfChapter}:{NumberOfVerse}"">{GetShortcut()}</a>";
+                result = $@"<a class=""verse-reference"" href=""B:{ParentChapter.ParentBook.NumberOfBook} {parentChapter.NumberOfChapter}:{NumberOfVerse}"">{GetShortcut()}</a>";
             }
             return result;
         }

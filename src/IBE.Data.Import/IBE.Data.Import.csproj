@@ -29,6 +29,14 @@
 
   <ItemGroup>
     <Compile Remove="GreekImporter.cs" />
+    <Compile Remove="Greek\ByzVerseInfo.cs" />
+    <Compile Remove="Greek\GreekDictionaryBuilder.cs" />
+    <Compile Remove="Greek\GreekInterlinearImporter.cs" />
+    <Compile Remove="Greek\NestleVerseInfo.cs" />
+    <Compile Remove="Greek\PbpwVerseInfo.cs" />
+    <Compile Remove="Greek\TroVerseInfo.cs" />
+    <Compile Remove="Greek\TroVerseWordInfo.cs" />
+    <Compile Remove="Greek\VerseWordInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>

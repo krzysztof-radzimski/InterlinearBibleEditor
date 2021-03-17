@@ -15,48 +15,57 @@ using DevExpress.Xpo;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
 using Microsoft.Data.Sqlite;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace IBE.Data.Import {
-    public class TranslationImporter : BaseImporter {
-        public override void Import(string zipFilePath, UnitOfWork uow) {
+    public class TranslationImporter : BaseImporter<Translation> {
+        public override Translation Import(string zipFilePath, UnitOfWork uow) {
             if (File.Exists(zipFilePath)) {
                 var fileName = ExtractAndGetFirstArchiveItemFilePath(zipFilePath);
                 try {
-                    using (var conn = new SqliteConnection($"DataSource=\"{fileName}\"")) {
-                        SQLitePCL.Batteries.Init();
-                        conn.Open();
+                    var conn = new SqliteConnection($"DataSource=\"{fileName}\"");
+                    SQLitePCL.Batteries.Init();
+                    conn.Open();
 
-                        var translation = CreateTranslation(uow, conn, Path.GetFileNameWithoutExtension(fileName));
-                        CreateBooks(uow, conn, translation);
-                        conn.Close();
-                    }
+                    var translation = CreateTranslation(uow, conn, Path.GetFileNameWithoutExtension(fileName));
+                    CreateBooks(uow, conn, translation);
+                    conn.Close();
+
+                    return translation;
                 }
                 finally {
                     try { File.Delete(fileName); } catch { }
                 }
             }
+
+            return default;
         }
 
-        public void ImportInterlinear(string zipFilePath, UnitOfWork uow) {
+
+        public Translation ImportInterlinear(string zipFilePath, UnitOfWork uow) {
             if (File.Exists(zipFilePath)) {
                 var fileName = ExtractAndGetFirstArchiveItemFilePath(zipFilePath);
                 try {
-                    using (var conn = new SqliteConnection($"DataSource=\"{fileName}\"")) {
-                        SQLitePCL.Batteries.Init();
-                        conn.Open();
+                    var conn = new SqliteConnection($"DataSource=\"{fileName}\"");
+                    SQLitePCL.Batteries.Init();
+                    conn.Open();
 
-                        var translation = CreateTranslation(uow, conn, Path.GetFileNameWithoutExtension(fileName));
-                        CreateBooks(uow, conn, translation, true);
-                        conn.Close();
-                    }
+                    var translation = CreateTranslation(uow, conn, Path.GetFileNameWithoutExtension(fileName));
+                    CreateBooks(uow, conn, translation, true);
+                    conn.Close();
+
+                    return translation;
                 }
                 finally {
                     try { File.Delete(fileName); } catch { }
                 }
             }
+
+            return default;
         }
 
 
@@ -184,10 +193,45 @@ namespace IBE.Data.Import {
                         if (interlinear) {
                             /*
                              <e>βιβλος</e> <n>biblos</n> Zwój – Księga <S>976</S> <m>WTN-NSF</m> 
-                             <e>γενεσεως</e> <n>geneseōs</n> narodzenia <S>1078</S> <m>WTN-GSF</m> <e>ιησου</e> <n>iēsou</n> Jezusa – [JHWH jest zbawieniem] <S>2424</S> <m>WTN-GSM</m> <e>χριστου</e> <n>christou</n> Pomazańca <S>5547</S> <m>WTN-GSM</m> <e>υιου</e> <n>hyiou</n> syna <S>5207</S> <m>WTN-GSM</m> <e>δαβιδ</e> <n>dabid</n> Dawida – [umiłowany] <S>1138</S> <m>WTN-PRI</m> <e>υιου</e> <n>hyiou</n> syna <S>5207</S> <m>WTN-GSM</m> <e>αβρααμ</e> <n>abraam</n> Abrahama – [ojciec wielu narodów] <S>11</S> <m>WTN-PRI</m>
+                             <e>γενεσεως</e> <n>geneseōs</n> narodzenia <S>1078</S> <m>WTN-GSF</m> 
+                             <e>ιησου</e> <n>iēsou</n> Jezusa – [JHWH jest zbawieniem] <S>2424</S> <m>WTN-GSM</m> 
+                             <e>χριστου</e> <n>christou</n> Pomazańca <S>5547</S> <m>WTN-GSM</m> <e>υιου</e> <n>hyiou</n> syna <S>5207</S> <m>WTN-GSM</m> <e>δαβιδ</e> <n>dabid</n> Dawida – [umiłowany] <S>1138</S> <m>WTN-PRI</m> <e>υιου</e> <n>hyiou</n> syna <S>5207</S> <m>WTN-GSM</m> <e>αβρααμ</e> <n>abraam</n> Abrahama – [ojciec wielu narodów] <S>11</S> <m>WTN-PRI</m>
+                             */
+
+                            /*
+                             A Pan<S>3068</S> powiedział<S>559</S><S>8799</S> do Kaina<S>7014</S>, gdzie<S>335</S> jest Abel<S>1893</S> twój brat<S>251</S>? A on rzekł:<S>559</S><S>8799</S>, wiem<S>3045</S> Niewłaściwa 08804</S> :: Czy mam mojego brata<S>251</S> opiekun<S>8104</S><S>8802</S>?
                              */
 
                             // tu trzeba dopisać wyciąganie samego tekstu polskiego z pominięciem tego co po kresce
+                            if (chapter.ParentBook.BaseBook.Status.BiblePart == BiblePart.NewTestament) {
+                                try {
+                                    XElement xml = null;
+
+                                    xml = XElement.Parse($"<verse>{text}</verse>");
+
+                                    if (xml.IsNotNull()) {
+                                        text = string.Empty;
+                                        foreach (var node in xml.Nodes()) {
+                                            if (node.NodeType == System.Xml.XmlNodeType.Text) {
+                                                var nodeText = (node as XText).Value.Trim();
+                                                if (nodeText.Contains("–")) {
+                                                    nodeText = nodeText.Substring(0, nodeText.IndexOf("–") - 1).Trim();
+                                                }
+                                                text += $"{nodeText} ";
+                                            }
+                                        }
+
+                                        text = text.Trim();
+                                    }
+                                }
+                                catch (Exception ex) {
+                                    if (ex.IsNotNull()) { }
+                                }
+                            }
+                            else {
+                                text = System.Text.RegularExpressions.Regex.Replace(text, @"\<S\>[0-9\sa-z]+\<\/S\>", String.Empty, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                text = System.Text.RegularExpressions.Regex.Replace(text, @"\<S\>[0-9\s\w]+\<\/S\>", String.Empty, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                            }
                         }
 
                         list.Add(new { NumberOfVerse = number, Text = text });
@@ -223,7 +267,7 @@ namespace IBE.Data.Import {
                 }
             }
         }
-        private bool TableExists(SqliteConnection conn,string tableName) {
+        private bool TableExists(SqliteConnection conn, string tableName) {
             using (var command = conn.CreateCommand()) {
                 command.CommandText = $"SELECT name FROM sqlite_master WHERE type='table' AND name='{tableName}'";
                 using (var reader = command.ExecuteReader()) {
@@ -235,5 +279,7 @@ namespace IBE.Data.Import {
             }
             return default;
         }
+
+
     }
 }

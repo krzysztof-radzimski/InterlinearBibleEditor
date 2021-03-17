@@ -24,92 +24,243 @@ namespace IBE.WindowsClient.Controls {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VerseEditorControl));
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
-            this.panelControl3 = new DevExpress.XtraEditors.PanelControl();
-            this.panelControl4 = new DevExpress.XtraEditors.PanelControl();
-            this.panelControl5 = new DevExpress.XtraEditors.PanelControl();
-            this.panelControl6 = new DevExpress.XtraEditors.PanelControl();
-            this.flowLayoutPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl6)).BeginInit();
+            this.tabPane1 = new DevExpress.XtraBars.Navigation.TabPane();
+            this.tabNavigationPage1 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            this.gridTranslations = new DevExpress.XtraGrid.GridControl();
+            this.gridViewTranslations = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.colTranslationName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colVerseText = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.tabNavigationPage2 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            this.wbStrong = new System.Windows.Forms.WebBrowser();
+            this.tabNavigationPage3 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            this.wbGrammarCodes = new System.Windows.Forms.WebBrowser();
+            this.splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
+            this.tabNavigationPage4 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
+            this.cbStartFromNewLine = new DevExpress.XtraEditors.CheckEdit();
+            ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).BeginInit();
+            this.tabPane1.SuspendLayout();
+            this.tabNavigationPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridTranslations)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewTranslations)).BeginInit();
+            this.tabNavigationPage2.SuspendLayout();
+            this.tabNavigationPage3.SuspendLayout();
+            this.tabNavigationPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
+            this.tablePanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // flowLayoutPanel
             // 
-            this.flowLayoutPanel.Controls.Add(this.panelControl1);
-            this.flowLayoutPanel.Controls.Add(this.panelControl2);
-            this.flowLayoutPanel.Controls.Add(this.panelControl3);
-            this.flowLayoutPanel.Controls.Add(this.panelControl4);
-            this.flowLayoutPanel.Controls.Add(this.panelControl5);
-            this.flowLayoutPanel.Controls.Add(this.panelControl6);
+            this.flowLayoutPanel.AutoScroll = true;
             this.flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(974, 630);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(974, 220);
             this.flowLayoutPanel.TabIndex = 0;
             // 
-            // panelControl1
+            // tabPane1
             // 
-            this.panelControl1.Location = new System.Drawing.Point(3, 3);
-            this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(200, 100);
-            this.panelControl1.TabIndex = 0;
+            this.tabPane1.Controls.Add(this.tabNavigationPage1);
+            this.tabPane1.Controls.Add(this.tabNavigationPage2);
+            this.tabPane1.Controls.Add(this.tabNavigationPage3);
+            this.tabPane1.Controls.Add(this.tabNavigationPage4);
+            this.tabPane1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tabPane1.Location = new System.Drawing.Point(0, 230);
+            this.tabPane1.Name = "tabPane1";
+            this.tabPane1.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
+            this.tabNavigationPage1,
+            this.tabNavigationPage2,
+            this.tabNavigationPage3,
+            this.tabNavigationPage4});
+            this.tabPane1.RegularSize = new System.Drawing.Size(974, 400);
+            this.tabPane1.SelectedPage = this.tabNavigationPage1;
+            this.tabPane1.Size = new System.Drawing.Size(974, 400);
+            this.tabPane1.TabIndex = 1;
+            this.tabPane1.Text = "tabPane1";
             // 
-            // panelControl2
+            // tabNavigationPage1
             // 
-            this.panelControl2.Location = new System.Drawing.Point(209, 3);
-            this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(200, 100);
-            this.panelControl2.TabIndex = 1;
+            this.tabNavigationPage1.Caption = "Tłumaczenia";
+            this.tabNavigationPage1.Controls.Add(this.gridTranslations);
+            this.tabNavigationPage1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabNavigationPage1.ImageOptions.SvgImage")));
+            this.tabNavigationPage1.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.tabNavigationPage1.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
+            this.tabNavigationPage1.Name = "tabNavigationPage1";
+            this.tabNavigationPage1.Properties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
+            this.tabNavigationPage1.Size = new System.Drawing.Size(974, 372);
             // 
-            // panelControl3
+            // gridTranslations
             // 
-            this.panelControl3.Location = new System.Drawing.Point(415, 3);
-            this.panelControl3.Name = "panelControl3";
-            this.panelControl3.Size = new System.Drawing.Size(200, 100);
-            this.panelControl3.TabIndex = 2;
+            this.gridTranslations.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridTranslations.Location = new System.Drawing.Point(0, 0);
+            this.gridTranslations.MainView = this.gridViewTranslations;
+            this.gridTranslations.Name = "gridTranslations";
+            this.gridTranslations.Size = new System.Drawing.Size(974, 372);
+            this.gridTranslations.TabIndex = 0;
+            this.gridTranslations.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewTranslations});
             // 
-            // panelControl4
+            // gridViewTranslations
             // 
-            this.panelControl4.Location = new System.Drawing.Point(621, 3);
-            this.panelControl4.Name = "panelControl4";
-            this.panelControl4.Size = new System.Drawing.Size(200, 100);
-            this.panelControl4.TabIndex = 3;
+            this.gridViewTranslations.Appearance.Row.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.gridViewTranslations.Appearance.Row.Options.UseFont = true;
+            this.gridViewTranslations.Appearance.Row.Options.UseTextOptions = true;
+            this.gridViewTranslations.Appearance.Row.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.gridViewTranslations.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.gridViewTranslations.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.colTranslationName,
+            this.colVerseText});
+            this.gridViewTranslations.GridControl = this.gridTranslations;
+            this.gridViewTranslations.Name = "gridViewTranslations";
+            this.gridViewTranslations.OptionsBehavior.AutoPopulateColumns = false;
+            this.gridViewTranslations.OptionsBehavior.Editable = false;
+            this.gridViewTranslations.OptionsBehavior.ReadOnly = true;
+            this.gridViewTranslations.OptionsView.ColumnAutoWidth = false;
+            this.gridViewTranslations.OptionsView.RowAutoHeight = true;
+            this.gridViewTranslations.OptionsView.ShowColumnHeaders = false;
+            this.gridViewTranslations.OptionsView.ShowDetailButtons = false;
+            this.gridViewTranslations.OptionsView.ShowGroupPanel = false;
+            this.gridViewTranslations.OptionsView.ShowHorizontalLines = DevExpress.Utils.DefaultBoolean.False;
+            this.gridViewTranslations.OptionsView.ShowIndicator = false;
+            this.gridViewTranslations.OptionsView.ShowVerticalLines = DevExpress.Utils.DefaultBoolean.False;
+            this.gridViewTranslations.RowSeparatorHeight = 10;
             // 
-            // panelControl5
+            // colTranslationName
             // 
-            this.panelControl5.Location = new System.Drawing.Point(3, 109);
-            this.panelControl5.Name = "panelControl5";
-            this.panelControl5.Size = new System.Drawing.Size(200, 100);
-            this.panelControl5.TabIndex = 4;
+            this.colTranslationName.AppearanceCell.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.colTranslationName.AppearanceCell.Options.UseFont = true;
+            this.colTranslationName.Caption = "gridColumn1";
+            this.colTranslationName.FieldName = "TranslationName";
+            this.colTranslationName.Name = "colTranslationName";
+            this.colTranslationName.Visible = true;
+            this.colTranslationName.VisibleIndex = 0;
             // 
-            // panelControl6
+            // colVerseText
             // 
-            this.panelControl6.Location = new System.Drawing.Point(209, 109);
-            this.panelControl6.Name = "panelControl6";
-            this.panelControl6.Size = new System.Drawing.Size(200, 100);
-            this.panelControl6.TabIndex = 5;
+            this.colVerseText.Caption = "gridColumn2";
+            this.colVerseText.FieldName = "VerseText";
+            this.colVerseText.Name = "colVerseText";
+            this.colVerseText.Visible = true;
+            this.colVerseText.VisibleIndex = 1;
+            // 
+            // tabNavigationPage2
+            // 
+            this.tabNavigationPage2.Caption = "Strong";
+            this.tabNavigationPage2.Controls.Add(this.wbStrong);
+            this.tabNavigationPage2.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabNavigationPage2.ImageOptions.SvgImage")));
+            this.tabNavigationPage2.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.tabNavigationPage2.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
+            this.tabNavigationPage2.Name = "tabNavigationPage2";
+            this.tabNavigationPage2.Properties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
+            this.tabNavigationPage2.Size = new System.Drawing.Size(974, 372);
+            // 
+            // wbStrong
+            // 
+            this.wbStrong.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.wbStrong.Location = new System.Drawing.Point(0, 0);
+            this.wbStrong.MinimumSize = new System.Drawing.Size(20, 20);
+            this.wbStrong.Name = "wbStrong";
+            this.wbStrong.Size = new System.Drawing.Size(974, 372);
+            this.wbStrong.TabIndex = 0;
+            // 
+            // tabNavigationPage3
+            // 
+            this.tabNavigationPage3.Caption = "Kod gramatyczny";
+            this.tabNavigationPage3.Controls.Add(this.wbGrammarCodes);
+            this.tabNavigationPage3.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabNavigationPage3.ImageOptions.SvgImage")));
+            this.tabNavigationPage3.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.tabNavigationPage3.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
+            this.tabNavigationPage3.Name = "tabNavigationPage3";
+            this.tabNavigationPage3.Properties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
+            this.tabNavigationPage3.Size = new System.Drawing.Size(974, 372);
+            // 
+            // wbGrammarCodes
+            // 
+            this.wbGrammarCodes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.wbGrammarCodes.Location = new System.Drawing.Point(0, 0);
+            this.wbGrammarCodes.MinimumSize = new System.Drawing.Size(20, 20);
+            this.wbGrammarCodes.Name = "wbGrammarCodes";
+            this.wbGrammarCodes.Size = new System.Drawing.Size(974, 372);
+            this.wbGrammarCodes.TabIndex = 0;
+            // 
+            // splitterControl1
+            // 
+            this.splitterControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.splitterControl1.Location = new System.Drawing.Point(0, 220);
+            this.splitterControl1.Name = "splitterControl1";
+            this.splitterControl1.Size = new System.Drawing.Size(974, 10);
+            this.splitterControl1.TabIndex = 2;
+            this.splitterControl1.TabStop = false;
+            // 
+            // tabNavigationPage4
+            // 
+            this.tabNavigationPage4.Caption = "Ustawienia";
+            this.tabNavigationPage4.Controls.Add(this.tablePanel1);
+            this.tabNavigationPage4.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabNavigationPage4.ImageOptions.SvgImage")));
+            this.tabNavigationPage4.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.tabNavigationPage4.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
+            this.tabNavigationPage4.Name = "tabNavigationPage4";
+            this.tabNavigationPage4.Properties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
+            this.tabNavigationPage4.Size = new System.Drawing.Size(974, 372);
+            // 
+            // tablePanel1
+            // 
+            this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 1F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 99F)});
+            this.tablePanel1.Controls.Add(this.cbStartFromNewLine);
+            this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablePanel1.Location = new System.Drawing.Point(0, 0);
+            this.tablePanel1.Name = "tablePanel1";
+            this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
+            this.tablePanel1.Size = new System.Drawing.Size(974, 372);
+            this.tablePanel1.TabIndex = 0;
+            // 
+            // cbStartFromNewLine
+            // 
+            this.tablePanel1.SetColumn(this.cbStartFromNewLine, 1);
+            this.cbStartFromNewLine.Location = new System.Drawing.Point(13, 4);
+            this.cbStartFromNewLine.Name = "cbStartFromNewLine";
+            this.cbStartFromNewLine.Properties.Caption = "Start from new line";
+            this.tablePanel1.SetRow(this.cbStartFromNewLine, 0);
+            this.cbStartFromNewLine.Size = new System.Drawing.Size(958, 18);
+            this.cbStartFromNewLine.TabIndex = 0;
             // 
             // VerseEditorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.flowLayoutPanel);
+            this.Controls.Add(this.splitterControl1);
+            this.Controls.Add(this.tabPane1);
             this.Name = "VerseEditorControl";
             this.Size = new System.Drawing.Size(974, 630);
-            this.flowLayoutPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl6)).EndInit();
+            this.Load += new System.EventHandler(this.VerseEditorControl_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).EndInit();
+            this.tabPane1.ResumeLayout(false);
+            this.tabNavigationPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridTranslations)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewTranslations)).EndInit();
+            this.tabNavigationPage2.ResumeLayout(false);
+            this.tabNavigationPage3.ResumeLayout(false);
+            this.tabNavigationPage4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
+            this.tablePanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -117,11 +268,19 @@ namespace IBE.WindowsClient.Controls {
         #endregion
 
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
-        private DevExpress.XtraEditors.PanelControl panelControl1;
-        private DevExpress.XtraEditors.PanelControl panelControl2;
-        private DevExpress.XtraEditors.PanelControl panelControl3;
-        private DevExpress.XtraEditors.PanelControl panelControl4;
-        private DevExpress.XtraEditors.PanelControl panelControl5;
-        private DevExpress.XtraEditors.PanelControl panelControl6;
+        private DevExpress.XtraBars.Navigation.TabPane tabPane1;
+        private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavigationPage1;
+        private DevExpress.XtraGrid.GridControl gridTranslations;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewTranslations;
+        private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavigationPage2;
+        private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavigationPage3;
+        private DevExpress.XtraEditors.SplitterControl splitterControl1;
+        private DevExpress.XtraGrid.Columns.GridColumn colTranslationName;
+        private DevExpress.XtraGrid.Columns.GridColumn colVerseText;
+        private System.Windows.Forms.WebBrowser wbStrong;
+        private System.Windows.Forms.WebBrowser wbGrammarCodes;
+        private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavigationPage4;
+        private DevExpress.Utils.Layout.TablePanel tablePanel1;
+        private DevExpress.XtraEditors.CheckEdit cbStartFromNewLine;
     }
 }

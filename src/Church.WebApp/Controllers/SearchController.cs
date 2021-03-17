@@ -79,7 +79,7 @@ namespace Church.WebApp.Controllers {
                     Chapter = record["NumberOfChapter"].ToInt(),
                     Verse = record["NumberOfVerse"].ToInt(),
                     TranslationName = record["TranslationName"].ToString(),
-                    Translation = record["Translation"].ToString().Replace("'", ""),
+                    Translation = record["Translation"].ToString().Replace("'", "").Replace("+", ""),
                     VerseText = record["VerseText"].ToString()
                 });
             }

@@ -18,8 +18,7 @@ namespace IBE.Data.Model {
         private BookBase bookBase;
         private int numberOfBook;
         private int numberOfChapter;
-        private int numberOfVerse;
-
+        private int numberOfVerse;       
         public int NumberOfBook {
             get { return numberOfBook; }
             set { SetPropertyValue(nameof(NumberOfBook), ref numberOfBook, value); }

@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBE.WindowsClient", "IBE.Wi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Church.WebApp", "Church.WebApp\Church.WebApp.csproj", "{17B5E84C-0925-48D2-9375-C55217658720}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBE.Common", "IBE.Common\IBE.Common.csproj", "{FA1C9CBA-B5CF-4BEA-971D-9A5731E85B8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IBE.Common", "IBE.Common\IBE.Common.csproj", "{FA1C9CBA-B5CF-4BEA-971D-9A5731E85B8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

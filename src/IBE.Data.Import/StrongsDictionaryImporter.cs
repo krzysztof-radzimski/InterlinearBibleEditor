@@ -18,8 +18,8 @@ using System;
 using System.IO;
 
 namespace IBE.Data.Import {
-    public class StrongsDictionaryImporter : BaseImporter {
-        public override void Import(string zipFilePath, UnitOfWork uow) {
+    public class StrongsDictionaryImporter : BaseImporter<object> {
+        public override object Import(string zipFilePath, UnitOfWork uow) {
             if (File.Exists(zipFilePath)) {
                 var fileName = ExtractAndGetFirstArchiveItemFilePath(zipFilePath);
                 try {
@@ -63,6 +63,8 @@ namespace IBE.Data.Import {
                     try { File.Delete(fileName); } catch { }
                 }
             }
+
+            return default;
         }
     }
 }

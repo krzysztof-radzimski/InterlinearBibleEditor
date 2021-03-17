@@ -1,5 +1,7 @@
 ﻿using DevExpress.Xpo;
+using IBE.Data.Import.Greek;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 namespace IBE.Data.Import.Test {
     [TestClass]
@@ -13,7 +15,29 @@ namespace IBE.Data.Import.Test {
             uow.CommitChanges();
         }
 
-    
+        [TestMethod]
+        public void PrepareInterlinearBible() {
+            File.Copy(@"C:\Users\krzysztof.radzimski\Documents\GitHub\InterlinearBibleEditor\db\IBE-base.SQLite3",
+                @"C:\Users\krzysztof.radzimski\Documents\GitHub\InterlinearBibleEditor\db\IBE.SQLite3", true);
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            uow.BeginTransaction();
+            new PrepareInterlinearGreekNewTestamentImporter().Import(@"..\..\..\..\db\import\Nestle+.zip", @"..\..\..\..\db\import\LXXAJ+.zip", uow);
+            uow.CommitChanges();
+        }
+
+        [TestMethod]
+        public void UpdateGrammarCodes() {
+            File.Copy(@"C:\Users\krzysztof.radzimski\Documents\GitHub\InterlinearBibleEditor\db\IBE-base.SQLite3",
+             @"C:\Users\krzysztof.radzimski\Documents\GitHub\InterlinearBibleEditor\db\IBE.SQLite3", true);
+
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            uow.BeginTransaction();
+            new GrammarCodesImporter().Import(@"..\..\..\..\db\import\Packard.dictionary.zip", uow);
+            uow.CommitChanges();
+        }
+
 
         //[TestMethod]
         //public void BuildGreekDictionary() {

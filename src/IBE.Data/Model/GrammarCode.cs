@@ -19,6 +19,7 @@ namespace IBE.Data.Model {
         private string grammarCodeVariant2;
         private string grammarCodeVariant3;
         private string grammarCodeDescription;
+        private string shortDefinition;
         public string GrammarCodeVariant1 {
             get { return grammarCodeVariant1; }
             set { SetPropertyValue(nameof(GrammarCodeVariant1), ref grammarCodeVariant1, value); }
@@ -34,6 +35,10 @@ namespace IBE.Data.Model {
         public string GrammarCodeDescription {
             get { return grammarCodeDescription; }
             set { SetPropertyValue(nameof(GrammarCodeDescription), ref grammarCodeDescription, value); }
+        }
+        public string ShortDefinition {
+            get { return shortDefinition; }
+            set { SetPropertyValue(nameof(ShortDefinition), ref shortDefinition, value); }
         }
 
         [Association("VerseWordGrammarCodes")]
