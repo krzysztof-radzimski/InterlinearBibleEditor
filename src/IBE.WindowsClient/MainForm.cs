@@ -29,5 +29,12 @@ namespace IBE.WindowsClient {
             frm.MdiParent = this;
             frm.Show();
         }
+
+        private void btnArticles_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var frm = new ArticlesForm();
+            frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
+            frm.MdiParent = this;
+            frm.Show();
+        }
     }
 }

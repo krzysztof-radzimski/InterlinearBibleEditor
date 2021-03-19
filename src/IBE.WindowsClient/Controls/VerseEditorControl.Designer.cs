@@ -25,6 +25,7 @@ namespace IBE.WindowsClient.Controls {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VerseEditorControl));
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions1 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPane1 = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabNavigationPage1 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
@@ -33,7 +34,15 @@ namespace IBE.WindowsClient.Controls {
             this.colTranslationName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colVerseText = new DevExpress.XtraGrid.Columns.GridColumn();
             this.tabNavigationPage2 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            this.sidePanel2 = new DevExpress.XtraEditors.SidePanel();
             this.wbStrong = new Microsoft.Web.WebView2.WinForms.WebView2();
+            this.sidePanel1 = new DevExpress.XtraEditors.SidePanel();
+            this.sidePanel4 = new DevExpress.XtraEditors.SidePanel();
+            this.gcStrongDefinition = new DevExpress.XtraEditors.GroupControl();
+            this.txtDefinition = new DevExpress.XtraEditors.MemoEdit();
+            this.sidePanel3 = new DevExpress.XtraEditors.SidePanel();
+            this.gcStrongShortDefinition = new DevExpress.XtraEditors.GroupControl();
+            this.txtShortDefinition = new DevExpress.XtraEditors.TextEdit();
             this.tabNavigationPage3 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.wbGrammarCodes = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tabNavigationPage4 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
@@ -46,7 +55,17 @@ namespace IBE.WindowsClient.Controls {
             ((System.ComponentModel.ISupportInitialize)(this.gridTranslations)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTranslations)).BeginInit();
             this.tabNavigationPage2.SuspendLayout();
+            this.sidePanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.wbStrong)).BeginInit();
+            this.sidePanel1.SuspendLayout();
+            this.sidePanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gcStrongDefinition)).BeginInit();
+            this.gcStrongDefinition.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDefinition.Properties)).BeginInit();
+            this.sidePanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gcStrongShortDefinition)).BeginInit();
+            this.gcStrongShortDefinition.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtShortDefinition.Properties)).BeginInit();
             this.tabNavigationPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.wbGrammarCodes)).BeginInit();
             this.tabNavigationPage4.SuspendLayout();
@@ -83,6 +102,7 @@ namespace IBE.WindowsClient.Controls {
             this.tabPane1.Size = new System.Drawing.Size(974, 400);
             this.tabPane1.TabIndex = 1;
             this.tabPane1.Text = "tabPane1";
+            this.tabPane1.SizeChanged += new System.EventHandler(this.tabPane1_SizeChanged);
             // 
             // tabNavigationPage1
             // 
@@ -152,13 +172,24 @@ namespace IBE.WindowsClient.Controls {
             // tabNavigationPage2
             // 
             this.tabNavigationPage2.Caption = "Strong";
-            this.tabNavigationPage2.Controls.Add(this.wbStrong);
+            this.tabNavigationPage2.Controls.Add(this.sidePanel2);
+            this.tabNavigationPage2.Controls.Add(this.sidePanel1);
             this.tabNavigationPage2.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabNavigationPage2.ImageOptions.SvgImage")));
             this.tabNavigationPage2.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
             this.tabNavigationPage2.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabNavigationPage2.Name = "tabNavigationPage2";
             this.tabNavigationPage2.Properties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabNavigationPage2.Size = new System.Drawing.Size(974, 372);
+            // 
+            // sidePanel2
+            // 
+            this.sidePanel2.Controls.Add(this.wbStrong);
+            this.sidePanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sidePanel2.Location = new System.Drawing.Point(0, 0);
+            this.sidePanel2.Name = "sidePanel2";
+            this.sidePanel2.Size = new System.Drawing.Size(462, 372);
+            this.sidePanel2.TabIndex = 2;
+            this.sidePanel2.Text = "sidePanel2";
             // 
             // wbStrong
             // 
@@ -167,10 +198,89 @@ namespace IBE.WindowsClient.Controls {
             this.wbStrong.Dock = System.Windows.Forms.DockStyle.Fill;
             this.wbStrong.Location = new System.Drawing.Point(0, 0);
             this.wbStrong.Name = "wbStrong";
-            this.wbStrong.Size = new System.Drawing.Size(974, 372);
+            this.wbStrong.Size = new System.Drawing.Size(462, 372);
             this.wbStrong.TabIndex = 0;
             this.wbStrong.ZoomFactor = 1D;
             this.wbStrong.CoreWebView2InitializationCompleted += new System.EventHandler<Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs>(this.wbStrong_CoreWebView2InitializationCompleted);
+            // 
+            // sidePanel1
+            // 
+            this.sidePanel1.Controls.Add(this.sidePanel4);
+            this.sidePanel1.Controls.Add(this.sidePanel3);
+            this.sidePanel1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.sidePanel1.Location = new System.Drawing.Point(462, 0);
+            this.sidePanel1.Name = "sidePanel1";
+            this.sidePanel1.Size = new System.Drawing.Size(512, 372);
+            this.sidePanel1.TabIndex = 1;
+            this.sidePanel1.Text = "sidePanel1";
+            // 
+            // sidePanel4
+            // 
+            this.sidePanel4.Controls.Add(this.gcStrongDefinition);
+            this.sidePanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sidePanel4.Location = new System.Drawing.Point(1, 42);
+            this.sidePanel4.Name = "sidePanel4";
+            this.sidePanel4.Size = new System.Drawing.Size(511, 330);
+            this.sidePanel4.TabIndex = 1;
+            this.sidePanel4.Text = "sidePanel4";
+            // 
+            // gcStrongDefinition
+            // 
+            this.gcStrongDefinition.Controls.Add(this.txtDefinition);
+            this.gcStrongDefinition.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gcStrongDefinition.Location = new System.Drawing.Point(0, 0);
+            this.gcStrongDefinition.Name = "gcStrongDefinition";
+            this.gcStrongDefinition.Size = new System.Drawing.Size(511, 330);
+            this.gcStrongDefinition.TabIndex = 0;
+            this.gcStrongDefinition.Text = "Definition";
+            // 
+            // txtDefinition
+            // 
+            this.txtDefinition.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDefinition.Location = new System.Drawing.Point(2, 19);
+            this.txtDefinition.Name = "txtDefinition";
+            this.txtDefinition.Properties.Appearance.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.txtDefinition.Properties.Appearance.Options.UseFont = true;
+            this.txtDefinition.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.txtDefinition.Size = new System.Drawing.Size(507, 309);
+            this.txtDefinition.TabIndex = 0;
+            // 
+            // sidePanel3
+            // 
+            this.sidePanel3.Controls.Add(this.gcStrongShortDefinition);
+            this.sidePanel3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.sidePanel3.Location = new System.Drawing.Point(1, 0);
+            this.sidePanel3.Name = "sidePanel3";
+            this.sidePanel3.Size = new System.Drawing.Size(511, 42);
+            this.sidePanel3.TabIndex = 0;
+            this.sidePanel3.Text = "sidePanel3";
+            // 
+            // gcStrongShortDefinition
+            // 
+            this.gcStrongShortDefinition.Controls.Add(this.txtShortDefinition);
+            buttonImageOptions1.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("buttonImageOptions1.SvgImage")));
+            buttonImageOptions1.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.gcStrongShortDefinition.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] {
+            new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions1, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1)});
+            this.gcStrongShortDefinition.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
+            this.gcStrongShortDefinition.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gcStrongShortDefinition.Location = new System.Drawing.Point(0, 0);
+            this.gcStrongShortDefinition.Name = "gcStrongShortDefinition";
+            this.gcStrongShortDefinition.Size = new System.Drawing.Size(511, 41);
+            this.gcStrongShortDefinition.TabIndex = 0;
+            this.gcStrongShortDefinition.Text = "Short definition";
+            this.gcStrongShortDefinition.CustomButtonClick += new DevExpress.XtraBars.Docking2010.BaseButtonEventHandler(this.gcStrongShortDefinition_CustomButtonClick);
+            // 
+            // txtShortDefinition
+            // 
+            this.txtShortDefinition.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtShortDefinition.Location = new System.Drawing.Point(2, 19);
+            this.txtShortDefinition.Name = "txtShortDefinition";
+            this.txtShortDefinition.Properties.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.txtShortDefinition.Properties.Appearance.Options.UseFont = true;
+            this.txtShortDefinition.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.txtShortDefinition.Size = new System.Drawing.Size(507, 22);
+            this.txtShortDefinition.TabIndex = 0;
             // 
             // tabNavigationPage3
             // 
@@ -264,7 +374,17 @@ namespace IBE.WindowsClient.Controls {
             ((System.ComponentModel.ISupportInitialize)(this.gridTranslations)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTranslations)).EndInit();
             this.tabNavigationPage2.ResumeLayout(false);
+            this.sidePanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.wbStrong)).EndInit();
+            this.sidePanel1.ResumeLayout(false);
+            this.sidePanel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gcStrongDefinition)).EndInit();
+            this.gcStrongDefinition.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtDefinition.Properties)).EndInit();
+            this.sidePanel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gcStrongShortDefinition)).EndInit();
+            this.gcStrongShortDefinition.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtShortDefinition.Properties)).EndInit();
             this.tabNavigationPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.wbGrammarCodes)).EndInit();
             this.tabNavigationPage4.ResumeLayout(false);
@@ -292,5 +412,13 @@ namespace IBE.WindowsClient.Controls {
         private DevExpress.XtraEditors.CheckEdit cbStartFromNewLine;
         private Microsoft.Web.WebView2.WinForms.WebView2 wbStrong;
         private Microsoft.Web.WebView2.WinForms.WebView2 wbGrammarCodes;
+        private DevExpress.XtraEditors.SidePanel sidePanel2;
+        private DevExpress.XtraEditors.SidePanel sidePanel1;
+        private DevExpress.XtraEditors.SidePanel sidePanel4;
+        private DevExpress.XtraEditors.GroupControl gcStrongDefinition;
+        private DevExpress.XtraEditors.SidePanel sidePanel3;
+        private DevExpress.XtraEditors.GroupControl gcStrongShortDefinition;
+        private DevExpress.XtraEditors.TextEdit txtShortDefinition;
+        private DevExpress.XtraEditors.MemoEdit txtDefinition;
     }
 }

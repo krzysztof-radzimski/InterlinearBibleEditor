@@ -13,6 +13,8 @@ using System.Windows.Forms;
 
 namespace IBE.WindowsClient.Controls {
     public partial class VerseEditorControl : XtraUserControl {
+        public static int PANE_HEIGHT = 400;
+
         bool isLoading = false;
         bool isLoaded = false;
         public Verse Verse { get; }
@@ -22,6 +24,8 @@ namespace IBE.WindowsClient.Controls {
         public FlowLayoutPanel VerseWordsControl { get { return flowLayoutPanel; } }
         public VerseEditorControl() {
             InitializeComponent();
+
+            tabPane1.Height = PANE_HEIGHT;
         }
 
         public VerseEditorControl(Verse verse) : this() {
@@ -29,6 +33,7 @@ namespace IBE.WindowsClient.Controls {
         }
 
         public bool IsModified() {
+            if (Verse.IsNotNull() && Verse.Text.IsNullOrEmpty()) { return true; }
             foreach (var item in flowLayoutPanel.Controls) {
                 if (item is VerseWordEditorControl) {
                     if ((item as VerseWordEditorControl).Modified) {
@@ -72,9 +77,11 @@ namespace IBE.WindowsClient.Controls {
 
             getControls.ContinueWith((x) => {
                 this.SafeInvoke(f => {
+                    f.flowLayoutPanel.SuspendLayout();
                     foreach (var control in x.Result) {
                         f.flowLayoutPanel.Controls.Add(control);
                     }
+                    f.flowLayoutPanel.ResumeLayout();
                 });
             });
 
@@ -131,12 +138,20 @@ namespace IBE.WindowsClient.Controls {
         public void Save() {
             gridViewTranslations.Focus();
             Application.DoEvents();
-
+           
             foreach (var item in flowLayoutPanel.Controls) {
                 if (item is VerseWordEditorControl) {
-                    (item as VerseWordEditorControl).Word.Save();
+                    var word = (item as VerseWordEditorControl).Word;
+                    word.Save();                    
                 }
             }
+
+            var text = String.Empty;
+            foreach (var verseWord in Verse.VerseWords.OrderBy(x=>x.NumberOfVerseWord)) {
+                text += $"{verseWord.Translation} ";
+            }
+
+            Verse.Text = text.Trim();
             Verse.Save();
             var uow = Verse.Session as UnitOfWork;
             if (uow.IsNotNull()) {
@@ -161,6 +176,10 @@ namespace IBE.WindowsClient.Controls {
             //</body>
             //</html>
             //";
+
+            txtShortDefinition.EditValue = e.ShortDefinition;
+            txtShortDefinition.Tag = e;
+            txtDefinition.EditValue = e.Definition;
 
             wbStrong.Source = new Uri($"https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=G{e.Code}&t=MGNT");
             tabPane1.SelectedPage = tabNavigationPage2;
@@ -292,6 +311,26 @@ if (br != undefined) {
 }
 ";
             wbGrammarCodes.CoreWebView2.ExecuteScriptAsync(script);
+        }
+
+        private void tabPane1_SizeChanged(object sender, EventArgs e) {
+            PANE_HEIGHT = tabPane1.Height;
+        }
+
+        private void gcStrongShortDefinition_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e) {
+            // save strong changes
+            var sc = txtShortDefinition.Tag as StrongCode;
+            if (sc.IsNotNull()) {
+                sc.Definition = txtDefinition.Text;
+                sc.ShortDefinition = txtShortDefinition.Text;
+                sc.Save();
+
+                var uow = sc.Session as UnitOfWork;
+                if (uow.IsNotNull()) {
+                    uow.CommitChanges();
+                    uow.ReloadChangedObjects();
+                }
+            }
         }
     }
 }

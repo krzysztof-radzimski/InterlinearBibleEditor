@@ -246,7 +246,7 @@ break;
                                     if (i != verseEnd) { versesText += ","; }
                                 }
 
-                                return $"<a href=\"../{translationName}/{numberOfBook}/{numberOfChapter}/{versesText}>{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>)";
+                                return $"<a href=\"../{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
                             });
                             footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
                                 var numberOfBook = m.Groups["book"].Value.ToInt();
@@ -269,7 +269,7 @@ break;
                         var translationFontWeight = word.Citation ? "font-weight: bold;" : "font-weight: 400;";
                         var translationFontColor = word.WordOfJesus ? "text-danger" : "";
 
-                        <div class="col pb-3" style="padding-left: 0 !important; max-width: 235px; @activeVerse">
+                        <div class="col pb-3" style="padding-left: 0 !important; max-width: 280px; @activeVerse">
                             <div class="container" style="position: relative">
                                 @if (isFirst) {
                                     //
@@ -312,6 +312,9 @@ break;
                     </div>
                 }
             }
+            // ------------------------------------
+            // Treści pozostałych przekładów
+            // ------------------------------------
             else {
                 foreach (var verse in chapter.Verses) {
                     //
