@@ -1,7 +1,9 @@
 ﻿using DevExpress.Xpo;
 using DevExpress.XtraBars.Ribbon;
+using IBE.Common.Extensions;
 using IBE.Data.Model;
 using System;
+using System.Linq;
 using System.Security.Principal;
 
 namespace IBE.WindowsClient {
@@ -15,7 +17,7 @@ namespace IBE.WindowsClient {
             LoadData();
         }
 
-        private void LoadData() {
+        internal void LoadData() {
             view = new XPView(new UnitOfWork(), typeof(Article));
             view.Properties.Add(new ViewProperty("Id", SortDirection.None, "[Oid]", false, true));
             view.Properties.Add(new ViewProperty("Subject", SortDirection.None, "[Subject]", false, true));
@@ -27,9 +29,6 @@ namespace IBE.WindowsClient {
         }
 
         private void btnAddArticle_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            //UserPrincipal userPrincipal = UserPrincipal.Current;
-            //String name = userPrincipal.DisplayName;
-
             var frm = new ArticleEditorForm(new Article(Uow) {
                 AuthorName = Environment.UserName,
                 Date = DateTime.Now,
@@ -39,6 +38,19 @@ namespace IBE.WindowsClient {
             frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
             frm.MdiParent = this.MdiParent;
             frm.Show();
-        }       
+        }
+
+        private void gridView_DoubleClick(object sender, EventArgs e) {
+            var record = gridView.GetFocusedRow() as ViewRecord;
+            if (record.IsNotNull()) {
+                var article = new XPQuery<Article>(Uow).Where(x => x.Oid == record["Id"].ToInt()).FirstOrDefault();
+                if (article.IsNotNull()) {
+                    var frm = new ArticleEditorForm(article);
+                    frm.IconOptions.SvgImage = btnAddArticle.ImageOptions.SvgImage;
+                    frm.MdiParent = this.MdiParent;
+                    frm.Show();
+                }
+            }
+        }
     }
 }

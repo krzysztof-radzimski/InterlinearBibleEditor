@@ -4,6 +4,7 @@ using DevExpress.XtraRichEdit;
 using DevExpress.XtraRichEdit.Commands;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
+using IBE.WindowsClient.Controllers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,16 +33,20 @@ namespace IBE.WindowsClient {
             h3Command.ForceExecute(h1Command.CreateDefaultCommandUIState());
             SetParagraphHeading4LevelCommand h4Command = new SetParagraphHeading4LevelCommand(editor);
             h4Command.ForceExecute(h1Command.CreateDefaultCommandUIState());
+            SetParagraphHeading5LevelCommand h5Command = new SetParagraphHeading5LevelCommand(editor);
+            h5Command.ForceExecute(h1Command.CreateDefaultCommandUIState());
             editor.Document.Delete(editor.Document.Paragraphs[0].Range);
+
+            XHtmlDocumentExporter.Register(editor);
         }
 
         public ArticleEditorForm(Article article) : this() {
             Article = article;
             if (Article.IsNotNull()) {
-                txtAuthor.DataBindings.Add("Text", Article, "AuthorName");
-                txtLead.DataBindings.Add("Text", Article, "Lead");
-                txtSubject.DataBindings.Add("Text", Article, "Subject");
-                txtDate.DataBindings.Add("DateTime", Article, "Date");
+                txtAuthor.Text = Article.AuthorName;
+                txtLead.Text = Article.Text;
+                txtSubject.Text=Article.Subject;
+                txtDate.DateTime=Article.Date;
 
                 if (Article.DocumentData.IsNotNull()) {
                     editor.LoadDocument(Article.DocumentData);
@@ -54,7 +59,14 @@ namespace IBE.WindowsClient {
             //System.Diagnostics.Process.Start(filePath);
             if (Article.IsNotNull()) {
                 Article.DocumentData = editor.SaveDocument(DocumentFormat.OpenXml);
-                // zapis do html ...
+                
+                var data = editor.SaveDocument(XHtmlDocumentFormat.Id);
+                Article.Text = Encoding.UTF8.GetString(data);
+
+                Article.Date = txtDate.DateTime;
+                Article.AuthorName = txtAuthor.Text;
+                Article.Lead = txtLead.Text;
+                Article.Subject = txtSubject.Text;
 
                 Article.Save();
                 var uow = Article.Session as UnitOfWork;
@@ -62,7 +74,18 @@ namespace IBE.WindowsClient {
                     uow.CommitChanges();
                     uow.ReloadChangedObjects();
                 }
+
+                var articles = MdiParent.MdiChildren.Where(x => x is ArticlesForm).FirstOrDefault();
+                if (articles.IsNotNull()) {
+                    (articles as ArticlesForm).LoadData();
+                }
             }
+        }
+
+        private void simpleButton1_Click(object sender, EventArgs e) {
+            var fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".html");
+            editor.SaveDocument(fileName, XHtmlDocumentFormat.Id);
+            System.Diagnostics.Process.Start(fileName);
         }
     }
 }

@@ -96,6 +96,7 @@ namespace IBE.WindowsClient {
             this.gridView.OptionsView.ColumnAutoWidth = false;
             this.gridView.OptionsView.ShowGroupPanel = false;
             this.gridView.OptionsView.ShowIndicator = false;
+            this.gridView.DoubleClick += new System.EventHandler(this.gridView_DoubleClick);
             // 
             // ArticlesForm
             // 

@@ -137,39 +137,38 @@ namespace IBE.WindowsClient {
             this.stylesRibbonPageGroup1 = new DevExpress.XtraRichEdit.UI.StylesRibbonPageGroup();
             this.editingRibbonPageGroup1 = new DevExpress.XtraRichEdit.UI.EditingRibbonPageGroup();
             this.referencesRibbonPage1 = new DevExpress.XtraRichEdit.UI.ReferencesRibbonPage();
-            this.tableOfContentsRibbonPageGroup1 = new DevExpress.XtraRichEdit.UI.TableOfContentsRibbonPageGroup();
-            this.captionsRibbonPageGroup1 = new DevExpress.XtraRichEdit.UI.CaptionsRibbonPageGroup();
             this.notesRibbonPageGroup1 = new DevExpress.XtraRichEdit.UI.NotesRibbonPageGroup();
             this.richEditBarController1 = new DevExpress.XtraRichEdit.UI.RichEditBarController(this.components);
             this.sidePanel1 = new DevExpress.XtraEditors.SidePanel();
-            this.sidePanel2 = new DevExpress.XtraEditors.SidePanel();
             this.tabs = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabSettings = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
-            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
-            this.txtSubject = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
-            this.txtDate = new DevExpress.XtraEditors.DateEdit();
-            this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
-            this.txtAuthor = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.txtLead = new DevExpress.XtraEditors.MemoEdit();
+            this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
+            this.txtAuthor = new DevExpress.XtraEditors.TextEdit();
+            this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
+            this.txtDate = new DevExpress.XtraEditors.DateEdit();
+            this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
+            this.txtSubject = new DevExpress.XtraEditors.TextEdit();
+            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
+            this.sidePanel2 = new DevExpress.XtraEditors.SidePanel();
+            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemFontEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemRichEditFontSizeEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.richEditBarController1)).BeginInit();
             this.sidePanel1.SuspendLayout();
-            this.sidePanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabs)).BeginInit();
             this.tabs.SuspendLayout();
             this.tabSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSubject.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLead.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAuthor.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDate.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDate.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtAuthor.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtLead.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSubject.Properties)).BeginInit();
+            this.sidePanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // ribbonControl1
@@ -279,6 +278,9 @@ namespace IBE.WindowsClient {
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.homeRibbonPage1,
             this.referencesRibbonPage1});
+            this.ribbonControl1.QuickToolbarItemLinks.Add(this.btnSave);
+            this.ribbonControl1.QuickToolbarItemLinks.Add(this.insertFootnoteItem1);
+            this.ribbonControl1.QuickToolbarItemLinks.Add(this.insertEndnoteItem1);
             this.ribbonControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemFontEdit1,
             this.repositoryItemRichEditFontSizeEdit1});
@@ -362,9 +364,12 @@ namespace IBE.WindowsClient {
             this.editor.Options.DocumentCapabilities.HeadersFooters = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.DocumentCapabilities.InlineShapes = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.DocumentCapabilities.Macros = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
+            this.editor.Options.DocumentCapabilities.Numbering.Bulleted = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
+            this.editor.Options.DocumentCapabilities.Numbering.MultiLevel = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.DocumentCapabilities.OleObjects = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.DocumentCapabilities.ParagraphBorders = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.DocumentCapabilities.ParagraphFrames = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
+            this.editor.Options.DocumentCapabilities.Tables = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.DocumentCapabilities.TrackChanges = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.DocumentSaveOptions.CurrentFormat = DevExpress.XtraRichEdit.DocumentFormat.OpenXml;
             this.editor.Options.Export.Html.CssPropertiesExportType = DevExpress.XtraRichEdit.Export.Html.CssPropertiesExportType.Inline;
@@ -914,6 +919,7 @@ namespace IBE.WindowsClient {
             this.btnSave.Caption = "Save";
             this.btnSave.Id = 95;
             this.btnSave.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnSave.ImageOptions.SvgImage")));
+            this.btnSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
             this.btnSave.Name = "btnSave";
             this.btnSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnSave_ItemClick);
             // 
@@ -979,26 +985,8 @@ namespace IBE.WindowsClient {
             // referencesRibbonPage1
             // 
             this.referencesRibbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
-            this.tableOfContentsRibbonPageGroup1,
-            this.captionsRibbonPageGroup1,
             this.notesRibbonPageGroup1});
             this.referencesRibbonPage1.Name = "referencesRibbonPage1";
-            // 
-            // tableOfContentsRibbonPageGroup1
-            // 
-            this.tableOfContentsRibbonPageGroup1.CaptionButtonVisible = DevExpress.Utils.DefaultBoolean.False;
-            this.tableOfContentsRibbonPageGroup1.ItemLinks.Add(this.insertTableOfContentsItem1, "T");
-            this.tableOfContentsRibbonPageGroup1.ItemLinks.Add(this.updateTableOfContentsItem1, "U");
-            this.tableOfContentsRibbonPageGroup1.ItemLinks.Add(this.addParagraphsToTableOfContentItem1, "A");
-            this.tableOfContentsRibbonPageGroup1.Name = "tableOfContentsRibbonPageGroup1";
-            // 
-            // captionsRibbonPageGroup1
-            // 
-            this.captionsRibbonPageGroup1.CaptionButtonVisible = DevExpress.Utils.DefaultBoolean.False;
-            this.captionsRibbonPageGroup1.ItemLinks.Add(this.insertCaptionPlaceholderItem1, "C");
-            this.captionsRibbonPageGroup1.ItemLinks.Add(this.insertTableOfFiguresPlaceholderItem1, "G");
-            this.captionsRibbonPageGroup1.ItemLinks.Add(this.updateTableOfFiguresItem1, "V");
-            this.captionsRibbonPageGroup1.Name = "captionsRibbonPageGroup1";
             // 
             // notesRibbonPageGroup1
             // 
@@ -1109,16 +1097,6 @@ namespace IBE.WindowsClient {
             this.sidePanel1.Size = new System.Drawing.Size(359, 592);
             this.sidePanel1.TabIndex = 3;
             // 
-            // sidePanel2
-            // 
-            this.sidePanel2.Controls.Add(this.editor);
-            this.sidePanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sidePanel2.Location = new System.Drawing.Point(0, 130);
-            this.sidePanel2.Name = "sidePanel2";
-            this.sidePanel2.Size = new System.Drawing.Size(986, 592);
-            this.sidePanel2.TabIndex = 4;
-            this.sidePanel2.Text = "sidePanel2";
-            // 
             // tabs
             // 
             this.tabs.Controls.Add(this.tabSettings);
@@ -1145,6 +1123,7 @@ namespace IBE.WindowsClient {
             // 
             this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
+            this.tablePanel1.Controls.Add(this.simpleButton1);
             this.tablePanel1.Controls.Add(this.txtLead);
             this.tablePanel1.Controls.Add(this.labelControl4);
             this.tablePanel1.Controls.Add(this.txtAuthor);
@@ -1180,36 +1159,47 @@ namespace IBE.WindowsClient {
             this.tablePanel1.Size = new System.Drawing.Size(358, 548);
             this.tablePanel1.TabIndex = 0;
             // 
-            // labelControl1
+            // txtLead
             // 
-            this.tablePanel1.SetColumn(this.labelControl1, 0);
-            this.labelControl1.Location = new System.Drawing.Point(3, 3);
-            this.labelControl1.Name = "labelControl1";
-            this.tablePanel1.SetRow(this.labelControl1, 0);
-            this.labelControl1.Size = new System.Drawing.Size(38, 13);
-            this.labelControl1.TabIndex = 0;
-            this.labelControl1.Text = "Subject";
+            this.tablePanel1.SetColumn(this.txtLead, 0);
+            this.txtLead.Location = new System.Drawing.Point(3, 157);
+            this.txtLead.MenuManager = this.ribbonControl1;
+            this.txtLead.Name = "txtLead";
+            this.txtLead.Properties.MaxLength = 1000;
+            this.tablePanel1.SetRow(this.txtLead, 7);
+            this.txtLead.Size = new System.Drawing.Size(352, 96);
+            this.txtLead.TabIndex = 7;
             // 
-            // txtSubject
+            // labelControl4
             // 
-            this.tablePanel1.SetColumn(this.txtSubject, 0);
-            this.txtSubject.Location = new System.Drawing.Point(3, 22);
-            this.txtSubject.MenuManager = this.ribbonControl1;
-            this.txtSubject.Name = "txtSubject";
-            this.txtSubject.Properties.MaxLength = 200;
-            this.tablePanel1.SetRow(this.txtSubject, 1);
-            this.txtSubject.Size = new System.Drawing.Size(352, 20);
-            this.txtSubject.TabIndex = 1;
+            this.tablePanel1.SetColumn(this.labelControl4, 0);
+            this.labelControl4.Location = new System.Drawing.Point(3, 138);
+            this.labelControl4.Name = "labelControl4";
+            this.tablePanel1.SetRow(this.labelControl4, 6);
+            this.labelControl4.Size = new System.Drawing.Size(24, 13);
+            this.labelControl4.TabIndex = 6;
+            this.labelControl4.Text = "Lead";
             // 
-            // labelControl2
+            // txtAuthor
             // 
-            this.tablePanel1.SetColumn(this.labelControl2, 0);
-            this.labelControl2.Location = new System.Drawing.Point(3, 48);
-            this.labelControl2.Name = "labelControl2";
-            this.tablePanel1.SetRow(this.labelControl2, 2);
-            this.labelControl2.Size = new System.Drawing.Size(24, 13);
-            this.labelControl2.TabIndex = 2;
-            this.labelControl2.Text = "Date";
+            this.tablePanel1.SetColumn(this.txtAuthor, 0);
+            this.txtAuthor.Location = new System.Drawing.Point(3, 112);
+            this.txtAuthor.MenuManager = this.ribbonControl1;
+            this.txtAuthor.Name = "txtAuthor";
+            this.txtAuthor.Properties.MaxLength = 100;
+            this.tablePanel1.SetRow(this.txtAuthor, 5);
+            this.txtAuthor.Size = new System.Drawing.Size(352, 20);
+            this.txtAuthor.TabIndex = 5;
+            // 
+            // labelControl3
+            // 
+            this.tablePanel1.SetColumn(this.labelControl3, 0);
+            this.labelControl3.Location = new System.Drawing.Point(3, 93);
+            this.labelControl3.Name = "labelControl3";
+            this.tablePanel1.SetRow(this.labelControl3, 4);
+            this.labelControl3.Size = new System.Drawing.Size(36, 13);
+            this.labelControl3.TabIndex = 4;
+            this.labelControl3.Text = "Author";
             // 
             // txtDate
             // 
@@ -1226,47 +1216,57 @@ namespace IBE.WindowsClient {
             this.txtDate.Size = new System.Drawing.Size(352, 20);
             this.txtDate.TabIndex = 3;
             // 
-            // labelControl3
+            // labelControl2
             // 
-            this.tablePanel1.SetColumn(this.labelControl3, 0);
-            this.labelControl3.Location = new System.Drawing.Point(3, 93);
-            this.labelControl3.Name = "labelControl3";
-            this.tablePanel1.SetRow(this.labelControl3, 4);
-            this.labelControl3.Size = new System.Drawing.Size(36, 13);
-            this.labelControl3.TabIndex = 4;
-            this.labelControl3.Text = "Author";
+            this.tablePanel1.SetColumn(this.labelControl2, 0);
+            this.labelControl2.Location = new System.Drawing.Point(3, 48);
+            this.labelControl2.Name = "labelControl2";
+            this.tablePanel1.SetRow(this.labelControl2, 2);
+            this.labelControl2.Size = new System.Drawing.Size(24, 13);
+            this.labelControl2.TabIndex = 2;
+            this.labelControl2.Text = "Date";
             // 
-            // txtAuthor
+            // txtSubject
             // 
-            this.tablePanel1.SetColumn(this.txtAuthor, 0);
-            this.txtAuthor.Location = new System.Drawing.Point(3, 112);
-            this.txtAuthor.MenuManager = this.ribbonControl1;
-            this.txtAuthor.Name = "txtAuthor";
-            this.txtAuthor.Properties.MaxLength = 100;
-            this.tablePanel1.SetRow(this.txtAuthor, 5);
-            this.txtAuthor.Size = new System.Drawing.Size(352, 20);
-            this.txtAuthor.TabIndex = 5;
+            this.tablePanel1.SetColumn(this.txtSubject, 0);
+            this.txtSubject.Location = new System.Drawing.Point(3, 22);
+            this.txtSubject.MenuManager = this.ribbonControl1;
+            this.txtSubject.Name = "txtSubject";
+            this.txtSubject.Properties.MaxLength = 200;
+            this.tablePanel1.SetRow(this.txtSubject, 1);
+            this.txtSubject.Size = new System.Drawing.Size(352, 20);
+            this.txtSubject.TabIndex = 1;
             // 
-            // labelControl4
+            // labelControl1
             // 
-            this.tablePanel1.SetColumn(this.labelControl4, 0);
-            this.labelControl4.Location = new System.Drawing.Point(3, 138);
-            this.labelControl4.Name = "labelControl4";
-            this.tablePanel1.SetRow(this.labelControl4, 6);
-            this.labelControl4.Size = new System.Drawing.Size(24, 13);
-            this.labelControl4.TabIndex = 6;
-            this.labelControl4.Text = "Lead";
+            this.tablePanel1.SetColumn(this.labelControl1, 0);
+            this.labelControl1.Location = new System.Drawing.Point(3, 3);
+            this.labelControl1.Name = "labelControl1";
+            this.tablePanel1.SetRow(this.labelControl1, 0);
+            this.labelControl1.Size = new System.Drawing.Size(38, 13);
+            this.labelControl1.TabIndex = 0;
+            this.labelControl1.Text = "Subject";
             // 
-            // txtLead
+            // sidePanel2
             // 
-            this.tablePanel1.SetColumn(this.txtLead, 0);
-            this.txtLead.Location = new System.Drawing.Point(3, 157);
-            this.txtLead.MenuManager = this.ribbonControl1;
-            this.txtLead.Name = "txtLead";
-            this.txtLead.Properties.MaxLength = 1000;
-            this.tablePanel1.SetRow(this.txtLead, 7);
-            this.txtLead.Size = new System.Drawing.Size(352, 96);
-            this.txtLead.TabIndex = 7;
+            this.sidePanel2.Controls.Add(this.editor);
+            this.sidePanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sidePanel2.Location = new System.Drawing.Point(0, 130);
+            this.sidePanel2.Name = "sidePanel2";
+            this.sidePanel2.Size = new System.Drawing.Size(986, 592);
+            this.sidePanel2.TabIndex = 4;
+            this.sidePanel2.Text = "sidePanel2";
+            // 
+            // simpleButton1
+            // 
+            this.tablePanel1.SetColumn(this.simpleButton1, 0);
+            this.simpleButton1.Location = new System.Drawing.Point(3, 259);
+            this.simpleButton1.Name = "simpleButton1";
+            this.tablePanel1.SetRow(this.simpleButton1, 8);
+            this.simpleButton1.Size = new System.Drawing.Size(352, 20);
+            this.simpleButton1.TabIndex = 8;
+            this.simpleButton1.Text = "HTML Preview";
+            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
             // 
             // ArticleEditorForm
             // 
@@ -1284,18 +1284,18 @@ namespace IBE.WindowsClient {
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemRichEditFontSizeEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.richEditBarController1)).EndInit();
             this.sidePanel1.ResumeLayout(false);
-            this.sidePanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tabs)).EndInit();
             this.tabs.ResumeLayout(false);
             this.tabSettings.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
             this.tablePanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSubject.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLead.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAuthor.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDate.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDate.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtAuthor.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtLead.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSubject.Properties)).EndInit();
+            this.sidePanel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1409,8 +1409,6 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraRichEdit.UI.StylesRibbonPageGroup stylesRibbonPageGroup1;
         private DevExpress.XtraRichEdit.UI.EditingRibbonPageGroup editingRibbonPageGroup1;
         private DevExpress.XtraRichEdit.UI.ReferencesRibbonPage referencesRibbonPage1;
-        private DevExpress.XtraRichEdit.UI.TableOfContentsRibbonPageGroup tableOfContentsRibbonPageGroup1;
-        private DevExpress.XtraRichEdit.UI.CaptionsRibbonPageGroup captionsRibbonPageGroup1;
         private DevExpress.XtraRichEdit.UI.NotesRibbonPageGroup notesRibbonPageGroup1;
         private DevExpress.XtraRichEdit.UI.RichEditBarController richEditBarController1;
         private DevExpress.XtraEditors.SidePanel sidePanel1;
@@ -1426,5 +1424,6 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraEditors.MemoEdit txtLead;
         private DevExpress.XtraEditors.LabelControl labelControl4;
         private DevExpress.XtraEditors.TextEdit txtAuthor;
+        private DevExpress.XtraEditors.SimpleButton simpleButton1;
     }
 }

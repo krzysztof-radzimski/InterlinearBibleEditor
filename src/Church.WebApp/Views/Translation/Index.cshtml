@@ -120,20 +120,38 @@ break;
                 Inny przekład
             </button>
             <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations">
-                @foreach (var _trans in Model.Translations) {
-                    var _active = String.Empty;
-                    if (_trans.Name == Model.Translation.Name) {
-                        _active = " active";
+                @{
+                    var _allTranslations = Model.Translations.OrderBy(x=>x.TranslationType).GroupBy(x => x.TranslationType);
+                    var __first = true;
+                }
+                @foreach (var _trans in _allTranslations) {
+
+                    if (__first) {
+                        __first = false;
+                    }
+                    else {
+                        <li><hr class="dropdown-divider"></li>
                     }
 
-                    <li>
-                        @if (Model.Verse.IsNotNullOrEmpty()) {
-                            <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_trans.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@_trans.Description</a>
+                    <li><h6 class="dropdown-header disabled">@_trans.Key</h6></li>
+
+                    foreach (var item in _trans) {
+                        var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
+                        var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
+                        var _active = String.Empty;
+                        if (item.Name == Model.Translation.Name) {
+                            _active = " active";
                         }
-                        else {
-                            <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_trans.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@_trans.Description</a>
-                        }
-                    </li>
+
+                        <li>
+                            @if (Model.Verse.IsNotNullOrEmpty()) {
+                                <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)</a>
+                            }
+                            else {
+                                <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)</a>
+                            }
+                        </li>
+                    }
                 }
             </ul>
 
@@ -234,7 +252,7 @@ break;
                         var footnoteText = word.FootnoteText;
                         if (footnoteText.IsNotNullOrEmpty() && footnoteText.Contains("<x>")) {
                             footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
-                                var translationName = "NPI";
+                                //var translationName = "NPI";
                                 var numberOfBook = m.Groups["book"].Value.ToInt();
                                 var bookShortcut = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
                                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();

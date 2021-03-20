@@ -13,6 +13,7 @@
 
 using DevExpress.Xpo;
 using IBE.Data.Model;
+using IBE.Common.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -45,8 +46,17 @@ namespace Church.WebApp.Controllers {
                         view.CriteriaString = $"[Books][[NumberOfBook] = '{book}']";
                         view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
                         view.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
+                        view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+                        view.Properties.Add(new ViewProperty("Catholic", SortDirection.None, "[Catolic]", false, true));
+                        view.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
                         foreach (ViewRecord item in view) {
-                            result.Translations.Add(new TranslationInfo() { Name = item["Name"].ToString(), Description = item["Description"].ToString() });
+                            result.Translations.Add(new TranslationInfo() {
+                                Name = item["Name"].ToString(),
+                                Description = item["Description"].ToString(),
+                                TranslationType = ((TranslationType)item["Type"]).GetDescription(),
+                                Catholic = (bool)item["Catholic"],
+                                Recommended = (bool)item["Recommended"]
+                            });
                         }
 
                         return View(result);
@@ -75,5 +85,8 @@ namespace Church.WebApp.Controllers {
     public class TranslationInfo {
         public string Name { get; set; }
         public string Description { get; set; }
+        public string TranslationType { get; set; }
+        public bool Catholic{ get; set; }
+        public bool Recommended { get; set; }
     }
 }

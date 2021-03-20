@@ -104,6 +104,7 @@
     <Compile Include="ArticlesForm.Designer.cs">
       <DependentUpon>ArticlesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\XHtmlDocumentExporter.cs" />
     <Compile Include="Controls\VerseEditorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
