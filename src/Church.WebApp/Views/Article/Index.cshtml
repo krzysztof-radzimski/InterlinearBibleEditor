@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Artykuł";
+}
+@using IBE.Common.Extensions
+@using DevExpress.Xpo;
+@using System.Linq;
+@using IBE.Data.Model;
+
+@model IBE.Data.Model.Article
+
+@if (Model != null) {
+
+    ViewData["Title"] = @Model.Subject;
+
+    <div class="row shadow-lg" style="max-width: 1040px; margin: auto;">
+        <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-success">@Model.Type.GetDescription()</strong>
+            <h3 class="mb-0">@Model.Subject</h3>
+            <p class="mb-auto fst-italic">@Model.AuthorName</p>
+            <p class="mb-auto">@Model.Lead</p>
+            <div class="mb-1 text-muted">@Model.Date.Day @Model.Date.ToString("MMMM") @Model.Date.Year</div>
+        </div>
+
+        @if (Model.AuthorPicture.IsNotNull()) {
+            <div class="col-auto d-none d-lg-block" style="background-image: url('data:image/png;base64, @Convert.ToBase64String(Model.AuthorPicture)'); background-position: center center; background-repeat: no-repeat; background-size: cover; max-width: 350px; width: 40%;"></div>
+        }
+    </div>
+    <div style="text-align: justify; max-width: 900px; margin: auto;">
+        @{
+            var text = Model.Text;
+            //if (text.IsNotNullOrEmpty() && text.Contains("<x>")) {
+            //    var books = new XPQuery<BookBase>(Model.Session);
+
+            //    text = System.Text.RegularExpressions.Regex.Replace(text, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+            //        //var translationName = "NPI";
+            //        var numberOfBook = m.Groups["book"].Value.ToInt();
+            //        var bookShortcut = books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BookShortcut;
+            //        var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+            //        var verseStart = m.Groups["verseStart"].Value.ToInt();
+            //        var verseEnd = m.Groups["verseEnd"].Value.ToInt();
+            //        var versesText = String.Empty;
+            //        for (int i = verseStart; i <= verseEnd; i++) {
+            //            versesText += $"{i}";
+            //            if (i != verseEnd) { versesText += ","; }
+            //        }
+
+            //        return $"<a href=\"../BW/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
+            //    });
+            //    text = System.Text.RegularExpressions.Regex.Replace(text, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+            //        var numberOfBook = m.Groups["book"].Value.ToInt();
+            //        var bookShortcut = books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BookShortcut;
+            //        var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+            //        var verseStart = m.Groups["verseStart"].Value.ToInt();
+
+
+            //        return $"<a href=\"../BW/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
+            //    });
+            //}
+
+            // usuwam sierotki
+            text = System.Text.RegularExpressions.Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                return " " + m.Value.Trim() + "&nbsp;";
+            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        }
+
+        @Html.Raw(text)
+    </div>
+}
+else {
+    <p>Bra danych do wyświetlenia</p>
+}

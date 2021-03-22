@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -38,28 +39,48 @@ namespace IBE.WindowsClient {
             editor.Document.Delete(editor.Document.Paragraphs[0].Range);
 
             XHtmlDocumentExporter.Register(editor);
+            InitTypes();
+
+            Text = "New article";
         }
+             
 
         public ArticleEditorForm(Article article) : this() {
             Article = article;
             if (Article.IsNotNull()) {
+                Text = Article.Subject;
+
                 txtAuthor.Text = Article.AuthorName;
-                txtLead.Text = Article.Text;
-                txtSubject.Text=Article.Subject;
-                txtDate.DateTime=Article.Date;
+                txtLead.Text = Article.Lead;
+                txtSubject.Text = Article.Subject;
+                txtDate.DateTime = Article.Date;
 
                 if (Article.DocumentData.IsNotNull()) {
                     editor.LoadDocument(Article.DocumentData);
                 }
+
+                txtType.EditValue = Article.Type;
+                if (Article.AuthorPicture.IsNotNull()) {
+                    txtAuthorPicture.Image = Image.FromStream(new MemoryStream(Article.AuthorPicture));
+                }
             }
+        }
+        private void InitTypes() {
+            var list = typeof(ArticleType).GetEnumValues().OfType<ArticleType>();
+            txtType.Properties.DataSource = list;
         }
         private void btnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             //var filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".html");
             //editor.SaveDocument(filePath, DocumentFormat.Html);
             //System.Diagnostics.Process.Start(filePath);
             if (Article.IsNotNull()) {
-                Article.DocumentData = editor.SaveDocument(DocumentFormat.OpenXml);
-                
+                var fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".docx");
+                editor.SaveDocument(fileName, DocumentFormat.OpenXml);
+                if (File.Exists(fileName)) {
+                    Article.DocumentData = File.ReadAllBytes(fileName);
+                    try { File.Delete(fileName); } catch { }
+                }
+
                 var data = editor.SaveDocument(XHtmlDocumentFormat.Id);
                 Article.Text = Encoding.UTF8.GetString(data);
 
@@ -67,6 +88,16 @@ namespace IBE.WindowsClient {
                 Article.AuthorName = txtAuthor.Text;
                 Article.Lead = txtLead.Text;
                 Article.Subject = txtSubject.Text;
+                Article.Type = (ArticleType)txtType.EditValue;
+
+                if (txtAuthorPicture.Image.IsNotNull()) {
+                    var mem = new MemoryStream();
+                    txtAuthorPicture.Image.Save(mem, ImageFormat.Jpeg);
+                    Article.AuthorPicture = mem.ToArray();
+                }
+                else {
+                    Article.AuthorPicture = null;
+                }
 
                 Article.Save();
                 var uow = Article.Session as UnitOfWork;
@@ -74,6 +105,8 @@ namespace IBE.WindowsClient {
                     uow.CommitChanges();
                     uow.ReloadChangedObjects();
                 }
+
+                Text = Article.Subject;
 
                 var articles = MdiParent.MdiChildren.Where(x => x is ArticlesForm).FirstOrDefault();
                 if (articles.IsNotNull()) {

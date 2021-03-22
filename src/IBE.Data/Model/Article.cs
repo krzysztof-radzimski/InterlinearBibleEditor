@@ -1,6 +1,7 @@
 ﻿using DevExpress.Xpo;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace IBE.Data.Model {
@@ -11,6 +12,8 @@ namespace IBE.Data.Model {
         private string lead;
         private DateTime date;
         private byte[] documentData;
+        private ArticleType type;
+        private byte[] authorPicture;
 
         [Size(200)]
         public string Subject {
@@ -30,7 +33,7 @@ namespace IBE.Data.Model {
         }
 
         [Size(1000)]
-        public string Lead{
+        public string Lead {
             get { return lead; }
             set { SetPropertyValue(nameof(Lead), ref lead, value); }
         }
@@ -46,6 +49,25 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(DocumentData), ref documentData, value); }
         }
 
+        public ArticleType Type {
+            get { return type; }
+            set { SetPropertyValue(nameof(Type), ref type, value); }
+        }
+
+        public byte[] AuthorPicture {
+            get { return authorPicture; }
+            set { SetPropertyValue(nameof(AuthorPicture), ref authorPicture, value); }
+        }
+
         public Article(Session session) : base(session) { }
+    }
+
+    public enum ArticleType {
+        [Description("Skrypt")]
+        Draft,
+        [Description("Artykuł")]
+        Article,
+        [Description("Kazanie")]
+        Sermon
     }
 }

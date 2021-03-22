@@ -1,21 +1,20 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿using DevExpress.Office;
+using DevExpress.Office.Export;
+using DevExpress.Office.Internal;
 using DevExpress.Utils;
 using DevExpress.XtraRichEdit;
 using DevExpress.XtraRichEdit.Export;
 using DevExpress.XtraRichEdit.Internal;
 using DevExpress.XtraRichEdit.Model;
-using System.Drawing;
-using DevExpress.Office;
-using DevExpress.Office.Export;
-using DevExpress.Office.Internal;
-using DevExpress.XtraRichEdit.API.Native.Implementation;
-using System.Drawing.Imaging;
 using IBE.Common.Extensions;
-using System.Reflection;
-using System.Linq;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 
 namespace IBE.WindowsClient.Controllers {
     public class XHtmlDocumentExporter : IExporter<DocumentFormat, bool> {
@@ -68,7 +67,7 @@ namespace IBE.WindowsClient.Controllers {
                 DocumentContentWriter.Write("<div>");
                 Export();
                 DocumentContentWriter.Write("</div>");
-                                
+
                 if (footnotes.Count > 0) {
                     DocumentContentWriter.Write("<div>");
                     DocumentContentWriter.Write("<hr style=\"width: 20%; margin: initial;\" />");
@@ -93,6 +92,7 @@ namespace IBE.WindowsClient.Controllers {
 
         protected override void ExportTextRun(TextRun run) {
             string text = run.GetPlainText(PieceTable.TextBuffer);
+            text = text.Replace("\v", "<br/>");
 
             if (!hyperlinkExporting) {
                 var span = @"<span style=""";
@@ -146,6 +146,15 @@ namespace IBE.WindowsClient.Controllers {
 
             base.ExportInlinePictureRun(run);
         }
+        protected override void ExportDrawingObjectRun(DrawingObjectRun run) {
+            var mem = new MemoryStream();
+            run.DrawingObject.GetCachedImage(new Rectangle(run.DrawingObject.ExtendedBounds.X.ToInt(), run.DrawingObject.ExtendedBounds.Y.ToInt(), run.DrawingObject.ExtendedBounds.Width.ToInt(), run.DrawingObject.ExtendedBounds.Height.ToInt())).NativeImage.Save(mem, ImageFormat.Jpeg);
+            var data = mem.GetBuffer();
+
+            DocumentContentWriter.Write($@"<img  src=""data:image/png;base64, {Convert.ToBase64String(data)}"" />");
+
+            base.ExportDrawingObjectRun(run);
+        }
         protected override void ExportNonBreakingHyphenRun(NonBreakingHyphenRun run) {
             base.ExportNonBreakingHyphenRun(run);
             DocumentContentWriter.Write("&nbsp;");
@@ -156,7 +165,7 @@ namespace IBE.WindowsClient.Controllers {
         protected override void ExportFootNoteRun(FootnoteRun run) {
             base.ExportFootNoteRun(run);
 
-            var methods =this.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance); // "CreateFootNoteExportInfo"
+            var methods = this.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance); // "CreateFootNoteExportInfo"
             var dynMethod = methods.Where(x => x.Name == "CreateFootNoteExportInfo").FirstOrDefault();
             if (dynMethod.IsNotNull()) {
                 var info = dynMethod.Invoke(this, new object[] { run }) as FootNoteExportInfo;
@@ -166,7 +175,7 @@ namespace IBE.WindowsClient.Controllers {
                     var text = info.Note.TextBuffer.ToString().Replace("#", "").Trim();
                     footnotes.Add($"<a id=\"footnote{info.Number}\" name=\"footnote{info.Number}\"></a><span style=\"vertical-align: super; font-size: smaller;\">{info.NumberText}</span>&nbsp;{text}<br/>");
                 }
-            }           
+            }
         }
         protected override void ExportEndNoteRun(EndnoteRun run) {
             base.ExportEndNoteRun(run);
@@ -244,7 +253,13 @@ namespace IBE.WindowsClient.Controllers {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
                     }
-                    DocumentContentWriter.Write(@"<p class=""fs-5 mt-3"">");
+
+                    if (paragraph.Alignment == ParagraphAlignment.Center) {
+                        DocumentContentWriter.Write(@"<p class=""fs-5 mt-3"" style=""text-align: center"">");
+                    }
+                    else {
+                        DocumentContentWriter.Write(@"<p class=""fs-5 mt-3"">");
+                    }
                 }
             }
             else {

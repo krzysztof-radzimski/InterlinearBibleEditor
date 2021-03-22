@@ -24,10 +24,6 @@ namespace IBE.WebApp.Controllers {
             _logger = logger;
         }
 
-        //public IActionResult RenderMenu() {
-        //    return PartialView("_MenuBar");
-        //}
-
         public IActionResult Index() {
             return View();
         }
