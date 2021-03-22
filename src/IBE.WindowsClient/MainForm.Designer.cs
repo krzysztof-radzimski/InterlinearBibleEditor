@@ -29,11 +29,12 @@ namespace IBE.WindowsClient {
             this.ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
             this.btnTranslations = new DevExpress.XtraBars.BarButtonItem();
             this.btnInterlinearEditor = new DevExpress.XtraBars.BarButtonItem();
+            this.btnArticles = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(this.components);
-            this.btnArticles = new DevExpress.XtraBars.BarButtonItem();
+            this.btnBaseBooks = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).BeginInit();
             this.SuspendLayout();
@@ -48,9 +49,10 @@ namespace IBE.WindowsClient {
             this.ribbonControl1.SearchEditItem,
             this.btnTranslations,
             this.btnInterlinearEditor,
-            this.btnArticles});
+            this.btnArticles,
+            this.btnBaseBooks});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 8;
+            this.ribbonControl1.MaxItemId = 9;
             this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
@@ -79,6 +81,14 @@ namespace IBE.WindowsClient {
             this.btnInterlinearEditor.Name = "btnInterlinearEditor";
             this.btnInterlinearEditor.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnInterlinearEditor_ItemClick);
             // 
+            // btnArticles
+            // 
+            this.btnArticles.Caption = "Articles";
+            this.btnArticles.Id = 7;
+            this.btnArticles.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnArticles.ImageOptions.SvgImage")));
+            this.btnArticles.Name = "btnArticles";
+            this.btnArticles.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnArticles_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -90,6 +100,7 @@ namespace IBE.WindowsClient {
             // 
             this.ribbonPageGroup1.ItemLinks.Add(this.btnTranslations);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnInterlinearEditor);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnBaseBooks);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnArticles);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
@@ -106,13 +117,13 @@ namespace IBE.WindowsClient {
             this.xtraTabbedMdiManager1.MdiParent = this;
             this.xtraTabbedMdiManager1.UseFormIconAsPageImage = DevExpress.Utils.DefaultBoolean.True;
             // 
-            // btnArticles
+            // btnBaseBooks
             // 
-            this.btnArticles.Caption = "Articles";
-            this.btnArticles.Id = 7;
-            this.btnArticles.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnArticles.ImageOptions.SvgImage")));
-            this.btnArticles.Name = "btnArticles";
-            this.btnArticles.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnArticles_ItemClick);
+            this.btnBaseBooks.Caption = "Base books";
+            this.btnBaseBooks.Id = 8;
+            this.btnBaseBooks.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnBaseBooks.ImageOptions.SvgImage")));
+            this.btnBaseBooks.Name = "btnBaseBooks";
+            this.btnBaseBooks.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnBaseBooks_ItemClick);
             // 
             // MainForm
             // 
@@ -145,6 +156,7 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraTabbedMdi.XtraTabbedMdiManager xtraTabbedMdiManager1;
         private DevExpress.XtraBars.BarButtonItem btnInterlinearEditor;
         private DevExpress.XtraBars.BarButtonItem btnArticles;
+        private DevExpress.XtraBars.BarButtonItem btnBaseBooks;
     }
 }
 

@@ -17,6 +17,7 @@ namespace IBE.Data.Model {
     public class BookStatus : XPObject {
         private BiblePart biblePart;
         private CanonType canonType;
+        private TheBookType bookType;
         public BiblePart BiblePart {
             get { return biblePart; }
             set { SetPropertyValue(nameof(BiblePart), ref biblePart, value); }
@@ -25,6 +26,10 @@ namespace IBE.Data.Model {
             get { return canonType; }
             set { SetPropertyValue(nameof(CanonType), ref canonType, value); }
         }
+        public TheBookType BookType {
+            get { return bookType; }
+            set { SetPropertyValue(nameof(BookType), ref bookType, value); }
+        }
 
         [Association("StatusBooks")]
         public XPCollection<BookBase> Books {
@@ -32,6 +37,10 @@ namespace IBE.Data.Model {
         }
 
         public BookStatus(Session session) : base(session) { }
+
+        public override string ToString() {
+            return $"{BookType} {BiblePart} {CanonType}";
+        }
     }
 
     public enum BiblePart {
@@ -44,5 +53,12 @@ namespace IBE.Data.Model {
         Canon = 1,
         SecondCanon = 2,
         Apocrypha = 3
+    }
+    public enum TheBookType {
+        None = 0,
+        Bible = 1,
+        ChurchFathersLetter = 2,
+        Catechism = 3,
+        Other = 4
     }
 }

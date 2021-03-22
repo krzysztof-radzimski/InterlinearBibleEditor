@@ -121,7 +121,7 @@ break;
             </button>
             <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations">
                 @{
-                    var _allTranslations = Model.Translations.OrderBy(x=>x.TranslationType).GroupBy(x => x.TranslationType);
+                    var _allTranslations = Model.Translations.OrderBy(x => x.TranslationType).GroupBy(x => x.TranslationType);
                     var __first = true;
                 }
                 @foreach (var _trans in _allTranslations) {
@@ -192,7 +192,50 @@ break;
 
         <h1 class="text-center p-2"><a class="text-decoration-none text-dark" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@null">@Model.Translation.Description</a></h1>
         <h2 class="text-center p-2">@book.BaseBook.BookTitle</h2>
+        var chapterNumber = Convert.ToInt32(Model.Chapter);
+        if (chapterNumber == 1) {
+            if (book.BaseBook.IsNotNull()) {
 
+                <div class="lh-base fs-5" style="max-width: 1000px; margin: auto; text-align: justify; display: table">
+
+                    @if (book.BaseBook.AuthorName.IsNotNullOrEmpty()) {
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
+                            <div style="display: table-cell">@book.BaseBook.AuthorName</div>
+                        </div>
+                    }
+
+                     @if (book.BaseBook.TimeOfWriting.IsNotNullOrEmpty()) {
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
+                            <div style="display: table-cell">@book.BaseBook.TimeOfWriting</div>
+                        </div>
+                    }
+
+                     @if (book.BaseBook.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
+                            <div style="display: table-cell">@book.BaseBook.PlaceWhereBookWasWritten</div>
+                        </div>
+                    }
+
+                    @if (book.BaseBook.Purpose.IsNotNullOrEmpty()) {
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
+                            <div style="display: table-cell">@book.BaseBook.Purpose</div>
+                        </div>
+                    }
+                    
+                    @if (book.BaseBook.Subject.IsNotNullOrEmpty()) {
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
+                            <div style="display: table-cell">@book.BaseBook.Subject</div>
+                        </div>
+                    }
+
+                </div>
+            }
+        }
 
         if (book.NumberOfBook == 230) {
             <h2 class="text-center p-2">@Model.Translation.ChapterPsalmString @Model.Chapter</h2>
@@ -201,7 +244,8 @@ break;
             <h2 class="text-center p-2">@Model.Translation.ChapterString @Model.Chapter</h2>
         }
 
-        var chapter = book.Chapters.Where(x => x.NumberOfChapter == Convert.ToInt32(Model.Chapter)).FirstOrDefault();
+
+        var chapter = book.Chapters.Where(x => x.NumberOfChapter == chapterNumber).FirstOrDefault();
         var footNoteIndex = 1;
         var footNoteRefIndex = 0;
         var footNotes = new List<string>();

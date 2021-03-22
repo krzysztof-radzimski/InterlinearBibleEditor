@@ -104,6 +104,18 @@
     <Compile Include="ArticlesForm.Designer.cs">
       <DependentUpon>ArticlesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="BaseBookEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseBookEditForm.Designer.cs">
+      <DependentUpon>BaseBookEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BaseBooksForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseBooksForm.Designer.cs">
+      <DependentUpon>BaseBooksForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\XHtmlDocumentExporter.cs" />
     <Compile Include="Controls\VerseEditorControl.cs">
       <SubType>UserControl</SubType>
@@ -148,6 +160,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ArticlesForm.resx">
       <DependentUpon>ArticlesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseBookEditForm.resx">
+      <DependentUpon>BaseBookEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseBooksForm.resx">
+      <DependentUpon>BaseBooksForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\VerseEditorControl.resx">
       <DependentUpon>VerseEditorControl.cs</DependentUpon>

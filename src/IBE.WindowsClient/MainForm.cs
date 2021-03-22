@@ -36,5 +36,12 @@ namespace IBE.WindowsClient {
             frm.MdiParent = this;
             frm.Show();
         }
+
+        private void btnBaseBooks_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var frm = new BaseBooksForm();
+            frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
+            frm.MdiParent = this;
+            frm.Show();
+        }
     }
 }
