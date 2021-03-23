@@ -52,5 +52,12 @@ namespace IBE.WindowsClient {
                 }
             }
         }
+
+        private void btnCreateTranslation_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var uow = view.Session as UnitOfWork;
+            var translation = new Translation(uow) { 
+             
+            };
+        }
     }
 }

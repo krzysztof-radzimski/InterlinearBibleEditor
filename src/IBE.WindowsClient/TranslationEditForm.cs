@@ -18,6 +18,7 @@ namespace IBE.WindowsClient {
         public TranslationEditForm() {
             InitializeComponent();
             this.Text = "Translation editor";
+            txtBookType.Properties.DataSource = typeof(TheBookType).GetEnumValues().OfType<TheBookType>();
         }
 
         public TranslationEditForm(int id, Session session) : this() {
@@ -43,6 +44,7 @@ namespace IBE.WindowsClient {
                     txtType.DataBindings.Add("EditValue", Object, "Type");
                     cbIsCatholic.DataBindings.Add("EditValue", Object, "Catolic");
                     cbIsRecommended.DataBindings.Add("EditValue", Object, "Recommended");
+                    txtBookType.DataBindings.Add("EditValue", Object, "BookType");
 
                     //txtName.EditValue = Object.Name;
                     //txtDescription.EditValue = Object.Description;

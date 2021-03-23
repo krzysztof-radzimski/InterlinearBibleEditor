@@ -26,6 +26,7 @@ namespace IBE.Data.Model {
         private string detailedInfo;
         private bool catolic;
         private bool recommended;
+        private TheBookType bookType;
 
         public string Name {
             get { return name; }
@@ -78,6 +79,11 @@ namespace IBE.Data.Model {
         [Association("BookTranslations")]
         public XPCollection<Book> Books {
             get { return GetCollection<Book>(nameof(Books)); }
+        }
+
+        public TheBookType BookType {
+            get { return bookType; }
+            set { SetPropertyValue(nameof(BookType), ref bookType, value); }
         }
 
         public Translation() : base(new UnitOfWork()) { }

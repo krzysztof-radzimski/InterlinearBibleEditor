@@ -24,6 +24,7 @@ namespace IBE.WindowsClient {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TranslationEditForm));
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
@@ -35,33 +36,42 @@ namespace IBE.WindowsClient {
             this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl10 = new DevExpress.XtraEditors.LabelControl();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
-            this.txtName = new DevExpress.XtraEditors.TextEdit();
-            this.txtDescription = new DevExpress.XtraEditors.TextEdit();
-            this.txtLanguage = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.txtType = new DevExpress.XtraEditors.ComboBoxEdit();
-            this.cbIsCatholic = new DevExpress.XtraEditors.CheckEdit();
-            this.cbIsRecommended = new DevExpress.XtraEditors.CheckEdit();
-            this.txtChapterString = new DevExpress.XtraEditors.TextEdit();
-            this.txtChapterPsalmString = new DevExpress.XtraEditors.TextEdit();
-            this.txtIntroduction = new DevExpress.XtraEditors.MemoEdit();
-            this.txtDetailedInfo = new DevExpress.XtraEditors.MemoEdit();
+            this.tablePanel2 = new DevExpress.Utils.Layout.TablePanel();
             this.btnApply = new DevExpress.XtraEditors.SimpleButton();
             this.btnCancel = new DevExpress.XtraEditors.SimpleButton();
-            this.tablePanel2 = new DevExpress.Utils.Layout.TablePanel();
+            this.txtDetailedInfo = new DevExpress.XtraEditors.MemoEdit();
+            this.txtIntroduction = new DevExpress.XtraEditors.MemoEdit();
+            this.txtChapterPsalmString = new DevExpress.XtraEditors.TextEdit();
+            this.txtChapterString = new DevExpress.XtraEditors.TextEdit();
+            this.cbIsRecommended = new DevExpress.XtraEditors.CheckEdit();
+            this.cbIsCatholic = new DevExpress.XtraEditors.CheckEdit();
+            this.txtType = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.txtLanguage = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.txtDescription = new DevExpress.XtraEditors.TextEdit();
+            this.txtName = new DevExpress.XtraEditors.TextEdit();
+            this.tabPane1 = new DevExpress.XtraBars.Navigation.TabPane();
+            this.tabTranslationInfo = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            this.tabBooks = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            this.labelControl11 = new DevExpress.XtraEditors.LabelControl();
+            this.txtBookType = new DevExpress.XtraEditors.LookUpEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtLanguage.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbIsCatholic.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbIsRecommended.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtChapterString.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtChapterPsalmString.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtIntroduction.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtDetailedInfo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).BeginInit();
             this.tablePanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDetailedInfo.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtIntroduction.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtChapterPsalmString.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtChapterString.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbIsRecommended.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbIsCatholic.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLanguage.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).BeginInit();
+            this.tabPane1.SuspendLayout();
+            this.tabTranslationInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtBookType.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // labelControl1
@@ -169,7 +179,8 @@ namespace IBE.WindowsClient {
             this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 5F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
-            this.tablePanel1.Controls.Add(this.tablePanel2);
+            this.tablePanel1.Controls.Add(this.txtBookType);
+            this.tablePanel1.Controls.Add(this.labelControl11);
             this.tablePanel1.Controls.Add(this.txtDetailedInfo);
             this.tablePanel1.Controls.Add(this.txtIntroduction);
             this.tablePanel1.Controls.Add(this.txtChapterPsalmString);
@@ -206,38 +217,104 @@ namespace IBE.WindowsClient {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(800, 470);
+            this.tablePanel1.Size = new System.Drawing.Size(800, 649);
             this.tablePanel1.TabIndex = 0;
             // 
-            // txtName
+            // tablePanel2
             // 
-            this.tablePanel1.SetColumn(this.txtName, 1);
-            this.txtName.Location = new System.Drawing.Point(152, 3);
-            this.txtName.Name = "txtName";
-            this.tablePanel1.SetRow(this.txtName, 0);
-            this.txtName.Size = new System.Drawing.Size(645, 20);
-            this.txtName.TabIndex = 10;
+            this.tablePanel2.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 5F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 55F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 50F)});
+            this.tablePanel2.Controls.Add(this.btnCancel);
+            this.tablePanel2.Controls.Add(this.btnApply);
+            this.tablePanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tablePanel2.Location = new System.Drawing.Point(0, 677);
+            this.tablePanel2.Name = "tablePanel2";
+            this.tablePanel2.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F)});
+            this.tablePanel2.Size = new System.Drawing.Size(800, 38);
+            this.tablePanel2.TabIndex = 2;
             // 
-            // txtDescription
+            // btnApply
             // 
-            this.tablePanel1.SetColumn(this.txtDescription, 1);
-            this.txtDescription.Location = new System.Drawing.Point(152, 29);
-            this.txtDescription.Name = "txtDescription";
-            this.tablePanel1.SetRow(this.txtDescription, 1);
-            this.txtDescription.Size = new System.Drawing.Size(645, 20);
-            this.txtDescription.TabIndex = 11;
+            this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tablePanel2.SetColumn(this.btnApply, 2);
+            this.btnApply.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnApply.Location = new System.Drawing.Point(722, 9);
+            this.btnApply.Name = "btnApply";
+            this.tablePanel2.SetRow(this.btnApply, 0);
+            this.btnApply.Size = new System.Drawing.Size(75, 20);
+            this.btnApply.TabIndex = 0;
+            this.btnApply.Text = "Apply";
             // 
-            // txtLanguage
+            // btnCancel
             // 
-            this.tablePanel1.SetColumn(this.txtLanguage, 1);
-            this.txtLanguage.Location = new System.Drawing.Point(152, 55);
-            this.txtLanguage.Name = "txtLanguage";
-            this.txtLanguage.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.txtLanguage.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.tablePanel1.SetRow(this.txtLanguage, 2);
-            this.txtLanguage.Size = new System.Drawing.Size(645, 20);
-            this.txtLanguage.TabIndex = 12;
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tablePanel2.SetColumn(this.btnCancel, 1);
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(641, 9);
+            this.btnCancel.Name = "btnCancel";
+            this.tablePanel2.SetRow(this.btnCancel, 0);
+            this.btnCancel.Size = new System.Drawing.Size(75, 20);
+            this.btnCancel.TabIndex = 1;
+            this.btnCancel.Text = "Cancel";
+            // 
+            // txtDetailedInfo
+            // 
+            this.tablePanel1.SetColumn(this.txtDetailedInfo, 1);
+            this.txtDetailedInfo.Location = new System.Drawing.Point(152, 313);
+            this.txtDetailedInfo.Name = "txtDetailedInfo";
+            this.tablePanel1.SetRow(this.txtDetailedInfo, 9);
+            this.txtDetailedInfo.Size = new System.Drawing.Size(645, 100);
+            this.txtDetailedInfo.TabIndex = 19;
+            // 
+            // txtIntroduction
+            // 
+            this.tablePanel1.SetColumn(this.txtIntroduction, 1);
+            this.txtIntroduction.Location = new System.Drawing.Point(152, 207);
+            this.txtIntroduction.Name = "txtIntroduction";
+            this.tablePanel1.SetRow(this.txtIntroduction, 8);
+            this.txtIntroduction.Size = new System.Drawing.Size(645, 100);
+            this.txtIntroduction.TabIndex = 18;
+            // 
+            // txtChapterPsalmString
+            // 
+            this.tablePanel1.SetColumn(this.txtChapterPsalmString, 1);
+            this.txtChapterPsalmString.Location = new System.Drawing.Point(152, 181);
+            this.txtChapterPsalmString.Name = "txtChapterPsalmString";
+            this.tablePanel1.SetRow(this.txtChapterPsalmString, 7);
+            this.txtChapterPsalmString.Size = new System.Drawing.Size(645, 20);
+            this.txtChapterPsalmString.TabIndex = 17;
+            // 
+            // txtChapterString
+            // 
+            this.tablePanel1.SetColumn(this.txtChapterString, 1);
+            this.txtChapterString.Location = new System.Drawing.Point(152, 155);
+            this.txtChapterString.Name = "txtChapterString";
+            this.tablePanel1.SetRow(this.txtChapterString, 6);
+            this.txtChapterString.Size = new System.Drawing.Size(645, 20);
+            this.txtChapterString.TabIndex = 16;
+            // 
+            // cbIsRecommended
+            // 
+            this.tablePanel1.SetColumn(this.cbIsRecommended, 1);
+            this.cbIsRecommended.Location = new System.Drawing.Point(152, 131);
+            this.cbIsRecommended.Name = "cbIsRecommended";
+            this.cbIsRecommended.Properties.Caption = "";
+            this.tablePanel1.SetRow(this.cbIsRecommended, 5);
+            this.cbIsRecommended.Size = new System.Drawing.Size(645, 18);
+            this.cbIsRecommended.TabIndex = 15;
+            // 
+            // cbIsCatholic
+            // 
+            this.tablePanel1.SetColumn(this.cbIsCatholic, 1);
+            this.cbIsCatholic.Location = new System.Drawing.Point(152, 107);
+            this.cbIsCatholic.Name = "cbIsCatholic";
+            this.cbIsCatholic.Properties.Caption = "";
+            this.tablePanel1.SetRow(this.cbIsCatholic, 4);
+            this.cbIsCatholic.Size = new System.Drawing.Size(645, 18);
+            this.cbIsCatholic.TabIndex = 14;
             // 
             // txtType
             // 
@@ -251,110 +328,98 @@ namespace IBE.WindowsClient {
             this.txtType.Size = new System.Drawing.Size(645, 20);
             this.txtType.TabIndex = 13;
             // 
-            // cbIsCatholic
+            // txtLanguage
             // 
-            this.tablePanel1.SetColumn(this.cbIsCatholic, 1);
-            this.cbIsCatholic.Location = new System.Drawing.Point(152, 107);
-            this.cbIsCatholic.Name = "cbIsCatholic";
-            this.cbIsCatholic.Properties.Caption = "";
-            this.tablePanel1.SetRow(this.cbIsCatholic, 4);
-            this.cbIsCatholic.Size = new System.Drawing.Size(645, 18);
-            this.cbIsCatholic.TabIndex = 14;
+            this.tablePanel1.SetColumn(this.txtLanguage, 1);
+            this.txtLanguage.Location = new System.Drawing.Point(152, 55);
+            this.txtLanguage.Name = "txtLanguage";
+            this.txtLanguage.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.txtLanguage.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.tablePanel1.SetRow(this.txtLanguage, 2);
+            this.txtLanguage.Size = new System.Drawing.Size(645, 20);
+            this.txtLanguage.TabIndex = 12;
             // 
-            // cbIsRecommended
+            // txtDescription
             // 
-            this.tablePanel1.SetColumn(this.cbIsRecommended, 1);
-            this.cbIsRecommended.Location = new System.Drawing.Point(152, 131);
-            this.cbIsRecommended.Name = "cbIsRecommended";
-            this.cbIsRecommended.Properties.Caption = "";
-            this.tablePanel1.SetRow(this.cbIsRecommended, 5);
-            this.cbIsRecommended.Size = new System.Drawing.Size(645, 18);
-            this.cbIsRecommended.TabIndex = 15;
+            this.tablePanel1.SetColumn(this.txtDescription, 1);
+            this.txtDescription.Location = new System.Drawing.Point(152, 29);
+            this.txtDescription.Name = "txtDescription";
+            this.tablePanel1.SetRow(this.txtDescription, 1);
+            this.txtDescription.Size = new System.Drawing.Size(645, 20);
+            this.txtDescription.TabIndex = 11;
             // 
-            // txtChapterString
+            // txtName
             // 
-            this.tablePanel1.SetColumn(this.txtChapterString, 1);
-            this.txtChapterString.Location = new System.Drawing.Point(152, 155);
-            this.txtChapterString.Name = "txtChapterString";
-            this.tablePanel1.SetRow(this.txtChapterString, 6);
-            this.txtChapterString.Size = new System.Drawing.Size(645, 20);
-            this.txtChapterString.TabIndex = 16;
+            this.tablePanel1.SetColumn(this.txtName, 1);
+            this.txtName.Location = new System.Drawing.Point(152, 3);
+            this.txtName.Name = "txtName";
+            this.tablePanel1.SetRow(this.txtName, 0);
+            this.txtName.Size = new System.Drawing.Size(645, 20);
+            this.txtName.TabIndex = 10;
             // 
-            // txtChapterPsalmString
+            // tabPane1
             // 
-            this.tablePanel1.SetColumn(this.txtChapterPsalmString, 1);
-            this.txtChapterPsalmString.Location = new System.Drawing.Point(152, 181);
-            this.txtChapterPsalmString.Name = "txtChapterPsalmString";
-            this.tablePanel1.SetRow(this.txtChapterPsalmString, 7);
-            this.txtChapterPsalmString.Size = new System.Drawing.Size(645, 20);
-            this.txtChapterPsalmString.TabIndex = 17;
+            this.tabPane1.Controls.Add(this.tabTranslationInfo);
+            this.tabPane1.Controls.Add(this.tabBooks);
+            this.tabPane1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabPane1.Location = new System.Drawing.Point(0, 0);
+            this.tabPane1.Name = "tabPane1";
+            this.tabPane1.PageProperties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
+            this.tabPane1.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
+            this.tabTranslationInfo,
+            this.tabBooks});
+            this.tabPane1.RegularSize = new System.Drawing.Size(800, 677);
+            this.tabPane1.SelectedPage = this.tabTranslationInfo;
+            this.tabPane1.Size = new System.Drawing.Size(800, 677);
+            this.tabPane1.TabIndex = 3;
+            this.tabPane1.Text = "tabPane1";
             // 
-            // txtIntroduction
+            // tabTranslationInfo
             // 
-            this.tablePanel1.SetColumn(this.txtIntroduction, 1);
-            this.txtIntroduction.Location = new System.Drawing.Point(152, 207);
-            this.txtIntroduction.Name = "txtIntroduction";
-            this.tablePanel1.SetRow(this.txtIntroduction, 8);
-            this.txtIntroduction.Size = new System.Drawing.Size(645, 100);
-            this.txtIntroduction.TabIndex = 18;
+            this.tabTranslationInfo.Caption = "Translation Info";
+            this.tabTranslationInfo.Controls.Add(this.tablePanel1);
+            this.tabTranslationInfo.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabNavigationPage1.ImageOptions.SvgImage")));
+            this.tabTranslationInfo.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.tabTranslationInfo.Name = "tabTranslationInfo";
+            this.tabTranslationInfo.Size = new System.Drawing.Size(800, 649);
             // 
-            // txtDetailedInfo
+            // tabBooks
             // 
-            this.tablePanel1.SetColumn(this.txtDetailedInfo, 1);
-            this.txtDetailedInfo.Location = new System.Drawing.Point(152, 313);
-            this.txtDetailedInfo.Name = "txtDetailedInfo";
-            this.tablePanel1.SetRow(this.txtDetailedInfo, 9);
-            this.txtDetailedInfo.Size = new System.Drawing.Size(645, 100);
-            this.txtDetailedInfo.TabIndex = 19;
+            this.tabBooks.Caption = "Books";
+            this.tabBooks.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabBooks.ImageOptions.SvgImage")));
+            this.tabBooks.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.tabBooks.Name = "tabBooks";
+            this.tabBooks.Size = new System.Drawing.Size(800, 649);
             // 
-            // btnApply
+            // labelControl11
             // 
-            this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tablePanel2.SetColumn(this.btnApply, 2);
-            this.btnApply.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnApply.Location = new System.Drawing.Point(567, 3);
-            this.btnApply.Name = "btnApply";
-            this.tablePanel2.SetRow(this.btnApply, 0);
-            this.btnApply.Size = new System.Drawing.Size(75, 20);
-            this.btnApply.TabIndex = 0;
-            this.btnApply.Text = "Apply";
+            this.tablePanel1.SetColumn(this.labelControl11, 0);
+            this.labelControl11.Location = new System.Drawing.Point(3, 422);
+            this.labelControl11.Name = "labelControl11";
+            this.tablePanel1.SetRow(this.labelControl11, 10);
+            this.labelControl11.Size = new System.Drawing.Size(51, 13);
+            this.labelControl11.TabIndex = 20;
+            this.labelControl11.Text = "Book type";
             // 
-            // btnCancel
+            // txtBookType
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tablePanel2.SetColumn(this.btnCancel, 1);
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(486, 3);
-            this.btnCancel.Name = "btnCancel";
-            this.tablePanel2.SetRow(this.btnCancel, 0);
-            this.btnCancel.Size = new System.Drawing.Size(75, 20);
-            this.btnCancel.TabIndex = 1;
-            this.btnCancel.Text = "Cancel";
-            // 
-            // tablePanel2
-            // 
-            this.tablePanel1.SetColumn(this.tablePanel2, 1);
-            this.tablePanel2.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 5F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 55F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 50F)});
-            this.tablePanel2.Controls.Add(this.btnCancel);
-            this.tablePanel2.Controls.Add(this.btnApply);
-            this.tablePanel2.Location = new System.Drawing.Point(152, 419);
-            this.tablePanel2.Name = "tablePanel2";
-            this.tablePanel1.SetRow(this.tablePanel2, 10);
-            this.tablePanel2.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel2.Size = new System.Drawing.Size(645, 38);
-            this.tablePanel2.TabIndex = 2;
+            this.tablePanel1.SetColumn(this.txtBookType, 1);
+            this.txtBookType.Location = new System.Drawing.Point(152, 419);
+            this.txtBookType.Name = "txtBookType";
+            this.txtBookType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.tablePanel1.SetRow(this.txtBookType, 10);
+            this.txtBookType.Size = new System.Drawing.Size(645, 20);
+            this.txtBookType.TabIndex = 21;
             // 
             // TranslationEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 470);
-            this.Controls.Add(this.tablePanel1);
+            this.ClientSize = new System.Drawing.Size(800, 715);
+            this.Controls.Add(this.tabPane1);
+            this.Controls.Add(this.tablePanel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -365,18 +430,22 @@ namespace IBE.WindowsClient {
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
             this.tablePanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtLanguage.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbIsCatholic.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbIsRecommended.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtChapterString.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtChapterPsalmString.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtIntroduction.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtDetailedInfo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).EndInit();
             this.tablePanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtDetailedInfo.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtIntroduction.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtChapterPsalmString.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtChapterString.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbIsRecommended.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbIsCatholic.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtLanguage.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDescription.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).EndInit();
+            this.tabPane1.ResumeLayout(false);
+            this.tabTranslationInfo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtBookType.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -407,5 +476,10 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraEditors.LabelControl labelControl3;
         private DevExpress.XtraEditors.LabelControl labelControl2;
         private DevExpress.Utils.Layout.TablePanel tablePanel2;
+        private DevExpress.XtraBars.Navigation.TabPane tabPane1;
+        private DevExpress.XtraBars.Navigation.TabNavigationPage tabTranslationInfo;
+        private DevExpress.XtraBars.Navigation.TabNavigationPage tabBooks;
+        private DevExpress.XtraEditors.LabelControl labelControl11;
+        private DevExpress.XtraEditors.LookUpEdit txtBookType;
     }
 }
