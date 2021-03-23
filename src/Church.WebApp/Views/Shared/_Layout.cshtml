@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="icon" type="image/svg+xml" href="~/img/baptysci-logo.svg" />
 
+          @*
     <link rel="icon" type="image/png" href="~/img/favicon-16x16.png" sizes="16x16" />
     <link rel="icon" type="image/png" href="~/img/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="~/img/favicon-96x96.png" sizes="96x96" />
@@ -24,7 +26,7 @@
     <link rel="apple-touch-icon" sizes="152x152" href="~/img/apple-touch-icon-152x152.png" />
 
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="~/img/mstile-144x144.png">
+    <meta name="msapplication-TileImage" content="~/img/mstile-144x144.png">*@
 </head>
 <body>
     <div id="fb-root"></div>
@@ -33,7 +35,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mb-5 shadow" id="top-nav">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Kościół Chrześcijan Baptystów</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img id="baptysci-logo" src="~/img/baptysci-logo.svg" style="width: 30px; height: 24px; opacity: 0.7;"/>Kościół Chrześcijan Baptystów</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -42,7 +44,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMain" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div style="display: inline-block; width: 25px;"><i class="fas fa-church"></i></div> Menu
-</a>
+                            </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMain">
                                 <li>
                                     <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Service"><div style="display: inline-block; width: 25px;"><i class="fas fa-church"></i></div> Nabożeństwa i grupy biblijne</a>

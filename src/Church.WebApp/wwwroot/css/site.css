@@ -118,11 +118,11 @@ figure {
         width: 100%;
         height: 100%;
         opacity: 0.05;
-        /*  background-image: url('../img/background-bible.jpg');
-        background-repeat: no-repeat;
-        background-position: 50% 0;
-        background-size: cover;*/
     }
+
+a:hover #baptysci-logo {
+    opacity: 1 !important;
+}
 
 @media only screen and (max-width: 995px) {
     #carouselExampleFade {
