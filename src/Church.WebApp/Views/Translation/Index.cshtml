@@ -199,20 +199,35 @@ break;
                 <div class="lh-base fs-5" style="max-width: 1000px; margin: auto; text-align: justify; display: table">
 
                     @if (book.BaseBook.AuthorName.IsNotNullOrEmpty()) {
+                        var __text = book.BaseBook.AuthorName;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
                         <div style="display: table-row">
                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
                             <div style="display: table-cell">@book.BaseBook.AuthorName</div>
                         </div>
                     }
 
-                     @if (book.BaseBook.TimeOfWriting.IsNotNullOrEmpty()) {
+                    @if (book.BaseBook.TimeOfWriting.IsNotNullOrEmpty()) {
+                        var __text = book.BaseBook.TimeOfWriting;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
                         <div style="display: table-row">
                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
                             <div style="display: table-cell">@book.BaseBook.TimeOfWriting</div>
                         </div>
                     }
 
-                     @if (book.BaseBook.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
+                    @if (book.BaseBook.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
+                        var __text = book.BaseBook.PlaceWhereBookWasWritten;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
                         <div style="display: table-row">
                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
                             <div style="display: table-cell">@book.BaseBook.PlaceWhereBookWasWritten</div>
@@ -220,13 +235,23 @@ break;
                     }
 
                     @if (book.BaseBook.Purpose.IsNotNullOrEmpty()) {
+                        var __text = book.BaseBook.Purpose;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
                         <div style="display: table-row">
                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
                             <div style="display: table-cell">@book.BaseBook.Purpose</div>
                         </div>
                     }
-                    
+
                     @if (book.BaseBook.Subject.IsNotNullOrEmpty()) {
+                        var __text = book.BaseBook.Subject;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
                         <div style="display: table-row">
                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
                             <div style="display: table-cell">@book.BaseBook.Subject</div>
@@ -482,8 +507,32 @@ break;
 
                     // zamiana na imię Boże
                     if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
-                        text = System.Text.RegularExpressions.Regex.Replace(text, @"\s(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:]", delegate (System.Text.RegularExpressions.Match m) {
-                            return " JAHWE" + m.Value.Last();
+                        text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„])(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:\""\'\”]", delegate (System.Text.RegularExpressions.Match m) {
+                            var prefix = m.Groups["prefix"].Value;
+                            return $"{prefix}JAHWE{m.Value.Last()}";
+                        });
+                    }
+                    if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+                        text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„])(?<name>JHWH)[\s\,\.\:\""\'\”]", delegate (System.Text.RegularExpressions.Match m) {
+                            var prefix = m.Groups["prefix"].Value;
+                            return $"{prefix}JAHWE{m.Value.Last()}";
+                        });
+                    }
+                    if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+                        text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„])(?<name>Jehow(a)?(y)?(ie)?(ę)?(o)?)[\s\,\.\:\""\'\”]", delegate (System.Text.RegularExpressions.Match m) {
+                            var prefix = m.Groups["prefix"].Value;
+                            return $"{prefix}JAHWE{m.Value.Last()}";
+                        });
+                    }
+                    if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.NewTestament) {
+                        text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„])(?<name>Jehow(?<ending>(a)?(y)?(ie)?(ę)?(o)?))[\s\,\.\:\""\'\”]", delegate (System.Text.RegularExpressions.Match m) {
+                            var prefix = m.Groups["prefix"].Value;
+                            var ending = m.Groups["ending"].Value;
+                            var root = "Pan";
+                            if (ending == "ie") { root += "u"; }
+                            if (ending == "o") { root += "ie"; }
+                            if (ending == "y" || ending == "ę") { root += "a"; }
+                            return $"{prefix}{root}{m.Value.Last()}";
                         });
                     }
 
