@@ -32,32 +32,62 @@ namespace IBE.WindowsClient {
             view.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
             view.Properties.Add(new ViewProperty("ChapterString", SortDirection.None, "[ChapterString]", false, true));
             view.Properties.Add(new ViewProperty("ChapterPsalmString", SortDirection.None, "[ChapterPsalmString]", false, true));
+            view.Properties.Add(new ViewProperty("BookType", SortDirection.None, "[BookType]", false, true));
             grid.DataSource = view;
             gridView.BestFitColumns();
+            Application.DoEvents();
+            gridView.Columns["BookType"].Group();
+            gridView.ExpandAllGroups();
         }
 
         private void gridView_DoubleClick(object sender, EventArgs e) {
             var selected = gridView.GetFocusedRow() as ViewRecord;
             if (selected.IsNotNull()) {
                 var id = selected["Id"].ToInt();
-                using (var dlg = new TranslationEditForm(id, view.Session)) {
-                    if (dlg.ShowDialog() == DialogResult.OK) {
-                        dlg.Save();
-                        LoadData();
+                var frm = new TranslationEditForm(id, view.Session as UnitOfWork) {
+                    MdiParent = this.MdiParent                    
+                };
+                frm.ObjectSaved += new EventHandler(delegate (object _sender, EventArgs args) {
 
-                        var idx = gridView.LocateByValue("Id", id);
-                        gridView.FocusedRowHandle = idx;
-                        gridView.SelectRow(idx);
-                    }
-                }
+                    LoadData();
+
+                    var idx = gridView.LocateByValue("Id", id);
+                    gridView.FocusedRowHandle = idx;
+                    gridView.SelectRow(idx);
+                });
+                frm.Show();
             }
         }
 
         private void btnCreateTranslation_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             var uow = view.Session as UnitOfWork;
-            var translation = new Translation(uow) { 
-             
+            var translation = new Translation(uow) {
+                BookType = TheBookType.ChurchFathersLetter,
+                Catolic = false,
+                ChapterPsalmString = "Psalm",
+                ChapterString = "Rozdział",
+                Description = String.Empty,
+                DetailedInfo = String.Empty,
+                Introduction = String.Empty,
+                Language = Language.Polish,
+                Recommended = false,
+                Name = String.Empty,
+                Type = TranslationType.Default
             };
+
+            var frm = new TranslationEditForm(translation) {
+                MdiParent = this.MdiParent
+            };
+            frm.ObjectSaved += new EventHandler(delegate (object _sender, EventArgs args) {
+
+                LoadData();
+
+                var idx = gridView.LocateByValue("Id", frm.Object.Oid);
+                gridView.FocusedRowHandle = idx;
+                gridView.SelectRow(idx);
+            });
+
+            frm.Show();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace IBE.Data.Model {
         private int numberOfChapter;
         private int numberOfVerses;
         private Book parentBook;
-
+       
         public int NumberOfChapter {
             get { return numberOfChapter; }
             set { SetPropertyValue(nameof(NumberOfChapter), ref numberOfChapter, value); }
@@ -54,7 +54,7 @@ namespace IBE.Data.Model {
                 return default;
             }
         }
-
+        
         public Chapter(Session session) : base(session) { }
     }
 }

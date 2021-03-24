@@ -27,6 +27,7 @@ namespace IBE.Data.Model {
         private bool catolic;
         private bool recommended;
         private TheBookType bookType;
+        private bool chapterRomanNumbering;
 
         public string Name {
             get { return name; }
@@ -84,6 +85,11 @@ namespace IBE.Data.Model {
         public TheBookType BookType {
             get { return bookType; }
             set { SetPropertyValue(nameof(BookType), ref bookType, value); }
+        }
+
+        public bool ChapterRomanNumbering {
+            get { return chapterRomanNumbering; }
+            set { SetPropertyValue(nameof(ChapterRomanNumbering), ref chapterRomanNumbering, value); }
         }
 
         public Translation() : base(new UnitOfWork()) { }

@@ -30,11 +30,11 @@ namespace IBE.WindowsClient {
             this.btnTranslations = new DevExpress.XtraBars.BarButtonItem();
             this.btnInterlinearEditor = new DevExpress.XtraBars.BarButtonItem();
             this.btnArticles = new DevExpress.XtraBars.BarButtonItem();
+            this.btnBaseBooks = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(this.components);
-            this.btnBaseBooks = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).BeginInit();
             this.SuspendLayout();
@@ -89,6 +89,14 @@ namespace IBE.WindowsClient {
             this.btnArticles.Name = "btnArticles";
             this.btnArticles.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnArticles_ItemClick);
             // 
+            // btnBaseBooks
+            // 
+            this.btnBaseBooks.Caption = "Base books";
+            this.btnBaseBooks.Id = 8;
+            this.btnBaseBooks.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnBaseBooks.ImageOptions.SvgImage")));
+            this.btnBaseBooks.Name = "btnBaseBooks";
+            this.btnBaseBooks.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnBaseBooks_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -114,16 +122,9 @@ namespace IBE.WindowsClient {
             // 
             // xtraTabbedMdiManager1
             // 
+            this.xtraTabbedMdiManager1.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InAllTabPagesAndTabControlHeader;
             this.xtraTabbedMdiManager1.MdiParent = this;
             this.xtraTabbedMdiManager1.UseFormIconAsPageImage = DevExpress.Utils.DefaultBoolean.True;
-            // 
-            // btnBaseBooks
-            // 
-            this.btnBaseBooks.Caption = "Base books";
-            this.btnBaseBooks.Id = 8;
-            this.btnBaseBooks.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnBaseBooks.ImageOptions.SvgImage")));
-            this.btnBaseBooks.Name = "btnBaseBooks";
-            this.btnBaseBooks.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnBaseBooks_ItemClick);
             // 
             // MainForm
             // 
