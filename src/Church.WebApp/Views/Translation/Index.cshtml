@@ -666,6 +666,13 @@ break;
 
                     oReq.onload = function () {
                         if (oReq.response == "false") {
+
+                            var element = document.getElementsByTagName("body"), index;
+
+                            for (index = element.length - 1; index >= 0; index--) {
+                                element[index].parentNode.removeChild(element[index]);
+                            }
+
                             window.location.href = '../';
                         } else if (!myCookie) {
                             setCookie("pwd", password, 1);
