@@ -78,6 +78,7 @@ namespace IBE.WindowsClient {
                 txtType.DataBindings.Add("EditValue", Object, "Type");
                 cbIsCatholic.DataBindings.Add("EditValue", Object, "Catolic");
                 cbIsRecommended.DataBindings.Add("EditValue", Object, "Recommended");
+                cbOpenAccess.DataBindings.Add("EditValue", Object, "OpenAccess");
                 txtBookType.DataBindings.Add("EditValue", Object, "BookType");
 
 
