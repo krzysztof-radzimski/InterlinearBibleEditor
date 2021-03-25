@@ -634,10 +634,41 @@ break;
             }
             <p>
                 * Prezentowane treści należą do ich właścicieli i&nbsp;wydawców. Tekst pobrany z&nbsp;udostępnionych zasobów programu <a href="https://mybible.zone/">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a>
+                
             </p>
         </div>
 
         @section Scripts {
+@if (Model.Translation.Name != "NPI+" && 
+     Model.Translation.Name != "BW" && 
+     Model.Translation.Name != "BT" &&
+     Model.Translation.Name != "UBG18" &&
+     Model.Translation.Name != "BG" &&
+     Model.Translation.Name != "TRO" &&
+     Model.Translation.Name != "IBHP+"
+     ) {
+<script>
+    var password = "";
+    var myCookie = document.cookie;
+    if (myCookie) {
+        password = getCookie("pwd"); 
+    } else {
+        password = prompt("Wprowadź hasło:", "");        
+    }
+
+    var oReq = new XMLHttpRequest();
+    oReq.open("GET", "../../api/utils?pwd=" + password);
+    oReq.send();
+
+    oReq.onload = function () {
+        if (oReq.response == "false") {
+            window.location.href = '../';
+        } else if (!myCookie) {
+            setCookie("pwd", password, 1);
+        }
+    };
+</script>
+}
 
             @if (!String.IsNullOrEmpty(Model.Verse)) {
 

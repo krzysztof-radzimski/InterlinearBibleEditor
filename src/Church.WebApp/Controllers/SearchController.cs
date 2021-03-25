@@ -29,10 +29,10 @@ namespace Church.WebApp.Controllers {
 
         public IActionResult Index() {
             var qs = Request.QueryString;
-            if (qs .IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 9) {
+            if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 9) {
                 //?text=ala+ma+kota
                 var queryString = Uri.UnescapeDataString(qs.Value);
-                var words = queryString.Replace("?text=","").Split('+', StringSplitOptions.RemoveEmptyEntries);
+                var words = queryString.Replace("?text=", "").Split('+', StringSplitOptions.RemoveEmptyEntries);
                 return _Search(words);
             }
             return View();
