@@ -5,6 +5,9 @@ Ewangelie dla badaczy : przek³ad filologiczny z jêzyka greckiego wed³ug XXVII ed
 Dodaæ moje prace z WBST
 
 dla przek³adu dodaj flagê dostêp otwarty ... i dla tych przek³adów nie bêdzie trzeba podawaæ has³a
+uwolniæ Jakuba Wujka
+
+obsu¿yæ b³¹d gry przek³ad nie ma wskazanej ksiêgi np. IBHP+ dla nowego testamentu
 
 Poprawiæ:
 Mat 1: Emmanuel, co [ho] jest rodzajnikiem a nie s³owem co, trzeba to uj¹æ w nawiasy.
