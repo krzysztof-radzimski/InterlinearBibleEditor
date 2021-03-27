@@ -221,5 +221,17 @@ namespace IBE.Common.Extensions {
 
             return false;
         }
+
+        public static string GetInitials(this string text) {
+            if (text.IsNotNullOrEmpty()) {
+                var t = text.Split(' ');
+                var result = string.Empty;
+                foreach (var item in t) {
+                    result += $"{item.Substring(0, 1).ToUpper()}. ";
+                }
+                return result.Trim();
+            }
+            return default;
+        }
     }
 }

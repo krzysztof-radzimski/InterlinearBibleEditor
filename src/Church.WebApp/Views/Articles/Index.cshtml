@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Nauczanie - kazania, artykuły, skrypty";
+    var _listView = false;
 }
+@using IBE.Common.Extensions 
 @model List<Church.WebApp.Controllers.ArticleInfoBase>
 
 <h1><i class="fas fa-newspaper"></i> @ViewData["Title"]</h1>
@@ -34,7 +36,20 @@
 
         }
         else {
-            <div class="col position-relative" style="min-width: 90%;"><span>@item.Date.Day @item.Date.ToString("MMMM") @item.Date.Year&nbsp;</span><a href="../Article?id=@item.Id" class="stretched-link">@item.Subject</a>&nbsp;<i>@item.AuthorName</i></div>
+            if (!_listView) {
+                _listView = true;
+                @Html.Raw(@"<div style=""display: table; max-width: 700px;"">")
+            }
+
+            <div style="display: table-row;">
+                <div style="display: table-cell; vertical-align: top; padding-top: 10px; padding-right: 5px;">@item.Date.Day @item.Date.ToString("MMMM") @item.Date.Year</div>
+                <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><a href="../Article?id=@item.Id" class="stretched-link text-decoration-none">@item.Subject</a></div>
+                <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><i>@Html.Raw(item.AuthorName.GetInitials().Replace(" ","&nbsp;"))</i></div>
+            </div>
+
+            @if (item == Model.LastOrDefault()) {
+                @Html.Raw(@"</div>");
+            }
         }
     }
 </div>
