@@ -293,6 +293,8 @@ break;
                 // --------------------------------------------------
                 footNoteRefIndex = 1;
 
+                @Html.Raw(@$"<div style=""text-align: right;""><a href=""../../api/DownloadInterlinearPdf?q={Model.Translation.Name},{chapter.ParentBook.NumberOfBook},{chapter.NumberOfChapter}""><i class=""far fa-file-pdf fa-2x""></i></a>&nbsp;<a href=""../../api/DownloadInterlinearDocx?q={Model.Translation.Name},{chapter.ParentBook.NumberOfBook},{chapter.NumberOfChapter}""><i class=""far fa-file-word fa-2x""></i></a></div>")
+
                 @foreach (var verse in chapter.Verses) {
 
                     var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "background-color: #fffee3;" : " ";
@@ -373,13 +375,23 @@ break;
                                     // Kody stronga
                                     //
                                 }
-                                <div class="row" style="font-size: 50%; padding-left: 0 !important;">
-                                    <div class="col">
-                                        @Html.Raw(sc)
-                                        <br />
-                                        @Html.Raw(gc)
+                                @if (Model.Translation.WithGrammarCodes || Model.Translation.WithStrongs) {
+                                    <div class="row" style="font-size: 50%; padding-left: 0 !important;">
+                                        <div class="col">
+                                            @if (Model.Translation.WithStrongs) {
+                                                @Html.Raw(sc)
+                                                
+                                                if (Model.Translation.WithGrammarCodes) {
+                                                    <br />
+                                                }
+                                            }
+
+                                            @if (Model.Translation.WithGrammarCodes) {
+                                                @Html.Raw(gc)
+                                            }
+                                        </div>
                                     </div>
-                                </div>
+                                }
                                 <div class="row" style="font-weight: 200;"><div class="col">@word.SourceWord</div></div>
                                 <div class="row" style="font-size: 80%; font-weight: 200;"><div class="col">@word.Transliteration</div></div>
                                 <div class="row @translationFontColor" style="@translationFontWeight position: relative; min-width: 70px;"><div class="col">@Html.Raw(translation)</div></div>
@@ -442,124 +454,124 @@ break;
                                 }
                                 else {
                                     <h5 class="text-center p-2">@storyText</h5>
-                                                        }
-                                                    }
-                                                }
-                                            }
+                                }
+                            }
+                        }
+                    }
 
-                                            //
-                                            // Treści wersetów
-                                            //
+                    //
+                    // Treści wersetów
+                    //
 
-                                            var text = " " + verse.Text;
-                                            if (text.Contains("<n>") && text.Contains("*")) {
-                                                var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!";
-                                                var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
-                                                var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
-                                                var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
-                                                var f4 = $@"\[\*\*\*\*\s?(?<f4>[{footNoteTextPatternFragment}]+)\]";
-                                                var f5 = $@"\[\*\*\*\*\*\s?(?<f4>[{footNoteTextPatternFragment}]+)\]";
-                                                var footNoteTextPattern = $@"\<n\>{f1}(\s+)?({f2})?(\s+)?({f3})?(\s+)?({f4})?(\s+)?({f5})?\</n\>";
+                    var text = " " + verse.Text;
+                    if (text.Contains("<n>") && text.Contains("*")) {
+                        var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!";
+                        var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
+                        var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
+                        var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
+                        var f4 = $@"\[\*\*\*\*\s?(?<f4>[{footNoteTextPatternFragment}]+)\]";
+                        var f5 = $@"\[\*\*\*\*\*\s?(?<f4>[{footNoteTextPatternFragment}]+)\]";
+                        var footNoteTextPattern = $@"\<n\>{f1}(\s+)?({f2})?(\s+)?({f3})?(\s+)?({f4})?(\s+)?({f5})?\</n\>";
 
-                                                var f1Index = 0;
-                                                var f2Index = 0;
-                                                var f3Index = 0;
+                        var f1Index = 0;
+                        var f2Index = 0;
+                        var f3Index = 0;
 
-                                                text = System.Text.RegularExpressions.Regex.Replace(text, footNoteTextPattern, delegate (System.Text.RegularExpressions.Match m) {
-                                                    if (m.Groups != null && m.Groups.Count > 0) {
-                                                        if (m.Groups["f1"] != null && m.Groups["f1"].Success) {
-                                                            footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f1"].Value}</p>");
-                                                            f1Index = footNoteIndex;
-                                                            footNoteIndex++;
-                                                        }
-                                                        if (m.Groups["f2"] != null && m.Groups["f2"].Success) {
-                                                            footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f2"].Value}</p>");
-                                                            f2Index = footNoteIndex;
-                                                            footNoteIndex++;
-                                                        }
-                                                        if (m.Groups["f3"] != null && m.Groups["f3"].Success) {
-                                                            footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f3"].Value}</p>");
-                                                            f3Index = footNoteIndex;
-                                                            footNoteIndex++;
-                                                        }
-                                                        if (m.Groups["f4"] != null && m.Groups["f4"].Success) {
-                                                            footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f4"].Value}</p>");
-                                                            f3Index = footNoteIndex;
-                                                            footNoteIndex++;
-                                                        }
-                                                        if (m.Groups["f5"] != null && m.Groups["f5"].Success) {
-                                                            footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f5"].Value}</p>");
-                                                            f3Index = footNoteIndex;
-                                                            footNoteIndex++;
-                                                        }
-                                                    }
+                        text = System.Text.RegularExpressions.Regex.Replace(text, footNoteTextPattern, delegate (System.Text.RegularExpressions.Match m) {
+                            if (m.Groups != null && m.Groups.Count > 0) {
+                                if (m.Groups["f1"] != null && m.Groups["f1"].Success) {
+                                    footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f1"].Value}</p>");
+                                    f1Index = footNoteIndex;
+                                    footNoteIndex++;
+                                }
+                                if (m.Groups["f2"] != null && m.Groups["f2"].Success) {
+                                    footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f2"].Value}</p>");
+                                    f2Index = footNoteIndex;
+                                    footNoteIndex++;
+                                }
+                                if (m.Groups["f3"] != null && m.Groups["f3"].Success) {
+                                    footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f3"].Value}</p>");
+                                    f3Index = footNoteIndex;
+                                    footNoteIndex++;
+                                }
+                                if (m.Groups["f4"] != null && m.Groups["f4"].Success) {
+                                    footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f4"].Value}</p>");
+                                    f3Index = footNoteIndex;
+                                    footNoteIndex++;
+                                }
+                                if (m.Groups["f5"] != null && m.Groups["f5"].Success) {
+                                    footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f5"].Value}</p>");
+                                    f3Index = footNoteIndex;
+                                    footNoteIndex++;
+                                }
+                            }
 
-                                                    var result = String.Empty;
-                                                    return result;
-                                                }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                            var result = String.Empty;
+                            return result;
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                                                var footNotePattern = @"(\*)+";
-                                                text = System.Text.RegularExpressions.Regex.Replace(text, footNotePattern, delegate (System.Text.RegularExpressions.Match m) {
-                                                    if (m.Value == "*") { footNoteRefIndex = f1Index; }
-                                                    if (m.Value == "**") { footNoteRefIndex = f2Index; }
-                                                    if (m.Value == "***") { footNoteRefIndex = f3Index; }
-                                                    var result = $@"<a style=""vertical-align: super;"" class=""fs-6 text-decoration-none"" href=""#footNote{footNoteRefIndex}"">{footNoteRefIndex}</a>";
+                        var footNotePattern = @"(\*)+";
+                        text = System.Text.RegularExpressions.Regex.Replace(text, footNotePattern, delegate (System.Text.RegularExpressions.Match m) {
+                            if (m.Value == "*") { footNoteRefIndex = f1Index; }
+                            if (m.Value == "**") { footNoteRefIndex = f2Index; }
+                            if (m.Value == "***") { footNoteRefIndex = f3Index; }
+                            var result = $@"<a style=""vertical-align: super;"" class=""fs-6 text-decoration-none"" href=""#footNote{footNoteRefIndex}"">{footNoteRefIndex}</a>";
 
-                                                    return result;
-                                                }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-                                            }
+                            return result;
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                    }
 
-                                            // Słowa Jezusa
-                                            text = text.Replace("<J>", @"<span class=""text-danger"">").Replace("</J>", "</span>");
+                    // Słowa Jezusa
+                    text = text.Replace("<J>", @"<span class=""text-danger"">").Replace("</J>", "</span>");
 
-                                            // Elementy dodane
-                                            text = text.Replace("<n>", @"<span class=""text-muted"">").Replace("</n>", "</span>");
+                    // Elementy dodane
+                    text = text.Replace("<n>", @"<span class=""text-muted"">").Replace("</n>", "</span>");
 
-                                            text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
+                    text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
 
-                                            // zamiana na imię Boże
-                                            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
-                                                text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
-                                                    var prefix = m.Groups["prefix"].Value;
-                                                    return $"{prefix}JAHWE{m.Value.Last()}";
-                                                });
-                                            }
-                                            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
-                                                text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>JHWH)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
-                                                    var prefix = m.Groups["prefix"].Value;
-                                                    return $"{prefix}JAHWE{m.Value.Last()}";
-                                                });
-                                            }
-                                            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
-                                                text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(a)?(y)?(ie)?(ę)?(o)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
-                                                    var prefix = m.Groups["prefix"].Value;
-                                                    return $"{prefix}JAHWE{m.Value.Last()}";
-                                                });
-                                            }
-                                            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.NewTestament) {
-                                                text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(?<ending>(a)?(y)?(ie)?(ę)?(o)?))[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
-                                                    var prefix = m.Groups["prefix"].Value;
-                                                    var ending = m.Groups["ending"].Value;
-                                                    var root = "Pan";
-                                                    if (ending == "ie") { root += "u"; }
-                                                    if (ending == "o") { root += "ie"; }
-                                                    if (ending == "y" || ending == "ę") { root += "a"; }
-                                                    return $"{prefix}{root}{m.Value.Last()}";
-                                                });
-                                            }
+                    // zamiana na imię Boże
+                    if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+                        text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
+                            var prefix = m.Groups["prefix"].Value;
+                            return $"{prefix}JAHWE{m.Value.Last()}";
+                        });
+                    }
+                    if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+                        text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>JHWH)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
+                            var prefix = m.Groups["prefix"].Value;
+                            return $"{prefix}JAHWE{m.Value.Last()}";
+                        });
+                    }
+                    if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+                        text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(a)?(y)?(ie)?(ę)?(o)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
+                            var prefix = m.Groups["prefix"].Value;
+                            return $"{prefix}JAHWE{m.Value.Last()}";
+                        });
+                    }
+                    if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.NewTestament) {
+                        text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(?<ending>(a)?(y)?(ie)?(ę)?(o)?))[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
+                            var prefix = m.Groups["prefix"].Value;
+                            var ending = m.Groups["ending"].Value;
+                            var root = "Pan";
+                            if (ending == "ie") { root += "u"; }
+                            if (ending == "o") { root += "ie"; }
+                            if (ending == "y" || ending == "ę") { root += "a"; }
+                            return $"{prefix}{root}{m.Value.Last()}";
+                        });
+                    }
 
-                                            // usuwam sierotki
-                                            text = System.Text.RegularExpressions.Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                                                return " " + m.Value.Trim() + "&nbsp;";
-                                            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                    // usuwam sierotki
+                    text = System.Text.RegularExpressions.Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                        return " " + m.Value.Trim() + "&nbsp;";
+                    }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                                            // usuwam puste przypisy
-                                            text = System.Text.RegularExpressions.Regex.Replace(text, @"\[[0-9]+\]", delegate (System.Text.RegularExpressions.Match m) {
-                                                return String.Empty;
-                                            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                    // usuwam puste przypisy
+                    text = System.Text.RegularExpressions.Regex.Replace(text, @"\[[0-9]+\]", delegate (System.Text.RegularExpressions.Match m) {
+                        return String.Empty;
+                    }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
 
-                                            var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "background-color: #fffee3;" : " ";
+                    var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "background-color: #fffee3;" : " ";
 
                     <span id="span-verse-@verse.NumberOfVerse" class="lh-lg fs-5" style="@activeVerse">
                         <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>

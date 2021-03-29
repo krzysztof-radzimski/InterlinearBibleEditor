@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IBE.Common\IBE.Common.csproj" />
+    <ProjectReference Include="..\IBE.Data.Export\IBE.Data.Export.csproj" />
     <ProjectReference Include="..\IBE.Data\IBE.Data.csproj" />
   </ItemGroup>
 

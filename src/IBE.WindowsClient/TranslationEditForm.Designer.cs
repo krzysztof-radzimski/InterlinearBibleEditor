@@ -91,6 +91,9 @@ namespace IBE.WindowsClient {
             this.txtNumberOfBook = new DevExpress.XtraEditors.TextEdit();
             this.labelControl16 = new DevExpress.XtraEditors.LabelControl();
             this.tabChapter = new DevExpress.XtraTab.XtraTabPage();
+            this.tableChapter = new DevExpress.Utils.Layout.TablePanel();
+            this.txtNumberOfChapter = new DevExpress.XtraEditors.TextEdit();
+            this.labelControl28 = new DevExpress.XtraEditors.LabelControl();
             this.tabVerse = new DevExpress.XtraTab.XtraTabPage();
             this.tableVerseControls = new DevExpress.Utils.Layout.TablePanel();
             this.txtNumberOfVerse = new DevExpress.XtraEditors.TextEdit();
@@ -100,9 +103,10 @@ namespace IBE.WindowsClient {
             this.cbStartFromNewLine = new DevExpress.XtraEditors.CheckEdit();
             this.sidePanel1 = new DevExpress.XtraEditors.SidePanel();
             this.treeList = new DevExpress.XtraTreeList.TreeList();
-            this.tableChapter = new DevExpress.Utils.Layout.TablePanel();
-            this.labelControl28 = new DevExpress.XtraEditors.LabelControl();
-            this.txtNumberOfChapter = new DevExpress.XtraEditors.TextEdit();
+            this.cbWithGrammarCodes = new DevExpress.XtraEditors.CheckEdit();
+            this.cbWithStrongs = new DevExpress.XtraEditors.CheckEdit();
+            this.labelControl29 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl30 = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cbOpenAccess.Properties)).BeginInit();
@@ -139,6 +143,9 @@ namespace IBE.WindowsClient {
             ((System.ComponentModel.ISupportInitialize)(this.txtBookShortcut.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNumberOfBook.Properties)).BeginInit();
             this.tabChapter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tableChapter)).BeginInit();
+            this.tableChapter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNumberOfChapter.Properties)).BeginInit();
             this.tabVerse.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tableVerseControls)).BeginInit();
             this.tableVerseControls.SuspendLayout();
@@ -146,9 +153,8 @@ namespace IBE.WindowsClient {
             ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).BeginInit();
             this.sidePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tableChapter)).BeginInit();
-            this.tableChapter.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtNumberOfChapter.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbWithGrammarCodes.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbWithStrongs.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // labelControl1
@@ -212,9 +218,9 @@ namespace IBE.WindowsClient {
             // labelControl7
             // 
             this.tablePanel1.SetColumn(this.labelControl7, 0);
-            this.labelControl7.Location = new System.Drawing.Point(3, 206);
+            this.labelControl7.Location = new System.Drawing.Point(3, 254);
             this.labelControl7.Name = "labelControl7";
-            this.tablePanel1.SetRow(this.labelControl7, 8);
+            this.tablePanel1.SetRow(this.labelControl7, 10);
             this.labelControl7.Size = new System.Drawing.Size(74, 13);
             this.labelControl7.TabIndex = 6;
             this.labelControl7.Text = "Chapter string";
@@ -222,9 +228,9 @@ namespace IBE.WindowsClient {
             // labelControl8
             // 
             this.tablePanel1.SetColumn(this.labelControl8, 0);
-            this.labelControl8.Location = new System.Drawing.Point(3, 232);
+            this.labelControl8.Location = new System.Drawing.Point(3, 280);
             this.labelControl8.Name = "labelControl8";
-            this.tablePanel1.SetRow(this.labelControl8, 9);
+            this.tablePanel1.SetRow(this.labelControl8, 11);
             this.labelControl8.Size = new System.Drawing.Size(107, 13);
             this.labelControl8.TabIndex = 7;
             this.labelControl8.Text = "Chapter psalm string";
@@ -232,9 +238,9 @@ namespace IBE.WindowsClient {
             // labelControl9
             // 
             this.tablePanel1.SetColumn(this.labelControl9, 0);
-            this.labelControl9.Location = new System.Drawing.Point(3, 348);
+            this.labelControl9.Location = new System.Drawing.Point(3, 396);
             this.labelControl9.Name = "labelControl9";
-            this.tablePanel1.SetRow(this.labelControl9, 10);
+            this.tablePanel1.SetRow(this.labelControl9, 12);
             this.labelControl9.Size = new System.Drawing.Size(65, 13);
             this.labelControl9.TabIndex = 8;
             this.labelControl9.Text = "Introduction";
@@ -242,9 +248,9 @@ namespace IBE.WindowsClient {
             // labelControl10
             // 
             this.tablePanel1.SetColumn(this.labelControl10, 0);
-            this.labelControl10.Location = new System.Drawing.Point(3, 554);
+            this.labelControl10.Location = new System.Drawing.Point(3, 602);
             this.labelControl10.Name = "labelControl10";
-            this.tablePanel1.SetRow(this.labelControl10, 11);
+            this.tablePanel1.SetRow(this.labelControl10, 13);
             this.labelControl10.Size = new System.Drawing.Size(112, 13);
             this.labelControl10.TabIndex = 9;
             this.labelControl10.Text = "Detailed informations";
@@ -255,6 +261,10 @@ namespace IBE.WindowsClient {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 5F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 80.5F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 69.5F)});
+            this.tablePanel1.Controls.Add(this.labelControl30);
+            this.tablePanel1.Controls.Add(this.labelControl29);
+            this.tablePanel1.Controls.Add(this.cbWithStrongs);
+            this.tablePanel1.Controls.Add(this.cbWithGrammarCodes);
             this.tablePanel1.Controls.Add(this.labelControl13);
             this.tablePanel1.Controls.Add(this.cbOpenAccess);
             this.tablePanel1.Controls.Add(this.cbChapterRomanNumbering);
@@ -297,9 +307,13 @@ namespace IBE.WindowsClient {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(1169, 731);
+            this.tablePanel1.Size = new System.Drawing.Size(1169, 866);
             this.tablePanel1.TabIndex = 0;
             // 
             // labelControl13
@@ -415,10 +429,10 @@ namespace IBE.WindowsClient {
             this.txtDetailedInfo.ActiveViewType = DevExpress.XtraRichEdit.RichEditViewType.Simple;
             this.tablePanel1.SetColumn(this.txtDetailedInfo, 1);
             this.txtDetailedInfo.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
-            this.txtDetailedInfo.Location = new System.Drawing.Point(152, 461);
+            this.txtDetailedInfo.Location = new System.Drawing.Point(152, 509);
             this.txtDetailedInfo.MenuManager = this.ribbonControl1;
             this.txtDetailedInfo.Name = "txtDetailedInfo";
-            this.tablePanel1.SetRow(this.txtDetailedInfo, 11);
+            this.tablePanel1.SetRow(this.txtDetailedInfo, 13);
             this.txtDetailedInfo.Size = new System.Drawing.Size(541, 200);
             this.txtDetailedInfo.TabIndex = 10;
             // 
@@ -427,30 +441,30 @@ namespace IBE.WindowsClient {
             this.txtIntroduction.ActiveViewType = DevExpress.XtraRichEdit.RichEditViewType.Simple;
             this.tablePanel1.SetColumn(this.txtIntroduction, 1);
             this.txtIntroduction.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
-            this.txtIntroduction.Location = new System.Drawing.Point(152, 255);
+            this.txtIntroduction.Location = new System.Drawing.Point(152, 303);
             this.txtIntroduction.MenuManager = this.ribbonControl1;
             this.txtIntroduction.Name = "txtIntroduction";
-            this.tablePanel1.SetRow(this.txtIntroduction, 10);
+            this.tablePanel1.SetRow(this.txtIntroduction, 12);
             this.txtIntroduction.Size = new System.Drawing.Size(541, 200);
             this.txtIntroduction.TabIndex = 9;
             // 
             // txtBookType
             // 
             this.tablePanel1.SetColumn(this.txtBookType, 1);
-            this.txtBookType.Location = new System.Drawing.Point(152, 667);
+            this.txtBookType.Location = new System.Drawing.Point(152, 715);
             this.txtBookType.Name = "txtBookType";
             this.txtBookType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.tablePanel1.SetRow(this.txtBookType, 12);
+            this.tablePanel1.SetRow(this.txtBookType, 14);
             this.txtBookType.Size = new System.Drawing.Size(541, 20);
             this.txtBookType.TabIndex = 11;
             // 
             // labelControl11
             // 
             this.tablePanel1.SetColumn(this.labelControl11, 0);
-            this.labelControl11.Location = new System.Drawing.Point(3, 670);
+            this.labelControl11.Location = new System.Drawing.Point(3, 718);
             this.labelControl11.Name = "labelControl11";
-            this.tablePanel1.SetRow(this.labelControl11, 12);
+            this.tablePanel1.SetRow(this.labelControl11, 14);
             this.labelControl11.Size = new System.Drawing.Size(51, 13);
             this.labelControl11.TabIndex = 20;
             this.labelControl11.Text = "Book type";
@@ -458,18 +472,18 @@ namespace IBE.WindowsClient {
             // txtChapterPsalmString
             // 
             this.tablePanel1.SetColumn(this.txtChapterPsalmString, 1);
-            this.txtChapterPsalmString.Location = new System.Drawing.Point(152, 229);
+            this.txtChapterPsalmString.Location = new System.Drawing.Point(152, 277);
             this.txtChapterPsalmString.Name = "txtChapterPsalmString";
-            this.tablePanel1.SetRow(this.txtChapterPsalmString, 9);
+            this.tablePanel1.SetRow(this.txtChapterPsalmString, 11);
             this.txtChapterPsalmString.Size = new System.Drawing.Size(541, 20);
             this.txtChapterPsalmString.TabIndex = 8;
             // 
             // txtChapterString
             // 
             this.tablePanel1.SetColumn(this.txtChapterString, 1);
-            this.txtChapterString.Location = new System.Drawing.Point(152, 203);
+            this.txtChapterString.Location = new System.Drawing.Point(152, 251);
             this.txtChapterString.Name = "txtChapterString";
-            this.tablePanel1.SetRow(this.txtChapterString, 8);
+            this.tablePanel1.SetRow(this.txtChapterString, 10);
             this.txtChapterString.Size = new System.Drawing.Size(541, 20);
             this.txtChapterString.TabIndex = 7;
             // 
@@ -546,9 +560,9 @@ namespace IBE.WindowsClient {
             this.tabPane1.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tabTranslationInfo,
             this.tabTranslationContent});
-            this.tabPane1.RegularSize = new System.Drawing.Size(1169, 759);
+            this.tabPane1.RegularSize = new System.Drawing.Size(1169, 894);
             this.tabPane1.SelectedPage = this.tabTranslationInfo;
-            this.tabPane1.Size = new System.Drawing.Size(1169, 759);
+            this.tabPane1.Size = new System.Drawing.Size(1169, 894);
             this.tabPane1.TabIndex = 3;
             this.tabPane1.Text = "tabPane1";
             // 
@@ -559,7 +573,7 @@ namespace IBE.WindowsClient {
             this.tabTranslationInfo.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabTranslationInfo.ImageOptions.SvgImage")));
             this.tabTranslationInfo.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
             this.tabTranslationInfo.Name = "tabTranslationInfo";
-            this.tabTranslationInfo.Size = new System.Drawing.Size(1169, 731);
+            this.tabTranslationInfo.Size = new System.Drawing.Size(1169, 866);
             // 
             // tabTranslationContent
             // 
@@ -902,6 +916,42 @@ namespace IBE.WindowsClient {
             this.tabChapter.Size = new System.Drawing.Size(823, 710);
             this.tabChapter.Text = "Chapter";
             // 
+            // tableChapter
+            // 
+            this.tableChapter.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 5F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 55F)});
+            this.tableChapter.Controls.Add(this.txtNumberOfChapter);
+            this.tableChapter.Controls.Add(this.labelControl28);
+            this.tableChapter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableChapter.Location = new System.Drawing.Point(0, 0);
+            this.tableChapter.Name = "tableChapter";
+            this.tableChapter.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
+            this.tableChapter.Size = new System.Drawing.Size(823, 710);
+            this.tableChapter.TabIndex = 0;
+            // 
+            // txtNumberOfChapter
+            // 
+            this.tableChapter.SetColumn(this.txtNumberOfChapter, 1);
+            this.txtNumberOfChapter.Location = new System.Drawing.Point(23, 3);
+            this.txtNumberOfChapter.MenuManager = this.ribbonControl1;
+            this.txtNumberOfChapter.Name = "txtNumberOfChapter";
+            this.tableChapter.SetRow(this.txtNumberOfChapter, 0);
+            this.txtNumberOfChapter.Size = new System.Drawing.Size(797, 20);
+            this.txtNumberOfChapter.TabIndex = 1;
+            // 
+            // labelControl28
+            // 
+            this.tableChapter.SetColumn(this.labelControl28, 0);
+            this.labelControl28.Location = new System.Drawing.Point(3, 3);
+            this.labelControl28.Name = "labelControl28";
+            this.tableChapter.SetRow(this.labelControl28, 0);
+            this.labelControl28.Size = new System.Drawing.Size(14, 13);
+            this.labelControl28.TabIndex = 0;
+            this.labelControl28.Text = "Number of Chapter";
+            // 
             // tabVerse
             // 
             this.tabVerse.Controls.Add(this.tableVerseControls);
@@ -932,11 +982,11 @@ namespace IBE.WindowsClient {
             // txtNumberOfVerse
             // 
             this.tableVerseControls.SetColumn(this.txtNumberOfVerse, 1);
-            this.txtNumberOfVerse.Location = new System.Drawing.Point(110, 27);
+            this.txtNumberOfVerse.Location = new System.Drawing.Point(23, 23);
             this.txtNumberOfVerse.MenuManager = this.ribbonControl1;
             this.txtNumberOfVerse.Name = "txtNumberOfVerse";
             this.tableVerseControls.SetRow(this.txtNumberOfVerse, 1);
-            this.txtNumberOfVerse.Size = new System.Drawing.Size(710, 20);
+            this.txtNumberOfVerse.Size = new System.Drawing.Size(797, 20);
             this.txtNumberOfVerse.TabIndex = 3;
             // 
             // editor
@@ -947,42 +997,42 @@ namespace IBE.WindowsClient {
             this.tableVerseControls.SetColumnSpan(this.editor, 2);
             this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.editor.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
-            this.editor.Location = new System.Drawing.Point(3, 53);
+            this.editor.Location = new System.Drawing.Point(3, 43);
             this.editor.MenuManager = this.ribbonControl1;
             this.editor.Name = "editor";
             this.tableVerseControls.SetRow(this.editor, 2);
-            this.editor.Size = new System.Drawing.Size(817, 654);
+            this.editor.Size = new System.Drawing.Size(817, 664);
             this.editor.TabIndex = 0;
             // 
             // labelControl15
             // 
             this.tableVerseControls.SetColumn(this.labelControl15, 0);
-            this.labelControl15.Location = new System.Drawing.Point(3, 30);
+            this.labelControl15.Location = new System.Drawing.Point(3, 23);
             this.labelControl15.Name = "labelControl15";
             this.tableVerseControls.SetRow(this.labelControl15, 1);
-            this.labelControl15.Size = new System.Drawing.Size(44, 13);
+            this.labelControl15.Size = new System.Drawing.Size(14, 13);
             this.labelControl15.TabIndex = 2;
             this.labelControl15.Text = "Number:";
             // 
             // labelControl14
             // 
             this.tableVerseControls.SetColumn(this.labelControl14, 0);
-            this.labelControl14.Location = new System.Drawing.Point(3, 5);
+            this.labelControl14.Location = new System.Drawing.Point(3, 3);
             this.labelControl14.Name = "labelControl14";
             this.tableVerseControls.SetRow(this.labelControl14, 0);
-            this.labelControl14.Size = new System.Drawing.Size(101, 13);
+            this.labelControl14.Size = new System.Drawing.Size(14, 13);
             this.labelControl14.TabIndex = 1;
             this.labelControl14.Text = "Start from new line:";
             // 
             // cbStartFromNewLine
             // 
             this.tableVerseControls.SetColumn(this.cbStartFromNewLine, 1);
-            this.cbStartFromNewLine.Location = new System.Drawing.Point(110, 3);
+            this.cbStartFromNewLine.Location = new System.Drawing.Point(23, 3);
             this.cbStartFromNewLine.MenuManager = this.ribbonControl1;
             this.cbStartFromNewLine.Name = "cbStartFromNewLine";
             this.cbStartFromNewLine.Properties.Caption = "";
             this.tableVerseControls.SetRow(this.cbStartFromNewLine, 0);
-            this.cbStartFromNewLine.Size = new System.Drawing.Size(710, 18);
+            this.cbStartFromNewLine.Size = new System.Drawing.Size(797, 18);
             this.cbStartFromNewLine.TabIndex = 0;
             // 
             // sidePanel1
@@ -1009,47 +1059,53 @@ namespace IBE.WindowsClient {
             this.treeList.NodeChanged += new DevExpress.XtraTreeList.NodeChangedEventHandler(this.treeList_NodeChanged);
             this.treeList.FocusedNodeChanged += new DevExpress.XtraTreeList.FocusedNodeChangedEventHandler(this.treeList_FocusedNodeChanged);
             // 
-            // tableChapter
+            // cbWithGrammarCodes
             // 
-            this.tableChapter.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 5F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 55F)});
-            this.tableChapter.Controls.Add(this.txtNumberOfChapter);
-            this.tableChapter.Controls.Add(this.labelControl28);
-            this.tableChapter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableChapter.Location = new System.Drawing.Point(0, 0);
-            this.tableChapter.Name = "tableChapter";
-            this.tableChapter.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tableChapter.Size = new System.Drawing.Size(823, 710);
-            this.tableChapter.TabIndex = 0;
+            this.tablePanel1.SetColumn(this.cbWithGrammarCodes, 1);
+            this.cbWithGrammarCodes.Location = new System.Drawing.Point(152, 227);
+            this.cbWithGrammarCodes.MenuManager = this.ribbonControl1;
+            this.cbWithGrammarCodes.Name = "cbWithGrammarCodes";
+            this.cbWithGrammarCodes.Properties.Caption = "";
+            this.tablePanel1.SetRow(this.cbWithGrammarCodes, 9);
+            this.cbWithGrammarCodes.Size = new System.Drawing.Size(541, 18);
+            this.cbWithGrammarCodes.TabIndex = 27;
             // 
-            // labelControl28
+            // cbWithStrongs
             // 
-            this.tableChapter.SetColumn(this.labelControl28, 0);
-            this.labelControl28.Location = new System.Drawing.Point(3, 6);
-            this.labelControl28.Name = "labelControl28";
-            this.tableChapter.SetRow(this.labelControl28, 0);
-            this.labelControl28.Size = new System.Drawing.Size(99, 13);
-            this.labelControl28.TabIndex = 0;
-            this.labelControl28.Text = "Number of Chapter";
+            this.tablePanel1.SetColumn(this.cbWithStrongs, 1);
+            this.cbWithStrongs.Location = new System.Drawing.Point(152, 203);
+            this.cbWithStrongs.MenuManager = this.ribbonControl1;
+            this.cbWithStrongs.Name = "cbWithStrongs";
+            this.cbWithStrongs.Properties.Caption = "";
+            this.tablePanel1.SetRow(this.cbWithStrongs, 8);
+            this.cbWithStrongs.Size = new System.Drawing.Size(541, 18);
+            this.cbWithStrongs.TabIndex = 28;
             // 
-            // txtNumberOfChapter
+            // labelControl29
             // 
-            this.tableChapter.SetColumn(this.txtNumberOfChapter, 1);
-            this.txtNumberOfChapter.Location = new System.Drawing.Point(108, 3);
-            this.txtNumberOfChapter.MenuManager = this.ribbonControl1;
-            this.txtNumberOfChapter.Name = "txtNumberOfChapter";
-            this.tableChapter.SetRow(this.txtNumberOfChapter, 0);
-            this.txtNumberOfChapter.Size = new System.Drawing.Size(712, 20);
-            this.txtNumberOfChapter.TabIndex = 1;
+            this.tablePanel1.SetColumn(this.labelControl29, 0);
+            this.labelControl29.Location = new System.Drawing.Point(3, 229);
+            this.labelControl29.Name = "labelControl29";
+            this.tablePanel1.SetRow(this.labelControl29, 9);
+            this.labelControl29.Size = new System.Drawing.Size(121, 13);
+            this.labelControl29.TabIndex = 29;
+            this.labelControl29.Text = "Show Grammar\'s Codes";
+            // 
+            // labelControl30
+            // 
+            this.tablePanel1.SetColumn(this.labelControl30, 0);
+            this.labelControl30.Location = new System.Drawing.Point(3, 205);
+            this.labelControl30.Name = "labelControl30";
+            this.tablePanel1.SetRow(this.labelControl30, 8);
+            this.labelControl30.Size = new System.Drawing.Size(110, 13);
+            this.labelControl30.TabIndex = 30;
+            this.labelControl30.Text = "Show Strong\'s Codes";
             // 
             // TranslationEditForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1169, 889);
+            this.ClientSize = new System.Drawing.Size(1169, 1024);
             this.Controls.Add(this.tabPane1);
             this.Controls.Add(this.ribbonControl1);
             this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("TranslationEditForm.IconOptions.SvgImage")));
@@ -1094,6 +1150,10 @@ namespace IBE.WindowsClient {
             ((System.ComponentModel.ISupportInitialize)(this.txtBookShortcut.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNumberOfBook.Properties)).EndInit();
             this.tabChapter.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tableChapter)).EndInit();
+            this.tableChapter.ResumeLayout(false);
+            this.tableChapter.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNumberOfChapter.Properties)).EndInit();
             this.tabVerse.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tableVerseControls)).EndInit();
             this.tableVerseControls.ResumeLayout(false);
@@ -1102,10 +1162,8 @@ namespace IBE.WindowsClient {
             ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).EndInit();
             this.sidePanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.treeList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tableChapter)).EndInit();
-            this.tableChapter.ResumeLayout(false);
-            this.tableChapter.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtNumberOfChapter.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbWithGrammarCodes.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbWithStrongs.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1191,5 +1249,9 @@ namespace IBE.WindowsClient {
         private DevExpress.Utils.Layout.TablePanel tableChapter;
         private DevExpress.XtraEditors.TextEdit txtNumberOfChapter;
         private DevExpress.XtraEditors.LabelControl labelControl28;
+        private DevExpress.XtraEditors.LabelControl labelControl30;
+        private DevExpress.XtraEditors.LabelControl labelControl29;
+        private DevExpress.XtraEditors.CheckEdit cbWithStrongs;
+        private DevExpress.XtraEditors.CheckEdit cbWithGrammarCodes;
     }
 }

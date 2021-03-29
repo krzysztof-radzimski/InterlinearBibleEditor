@@ -84,8 +84,11 @@ namespace IBE.WindowsClient {
                 cbIsRecommended.DataBindings.Add("EditValue", Object, "Recommended");
                 cbOpenAccess.DataBindings.Add("EditValue", Object, "OpenAccess");
                 txtBookType.DataBindings.Add("EditValue", Object, "BookType");
+                cbWithGrammarCodes.DataBindings.Add("EditValue", Object, "WithGrammarCodes");
+                cbWithStrongs.DataBindings.Add("EditValue", Object, "WithStrongs");
 
-                LoadTree();
+                // LoadTree();
+                tabTranslationContent.PageVisible = false;
             }
         }
 

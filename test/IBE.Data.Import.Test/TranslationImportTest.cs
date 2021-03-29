@@ -54,23 +54,23 @@ namespace IBE.Data.Import.Test {
         [TestMethod] public void Import_TRO() { ImportTranslation(@"..\..\..\..\db\import\TRO.zip", true, TranslationType.Literal); }
         [TestMethod] public void Import_IBHP() { ImportTranslation(@"..\..\..\..\db\import\IBHP+.zip", true, TranslationType.Literal); }
 
-        [TestMethod] public void ExportInterlinearTest() {
-            var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".docx");
-            var licPath = @"..\..\..\..\..\..\Aspose.Total.lic";
+        //[TestMethod] public void ExportInterlinearTest() {
+        //    var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".docx");
+        //    var licPath = @"..\..\..\..\..\..\Aspose.Total.lic";
 
-            new Export.InterlinearExporter(File.ReadAllBytes(licPath)).Test(path);
+        //    new Export.InterlinearExporter(File.ReadAllBytes(licPath)).Test(path);
 
-            if (File.Exists(path)) {
-                System.Diagnostics.Process.Start(path);
-            }
-        }
+        //    if (File.Exists(path)) {
+        //        System.Diagnostics.Process.Start(path);
+        //    }
+        //}
         [TestMethod] public void ExportInterlinearChapterToPdf() {
             ConnectionHelper.Connect();
             var uow = new UnitOfWork();
 
             var trans = new XPQuery<Translation>(uow).Where(x => x.Name == "NPI+").FirstOrDefault();
             var book = trans.Books.Where(x => x.NumberOfBook == 470).FirstOrDefault();
-            var chapter = book.Chapters.Where(x => x.NumberOfChapter == 5).FirstOrDefault();
+            var chapter = book.Chapters.Where(x => x.NumberOfChapter == 6).FirstOrDefault();
 
             var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".docx");
             var licPath = @"..\..\..\..\..\..\Aspose.Total.lic";
