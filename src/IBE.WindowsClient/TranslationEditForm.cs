@@ -49,6 +49,8 @@ namespace IBE.WindowsClient {
             btnAddBook.Enabled = false;
             btnAddChapter.Enabled = false;
             btnAddVerse.Enabled = false;
+
+            tabs.ShowTabHeader = DevExpress.Utils.DefaultBoolean.False;
         }
 
         public TranslationEditForm(int id, UnitOfWork session) : this() {
@@ -66,6 +68,8 @@ namespace IBE.WindowsClient {
 
         private void BindObject() {
             if (Object.IsNotNull()) {
+                txtBaseBook.Properties.DataSource = new XPQuery<BookBase>(Object.Session);
+
                 this.Text = $"Translation editor :: {Object.Name}";
 
                 txtName.DataBindings.Add("EditValue", Object, "Name");
@@ -81,9 +85,14 @@ namespace IBE.WindowsClient {
                 cbOpenAccess.DataBindings.Add("EditValue", Object, "OpenAccess");
                 txtBookType.DataBindings.Add("EditValue", Object, "BookType");
 
+                LoadTree();
+            }
+        }
 
+        private void LoadTree() {
+            if (Object.IsNotNull()) {
                 TreeItems = new List<IbeTreeItem>();
-                var root = new IbeTreeItem() {
+                var root = new IbeRootTreeItem() {
                     ID = $"Translation_{Object.Oid}",
                     ParentID = null,
                     Text = Object.Name.IsNotNullOrEmpty() ? Object.Name : "Root",
@@ -92,17 +101,19 @@ namespace IBE.WindowsClient {
                 TreeItems.Add(root);
 
                 foreach (var item in Object.Books) {
-                    var book = new IbeTreeItem() {
+                    var book = new IbeBookTreeItem() {
                         ID = $"Book_{item.Oid}",
                         ParentID = root.ID,
+                        Number = item.NumberOfBook,
                         Text = item.BookName,
                         Tag = item.Oid
                     };
 
                     foreach (var _item in item.Chapters) {
-                        var chapter = new IbeTreeItem() {
+                        var chapter = new IbeChapterTreeItem() {
                             ID = $"Chapter{ _item.Oid}",
                             ParentID = book.ID,
+                            Number = _item.NumberOfChapter,
                             Text = _item.NumberOfChapter.ToString(),
                             Tag = _item.Oid
                         };
@@ -117,7 +128,9 @@ namespace IBE.WindowsClient {
                                 ParentID = chapter.ID,
                                 Text = __text,
                                 Tag = __item.Oid,
-                                Value = __item.Text
+                                Value = __item.Text,
+                                Number = __item.NumberOfVerse,
+                                StartFromNewLine = __item.StartFromNewLine
                             };
 
                             TreeItems.Add(verse);
@@ -142,6 +155,16 @@ namespace IBE.WindowsClient {
             uow.CommitChanges();
 
             // save changes in content
+            //foreach (var item in TreeItems) {
+            //    if (item.Text.Contains("_New_")) {
+            //        if (item.Type == IbeTreeItemType.Book) {
+            //            var book = new Book(uow) {
+            //                BookName = item.Text,
+
+            //            };
+            //        }
+            //    }
+            //}
 
             // refresh translations window
             try {
@@ -156,47 +179,48 @@ namespace IBE.WindowsClient {
 
         private void treeList_FocusedNodeChanged(object sender, DevExpress.XtraTreeList.FocusedNodeChangedEventArgs e) {
             if (e.OldNode.IsNotNull()) {
-                var record = treeList.GetDataRecordByNode(e.OldNode) as IbeVerseTreeItem;
-                if (record.IsNotNull()) {
-                    if (editor.Text != record.Value) {
-                        record.Value = editor.Text;
-                        record.Changed = true;
+                var oldVerseRecord = treeList.GetDataRecordByNode(e.OldNode) as IbeVerseTreeItem;
+                if (oldVerseRecord.IsNotNull()) {
+                    if ((tabVerse.Tag as IbeVerseTreeItem) == oldVerseRecord) {
+                        if (editor.Text != oldVerseRecord.Value) {
+                            oldVerseRecord.Value = editor.Text;
+                            oldVerseRecord.Changed = true;
+                        }
+                        if (oldVerseRecord.StartFromNewLine != cbStartFromNewLine.Checked) {
+                            oldVerseRecord.StartFromNewLine = cbStartFromNewLine.Checked;
+                            oldVerseRecord.Changed = true;
+                        }
+                        if (oldVerseRecord.Number != txtNumberOfVerse.Text.ToInt()) {
+                            oldVerseRecord.Number = txtNumberOfVerse.Text.ToInt();
+                            oldVerseRecord.Changed = true;
+                        }
                     }
                 }
             }
 
             if (e.Node.IsNotNull()) {
                 var _record = treeList.GetDataRecordByNode(e.Node) as IbeTreeItem;
-                var record = treeList.GetDataRecordByNode(e.Node) as IbeVerseTreeItem;
-                if (record.IsNotNull()) {
-                    btnAddBook.Enabled = false;
-                    btnAddChapter.Enabled = false;
-                    btnAddVerse.Enabled = false;
-
-                    editor.Text = record.Value;
-                    editor.Tag = record;
-                }
-
                 if (_record.IsNotNull()) {
-                    if (_record.ParentID.IsNull()) {
+                    if (_record.Type == IbeTreeItemType.Verse) {
+                        LoadVerse(_record as IbeVerseTreeItem);
+                    }
+                    else if (_record.Type == IbeTreeItemType.Root) {
                         btnAddBook.Enabled = true;
                         btnAddChapter.Enabled = false;
                         btnAddVerse.Enabled = false;
+                        tabs.Visible = false;
                     }
-                    else if (_record.ID.StartsWith("Book")) {
-                        btnAddBook.Enabled = false;
-                        btnAddChapter.Enabled = true;
-                        btnAddVerse.Enabled = false;
+                    else if (_record.Type == IbeTreeItemType.Book) {
+                        LoadBook(_record as IbeBookTreeItem);
                     }
-                    else if (_record.ID.StartsWith("Chapter")) {
-                        btnAddBook.Enabled = false;
-                        btnAddChapter.Enabled = false;
-                        btnAddVerse.Enabled = true;
+                    else if (_record.Type == IbeTreeItemType.Chapter) {
+                        LoadChapter(_record as IbeChapterTreeItem);
                     }
                 }
             }
-
         }
+
+   
 
         private void treeList_NodeChanged(object sender, DevExpress.XtraTreeList.NodeChangedEventArgs e) {
             if (e.Node.IsNotNull()) { }
@@ -207,11 +231,12 @@ namespace IBE.WindowsClient {
             if (root.IsNotNull()) {
                 var response = XtraInputBox.Show("Type book name:", "Add book", "", MessageBoxButtons.OKCancel);
                 if (response.IsNotNullOrEmpty()) {
-                    var item = new IbeTreeItem() {
+                    var item = new IbeBookTreeItem() {
                         Text = response,
                         ParentID = root.ID,
                         ID = $"Book_New_{Index}",
-                        Tag = -1
+                        Tag = -1,
+                        Number = response.ToInt()
                     };
                     Index++;
                     TreeItems.Add(item);
@@ -225,18 +250,19 @@ namespace IBE.WindowsClient {
             if (book.ID.StartsWith("Book")) {
                 var response = XtraInputBox.Show("Type chapter number (arabic):", "Add chapter", "", MessageBoxButtons.OKCancel);
                 if (response.IsNotNullOrEmpty()) {
-                    var item = new IbeTreeItem() {
+                    var item = new IbeChapterTreeItem() {
                         Text = response,
                         ParentID = book.ID,
                         ID = $"Chapter_New_{Index}",
-                        Tag = -1
+                        Tag = -1,
+                        Number = response.ToInt(),
                     };
                     Index++;
                     TreeItems.Add(item);
                     treeList.RefreshDataSource();
 
                     treeList.FocusedNode.Expand();
-
+                    treeList.FocusedNode = treeList.FindNodeByKeyID(item.ID);
                 }
             }
         }
@@ -251,29 +277,109 @@ namespace IBE.WindowsClient {
                         ParentID = chapter.ID,
                         ID = $"Verse_New_{Index}",
                         Tag = -1,
-                        Value = String.Empty
+                        Value = String.Empty,
+                        Number = response.ToInt(),
+                        StartFromNewLine = false
                     };
                     Index++;
                     TreeItems.Add(item);
                     treeList.RefreshDataSource();
 
                     treeList.FocusedNode.Expand();
+                    treeList.FocusedNode = treeList.FindNodeByKeyID(item.ID);
                 }
             }
         }
+
+        private void LoadVerse(IbeVerseTreeItem e) {
+            if (e.IsNotNull()) {
+                btnAddBook.Enabled = false;
+                btnAddChapter.Enabled = false;
+                btnAddVerse.Enabled = false;
+
+                tabs.SelectedTabPage = tabVerse;
+                tabs.Visible = true;
+
+                txtNumberOfVerse.Text = e.Number.ToString();
+                cbStartFromNewLine.Checked = e.StartFromNewLine;
+                editor.Text = e.Value;
+                tabVerse.Tag = e;
+            }
+        }
+
+        private void LoadChapter(IbeChapterTreeItem e) {
+            if (e.IsNotNull()) {
+                btnAddBook.Enabled = false;
+                btnAddChapter.Enabled = false;
+                btnAddVerse.Enabled = true;
+
+                tabs.SelectedTabPage = tabChapter;
+                tabs.Visible = true;
+
+                txtNumberOfChapter.Text = e.Number.ToString();
+                tabChapter.Tag = e;
+            }
+        }
+
+        private void LoadBook(IbeBookTreeItem e) {
+            btnAddBook.Enabled = false;
+            btnAddChapter.Enabled = true;
+            btnAddVerse.Enabled = false;
+
+            tabs.SelectedTabPage = tabBook;
+            tabs.Visible = true;
+
+            txtNumberOfBook.Text = e.Number.ToString();
+
+            tabBook.Tag = e;
+        }
     }
 
-    public class IbeTreeItem {
+    public enum IbeTreeItemType { Root, Book, Chapter, Verse }
+
+    public abstract class IbeTreeItem {
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public int Number { get; set; }
+
         public string ID { get; set; }
         public string ParentID { get; set; }
         public string Text { get; set; }
-        public IbeTreeItem() { }
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int Tag { get; set; }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IbeTreeItemType Type { get; protected set; }
+
+        public IbeTreeItem() { }
+    }
+
+    public class IbeRootTreeItem : IbeTreeItem {
+        public IbeRootTreeItem() {
+            Type = IbeTreeItemType.Root;
+        }
+    }
+
+    public class IbeBookTreeItem : IbeTreeItem {
+        public IbeBookTreeItem() {
+            Type = IbeTreeItemType.Book;
+        }
+    }
+
+    public class IbeChapterTreeItem : IbeTreeItem {
+        public IbeChapterTreeItem() {
+            Type = IbeTreeItemType.Chapter;
+        }
     }
 
     public class IbeVerseTreeItem : IbeTreeItem {
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool StartFromNewLine { get; set; }
+
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string Value { get; set; }
@@ -281,5 +387,9 @@ namespace IBE.WindowsClient {
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool Changed { get; set; }
+
+        public IbeVerseTreeItem() {
+            Type = IbeTreeItemType.Verse;
+        }
     }
 }

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -183,6 +184,12 @@ namespace IBE.WindowsClient {
                     Uow.CommitChanges();
                 }
             }
+        }
+
+        private void btnCopyDatabaseToWebFolder_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var path =  "../../../../db/IBE.SQLite3";
+            var path2 = "../../../Church.WebApp/Data/IBE.SQLite3";
+            File.Copy(path, path2, true);
         }
     }
 }

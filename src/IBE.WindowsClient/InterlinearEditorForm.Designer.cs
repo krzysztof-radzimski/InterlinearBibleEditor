@@ -35,9 +35,10 @@ namespace IBE.WindowsClient {
             this.editVerse = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
             this.btnNextVerse = new DevExpress.XtraBars.BarButtonItem();
             this.btnPreviousVerse = new DevExpress.XtraBars.BarButtonItem();
+            this.btnAddWord = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            this.btnAddWord = new DevExpress.XtraBars.BarButtonItem();
+            this.btnCopyDatabaseToWebFolder = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editBook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editChapter)).BeginInit();
@@ -56,9 +57,10 @@ namespace IBE.WindowsClient {
             this.txtVerse,
             this.btnNextVerse,
             this.btnPreviousVerse,
-            this.btnAddWord});
+            this.btnAddWord,
+            this.btnCopyDatabaseToWebFolder});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 8;
+            this.ribbonControl1.MaxItemId = 9;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
@@ -147,6 +149,14 @@ namespace IBE.WindowsClient {
             this.btnPreviousVerse.Name = "btnPreviousVerse";
             this.btnPreviousVerse.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnPreviousVerse_ItemClick);
             // 
+            // btnAddWord
+            // 
+            this.btnAddWord.Caption = "Add Word";
+            this.btnAddWord.Id = 7;
+            this.btnAddWord.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAddWord.ImageOptions.SvgImage")));
+            this.btnAddWord.Name = "btnAddWord";
+            this.btnAddWord.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAddWord_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -163,16 +173,17 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnPreviousVerse, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnNextVerse);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnAddWord, true);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnCopyDatabaseToWebFolder);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
-            // btnAddWord
+            // btnCopyDatabaseToWebFolder
             // 
-            this.btnAddWord.Caption = "Add Word";
-            this.btnAddWord.Id = 7;
-            this.btnAddWord.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAddWord.ImageOptions.SvgImage")));
-            this.btnAddWord.Name = "btnAddWord";
-            this.btnAddWord.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAddWord_ItemClick);
+            this.btnCopyDatabaseToWebFolder.Caption = "Copy to web folder";
+            this.btnCopyDatabaseToWebFolder.Id = 8;
+            this.btnCopyDatabaseToWebFolder.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnCopyDatabaseToWebFolder.ImageOptions.SvgImage")));
+            this.btnCopyDatabaseToWebFolder.Name = "btnCopyDatabaseToWebFolder";
+            this.btnCopyDatabaseToWebFolder.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnCopyDatabaseToWebFolder_ItemClick);
             // 
             // InterlinearEditorForm
             // 
@@ -207,5 +218,6 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnNextVerse;
         private DevExpress.XtraBars.BarButtonItem btnPreviousVerse;
         private DevExpress.XtraBars.BarButtonItem btnAddWord;
+        private DevExpress.XtraBars.BarButtonItem btnCopyDatabaseToWebFolder;
     }
 }
