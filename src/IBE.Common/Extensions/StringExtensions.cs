@@ -233,5 +233,49 @@ namespace IBE.Common.Extensions {
             }
             return default;
         }
+
+        public static string ArabicToRoman(this int arabicNumeral) {
+
+            string romanNumeral = "";
+
+            if ((arabicNumeral / 1000) > 0) {
+                for (int i = 1; i <= (arabicNumeral / 1000); i++) {
+                    romanNumeral = romanNumeral + 'M';
+                    arabicNumeral = arabicNumeral % 1000;
+                }
+            }
+
+            if ((arabicNumeral / 100) > 0) {
+                romanNumeral = romanNumeral + Paste(arabicNumeral / 100, "C", "D", "M");
+                arabicNumeral = arabicNumeral % 100;
+            }
+
+            if ((arabicNumeral / 10) > 0) {
+                romanNumeral = romanNumeral + Paste(arabicNumeral / 10, "X", "L", "C");
+                arabicNumeral = arabicNumeral % 10;
+            }
+
+            if (arabicNumeral > 0) {
+                romanNumeral = romanNumeral + Paste(arabicNumeral, "I", "V", "X");
+            }
+            return romanNumeral;
+        }
+
+        public static string Paste(int num, string one, string five, string ten) {
+
+            string T;
+            T = "";
+
+            if (num < 4) { for (int i = 1; i <= num; i++) { T = T + one; } }
+            if (num == 4) { T = one + five; }
+            if (num == 5) { T = five; };
+            if ((num > 5) && (num < 9)) {
+                T = five;
+                for (int i = 1; i <= num - 5; i++) { T = T + one; }
+            }
+            if (num == 9) { T = one + ten; }
+
+            return T;
+        }
     }
 }

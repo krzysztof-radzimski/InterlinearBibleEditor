@@ -29,6 +29,8 @@ namespace IBE.Data.Model {
         private bool openAccess;
         private TheBookType bookType;
         private bool chapterRomanNumbering;
+        private bool withStrongs;
+        private bool withGrammarCodes;
 
         public string Name {
             get { return name; }
@@ -96,6 +98,15 @@ namespace IBE.Data.Model {
         public bool ChapterRomanNumbering {
             get { return chapterRomanNumbering; }
             set { SetPropertyValue(nameof(ChapterRomanNumbering), ref chapterRomanNumbering, value); }
+        }
+
+        public bool WithStrongs{
+            get { return withStrongs; }
+            set { SetPropertyValue(nameof(WithStrongs), ref withStrongs, value); }
+        }
+        public bool WithGrammarCodes {
+            get { return withGrammarCodes; }
+            set { SetPropertyValue(nameof(WithGrammarCodes), ref withGrammarCodes, value); }
         }
 
         public Translation() : base(new UnitOfWork()) { }

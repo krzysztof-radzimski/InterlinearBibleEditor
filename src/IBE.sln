@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Church.WebApp", "Church.Web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IBE.Common", "IBE.Common\IBE.Common.csproj", "{FA1C9CBA-B5CF-4BEA-971D-9A5731E85B8A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBE.Data.Export", "IBE.Data.Export\IBE.Data.Export.csproj", "{6771BBB3-C134-48B9-8BA8-CC189CA26499}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{FA1C9CBA-B5CF-4BEA-971D-9A5731E85B8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA1C9CBA-B5CF-4BEA-971D-9A5731E85B8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA1C9CBA-B5CF-4BEA-971D-9A5731E85B8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6771BBB3-C134-48B9-8BA8-CC189CA26499}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6771BBB3-C134-48B9-8BA8-CC189CA26499}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6771BBB3-C134-48B9-8BA8-CC189CA26499}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6771BBB3-C134-48B9-8BA8-CC189CA26499}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 		{B5656048-8805-4C5B-A7E7-0DA5C1688E41} = {17B5A392-4993-4F4B-A3C6-420B69A9BC52}
 		{17B5E84C-0925-48D2-9375-C55217658720} = {17B5A392-4993-4F4B-A3C6-420B69A9BC52}
 		{FA1C9CBA-B5CF-4BEA-971D-9A5731E85B8A} = {17B5A392-4993-4F4B-A3C6-420B69A9BC52}
+		{6771BBB3-C134-48B9-8BA8-CC189CA26499} = {17B5A392-4993-4F4B-A3C6-420B69A9BC52}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7716740D-07D5-48A5-89AC-F9BC8E61E5DC}
