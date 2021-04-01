@@ -28,7 +28,7 @@ namespace IBE.WindowsClient.Controls {
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions1 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPane1 = new DevExpress.XtraBars.Navigation.TabPane();
-            this.tabNavigationPage1 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            this.tabTranslations = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.gridTranslations = new DevExpress.XtraGrid.GridControl();
             this.gridViewTranslations = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.colTranslationName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -51,7 +51,7 @@ namespace IBE.WindowsClient.Controls {
             this.splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
             ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).BeginInit();
             this.tabPane1.SuspendLayout();
-            this.tabNavigationPage1.SuspendLayout();
+            this.tabTranslations.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridTranslations)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTranslations)).BeginInit();
             this.tabNavigationPage2.SuspendLayout();
@@ -85,7 +85,7 @@ namespace IBE.WindowsClient.Controls {
             // 
             // tabPane1
             // 
-            this.tabPane1.Controls.Add(this.tabNavigationPage1);
+            this.tabPane1.Controls.Add(this.tabTranslations);
             this.tabPane1.Controls.Add(this.tabNavigationPage2);
             this.tabPane1.Controls.Add(this.tabNavigationPage3);
             this.tabPane1.Controls.Add(this.tabNavigationPage4);
@@ -93,27 +93,27 @@ namespace IBE.WindowsClient.Controls {
             this.tabPane1.Location = new System.Drawing.Point(0, 230);
             this.tabPane1.Name = "tabPane1";
             this.tabPane1.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
-            this.tabNavigationPage1,
+            this.tabTranslations,
             this.tabNavigationPage2,
             this.tabNavigationPage3,
             this.tabNavigationPage4});
             this.tabPane1.RegularSize = new System.Drawing.Size(974, 400);
-            this.tabPane1.SelectedPage = this.tabNavigationPage1;
+            this.tabPane1.SelectedPage = this.tabTranslations;
             this.tabPane1.Size = new System.Drawing.Size(974, 400);
             this.tabPane1.TabIndex = 1;
             this.tabPane1.Text = "tabPane1";
             this.tabPane1.SizeChanged += new System.EventHandler(this.tabPane1_SizeChanged);
             // 
-            // tabNavigationPage1
+            // tabTranslations
             // 
-            this.tabNavigationPage1.Caption = "Translations";
-            this.tabNavigationPage1.Controls.Add(this.gridTranslations);
-            this.tabNavigationPage1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabNavigationPage1.ImageOptions.SvgImage")));
-            this.tabNavigationPage1.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
-            this.tabNavigationPage1.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
-            this.tabNavigationPage1.Name = "tabNavigationPage1";
-            this.tabNavigationPage1.Properties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
-            this.tabNavigationPage1.Size = new System.Drawing.Size(974, 372);
+            this.tabTranslations.Caption = "Translations";
+            this.tabTranslations.Controls.Add(this.gridTranslations);
+            this.tabTranslations.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabNavigationPage1.ImageOptions.SvgImage")));
+            this.tabTranslations.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.tabTranslations.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
+            this.tabTranslations.Name = "tabTranslations";
+            this.tabTranslations.Properties.ShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
+            this.tabTranslations.Size = new System.Drawing.Size(974, 372);
             // 
             // gridTranslations
             // 
@@ -370,7 +370,7 @@ namespace IBE.WindowsClient.Controls {
             this.Load += new System.EventHandler(this.VerseEditorControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).EndInit();
             this.tabPane1.ResumeLayout(false);
-            this.tabNavigationPage1.ResumeLayout(false);
+            this.tabTranslations.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridTranslations)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTranslations)).EndInit();
             this.tabNavigationPage2.ResumeLayout(false);
@@ -399,7 +399,7 @@ namespace IBE.WindowsClient.Controls {
 
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
         private DevExpress.XtraBars.Navigation.TabPane tabPane1;
-        private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavigationPage1;
+        private DevExpress.XtraBars.Navigation.TabNavigationPage tabTranslations;
         private DevExpress.XtraGrid.GridControl gridTranslations;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewTranslations;
         private DevExpress.XtraBars.Navigation.TabNavigationPage tabNavigationPage2;

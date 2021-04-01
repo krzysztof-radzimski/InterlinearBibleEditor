@@ -18,6 +18,8 @@ namespace IBE.WindowsClient.Controls {
         bool isLoading = false;
         bool isLoaded = false;
         public Verse Verse { get; }
+        public bool LoadOtherTranslations { get; }
+
         public event EventHandler<StrongCode> StrongClick;
         public event EventHandler<GrammarCode> GrammarCodeClick;
 
@@ -28,8 +30,9 @@ namespace IBE.WindowsClient.Controls {
             tabPane1.Height = PANE_HEIGHT;
         }
 
-        public VerseEditorControl(Verse verse) : this() {
+        public VerseEditorControl(Verse verse, bool loadOtherTranslations = true) : this() {
             Verse = verse;
+            LoadOtherTranslations = loadOtherTranslations;
         }
 
         public bool IsModified() {
@@ -85,44 +88,48 @@ namespace IBE.WindowsClient.Controls {
                 });
             });
 
+            if (LoadOtherTranslations) {
+                var getTranslations = Task.Factory.StartNew(() => {
+                    var list = new List<TranslationVerseInfo>();
+                    var view = new XPView(Verse.Session, typeof(Translation));
+                    view.CriteriaString = "[Type] = 4";
+                    view.Properties.Add(new ViewProperty("Oid", SortDirection.None, "[Oid]", false, true));
+                    view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
+                    foreach (ViewRecord item in view) {
+                        var id = item["Oid"].ToInt();
+                        var name = item["Name"].ToString();
+                        var tvi = new TranslationVerseInfo() {
+                            TranslationName = name
+                        };
 
-            var getTranslations = Task.Factory.StartNew(() => {
-                var list = new List<TranslationVerseInfo>();
-                var view = new XPView(Verse.Session, typeof(Translation));
-                view.CriteriaString = "[Type] = 4";
-                view.Properties.Add(new ViewProperty("Oid", SortDirection.None, "[Oid]", false, true));
-                view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
-                foreach (ViewRecord item in view) {
-                    var id = item["Oid"].ToInt();
-                    var name = item["Name"].ToString();
-                    var tvi = new TranslationVerseInfo() {
-                        TranslationName = name
-                    };
-
-                    var _view = new XPView(Verse.Session, typeof(Verse));
-                    _view.CriteriaString = $"[NumberOfVerse] = {Verse.NumberOfVerse} AND [ParentChapter.NumberOfChapter] = {Verse.ParentChapter.NumberOfChapter} AND [ParentChapter.ParentBook.NumberOfBook] = {Verse.ParentChapter.ParentBook.NumberOfBook} AND [ParentChapter.ParentBook.ParentTranslation.Name] = '{name.Replace("'", "''")}'";
-                    _view.Properties.Add(new ViewProperty("Text", SortDirection.None, "[Text]", false, true));
-                    foreach (ViewRecord _item in _view) {
-                        tvi.VerseText = _item["Text"].ToString().Replace("<pb/>", "").Replace("<t>", "").Replace("<m>", "").Replace("</t>", "").Replace("</m>", "").Replace("<e>", "").Replace("</e>", "");
+                        var _view = new XPView(Verse.Session, typeof(Verse));
+                        _view.CriteriaString = $"[NumberOfVerse] = {Verse.NumberOfVerse} AND [ParentChapter.NumberOfChapter] = {Verse.ParentChapter.NumberOfChapter} AND [ParentChapter.ParentBook.NumberOfBook] = {Verse.ParentChapter.ParentBook.NumberOfBook} AND [ParentChapter.ParentBook.ParentTranslation.Name] = '{name.Replace("'", "''")}'";
+                        _view.Properties.Add(new ViewProperty("Text", SortDirection.None, "[Text]", false, true));
+                        foreach (ViewRecord _item in _view) {
+                            tvi.VerseText = _item["Text"].ToString().Replace("<pb/>", "").Replace("<t>", "").Replace("<m>", "").Replace("</t>", "").Replace("</m>", "").Replace("<e>", "").Replace("</e>", "");
+                        }
+                        if (tvi.VerseText.IsNotNullOrEmpty()) {
+                            list.Add(tvi);
+                        }
                     }
-                    if (tvi.VerseText.IsNotNullOrEmpty()) {
-                        list.Add(tvi);
-                    }
-                }
 
-                return list;
-            });
-
-            getTranslations.ContinueWith((x) => {
-                this.SafeInvoke(f => {
-                    f.gridTranslations.DataSource = x.Result;
-                    f.gridViewTranslations.BestFitColumns();
-                    f.gridViewTranslations.LoadingPanelVisible = false;
-
-                    f.isLoading = false;
-                    f.isLoaded = true;
+                    return list;
                 });
-            });
+
+                getTranslations.ContinueWith((x) => {
+                    this.SafeInvoke(f => {
+                        f.gridTranslations.DataSource = x.Result;
+                        f.gridViewTranslations.BestFitColumns();
+                        f.gridViewTranslations.LoadingPanelVisible = false;
+
+                        f.isLoading = false;
+                        f.isLoaded = true;
+                    });
+                });
+            }
+            else {
+                tabTranslations.PageVisible = false;
+            }
         }
 
         private void Control_DeleteClick(object sender, VerseWord e) {

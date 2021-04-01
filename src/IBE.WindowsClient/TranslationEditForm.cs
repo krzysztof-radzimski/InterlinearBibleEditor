@@ -5,6 +5,7 @@ using DevExpress.XtraRichEdit.Services;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
 using IBE.WindowsClient.Controllers;
+using IBE.WindowsClient.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +19,8 @@ using System.Windows.Forms;
 namespace IBE.WindowsClient {
     public partial class TranslationEditForm : RibbonForm {
         private int Index = 1;
+        private List<IbeBaseBookItem> BaseBooks;
+
         public event EventHandler ObjectSaved;
         public Translation Object { get; private set; }
         public List<IbeTreeItem> TreeItems { get; private set; }
@@ -87,13 +90,22 @@ namespace IBE.WindowsClient {
                 cbWithGrammarCodes.DataBindings.Add("EditValue", Object, "WithGrammarCodes");
                 cbWithStrongs.DataBindings.Add("EditValue", Object, "WithStrongs");
 
-                // LoadTree();
-                tabTranslationContent.PageVisible = false;
+                LoadTree();
+                // tabTranslationContent.PageVisible = false;
             }
         }
 
         private void LoadTree() {
             if (Object.IsNotNull()) {
+                BaseBooks = new List<IbeBaseBookItem>();
+                foreach (var bb in new XPQuery<BookBase>(Object.Session).OrderBy(x => x.NumberOfBook)) {
+                    BaseBooks.Add(new IbeBaseBookItem() {
+                        Id = bb.Oid,
+                        Text = bb.BookTitle
+                    });
+                }
+                txtBaseBook.Properties.DataSource = BaseBooks;
+
                 TreeItems = new List<IbeTreeItem>();
                 var root = new IbeRootTreeItem() {
                     ID = $"Translation_{Object.Oid}",
@@ -223,7 +235,7 @@ namespace IBE.WindowsClient {
             }
         }
 
-   
+
 
         private void treeList_NodeChanged(object sender, DevExpress.XtraTreeList.NodeChangedEventArgs e) {
             if (e.Node.IsNotNull()) { }
@@ -300,12 +312,21 @@ namespace IBE.WindowsClient {
                 btnAddChapter.Enabled = false;
                 btnAddVerse.Enabled = false;
 
-                tabs.SelectedTabPage = tabVerse;
-                tabs.Visible = true;
+                if (Object.Type == TranslationType.Interlinear) {
+                    tabVerseInterlinear.Controls.Clear();
+                    var v = new XPQuery<Verse>(Object.Session).Where(x => x.Oid == e.ID.ToInt()).FirstOrDefault();
+                    tabVerseInterlinear.Controls.Add(new VerseEditorControl(v, false) { Dock = DockStyle.Fill });
+                    tabs.SelectedTabPage = tabVerseInterlinear;
+                    tabs.Visible = true;
+                }
+                else {
+                    tabs.SelectedTabPage = tabVerse;
+                    tabs.Visible = true;
 
-                txtNumberOfVerse.Text = e.Number.ToString();
-                cbStartFromNewLine.Checked = e.StartFromNewLine;
-                editor.Text = e.Value;
+                    txtNumberOfVerse.Text = e.Number.ToString();
+                    cbStartFromNewLine.Checked = e.StartFromNewLine;
+                    editor.Text = e.Value;
+                }
                 tabVerse.Tag = e;
             }
         }
@@ -333,7 +354,19 @@ namespace IBE.WindowsClient {
             tabs.Visible = true;
 
             txtNumberOfBook.Text = e.Number.ToString();
-
+            txtBookColor.Text = e.Color;
+            txtAuthorName.Text = e.AuthorName;
+            txtBookName.Text = e.BookName;
+            txtBookShortcut.Text = e.BookShortcut;
+            txtBookTitle.Text = e.BookTitle;
+            txtPreface.Text = e.Preface;
+            txtSubject.Text = e.Subject;
+            cbIsTranslated.Checked = e.IsTranslated;
+            txtTimeOfWriting.Text = e.TimeOfWriting;
+            txtPlaceWhereBookWasWritten.Text = e.PlaceWhereBookWasWritten;
+            if (e.BaseBook.IsNotNull()) {
+                txtBaseBook.EditValue = BaseBooks.Where(x => x.Id == e.BaseBook.Id);
+            }
             tabBook.Tag = e;
         }
     }
@@ -367,6 +400,18 @@ namespace IBE.WindowsClient {
     }
 
     public class IbeBookTreeItem : IbeTreeItem {
+        public IbeBaseBookItem BaseBook { get; set; }
+        public string BookShortcut { get; set; }
+        public string BookName { get; set; }
+        public string BookTitle { get; set; }
+        public string Color { get; set; }
+        public string AuthorName { get; set; }
+        public string TimeOfWriting { get; set; }
+        public string PlaceWhereBookWasWritten { get; set; }
+        public string Purpose { get; set; }
+        public string Subject { get; set; }
+        public string Preface { get; set; }
+        public bool IsTranslated { get; set; }
         public IbeBookTreeItem() {
             Type = IbeTreeItemType.Book;
         }
@@ -393,6 +438,15 @@ namespace IBE.WindowsClient {
 
         public IbeVerseTreeItem() {
             Type = IbeTreeItemType.Verse;
+        }
+    }
+
+    public class IbeBaseBookItem {
+        public int Id { get; set; }
+        public string Text { get; set; }
+        public IbeBaseBookItem() { }
+        public override string ToString() {
+            return Text;
         }
     }
 }

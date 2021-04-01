@@ -227,7 +227,7 @@ namespace IBE.Common.Extensions {
                 var t = text.Split(' ');
                 var result = string.Empty;
                 foreach (var item in t) {
-                    result += $"{item.Substring(0, 1).ToUpper()}. ";
+                    result += $"{item.Substring(0, 1).ToUpper()}.";
                 }
                 return result.Trim();
             }

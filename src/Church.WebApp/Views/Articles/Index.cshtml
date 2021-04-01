@@ -43,8 +43,8 @@
 
             <div style="display: table-row;">
                 <div style="display: table-cell; vertical-align: top; padding-top: 10px; padding-right: 5px;">@item.Date.Day @item.Date.ToString("MMMM") @item.Date.Year</div>
-                <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><a href="../Article?id=@item.Id" class="stretched-link text-decoration-none">@item.Subject</a></div>
-                <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><i>@Html.Raw(item.AuthorName.GetInitials().Replace(" ","&nbsp;"))</i></div>
+                <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><a href="../Article?id=@item.Id" class="link text-decoration-none">@item.Subject</a></div>
+                <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><i>@Html.Raw(item.AuthorName.GetInitials())</i></div>
             </div>
 
             @if (item == Model.LastOrDefault()) {

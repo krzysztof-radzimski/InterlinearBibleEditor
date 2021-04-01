@@ -24,10 +24,11 @@ namespace IBE.Data.Model {
         private string placeWhereBookWasWritten;
         private string purpose;
         private string subject;
-        private int numberOfChapters;        
+        private int numberOfChapters;
         private string color;
         private Translation parentTranslation;
         private BookBase bookBase;
+        private bool isTranslated;
 
         [Association("BaseBooks")]
         public BookBase BaseBook {
@@ -56,13 +57,13 @@ namespace IBE.Data.Model {
             get { return bookShortcut; }
             set { SetPropertyValue(nameof(BookShortcut), ref bookShortcut, value); }
         }
-               
+
         [Size(100)]
         public string BookName {
             get { return bookName; }
             set { SetPropertyValue(nameof(BookName), ref bookName, value); }
         }
-        
+
         [Size(100)]
         public string AuthorName {
             get { return authorName; }
@@ -117,11 +118,16 @@ namespace IBE.Data.Model {
         [Association("BookChapters")]
         public XPCollection<Chapter> Chapters {
             get { return GetCollection<Chapter>(nameof(Chapters)); }
-        }        
+        }
 
         public string Color {
             get { return color; }
             set { SetPropertyValue(nameof(Color), ref color, value); }
+        }
+
+        public bool IsTranslated {
+            get { return isTranslated; }
+            set { SetPropertyValue(nameof(IsTranslated), ref isTranslated, value); }
         }
 
         public Book(Session session) : base(session) { }
