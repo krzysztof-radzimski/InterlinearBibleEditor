@@ -129,6 +129,9 @@ namespace IBE.WindowsClient.Controls {
             }
             else {
                 tabTranslations.PageVisible = false;
+                isLoading = false;
+                isLoaded = true;
+                gridViewTranslations.LoadingPanelVisible = false;
             }
         }
 
@@ -142,19 +145,26 @@ namespace IBE.WindowsClient.Controls {
             control = null;
         }
 
+        public void DeleteAll() {
+            var controls = flowLayoutPanel.Controls.OfType<VerseWordEditorControl>();
+            foreach (var item in controls) {
+                Control_DeleteClick(item, item.Word);
+            }
+        }
+
         public void Save() {
             gridViewTranslations.Focus();
             Application.DoEvents();
-           
+
             foreach (var item in flowLayoutPanel.Controls) {
                 if (item is VerseWordEditorControl) {
                     var word = (item as VerseWordEditorControl).Word;
-                    word.Save();                    
+                    word.Save();
                 }
             }
 
             var text = String.Empty;
-            foreach (var verseWord in Verse.VerseWords.OrderBy(x=>x.NumberOfVerseWord)) {
+            foreach (var verseWord in Verse.VerseWords.OrderBy(x => x.NumberOfVerseWord)) {
                 text += $"{verseWord.Translation} ";
             }
 

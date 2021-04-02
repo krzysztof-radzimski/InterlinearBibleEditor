@@ -64,7 +64,8 @@ namespace IBE.Data.Import.Test {
         //        System.Diagnostics.Process.Start(path);
         //    }
         //}
-        [TestMethod] public void ExportInterlinearChapterToPdf() {
+        [TestMethod]
+        public void ExportInterlinearChapterToPdf() {
             ConnectionHelper.Connect();
             var uow = new UnitOfWork();
 
@@ -80,6 +81,49 @@ namespace IBE.Data.Import.Test {
             if (File.Exists(path)) {
                 System.Diagnostics.Process.Start(path);
             }
+        }
+
+        [TestMethod]
+        public void AddStrongCodes() {
+            //var signs = new char[] { '·', ',', '.' };
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            uow.BeginTransaction();
+
+            var wordsWithoutStrongCode = new XPQuery<VerseWord>(uow)
+                    .Where(x => x.StrongCode == null && x.ParentVerse.ParentChapter.ParentBook.ParentTranslation.Name == "IPLIA+")
+                    .ToArray();
+            
+            var wordsWithoutStrongCodeCount = wordsWithoutStrongCode.Length;
+
+            var wordsWithStrongCode = new XPQuery<VerseWord>(uow)
+                    .Where(x => x.StrongCode != null)
+                    .Select(x => new {
+                        SourceWord = x.SourceWord.Replace("·", "").Replace(",", "").Replace(".", "").ToLower(),
+                        StrongCode = x.StrongCode
+                    })
+                    .Distinct()
+                    .ToArray();
+
+            for (int i = 0; i < wordsWithoutStrongCodeCount; i++) {
+                var item = wordsWithoutStrongCode[i];
+                var _sourceWord = item.SourceWord.Replace("·", "").Replace(",", "").Replace(".", "").ToLower();
+                var found = wordsWithStrongCode.Where(x => x.SourceWord == _sourceWord).FirstOrDefault();
+                if (found.IsNotNull()) {
+                    item.StrongCode = found.StrongCode;
+                    item.Save();
+                }
+            }
+            //foreach (var item in wordsWithoutStrongCode) {
+            //    var _sourceWord = item.SourceWord.Replace("·", "").Replace(",", "").Replace(".", "").ToLower();
+            //    var found = wordsWithStrongCode.Where(x => x.SourceWord.Replace("·", "").Replace(",", "").Replace(".", "").ToLower() == _sourceWord).FirstOrDefault();
+            //    if (found.IsNotNull()) {
+            //        item.StrongCode = found.StrongCode;
+            //        item.Save();
+            //    }
+            //}
+
+            uow.CommitChanges();
         }
     }
 }

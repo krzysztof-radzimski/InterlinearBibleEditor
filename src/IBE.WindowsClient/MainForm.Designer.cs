@@ -35,6 +35,7 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(this.components);
+            this.btnCopyDatabaseToWebFolder = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).BeginInit();
             this.SuspendLayout();
@@ -50,9 +51,10 @@ namespace IBE.WindowsClient {
             this.btnTranslations,
             this.btnInterlinearEditor,
             this.btnArticles,
-            this.btnBaseBooks});
+            this.btnBaseBooks,
+            this.btnCopyDatabaseToWebFolder});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 9;
+            this.ribbonControl1.MaxItemId = 10;
             this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
@@ -112,6 +114,7 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnInterlinearEditor);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnBaseBooks);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnArticles);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnCopyDatabaseToWebFolder);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
@@ -127,6 +130,14 @@ namespace IBE.WindowsClient {
             this.xtraTabbedMdiManager1.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InAllTabPagesAndTabControlHeader;
             this.xtraTabbedMdiManager1.MdiParent = this;
             this.xtraTabbedMdiManager1.UseFormIconAsPageImage = DevExpress.Utils.DefaultBoolean.True;
+            // 
+            // btnCopyDatabaseToWebFolder
+            // 
+            this.btnCopyDatabaseToWebFolder.Caption = "Copy to web folder";
+            this.btnCopyDatabaseToWebFolder.Id = 9;
+            this.btnCopyDatabaseToWebFolder.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnCopyDatabaseToWebFolder.ImageOptions.SvgImage")));
+            this.btnCopyDatabaseToWebFolder.Name = "btnCopyDatabaseToWebFolder";
+            this.btnCopyDatabaseToWebFolder.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnCopyDatabaseToWebFolder_ItemClick);
             // 
             // MainForm
             // 
@@ -160,6 +171,7 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnInterlinearEditor;
         private DevExpress.XtraBars.BarButtonItem btnArticles;
         private DevExpress.XtraBars.BarButtonItem btnBaseBooks;
+        private DevExpress.XtraBars.BarButtonItem btnCopyDatabaseToWebFolder;
     }
 }
 

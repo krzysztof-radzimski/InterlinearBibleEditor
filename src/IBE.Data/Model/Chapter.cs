@@ -18,7 +18,8 @@ namespace IBE.Data.Model {
         private int numberOfChapter;
         private int numberOfVerses;
         private Book parentBook;
-       
+        private bool isTranslated;
+
         public int NumberOfChapter {
             get { return numberOfChapter; }
             set { SetPropertyValue(nameof(NumberOfChapter), ref numberOfChapter, value); }
@@ -55,6 +56,11 @@ namespace IBE.Data.Model {
             }
         }
         
+        public bool IsTranslated {
+            get { return isTranslated; }
+            set { SetPropertyValue(nameof(IsTranslated), ref isTranslated, value); }
+        }
+
         public Chapter(Session session) : base(session) { }
     }
 }

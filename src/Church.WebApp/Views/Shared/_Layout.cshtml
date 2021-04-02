@@ -18,7 +18,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mb-5 shadow" id="top-nav">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img id="baptysci-logo" src="~/img/baptysci-logo.svg" style="width: 30px; height: 24px; opacity: 0.7;"/>Kościół Chrześcijan Baptystów</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img id="baptysci-logo" src="~/img/baptysci-logo.svg" style="width: 30px; height: 24px; opacity: 0.7;" />Kościół Chrześcijan Baptystów</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -43,11 +43,11 @@
                                 </li>
                             </ul>
                         </li>
-                        
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div style="display: inline-block; width: 25px;"><i class="fas fa-bible"></i></div> Biblia
-</a>
+                            </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
                                 @using DevExpress.Xpo
                                 @using IBE.Data.Model
@@ -57,6 +57,7 @@
                                 @{
 
                                     var view = new XPView(new UnitOfWork(), typeof(Translation));
+                                    view.CriteriaString = "[BookType] = 1";
                                     view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
                                     view.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
                                     view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
@@ -102,6 +103,47 @@
                                         }
                                     }
                                 }
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div style="display: inline-block; width: 25px;"><i class="fas fa-book"></i></div> Patrologia
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown2">
+                                @{
+
+                                    var view2 = new XPView(new UnitOfWork(), typeof(Translation));
+                                    view2.CriteriaString = "[BookType] = 2";
+                                    view2.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
+                                    view2.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
+                                    view2.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+                                    view2.Properties.Add(new ViewProperty("Catolic", SortDirection.None, "[Catolic]", false, true));
+                                    view2.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
+
+                                    var list2 = new List<TranslationInfo>();
+                                    foreach (ViewRecord item in view2) {
+                                        list2.Add(new TranslationInfo() {
+                                            Type = (TranslationType)item["Type"],
+                                            Name = item["Name"].ToString().Replace("'", ""),
+                                            Description = item["Description"].ToString(),
+                                            Catolic = (bool)item["Catolic"],
+                                            Recommended = (bool)item["Recommended"]
+                                        });
+                                    }
+                                }
+
+                                @if (list2.Any()) {
+
+                                    foreach (var item in list2) {
+                                        var _name = item.Name.Replace("'", "").Replace("+", "");
+                                        var _description = item.Description;
+                                        var _catolicBadge = item.Catolic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
+                                        var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";                                        
+
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)</a></li>
+                                    }
+                                }
+
                             </ul>
                         </li>
                         <li class="nav-item">

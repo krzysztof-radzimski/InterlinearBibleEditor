@@ -36,9 +36,10 @@ namespace IBE.WindowsClient {
             this.btnNextVerse = new DevExpress.XtraBars.BarButtonItem();
             this.btnPreviousVerse = new DevExpress.XtraBars.BarButtonItem();
             this.btnAddWord = new DevExpress.XtraBars.BarButtonItem();
+            this.btnAddWords = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            this.btnCopyDatabaseToWebFolder = new DevExpress.XtraBars.BarButtonItem();
+            this.btnDeleteWords = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editBook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editChapter)).BeginInit();
@@ -58,9 +59,10 @@ namespace IBE.WindowsClient {
             this.btnNextVerse,
             this.btnPreviousVerse,
             this.btnAddWord,
-            this.btnCopyDatabaseToWebFolder});
+            this.btnAddWords,
+            this.btnDeleteWords});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 9;
+            this.ribbonControl1.MaxItemId = 11;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
@@ -157,6 +159,14 @@ namespace IBE.WindowsClient {
             this.btnAddWord.Name = "btnAddWord";
             this.btnAddWord.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAddWord_ItemClick);
             // 
+            // btnAddWords
+            // 
+            this.btnAddWords.Caption = "Add words";
+            this.btnAddWords.Id = 9;
+            this.btnAddWords.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAddWords.ImageOptions.SvgImage")));
+            this.btnAddWords.Name = "btnAddWords";
+            this.btnAddWords.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAddWords_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -173,17 +183,18 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnPreviousVerse, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnNextVerse);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnAddWord, true);
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnCopyDatabaseToWebFolder);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnAddWords);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnDeleteWords, true);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
-            // btnCopyDatabaseToWebFolder
+            // btnDeleteWords
             // 
-            this.btnCopyDatabaseToWebFolder.Caption = "Copy to web folder";
-            this.btnCopyDatabaseToWebFolder.Id = 8;
-            this.btnCopyDatabaseToWebFolder.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnCopyDatabaseToWebFolder.ImageOptions.SvgImage")));
-            this.btnCopyDatabaseToWebFolder.Name = "btnCopyDatabaseToWebFolder";
-            this.btnCopyDatabaseToWebFolder.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnCopyDatabaseToWebFolder_ItemClick);
+            this.btnDeleteWords.Caption = "Delete words";
+            this.btnDeleteWords.Id = 10;
+            this.btnDeleteWords.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteWords.ImageOptions.SvgImage")));
+            this.btnDeleteWords.Name = "btnDeleteWords";
+            this.btnDeleteWords.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteWords_ItemClick);
             // 
             // InterlinearEditorForm
             // 
@@ -218,6 +229,7 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnNextVerse;
         private DevExpress.XtraBars.BarButtonItem btnPreviousVerse;
         private DevExpress.XtraBars.BarButtonItem btnAddWord;
-        private DevExpress.XtraBars.BarButtonItem btnCopyDatabaseToWebFolder;
+        private DevExpress.XtraBars.BarButtonItem btnAddWords;
+        private DevExpress.XtraBars.BarButtonItem btnDeleteWords;
     }
 }

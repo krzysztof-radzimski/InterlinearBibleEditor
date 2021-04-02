@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace IBE.WindowsClient.Controls {
     public partial class VerseWordEditorControl : XtraUserControl {
-        private bool changed=false;
+        private bool changed = false;
 
         public bool Modified { get { return changed; } }
         public VerseWord Word { get; }
@@ -22,7 +22,7 @@ namespace IBE.WindowsClient.Controls {
         public VerseWordEditorControl(VerseWord word) : this() {
             Word = word;
             Word.Changed += Word_Changed;
-            
+
             lblNumberOfVerseWord.DataBindings.Add("Text", word, "NumberOfVerseWord");
             lblGreekWord.DataBindings.Add("Text", word, "SourceWord");
             txtTranslation.DataBindings.Add("Text", word, "Translation");

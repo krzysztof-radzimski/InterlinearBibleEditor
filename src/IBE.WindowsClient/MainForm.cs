@@ -1,9 +1,5 @@
-﻿using DevExpress.Xpo;
-using DevExpress.XtraBars.Ribbon;
+﻿using DevExpress.XtraBars.Ribbon;
 using IBE.Data;
-using IBE.Data.Import;
-using IBE.Data.Model;
-using System;
 using System.IO;
 
 namespace IBE.WindowsClient {
@@ -42,6 +38,12 @@ namespace IBE.WindowsClient {
             frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
             frm.MdiParent = this;
             frm.Show();
+        }
+
+        private void btnCopyDatabaseToWebFolder_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var path = "../../../../db/IBE.SQLite3";
+            var path2 = "../../../Church.WebApp/Data/IBE.SQLite3";
+            File.Copy(path, path2, true);
         }
     }
 }

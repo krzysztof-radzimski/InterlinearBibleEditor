@@ -61,5 +61,17 @@ namespace IBE.WindowsClient {
                 }
             }
         }
+
+        private void btnAdd_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var uow = (gridView.GetRow(0) as BookBase).Session as UnitOfWork;
+            var obj = new BookBase(uow);
+            using (var dlg = new BaseBookEditForm(obj)) {
+                if (dlg.ShowDialog() == DialogResult.OK) {
+                    dlg.Save();
+                    uow.CommitChanges();
+                    LoadData();
+                }
+            }
+        }
     }
 }

@@ -40,9 +40,12 @@ break;
     <div class="container">
         <div class="row border bg-light justify-content-center" style="max-width: 800px; margin: auto;">
             @foreach (var book in Model.Translation.Books) {
+
+                if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !book.IsTranslated && Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) { continue; }
+
                 var color = System.Drawing.ColorTranslator.FromHtml(@book.Color);
                 var bookHtml = book.BookShortcut.Replace(" ", "&nbsp;");
-                if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
+                if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) {
                     bookHtml = $"{book.BaseBook.BookShortcut}&nbsp;({bookHtml})";
                 }
 
@@ -114,46 +117,48 @@ break;
             else if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.Apocrypha) {
                 <div class="alert alert-warning mb-0" role="alert">Uwaga! @book.BaseBook.BookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej</div>
             }
+            @if (Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) {
 
-
-            <button class="btn btn-primary dropdown-toggle my-dropdown" type="button" id="dropdownMenuButtonTranslations" data-bs-toggle="dropdown" aria-expanded="false">
-                Inny przekład
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations">
-                @{
-                    var _allTranslations = Model.Translations.OrderBy(x => x.TranslationType).GroupBy(x => x.TranslationType);
-                    var __first = true;
-                }
-                @foreach (var _trans in _allTranslations) {
-
-                    if (__first) {
-                        __first = false;
+                <button class="btn btn-primary dropdown-toggle my-dropdown" type="button" id="dropdownMenuButtonTranslations" data-bs-toggle="dropdown" aria-expanded="false">
+                    Inny przekład
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations">
+                    @{
+                        var _allTranslations = Model.Translations.OrderBy(x => x.TranslationType).GroupBy(x => x.TranslationType);
+                        var __first = true;
                     }
-                    else {
-                        <li><hr class="dropdown-divider"></li>
-                    }
+                    @foreach (var _trans in _allTranslations) {
 
-                    <li><h6 class="dropdown-header disabled">@_trans.Key</h6></li>
-
-                    foreach (var item in _trans) {
-                        var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
-                        var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
-                        var _active = String.Empty;
-                        if (item.Name == Model.Translation.Name) {
-                            _active = " active";
+                        if (__first) {
+                            __first = false;
+                        }
+                        else {
+                            <li><hr class="dropdown-divider"></li>
                         }
 
-                        <li>
-                            @if (Model.Verse.IsNotNullOrEmpty()) {
-                                <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)</a>
+                        <li><h6 class="dropdown-header disabled">@_trans.Key</h6></li>
+
+                        foreach (var item in _trans) {
+                            var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
+                            var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
+                            var _active = String.Empty;
+                            if (item.Name == Model.Translation.Name) {
+                                _active = " active";
                             }
-                            else {
-                                <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)</a>
-                            }
-                        </li>
+
+                            <li>
+                                @if (Model.Verse.IsNotNullOrEmpty()) {
+                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)</a>
+                                }
+                                else {
+                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)</a>
+                                }
+                            </li>
+                        }
                     }
-                }
-            </ul>
+
+                </ul>
+            }
 
             <button class="btn btn-warning dropdown-toggle my-dropdown" type="button" id="dropdownMenuButtonBooks" data-bs-toggle="dropdown" aria-expanded="false">
                 Wybór księgi
@@ -179,85 +184,97 @@ break;
                 Wybór rozdziału
             </button>
             <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonChapters">
-                @for (int i = 1; i <= book.NumberOfChapters; i++) {
+
+                @{
+                    var __chapterNumbers = book.Chapters.Select(x => x.NumberOfChapter).OrderBy(x => x);
+                }
+
+                @foreach (var i in __chapterNumbers) {
+                    if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !book.Chapters.Where(x => x.NumberOfChapter == i).First().IsTranslated) { continue; }
+
+                    var __chapterNumberString = i.ToString();
+                    if (Model.Translation.ChapterRomanNumbering) {
+                        __chapterNumberString = i.ArabicToRoman();
+                    }
+                    if (i == 0) { __chapterNumberString = "Prolog"; }
                     var _active = String.Empty;
                     if (i == Convert.ToInt32(Model.Chapter)) {
                         _active = " active";
                     }
 
-                    <li><a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i">@i</a></li>
+                    <li><a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i">@__chapterNumberString</a></li>
                 }
             </ul>
         </div>
 
         <h1 class="text-center p-2"><a class="text-decoration-none text-dark" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@null">@Model.Translation.Description</a></h1>
-        <h2 class="text-center p-2">@book.BaseBook.BookTitle</h2>
+        <h2 class="text-center p-2" style="text-transform: uppercase;">@book.BaseBook.BookTitle</h2>
         var chapterNumber = Convert.ToInt32(Model.Chapter);
-        if (chapterNumber == 1) {
+        if (chapterNumber == __chapterNumbers.First()) {
             if (book.BaseBook.IsNotNull()) {
 
-                <div class="lh-base fs-5" style="max-width: 1000px; margin: auto; text-align: justify; display: table; width: 100%;">
+                <div class="lh-base fs-5" style="max-width: 1000px; margin: auto; text-align: justify; width: 100%;">
+                    <div style=" display: table;">
+                        @if (book.BaseBook.AuthorName.IsNotNullOrEmpty()) {
+                            var __text = book.BaseBook.AuthorName;
+                            __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                return " " + m.Value.Trim() + "&nbsp;";
+                            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                    @if (book.BaseBook.AuthorName.IsNotNullOrEmpty()) {
-                        var __text = book.BaseBook.AuthorName;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                            <div style="display: table-row">
+                                <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
+                                <div style="display: table-cell">@book.BaseBook.AuthorName</div>
+                            </div>
+                        }
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
-                            <div style="display: table-cell">@book.BaseBook.AuthorName</div>
-                        </div>
-                    }
+                        @if (book.BaseBook.TimeOfWriting.IsNotNullOrEmpty()) {
+                            var __text = book.BaseBook.TimeOfWriting;
+                            __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                return " " + m.Value.Trim() + "&nbsp;";
+                            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                    @if (book.BaseBook.TimeOfWriting.IsNotNullOrEmpty()) {
-                        var __text = book.BaseBook.TimeOfWriting;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                            <div style="display: table-row">
+                                <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
+                                <div style="display: table-cell">@book.BaseBook.TimeOfWriting</div>
+                            </div>
+                        }
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
-                            <div style="display: table-cell">@book.BaseBook.TimeOfWriting</div>
-                        </div>
-                    }
+                        @if (book.BaseBook.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
+                            var __text = book.BaseBook.PlaceWhereBookWasWritten;
+                            __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                return " " + m.Value.Trim() + "&nbsp;";
+                            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                    @if (book.BaseBook.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
-                        var __text = book.BaseBook.PlaceWhereBookWasWritten;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                            <div style="display: table-row">
+                                <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
+                                <div style="display: table-cell">@book.BaseBook.PlaceWhereBookWasWritten</div>
+                            </div>
+                        }
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
-                            <div style="display: table-cell">@book.BaseBook.PlaceWhereBookWasWritten</div>
-                        </div>
-                    }
+                        @if (book.BaseBook.Purpose.IsNotNullOrEmpty()) {
+                            var __text = book.BaseBook.Purpose;
+                            __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                return " " + m.Value.Trim() + "&nbsp;";
+                            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                    @if (book.BaseBook.Purpose.IsNotNullOrEmpty()) {
-                        var __text = book.BaseBook.Purpose;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                            <div style="display: table-row">
+                                <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
+                                <div style="display: table-cell">@book.BaseBook.Purpose</div>
+                            </div>
+                        }
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
-                            <div style="display: table-cell">@book.BaseBook.Purpose</div>
-                        </div>
-                    }
+                        @if (book.BaseBook.Subject.IsNotNullOrEmpty()) {
+                            var __text = book.BaseBook.Subject;
+                            __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                return " " + m.Value.Trim() + "&nbsp;";
+                            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                    @if (book.BaseBook.Subject.IsNotNullOrEmpty()) {
-                        var __text = book.BaseBook.Subject;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
-                            <div style="display: table-cell">@book.BaseBook.Subject</div>
-                        </div>
-                    }
-
+                            <div style="display: table-row">
+                                <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
+                                <div style="display: table-cell">@book.BaseBook.Subject</div>
+                            </div>
+                        }
+                    </div>
                 </div>
             }
         }
@@ -266,7 +283,13 @@ break;
             <h2 class="text-center p-2">@Model.Translation.ChapterPsalmString @Model.Chapter</h2>
         }
         else {
-            <h2 class="text-center p-2">@Model.Translation.ChapterString @Model.Chapter</h2>
+            var __chapterNumberString = $"{Model.Translation.ChapterString} {Model.Chapter}";
+            if (Model.Translation.ChapterRomanNumbering) {
+                __chapterNumberString = $"{Model.Translation.ChapterString} {Model.Chapter.ToInt().ArabicToRoman()}";
+            }
+            if (Model.Chapter.ToInt() == 0) { __chapterNumberString = "Prolog"; }
+
+            <h2 class="text-center p-2">@__chapterNumberString</h2>
         }
 
 
@@ -311,19 +334,16 @@ break;
                     //
                     var words = verse.VerseWords.OrderBy(x => x.NumberOfVerseWord);
                     foreach (var word in words) {
-                        //var isPenultimate = verse.VerseWords.Count > 2 && word == verse.VerseWords[verse.VerseWords.Count - 2];
-                        //var penultimateWidth = isPenultimate ? "max-width: 200px;" : String.Empty;
                         var isFirst = word == verse.VerseWords.First();
                         var gc = word.GrammarCode.IsNotNull() ? $"<a class=\"text-decoration-none\" style=\"padding-left: 0 !important;\" href=\"http://www.modernliteralversion.org/bibles/bs2/RMAC/{word.GrammarCode.GrammarCodeVariant1}.htm\" target=\"_blank\">{word.GrammarCode.GrammarCodeVariant1}</a>" : String.Empty;
                         var sc = word.StrongCode.IsNotNull() ? $"<a class=\"text-decoration-none\" style=\"padding-left: 0 !important;\" href=\"https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=G{word.StrongCode.Code}&t=MGNT\" target=\"_blank\">G{word.StrongCode.Code}</a>" : String.Empty;
                         var translation = word.Translation;
-                        if (translation.IsNull()) { translation = "―"; }
+                        if (translation.IsNullOrEmpty()) { translation = "―"; }
                         translation = translation.Replace(" ", "&nbsp;").Replace("<n>", @"<span class=""text-muted"">").Replace("</n>", "</span>");
 
                         var footnoteText = word.FootnoteText;
                         if (footnoteText.IsNotNullOrEmpty() && footnoteText.Contains("<x>")) {
                             footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
-                                //var translationName = "NPI";
                                 var numberOfBook = m.Groups["book"].Value.ToInt();
                                 var bookShortcut = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
                                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
@@ -360,7 +380,7 @@ break;
 
                         <div class="col pb-3" style="padding-left: 0 !important; max-width: 280px; @activeVerse">
                             <div class="container" style="position: relative">
-                                @if (isFirst) {
+                                @if (isFirst && Model.Chapter.ToInt() > 0) {
                                     //
                                     // Numer wersetu
                                     //
@@ -379,14 +399,20 @@ break;
                                     <div class="row" style="font-size: 50%; padding-left: 0 !important;">
                                         <div class="col">
                                             @if (Model.Translation.WithStrongs) {
+                                                if (sc.IsNullOrEmpty()) {
+                                                    sc = "–";
+                                                }
                                                 @Html.Raw(sc)
-                                                
+
                                                 if (Model.Translation.WithGrammarCodes) {
                                                     <br />
                                                 }
                                             }
 
                                             @if (Model.Translation.WithGrammarCodes) {
+                                                if (gc.IsNullOrEmpty()) {
+                                                    gc = "–";
+                                                }
                                                 @Html.Raw(gc)
                                             }
                                         </div>
@@ -632,7 +658,7 @@ break;
                     var _active = i == chapter.NumberOfChapter ? " active" : "";
                     var _activeTextColor = i == chapter.NumberOfChapter ? " text-light" : "text-dark";
                     <li class="page-item@_active">
-                        <a class="page-link @_activeTextColor" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i">@i</a>
+                        <a class="page-link @_activeTextColor" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i">@(Model.Translation.ChapterRomanNumbering ? (i == 0 ? "P" : i.ArabicToRoman()) : i.ToString())</a>
                     </li>
                 }
 
