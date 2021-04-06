@@ -105,47 +105,57 @@
                                 }
                             </ul>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <div style="display: inline-block; width: 25px;"><i class="fas fa-book"></i></div> Patrologia
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown2">
-                                @{
 
-                                    var view2 = new XPView(new UnitOfWork(), typeof(Translation));
-                                    view2.CriteriaString = "[BookType] = 2";
-                                    view2.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
-                                    view2.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
-                                    view2.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
-                                    view2.Properties.Add(new ViewProperty("Catolic", SortDirection.None, "[Catolic]", false, true));
-                                    view2.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
+                        @{
+                            var callingUrl = Context.Request.Headers["Host"].ToString();
+                            var isLocal = callingUrl.Contains("localhost");
+                        }
 
-                                    var list2 = new List<TranslationInfo>();
-                                    foreach (ViewRecord item in view2) {
-                                        list2.Add(new TranslationInfo() {
-                                            Type = (TranslationType)item["Type"],
-                                            Name = item["Name"].ToString().Replace("'", ""),
-                                            Description = item["Description"].ToString(),
-                                            Catolic = (bool)item["Catolic"],
-                                            Recommended = (bool)item["Recommended"]
-                                        });
+                        @if (isLocal) {
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div style="display: inline-block; width: 25px;"><i class="fas fa-book"></i></div> Patrologia
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown2">
+                                    @{
+
+                                        var view2 = new XPView(new UnitOfWork(), typeof(Translation));
+                                        view2.CriteriaString = "[BookType] = 2";
+                                        view2.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
+                                        view2.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
+                                        view2.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+                                        view2.Properties.Add(new ViewProperty("Catolic", SortDirection.None, "[Catolic]", false, true));
+                                        view2.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
+
+                                        var list2 = new List<TranslationInfo>();
+                                        foreach (ViewRecord item in view2) {
+                                            list2.Add(new TranslationInfo() {
+                                                Type = (TranslationType)item["Type"],
+                                                Name = item["Name"].ToString().Replace("'", ""),
+                                                Description = item["Description"].ToString(),
+                                                Catolic = (bool)item["Catolic"],
+                                                Recommended = (bool)item["Recommended"]
+                                            });
+                                        }
                                     }
-                                }
 
-                                @if (list2.Any()) {
+                                    @if (list2.Any()) {
 
-                                    foreach (var item in list2) {
-                                        var _name = item.Name.Replace("'", "").Replace("+", "");
-                                        var _description = item.Description;
-                                        var _catolicBadge = item.Catolic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
-                                        var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";                                        
+                                        foreach (var item in list2) {
+                                            var _name = item.Name.Replace("'", "").Replace("+", "");
+                                            var _description = item.Description;
+                                            var _catolicBadge = item.Catolic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
+                                            var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
 
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)</a></li>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)</a></li>
+                                        }
                                     }
-                                }
 
-                            </ul>
-                        </li>
+                                </ul>
+                            </li>
+                        }
+
                         <li class="nav-item">
                             <div class="btn-group" role="group" aria-label="Przyciski">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" title="Polityka prywatności"><i class="fas fa-user-shield"></i></a>&nbsp;&nbsp;
