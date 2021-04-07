@@ -37,9 +37,10 @@ namespace IBE.WindowsClient {
             this.btnPreviousVerse = new DevExpress.XtraBars.BarButtonItem();
             this.btnAddWord = new DevExpress.XtraBars.BarButtonItem();
             this.btnAddWords = new DevExpress.XtraBars.BarButtonItem();
+            this.btnDeleteWords = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            this.btnDeleteWords = new DevExpress.XtraBars.BarButtonItem();
+            this.btnRenumerateWords = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editBook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editChapter)).BeginInit();
@@ -60,9 +61,10 @@ namespace IBE.WindowsClient {
             this.btnPreviousVerse,
             this.btnAddWord,
             this.btnAddWords,
-            this.btnDeleteWords});
+            this.btnDeleteWords,
+            this.btnRenumerateWords});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 11;
+            this.ribbonControl1.MaxItemId = 12;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
@@ -167,6 +169,14 @@ namespace IBE.WindowsClient {
             this.btnAddWords.Name = "btnAddWords";
             this.btnAddWords.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAddWords_ItemClick);
             // 
+            // btnDeleteWords
+            // 
+            this.btnDeleteWords.Caption = "Delete words";
+            this.btnDeleteWords.Id = 10;
+            this.btnDeleteWords.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteWords.ImageOptions.SvgImage")));
+            this.btnDeleteWords.Name = "btnDeleteWords";
+            this.btnDeleteWords.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteWords_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -185,16 +195,17 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnAddWord, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnAddWords);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnDeleteWords, true);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnRenumerateWords);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
-            // btnDeleteWords
+            // btnRenumerateWords
             // 
-            this.btnDeleteWords.Caption = "Delete words";
-            this.btnDeleteWords.Id = 10;
-            this.btnDeleteWords.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteWords.ImageOptions.SvgImage")));
-            this.btnDeleteWords.Name = "btnDeleteWords";
-            this.btnDeleteWords.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteWords_ItemClick);
+            this.btnRenumerateWords.Caption = "Renumerate words";
+            this.btnRenumerateWords.Id = 11;
+            this.btnRenumerateWords.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnRenumerateWords.ImageOptions.SvgImage")));
+            this.btnRenumerateWords.Name = "btnRenumerateWords";
+            this.btnRenumerateWords.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnRenumerateWords_ItemClick);
             // 
             // InterlinearEditorForm
             // 
@@ -231,5 +242,6 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnAddWord;
         private DevExpress.XtraBars.BarButtonItem btnAddWords;
         private DevExpress.XtraBars.BarButtonItem btnDeleteWords;
+        private DevExpress.XtraBars.BarButtonItem btnRenumerateWords;
     }
 }

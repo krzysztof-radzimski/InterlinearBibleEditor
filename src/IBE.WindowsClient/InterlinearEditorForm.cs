@@ -288,5 +288,16 @@ namespace IBE.WindowsClient {
                 }
             }
         }
+
+        private void btnRenumerateWords_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            if (currentControl.IsNotNull()) {
+                var i = 1;
+                foreach (VerseWordEditorControl item in currentControl.VerseWordsControl.Controls) {
+                    item.Word.NumberOfVerseWord = i;
+                    i++;
+                }
+            }
+        }
     }
 }

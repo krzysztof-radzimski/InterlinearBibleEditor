@@ -113,5 +113,12 @@ namespace IBE.WindowsClient.Controls {
                 Word.Transliteration = sourceWord.TransliterateAncientGreek();
             }
         }
+
+        private void lblNumberOfVerseWord_DoubleClick(object sender, EventArgs e) {
+            var index = XtraInputBox.Show("Set word index:", "Word Index", Word.NumberOfVerseWord);
+            if (index != 0) {
+                Word.NumberOfVerseWord = index;
+            }
+        }
     }
 }

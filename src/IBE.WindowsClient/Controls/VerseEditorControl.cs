@@ -67,6 +67,9 @@ namespace IBE.WindowsClient.Controls {
 
             cbStartFromNewLine.DataBindings.Add("Checked", Verse, "StartFromNewLine");
 
+            flowLayoutPanel.SuspendLayout();
+            Application.DoEvents();
+
             var getControls = Task.Factory.StartNew(() => {
                 var wordControls = new List<VerseWordEditorControl>();
                 var words = Verse.VerseWords.OrderBy(x => x.NumberOfVerseWord);
@@ -79,8 +82,7 @@ namespace IBE.WindowsClient.Controls {
             });
 
             getControls.ContinueWith((x) => {
-                this.SafeInvoke(f => {
-                    f.flowLayoutPanel.SuspendLayout();
+                this.SafeInvoke(f => {                    
                     foreach (var control in x.Result) {
                         f.flowLayoutPanel.Controls.Add(control);
                     }

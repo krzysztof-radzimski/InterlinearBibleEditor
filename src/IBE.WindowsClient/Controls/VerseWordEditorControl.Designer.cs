@@ -196,6 +196,7 @@ namespace IBE.WindowsClient.Controls {
             this.lblNumberOfVerseWord.Size = new System.Drawing.Size(129, 23);
             this.lblNumberOfVerseWord.TabIndex = 8;
             this.lblNumberOfVerseWord.Text = "1";
+            this.lblNumberOfVerseWord.DoubleClick += new System.EventHandler(this.lblNumberOfVerseWord_DoubleClick);
             // 
             // txtFootnoteText
             // 

@@ -62,13 +62,32 @@ namespace IBE.Data.Export {
             ExportChapterNumber(chapter, builder, true);
             var par = builder.InsertParagraph();
             par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
-            foreach (var item in chapter.Verses) {
+            foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
                 ExportVerse(item, par, builder);
             }
 
             WriteFooter(chapter.ParentTranslation, par, builder);
+            AddChapterHeaderAndFooter(chapter, builder);
 
             SaveBuilder(saveFormat, outputPath, builder);
+        }
+
+        private static void AddChapterHeaderAndFooter(Chapter chapter, DocumentBuilder builder) {
+            var chapterString = chapter.ParentBook.NumberOfBook == 230 ? chapter.ParentTranslation.ChapterPsalmString : chapter.ParentTranslation.ChapterString;
+            var chapterNumber = chapter.ParentTranslation.ChapterRomanNumbering ? chapter.NumberOfChapter.ArabicToRoman() : chapter.NumberOfChapter.ToString();
+            var bookTitle = chapter.ParentBook.BaseBook.BookTitle;
+            var translationName = chapter.ParentTranslation.Description;
+
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.InsertHtml($"<div style=\"font-size: 9; text-align: left; width: 100%; border-bottom: solid 1px darkgray;\">{translationName}<br/>{bookTitle} {chapterString} {chapterNumber}</div>");
+
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Right;
+            builder.Font.Size = 9;
+            builder.Write("Strona ");
+            builder.InsertField("PAGE", null);
+            builder.Write(" z ");
+            builder.InsertField("NUMPAGES", null);
         }
 
         public byte[] Export(Chapter chapter, ExportSaveFormat saveFormat) {
@@ -79,21 +98,22 @@ namespace IBE.Data.Export {
             ExportChapterNumber(chapter, builder, true);
             var par = builder.InsertParagraph();
             par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
-            foreach (var item in chapter.Verses) {
+            foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
                 ExportVerse(item, par, builder);
             }
 
             WriteFooter(chapter.ParentTranslation, par, builder);
+            AddChapterHeaderAndFooter(chapter, builder);
 
             return SaveBuilder(saveFormat, builder);
         }
 
         private void WriteFooter(Translation translation, Paragraph par, DocumentBuilder builder) {
             builder.MoveTo(par);
-          
+
             builder.InsertParagraph();
 
-            builder.InsertHtml($"<div style=\"font-size: 11; text-align: left;\">{translation.DetailedInfo}</div>");
+            builder.InsertHtml($"<div style=\"font-size: 11; text-align: left;\">{translation.DetailedInfo}</div>");           
         }
 
         private void ExportChapterNumber(Chapter chapter, DocumentBuilder builder, bool withBookName = false) {
@@ -125,7 +145,7 @@ namespace IBE.Data.Export {
         private void ExportVerse(Verse verse, Paragraph par, DocumentBuilder builder) {
             // try GroupShape https://apireference.aspose.com/words/net/aspose.words.drawing/groupshape
             ExportVerseNumber(verse, par, builder);
-            foreach (var item in verse.VerseWords) {
+            foreach (var item in verse.VerseWords.OrderBy(x => x.NumberOfVerseWord)) {
                 ExportVerseWord(item, par, builder);
             }
         }
@@ -150,6 +170,8 @@ namespace IBE.Data.Export {
             builder.Font.Bold = true;
             builder.Font.Color = Color.Black;
             builder.Write(text);
+
+            (shape.FirstParagraph.Runs.First() as Run).Font.Position = 24;
 
             par.AppendChild(shape);
             shape.Width = GetMaxTextSize(text, font11bold) * 1.2F;
@@ -315,6 +337,8 @@ namespace IBE.Data.Export {
 
         private DocumentBuilder GetDocumentBuilder() {
             var document = new Document();
+
+            document.FirstSection.PageSetup.DifferentFirstPageHeaderFooter = true;
 
             document.FirstSection.PageSetup.PaperSize = PaperSize.A4;
             document.FirstSection.PageSetup.Orientation = Orientation.Portrait;
