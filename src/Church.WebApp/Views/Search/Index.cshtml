@@ -44,10 +44,10 @@
 
                     @foreach (var verse in item) {
                         var text = verse.VerseText;
-                        foreach (var word in Model.Words) {
-                            if (word.Contains("ma") || word.Contains("ar")) { continue; }
-                            text = text.Replace(word, $@"<mark>{word}</mark>", StringComparison.CurrentCultureIgnoreCase);
-                        }
+                        //foreach (var word in Model.Words) {
+                        //    if (word.Contains("ma") || word.Contains("ar")) { continue; }
+                        //    text = text.Replace(word, $@"<mark>{word}</mark>", StringComparison.CurrentCultureIgnoreCase);
+                        //}
 
                         <p><a href="../@verse.Translation/@verse.Book/@verse.Chapter/@verse.Verse" class="text-decoration-none" target="_blank">@verse.BookShortcut @verse.Chapter:@verse.Verse</a>&nbsp;@Html.Raw(text)</p>
                     }
@@ -66,6 +66,8 @@
                         var firstTab = new bootstrap.Tab(firstTabEl);
 
                         firstTab.show();
+
+
                     }, 1000);
                 });
             </script>
