@@ -2,54 +2,56 @@
     ViewData["Title"] = "Nauczanie - kazania, artykuły, skrypty";
     var _listView = false;
 }
-@using IBE.Common.Extensions 
+@using IBE.Common.Extensions
 @model List<Church.WebApp.Controllers.ArticleInfoBase>
 
-<h1><i class="fas fa-newspaper"></i> @ViewData["Title"]</h1>
-<br />
-<div class="row">
-    @foreach (var item in Model) {
-        if (item is Church.WebApp.Controllers.ArticleInfo) {
-            var _item = item as Church.WebApp.Controllers.ArticleInfo;
-            var lead = _item.Lead;
-            if (lead.Length > 130) {
-                lead = lead.Substring(0, 130) + "...";
-            }
-
-            <div class="col-sm-6">
-                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-lg h-md-250 position-relative">
-                    <div class="col p-4 d-flex flex-column position-static">
-                        <strong class="d-inline-block mb-2 text-success">@_item.Type</strong>
-                        <h3 class="mb-0">@item.Subject</h3>
-                        <div class="mb-1 text-muted">@item.Date.Day @item.Date.ToString("MMMM") @item.Date.Year</div>
-                        <p class="mb-auto fst-italic">@item.AuthorName</p>
-                        <p class="mb-auto">@lead</p>
-                        <a href="../Article?id=@item.Id" class="stretched-link">Czytaj dalej...</a>
-                    </div>
-
-                    @if (!String.IsNullOrEmpty(_item.AuthorPicture)) {
-                        <div class="col-auto d-none d-lg-block" style="background-image: url('data:image/png;base64, @_item.AuthorPicture'); background-repeat: no-repeat; background-position: center center; background-size: cover; max-width: 350px; width: 40%; "></div>
+    <div style="padding-top: 50px;">
+        <h1 class="white-shadow"><i class="fas fa-newspaper"></i> @ViewData["Title"]</h1>
+        <br />
+        <div class="row">
+            @foreach (var item in Model) {
+                if (item is Church.WebApp.Controllers.ArticleInfo) {
+                    var _item = item as Church.WebApp.Controllers.ArticleInfo;
+                    var lead = _item.Lead;
+                    if (lead.Length > 130) {
+                        lead = lead.Substring(0, 130) + "...";
                     }
 
-                </div>
-            </div>
+                    <div class="col-sm-6">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-lg h-md-250 position-relative">
+                            <div class="col p-4 d-flex flex-column position-static">
+                                <strong class="d-inline-block mb-2 text-success pill-white">@_item.Type</strong>
+                                <h3 class="mb-0">@item.Subject</h3>
+                                <div class="mb-1 text-muted">@item.Date.Day @item.Date.ToString("MMMM") @item.Date.Year</div>
+                                <p class="mb-auto fst-italic">@item.AuthorName</p>
+                                <p class="mb-auto">@lead</p>
+                                <a href="../Article?id=@item.Id" class="stretched-link">Czytaj dalej...</a>
+                            </div>
 
-        }
-        else {
-            if (!_listView) {
-                _listView = true;
-                @Html.Raw(@"<div style=""display: table; max-width: 700px;"">")
+                            @if (!String.IsNullOrEmpty(_item.AuthorPicture)) {
+                                <div class="col-auto d-none d-lg-block" style="background-image: url('data:image/png;base64, @_item.AuthorPicture'); background-repeat: no-repeat; background-position: center center; background-size: cover; max-width: 350px; width: 40%; "></div>
+                            }
+
+                        </div>
+                    </div>
+
+                }
+                else {
+                    if (!_listView) {
+                        _listView = true;
+                        @Html.Raw(@"<div style=""display: table; max-width: 700px;"">")
+                    }
+
+                    <div style="display: table-row;">
+                        <div style="display: table-cell; vertical-align: top; padding-top: 10px; padding-right: 5px;">@item.Date.Day @item.Date.ToString("MMMM") @item.Date.Year</div>
+                        <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><a href="../Article?id=@item.Id" class="link text-decoration-none">@item.Subject</a></div>
+                        <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><i>@Html.Raw(item.AuthorName.GetInitials())</i></div>
+                    </div>
+
+                    @if (item == Model.LastOrDefault()) {
+                        @Html.Raw(@"</div>");
+                    }
+                }
             }
-
-            <div style="display: table-row;">
-                <div style="display: table-cell; vertical-align: top; padding-top: 10px; padding-right: 5px;">@item.Date.Day @item.Date.ToString("MMMM") @item.Date.Year</div>
-                <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><a href="../Article?id=@item.Id" class="link text-decoration-none">@item.Subject</a></div>
-                <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><i>@Html.Raw(item.AuthorName.GetInitials())</i></div>
-            </div>
-
-            @if (item == Model.LastOrDefault()) {
-                @Html.Raw(@"</div>");
-            }
-        }
-    }
-</div>
+        </div>
+    </div>
