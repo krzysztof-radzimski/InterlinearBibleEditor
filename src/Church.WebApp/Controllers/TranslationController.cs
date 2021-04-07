@@ -86,7 +86,7 @@ namespace Church.WebApp.Controllers {
         public string Name { get; set; }
         public string Description { get; set; }
         public string TranslationType { get; set; }
-        public bool Catholic{ get; set; }
+        public bool Catholic { get; set; }
         public bool Recommended { get; set; }
     }
 }

@@ -101,6 +101,12 @@
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)</a></li>
 
                                         }
+
+                                        if (type == TranslationType.Interlinear) {
+                                            <li><a class="dropdown-item" href="https://biblia.oblubienica.eu/">Oblubienica.eu - Ewangeliczny Przekład Interlinearny Biblii</a></li>
+                                            <li><a class="dropdown-item" href="https://biblehub.com/interlinear/matthew/1.htm">BibleHub.com - Greek Interlinear Bible</a></li>
+                                            <li><a class="dropdown-item" href="https://biblehub.com/interlinear/genesis/1.htm">BibleHub.com - Hebrew Interlinear Bible</a></li>
+                                        }
                                     }
                                 }
                             </ul>
@@ -178,7 +184,7 @@
         <main role="main" class="card border-0 shadow mt-5">
             @RenderSection("Main", false)
             <div class="bg-bible">
-                <div class="card-body p-5" style="position: relative;">
+                <div class="card-body p-5 bible-content" style="position: relative;">
                     @RenderBody()
                 </div>
             </div>

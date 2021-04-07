@@ -7,7 +7,7 @@
 @using IBE.Common.Extensions
 
 @if (Model == null) {
-    <h1>Nie przekazano nazwy przekładu</h1>
+    <h1 class="white-shadow">Nie przekazano nazwy przekładu</h1>
 }
 else if (String.IsNullOrEmpty(Model.Book)) {
     //
@@ -35,10 +35,10 @@ break;
 
     </div>
 
-    <h1 class="text-center p-2">@Model.Translation.Description</h1>
+    <h2 class="text-center p-2 max-width-800 white-shadow">@Model.Translation.Description</h2>
 
     <div class="container">
-        <div class="row border bg-light justify-content-center" style="max-width: 800px; margin: auto;">
+        <div class="row border bg-light justify-content-center max-width-800">
             @foreach (var book in Model.Translation.Books) {
 
                 if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !book.IsTranslated && Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) { continue; }
@@ -141,6 +141,7 @@ break;
                         foreach (var item in _trans) {
                             var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
                             var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
+                            var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
                             var _active = String.Empty;
                             if (item.Name == Model.Translation.Name) {
                                 _active = " active";
@@ -148,10 +149,10 @@ break;
 
                             <li>
                                 @if (Model.Verse.IsNotNullOrEmpty()) {
-                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)</a>
+                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)</a>
                                 }
                                 else {
-                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)</a>
+                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)</a>
                                 }
                             </li>
                         }
@@ -207,8 +208,8 @@ break;
             </ul>
         </div>
 
-        <h1 class="text-center p-2"><a class="text-decoration-none text-dark" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@null">@Model.Translation.Description</a></h1>
-        <h2 class="text-center p-2" style="text-transform: uppercase;">@book.BaseBook.BookTitle</h2>
+        <h2 class="text-center p-2 max-width-800 white-shadow"><a class="text-decoration-none text-dark" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@null">@Model.Translation.Description</a></h2>
+        <h2 class="text-center p-2 max-width-800 capital white-shadow">@book.BaseBook.BookTitle</h2>
         var chapterNumber = Convert.ToInt32(Model.Chapter);
         if (chapterNumber == __chapterNumbers.First()) {
             if (book.BaseBook.IsNotNull()) {
@@ -280,7 +281,7 @@ break;
         }
 
         if (book.NumberOfBook == 230) {
-            <h2 class="text-center p-2">@Model.Translation.ChapterPsalmString @Model.Chapter</h2>
+            <h2 class="text-center p-2 white-shadow">@Model.Translation.ChapterPsalmString @Model.Chapter</h2>
         }
         else {
             var __chapterNumberString = $"{Model.Translation.ChapterString} {Model.Chapter}";
@@ -289,7 +290,7 @@ break;
             }
             if (Model.Chapter.ToInt() == 0) { __chapterNumberString = "Prolog"; }
 
-            <h2 class="text-center p-2">@__chapterNumberString</h2>
+            <h2 class="text-center p-2 white-shadow">@__chapterNumberString</h2>
         }
 
 
@@ -319,6 +320,21 @@ break;
                 @Html.Raw(@$"<div style=""text-align: right;""><a href=""../../api/DownloadInterlinearPdf?q={Model.Translation.Name},{chapter.ParentBook.NumberOfBook},{chapter.NumberOfChapter}""><i class=""far fa-file-pdf fa-2x""></i></a>&nbsp;<a href=""../../api/DownloadInterlinearDocx?q={Model.Translation.Name},{chapter.ParentBook.NumberOfBook},{chapter.NumberOfChapter}""><i class=""far fa-file-word fa-2x""></i></a></div>")
 
                 @foreach (var verse in chapter.Verses) {
+
+                    //
+                    // Sródtytuły
+                    //
+                    if (chapter.Subtitles != null && chapter.Subtitles.Count > 0) {
+                        var subtitles = chapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).OrderBy(x => x.Level);
+                        if (subtitles.Count() > 0) {
+                            foreach (var story in subtitles) {
+
+                                var storyText = story.Text;
+
+                                <div class="col w-100 fs-5 pb-3 p-2 fw-bold text-center story">@Html.Raw(storyText)</div>
+                            }
+                        }
+                    }
 
                     var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "background-color: #fffee3;" : " ";
 
@@ -418,8 +434,8 @@ break;
                                         </div>
                                     </div>
                                 }
-                                <div class="row" style="font-weight: 200;"><div class="col">@word.SourceWord</div></div>
-                                <div class="row" style="font-size: 80%; font-weight: 200;"><div class="col">@word.Transliteration</div></div>
+                                <div class="row"><div class="col text-success fs-90per">@word.SourceWord</div></div>
+                                <div class="row" style="color: #003A60;"><div class="col fs-80per">@word.Transliteration</div></div>
                                 <div class="row @translationFontColor" style="@translationFontWeight position: relative; min-width: 70px;"><div class="col">@Html.Raw(translation)</div></div>
                             </div>
                         </div>
@@ -455,18 +471,26 @@ break;
                                 if (storyText.Contains("<x>")) {
                                     var pattern = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+\-[0-9]+)\<\/x\>";
                                     var pattern2 = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+(\s)?\:(\s)?[0-9]+\-[0-9]+)\<\/x\>";
-                                    var regex = new System.Text.RegularExpressions.Regex(pattern);
-                                    var match = regex.Match(storyText.Trim());
-                                    if (match.Success) {
-                                        storyText = $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(match.Groups["book"].Value)).First().BookName} {match.Groups["num"].Value})";
-                                    }
-                                    else {
-                                        regex = new System.Text.RegularExpressions.Regex(pattern2);
-                                        match = regex.Match(storyText.Trim());
-                                        if (match.Success) {
-                                            storyText = $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(match.Groups["book"].Value)).First().BookName} {match.Groups["num"].Value})";
-                                        }
-                                    }
+
+                                    storyText = System.Text.RegularExpressions.Regex.Replace(storyText, pattern, delegate (System.Text.RegularExpressions.Match m) {
+                                        return $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BookName} {m.Groups["num"].Value})";
+                                    }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                    storyText = System.Text.RegularExpressions.Regex.Replace(storyText, pattern2, delegate (System.Text.RegularExpressions.Match m) {
+                                        return $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BookName} {m.Groups["num"].Value})";
+                                    }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                                    //var regex = new System.Text.RegularExpressions.Regex(pattern);
+                                    //var match = regex.Match(storyText.Trim());
+                                    //if (match.Success) {
+                                    //    storyText = $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(match.Groups["book"].Value)).First().BookName} {match.Groups["num"].Value})";
+                                    //}
+                                    //else {
+                                    //    regex = new System.Text.RegularExpressions.Regex(pattern2);
+                                    //    match = regex.Match(storyText.Trim());
+                                    //    if (match.Success) {
+                                    //        storyText = $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(match.Groups["book"].Value)).First().BookName} {match.Groups["num"].Value})";
+                                    //    }
+                                    //}
                                 }
 
                                 if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
@@ -672,17 +696,18 @@ break;
 
         <div class="lh-lg fs-6" style="text-align: justify; max-width: 1000px; margin: auto;">
             <br />
-            <h4>Prawa autorskie i szczegółowe informacje</h4>
+            <p class="fw-bold text-center fs-80per">Prawa autorskie i szczegółowe informacje</p>
+            <div class="fs-80per text-center">
+                @if (Model.Translation.DetailedInfo != null) {
+                    var textDetailedInfo = System.Text.RegularExpressions.Regex.Replace(Model.Translation.DetailedInfo, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                        return " " + m.Value.Trim() + "&nbsp;";
+                    }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-            @if (Model.Translation.DetailedInfo != null) {
-                var textDetailedInfo = System.Text.RegularExpressions.Regex.Replace(Model.Translation.DetailedInfo, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                    return " " + m.Value.Trim() + "&nbsp;";
-                }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                    @Html.Raw(textDetailedInfo)
 
-                @Html.Raw(textDetailedInfo)
-
-            }
-            <p>
+                }
+            </div>
+            <p class="fs-80per">
                 * Prezentowane treści należą do ich właścicieli i&nbsp;wydawców. Tekst pobrany z&nbsp;udostępnionych zasobów programu <a href="https://mybible.zone/">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a>
             </p>
         </div>

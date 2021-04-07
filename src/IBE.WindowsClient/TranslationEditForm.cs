@@ -431,6 +431,7 @@ namespace IBE.WindowsClient {
                         btnAddChapter.Enabled = false;
                         btnAddVerse.Enabled = false;
                         btnAddVerses.Enabled = false;
+                        btnDeleteBook.Enabled = false;
                         tabs.Visible = false;
                     }
                     else if (_record.Type == IbeTreeItemType.Book) {
@@ -519,6 +520,7 @@ namespace IBE.WindowsClient {
                 btnAddChapter.Enabled = false;
                 btnAddVerse.Enabled = false;
                 btnAddVerses.Enabled = false;
+                btnDeleteBook.Enabled = false;
 
                 if (Object.Type == TranslationType.Interlinear && !e.IsNew) {
                     var v = new XPQuery<Verse>(Object.Session).Where(x => x.Oid == e.Tag.ToInt()).FirstOrDefault();
@@ -544,6 +546,7 @@ namespace IBE.WindowsClient {
                 btnAddChapter.Enabled = false;
                 btnAddVerse.Enabled = true;
                 btnAddVerses.Enabled = true;
+                btnDeleteBook.Enabled = false;
 
                 tabs.SelectedTabPage = tabChapter;
                 tabs.Visible = true;
@@ -556,6 +559,7 @@ namespace IBE.WindowsClient {
         }
 
         private void LoadBook(IbeBookTreeItem e) {
+            btnDeleteBook.Enabled = true;
             btnAddBook.Enabled = false;
             btnAddChapter.Enabled = true;
             btnAddVerse.Enabled = false;
@@ -630,7 +634,7 @@ namespace IBE.WindowsClient {
             if (chapter.Type == IbeTreeItemType.Chapter) {
                 var response = XtraInputBox.Show("Type verse count:", "Add verses", "1", MessageBoxButtons.OKCancel);
                 if (response.IsNotNullOrEmpty()) {
-                    for (int i = 1; i < response.ToInt()+1; i++) {
+                    for (int i = 1; i < response.ToInt() + 1; i++) {
                         var item = new IbeVerseTreeItem() {
                             Text = i.ToString(),
                             ParentID = chapter.ID,
@@ -650,6 +654,33 @@ namespace IBE.WindowsClient {
 
                     treeList.RefreshDataSource();
                     treeList.FocusedNode.Expand();
+                }
+            }
+        }
+
+        private void btnDeleteBook_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            if (XtraMessageBox.Show("Delete book?", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                var book = treeList.GetDataRecordByNode(treeList.FocusedNode) as IbeTreeItem;
+                if (book.IsNew) {
+                    treeList.DeleteNode(treeList.FocusedNode);
+                }
+                else {
+                    var theBook = Object.Books.Where(x => x.Oid == book.Tag).FirstOrDefault();
+                    if (theBook.IsNotNull()) {
+                        foreach (var chapter in theBook.Chapters) {
+                            foreach (var verse in chapter.Verses) {
+                                foreach (var word in verse.VerseWords) {
+                                    word.Delete();
+                                }
+                                verse.Delete();
+                            }
+                            chapter.Delete();
+                        }
+                        theBook.Delete();
+                        (Object.Session as UnitOfWork).CommitChanges();
+                        treeList.ClearNodes();
+                        LoadTree();
+                    }
                 }
             }
         }

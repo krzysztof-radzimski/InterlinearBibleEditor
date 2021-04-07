@@ -66,6 +66,12 @@ namespace IBE.WindowsClient.Controls {
             Application.DoEvents();
 
             cbStartFromNewLine.DataBindings.Add("Checked", Verse, "StartFromNewLine");
+            var subtitle = Verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == Verse.NumberOfVerse).FirstOrDefault();
+            if (subtitle.IsNotNull()) {
+                txtStoryText.Text = subtitle.Text;
+                rgStoryLevel.SelectedIndex = subtitle.Level - 1;
+
+            }
 
             flowLayoutPanel.SuspendLayout();
             Application.DoEvents();
@@ -82,7 +88,7 @@ namespace IBE.WindowsClient.Controls {
             });
 
             getControls.ContinueWith((x) => {
-                this.SafeInvoke(f => {                    
+                this.SafeInvoke(f => {
                     foreach (var control in x.Result) {
                         f.flowLayoutPanel.Controls.Add(control);
                     }
@@ -172,7 +178,30 @@ namespace IBE.WindowsClient.Controls {
 
             Verse.Text = text.Trim();
             Verse.Save();
+
             var uow = Verse.Session as UnitOfWork;
+
+            // save story 
+            if (txtStoryText.Text.IsNotNullOrEmpty()) {
+                var subtitle = Verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == Verse.NumberOfVerse).FirstOrDefault();
+                if (subtitle.IsNull()) {
+                    subtitle = new Subtitle(uow) {
+                        BeforeVerseNumber = Verse.NumberOfVerse,
+                        ParentChapter = Verse.ParentChapter,
+                        Level = rgStoryLevel.SelectedIndex + 1,
+                        Text = txtStoryText.Text
+                    };
+                }
+                else {
+                    subtitle.BeforeVerseNumber = Verse.NumberOfVerse;
+                    subtitle.ParentChapter = Verse.ParentChapter;
+                    subtitle.Level = rgStoryLevel.SelectedIndex + 1;
+                    subtitle.Text = txtStoryText.Text;
+                }
+                subtitle.Save();
+            }
+
+
             if (uow.IsNotNull()) {
                 uow.CommitChanges();
                 uow.ReloadChangedObjects();

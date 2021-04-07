@@ -47,6 +47,9 @@ namespace IBE.WindowsClient.Controls {
             this.wbGrammarCodes = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tabNavigationPage4 = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
+            this.rgStoryLevel = new DevExpress.XtraEditors.RadioGroup();
+            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
+            this.txtStoryText = new DevExpress.XtraEditors.TextEdit();
             this.cbStartFromNewLine = new DevExpress.XtraEditors.CheckEdit();
             this.splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
             ((System.ComponentModel.ISupportInitialize)(this.tabPane1)).BeginInit();
@@ -71,6 +74,8 @@ namespace IBE.WindowsClient.Controls {
             this.tabNavigationPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rgStoryLevel.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtStoryText.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).BeginInit();
             this.SuspendLayout();
             // 
@@ -108,7 +113,7 @@ namespace IBE.WindowsClient.Controls {
             // 
             this.tabTranslations.Caption = "Translations";
             this.tabTranslations.Controls.Add(this.gridTranslations);
-            this.tabTranslations.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabNavigationPage1.ImageOptions.SvgImage")));
+            this.tabTranslations.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabTranslations.ImageOptions.SvgImage")));
             this.tabTranslations.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
             this.tabTranslations.ItemShowMode = DevExpress.XtraBars.Navigation.ItemShowMode.ImageAndText;
             this.tabTranslations.Name = "tabTranslations";
@@ -321,14 +326,17 @@ namespace IBE.WindowsClient.Controls {
             this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 1F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 99F)});
+            this.tablePanel1.Controls.Add(this.rgStoryLevel);
+            this.tablePanel1.Controls.Add(this.labelControl1);
+            this.tablePanel1.Controls.Add(this.txtStoryText);
             this.tablePanel1.Controls.Add(this.cbStartFromNewLine);
             this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tablePanel1.Location = new System.Drawing.Point(0, 0);
             this.tablePanel1.Name = "tablePanel1";
             this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
@@ -339,10 +347,43 @@ namespace IBE.WindowsClient.Controls {
             this.tablePanel1.Size = new System.Drawing.Size(974, 372);
             this.tablePanel1.TabIndex = 0;
             // 
+            // rgStoryLevel
+            // 
+            this.tablePanel1.SetColumn(this.rgStoryLevel, 2);
+            this.rgStoryLevel.EditValue = 1;
+            this.rgStoryLevel.Location = new System.Drawing.Point(13, 72);
+            this.rgStoryLevel.Name = "rgStoryLevel";
+            this.rgStoryLevel.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.rgStoryLevel.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
+            new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Level 1"),
+            new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Level 2")});
+            this.tablePanel1.SetRow(this.rgStoryLevel, 3);
+            this.rgStoryLevel.Size = new System.Drawing.Size(958, 20);
+            this.rgStoryLevel.TabIndex = 3;
+            // 
+            // labelControl1
+            // 
+            this.tablePanel1.SetColumn(this.labelControl1, 1);
+            this.labelControl1.Location = new System.Drawing.Point(13, 27);
+            this.labelControl1.Name = "labelControl1";
+            this.tablePanel1.SetRow(this.labelControl1, 1);
+            this.labelControl1.Size = new System.Drawing.Size(49, 13);
+            this.labelControl1.TabIndex = 2;
+            this.labelControl1.Text = "Story title";
+            // 
+            // txtStoryText
+            // 
+            this.tablePanel1.SetColumn(this.txtStoryText, 1);
+            this.txtStoryText.Location = new System.Drawing.Point(13, 46);
+            this.txtStoryText.Name = "txtStoryText";
+            this.tablePanel1.SetRow(this.txtStoryText, 2);
+            this.txtStoryText.Size = new System.Drawing.Size(958, 20);
+            this.txtStoryText.TabIndex = 1;
+            // 
             // cbStartFromNewLine
             // 
             this.tablePanel1.SetColumn(this.cbStartFromNewLine, 1);
-            this.cbStartFromNewLine.Location = new System.Drawing.Point(13, 4);
+            this.cbStartFromNewLine.Location = new System.Drawing.Point(13, 3);
             this.cbStartFromNewLine.Name = "cbStartFromNewLine";
             this.cbStartFromNewLine.Properties.Caption = "Start from new line";
             this.tablePanel1.SetRow(this.cbStartFromNewLine, 0);
@@ -390,6 +431,9 @@ namespace IBE.WindowsClient.Controls {
             this.tabNavigationPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
+            this.tablePanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.rgStoryLevel.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtStoryText.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).EndInit();
             this.ResumeLayout(false);
 
@@ -420,5 +464,8 @@ namespace IBE.WindowsClient.Controls {
         private DevExpress.XtraEditors.GroupControl gcStrongShortDefinition;
         private DevExpress.XtraEditors.TextEdit txtShortDefinition;
         private DevExpress.XtraEditors.MemoEdit txtDefinition;
+        private DevExpress.XtraEditors.LabelControl labelControl1;
+        private DevExpress.XtraEditors.TextEdit txtStoryText;
+        private DevExpress.XtraEditors.RadioGroup rgStoryLevel;
     }
 }
