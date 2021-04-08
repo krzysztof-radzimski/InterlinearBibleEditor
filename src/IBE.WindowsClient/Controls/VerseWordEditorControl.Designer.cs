@@ -300,6 +300,7 @@ namespace IBE.WindowsClient.Controls {
             this.lblStrong.TabIndex = 1;
             this.lblStrong.Text = "none";
             this.lblStrong.Click += new System.EventHandler(this.lblStrong_Click);
+            this.lblStrong.DoubleClick += new System.EventHandler(this.lblStrong_DoubleClick);
             // 
             // lblGreekWord
             // 

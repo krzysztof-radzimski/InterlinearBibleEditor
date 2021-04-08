@@ -36,6 +36,10 @@ namespace IBE.WindowsClient {
             txtDetailedInfo.Document.DefaultCharacterProperties.FontName = "Consolas";
             txtDetailedInfo.Document.DefaultCharacterProperties.FontSize = 12;
 
+            txtPreface.ReplaceService<ISyntaxHighlightService>(new HTMLSyntaxHighlightService(txtPreface));
+            txtPreface.Document.DefaultCharacterProperties.FontName = "Consolas";
+            txtPreface.Document.DefaultCharacterProperties.FontSize = 12;
+
             this.Text = "Translation editor";
             txtBookType.Properties.DataSource = typeof(TheBookType).GetEnumValues().OfType<TheBookType>();
             foreach (var lang in Enum.GetValues(typeof(Language))) {
@@ -85,6 +89,7 @@ namespace IBE.WindowsClient {
                 cbWithGrammarCodes.DataBindings.Add("EditValue", Object, "WithGrammarCodes");
                 cbWithStrongs.DataBindings.Add("EditValue", Object, "WithStrongs");
                 cbChapterRomanNumbering.DataBindings.Add("EditValue", Object, "ChapterRomanNumbering");
+                cbHidden.DataBindings.Add("EditValue", Object, "Hidden");
 
                 LoadTree();
             }

@@ -31,6 +31,7 @@ namespace IBE.Data.Model {
         private bool chapterRomanNumbering;
         private bool withStrongs;
         private bool withGrammarCodes;
+        private bool hidden;
 
         public string Name {
             get { return name; }
@@ -66,6 +67,11 @@ namespace IBE.Data.Model {
         public bool OpenAccess {
             get { return openAccess; }
             set { SetPropertyValue(nameof(OpenAccess), ref openAccess, value); }
+        }
+
+        public bool Hidden {
+            get { return hidden; }
+            set { SetPropertyValue(nameof(Hidden), ref hidden, value); }
         }
 
         public bool Recommended {

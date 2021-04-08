@@ -50,7 +50,7 @@ break;
                 }
 
                 <div class="col p-2" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3);" title="@book.BaseBook.BookTitle">
-                    <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@book.BaseBook.BookTitle" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="1">@Html.Raw(bookHtml)&nbsp;<span class="badge bg-success rounded-pill">@book.NumberOfChapters</span></a>
+                    <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@book.BaseBook.BookTitle" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@book.Chapters.Min(x=>x.NumberOfChapter)">@Html.Raw(bookHtml)&nbsp;<span class="badge bg-success rounded-pill">@book.NumberOfChapters</span></a>
                 </div>
             }
         </div>
@@ -191,7 +191,7 @@ break;
                 }
 
                 @foreach (var i in __chapterNumbers) {
-                    if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !book.Chapters.Where(x => x.NumberOfChapter == i).First().IsTranslated) { continue; }
+                    if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible && !book.Chapters.Where(x => x.NumberOfChapter == i).First().IsTranslated) { continue; }
 
                     var __chapterNumberString = i.ToString();
                     if (Model.Translation.ChapterRomanNumbering) {
@@ -331,7 +331,9 @@ break;
 
                                 var storyText = story.Text;
 
+                                <div class="col pb-3">&nbsp;</div>
                                 <div class="col w-100 fs-5 pb-3 p-2 fw-bold text-center story">@Html.Raw(storyText)</div>
+
                             }
                         }
                     }
@@ -394,7 +396,7 @@ break;
                         var translationFontWeight = word.Citation ? "font-weight: bold;" : "font-weight: 400;";
                         var translationFontColor = word.WordOfJesus ? "text-danger" : "";
 
-                        <div class="col pb-3" style="padding-left: 0 !important; max-width: 280px; @activeVerse">
+                        <div class="col-auto pb-3" style="padding-left: 0 !important; @activeVerse">
                             <div class="container" style="position: relative">
                                 @if (isFirst && Model.Chapter.ToInt() > 0) {
                                     //
@@ -441,6 +443,8 @@ break;
                         </div>
                     }
                 }
+
+                <div class="col pb-3">&nbsp;</div>
 
                 @Html.Raw("</div>")
 

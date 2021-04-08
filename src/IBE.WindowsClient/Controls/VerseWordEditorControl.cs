@@ -52,7 +52,7 @@ namespace IBE.WindowsClient.Controls {
             else {
                 var strongCode = XtraInputBox.Show("Insert Strong's code:", "Strong Codes", "");
                 if (strongCode.IsNotNullOrEmpty()) {
-                    var sc = new XPQuery<StrongCode>(Word.Session).Where(x => x.Code == strongCode.ToInt()).FirstOrDefault();
+                    var sc = new XPQuery<StrongCode>(Word.Session).Where(x => x.Code == strongCode.ToInt() && x.Lang == Language.Greek).FirstOrDefault();
                     if (sc.IsNotNull()) {
                         Word.StrongCode = sc;
                         (Word.Session as UnitOfWork).CommitChanges();
@@ -118,6 +118,19 @@ namespace IBE.WindowsClient.Controls {
             var index = XtraInputBox.Show("Set word index:", "Word Index", Word.NumberOfVerseWord);
             if (index != 0) {
                 Word.NumberOfVerseWord = index;
+            }
+        }
+
+        private void lblStrong_DoubleClick(object sender, EventArgs e) {
+            if (Word.StrongCode.IsNotNull()) {
+                var strongCode = XtraInputBox.Show("Insert Strong's code:", "Strong Codes", lblStrong.Text);
+                if (strongCode.IsNotNullOrEmpty()) {
+                    var sc = new XPQuery<StrongCode>(Word.Session).Where(x => x.Code == strongCode.ToInt() && x.Lang == Language.Greek).FirstOrDefault();
+                    if (sc.IsNotNull()) {
+                        Word.StrongCode = sc;
+                        (Word.Session as UnitOfWork).CommitChanges();
+                    }
+                }
             }
         }
     }

@@ -112,12 +112,12 @@
                             </ul>
                         </li>
 
-                        @{
+                        @*@{
                             var callingUrl = Context.Request.Headers["Host"].ToString();
                             var isLocal = callingUrl.Contains("localhost");
-                        }
+                        }*@
 
-                        @if (isLocal) {
+                        
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -127,12 +127,13 @@
                                     @{
 
                                         var view2 = new XPView(new UnitOfWork(), typeof(Translation));
-                                        view2.CriteriaString = "[BookType] = 2";
+                                        view2.CriteriaString = "[BookType] = 2 AND [Hidden] = 0";
                                         view2.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
                                         view2.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
                                         view2.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
                                         view2.Properties.Add(new ViewProperty("Catolic", SortDirection.None, "[Catolic]", false, true));
                                         view2.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
+                                        //view2.Properties.Add(new ViewProperty("Hidden", SortDirection.None, "[Hidden]", false, true));
 
                                         var list2 = new List<TranslationInfo>();
                                         foreach (ViewRecord item in view2) {
@@ -148,7 +149,7 @@
 
                                     @if (list2.Any()) {
 
-                                        foreach (var item in list2) {
+                                        foreach (var item in list2) {                                            
                                             var _name = item.Name.Replace("'", "").Replace("+", "");
                                             var _description = item.Description;
                                             var _catolicBadge = item.Catolic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
@@ -160,7 +161,7 @@
 
                                 </ul>
                             </li>
-                        }
+                        
 
                         <li class="nav-item">
                             <div class="btn-group" role="group" aria-label="Przyciski">

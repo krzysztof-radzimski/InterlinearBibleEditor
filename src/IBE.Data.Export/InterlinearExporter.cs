@@ -273,8 +273,10 @@ namespace IBE.Data.Export {
                     });
 
                     builder.MoveTo(par);
-                    var footnote = builder.InsertFootnote(FootnoteType.Footnote, footnoteText);
+                    var footnote = builder.InsertFootnote(FootnoteType.Footnote, "");
                     footnote.Font.Position = 11;
+                    builder.MoveTo(footnote.LastParagraph);
+                    builder.InsertHtml($"<span style=\"font-size: 10pt;\"> {footnoteText}</span>");
                 }
             }
         }

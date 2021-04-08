@@ -91,13 +91,13 @@ namespace IBE.Data.Import.Test {
             uow.BeginTransaction();
 
             var wordsWithoutStrongCode = new XPQuery<VerseWord>(uow)
-                    .Where(x => x.StrongCode == null && x.ParentVerse.ParentChapter.ParentBook.ParentTranslation.Name == "IPLIA+")
+                    .Where(x => x.StrongCode == null && x.ParentVerse.ParentChapter.ParentBook.ParentTranslation.Name == "IPD+")
                     .ToArray();
             
             var wordsWithoutStrongCodeCount = wordsWithoutStrongCode.Length;
 
             var wordsWithStrongCode = new XPQuery<VerseWord>(uow)
-                    .Where(x => x.StrongCode != null)
+                    .Where(x => x.StrongCode != null && x.StrongCode.Lang == Language.Greek)
                     .Select(x => new {
                         SourceWord = x.SourceWord.Replace("·", "").Replace(",", "").Replace(".", "").ToLower(),
                         StrongCode = x.StrongCode
