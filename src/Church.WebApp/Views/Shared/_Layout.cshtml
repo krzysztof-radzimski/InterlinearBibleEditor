@@ -63,6 +63,7 @@
                                     view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
                                     view.Properties.Add(new ViewProperty("Catolic", SortDirection.None, "[Catolic]", false, true));
                                     view.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
+                                    view.Properties.Add(new ViewProperty("OpenAccess", SortDirection.None, "[OpenAccess]", false, true));
 
                                     var list = new List<TranslationInfo>();
                                     foreach (ViewRecord item in view) {
@@ -71,7 +72,8 @@
                                             Name = item["Name"].ToString().Replace("'", ""),
                                             Description = item["Description"].ToString(),
                                             Catolic = (bool)item["Catolic"],
-                                            Recommended = (bool)item["Recommended"]
+                                            Recommended = (bool)item["Recommended"],
+                                            PasswordRequired = !((bool)item["OpenAccess"])
                                         });
                                     }
                                     var first = true;
@@ -97,8 +99,8 @@
                                             var _catolicBadge = item.Catolic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
                                             var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
                                             var _notrecommendedBadge = type == TranslationType.Dynamic ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
-
-                                            <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)</a></li>
+                                            var _loginRequired = item.PasswordRequired ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a></li>
 
                                         }
 
@@ -133,7 +135,7 @@
                                         view2.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
                                         view2.Properties.Add(new ViewProperty("Catolic", SortDirection.None, "[Catolic]", false, true));
                                         view2.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
-                                        //view2.Properties.Add(new ViewProperty("Hidden", SortDirection.None, "[Hidden]", false, true));
+                                        view2.Properties.Add(new ViewProperty("OpenAccess", SortDirection.None, "[OpenAccess]", false, true));
 
                                         var list2 = new List<TranslationInfo>();
                                         foreach (ViewRecord item in view2) {
@@ -142,8 +144,9 @@
                                                 Name = item["Name"].ToString().Replace("'", ""),
                                                 Description = item["Description"].ToString(),
                                                 Catolic = (bool)item["Catolic"],
-                                                Recommended = (bool)item["Recommended"]
-                                            });
+                                                Recommended = (bool)item["Recommended"],
+                                                PasswordRequired = !((bool)item["OpenAccess"])
+                                            }); ;
                                         }
                                     }
 

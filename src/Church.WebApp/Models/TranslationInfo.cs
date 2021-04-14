@@ -7,5 +7,6 @@ namespace Church.WebApp.Models {
         public TranslationType Type { get; set; }
         public bool Catolic { get; set; }
         public bool Recommended { get; set; }
+        public bool PasswordRequired { get; set; }
     }
 }

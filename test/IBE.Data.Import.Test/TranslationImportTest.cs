@@ -69,14 +69,15 @@ namespace IBE.Data.Import.Test {
             ConnectionHelper.Connect();
             var uow = new UnitOfWork();
 
-            var trans = new XPQuery<Translation>(uow).Where(x => x.Name == "NPI+").FirstOrDefault();
-            var book = trans.Books.Where(x => x.NumberOfBook == 470).FirstOrDefault();
-            var chapter = book.Chapters.Where(x => x.NumberOfChapter == 6).FirstOrDefault();
+            var trans = new XPQuery<Translation>(uow).Where(x => x.Name == "IPD+").FirstOrDefault();
+            //var book = trans.Books.Where(x => x.NumberOfBook == 470).FirstOrDefault();
+            var book = trans.Books.First();
+            var chapter = book.Chapters.Where(x => x.NumberOfChapter == 3).FirstOrDefault();
 
-            var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".docx");
+            var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".pdf");
             var licPath = @"..\..\..\..\..\..\Aspose.Total.lic";
 
-            new Export.InterlinearExporter(File.ReadAllBytes(licPath)).Export(chapter, Export.ExportSaveFormat.Docx, path);
+            new Export.InterlinearExporter(File.ReadAllBytes(licPath)).Export(chapter, Export.ExportSaveFormat.Pdf, path);
 
             if (File.Exists(path)) {
                 System.Diagnostics.Process.Start(path);
@@ -84,7 +85,45 @@ namespace IBE.Data.Import.Test {
         }
 
         [TestMethod]
+        public void ExportInterlinearBookToPdf() {
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+
+            var trans = new XPQuery<Translation>(uow).Where(x => x.Name == "IPD+").FirstOrDefault();
+            var book = trans.Books.FirstOrDefault();          
+
+            var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".pdf");
+            var licPath = @"..\..\..\..\..\..\Aspose.Total.lic";
+
+            new Export.InterlinearExporter(File.ReadAllBytes(licPath)).Export(book, Export.ExportSaveFormat.Pdf, path);
+
+            if (File.Exists(path)) {
+                System.Diagnostics.Process.Start(path);
+            }
+        }
+
+        [TestMethod]
+        public void ExportInterlinearBookToDocx() {
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+
+            var trans = new XPQuery<Translation>(uow).Where(x => x.Name == "IPD+").FirstOrDefault();
+            var book = trans.Books.FirstOrDefault();
+
+            var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".docx");
+            var licPath = @"..\..\..\..\..\..\Aspose.Total.lic";
+
+            new Export.InterlinearExporter(File.ReadAllBytes(licPath)).Export(book, Export.ExportSaveFormat.Docx, path);
+
+            if (File.Exists(path)) {
+                System.Diagnostics.Process.Start(path);
+            }
+        }
+
+
+        [TestMethod]
         public void AddStrongCodes() {
+            var count = 0;
             //var signs = new char[] { '·', ',', '.' };
             ConnectionHelper.Connect();
             var uow = new UnitOfWork();
@@ -99,7 +138,7 @@ namespace IBE.Data.Import.Test {
             var wordsWithStrongCode = new XPQuery<VerseWord>(uow)
                     .Where(x => x.StrongCode != null && x.StrongCode.Lang == Language.Greek)
                     .Select(x => new {
-                        SourceWord = x.SourceWord.Replace("·", "").Replace(",", "").Replace(".", "").ToLower(),
+                        SourceWord = x.SourceWord.Replace("·", "").Replace(",", "").Replace(".", "").Replace("*", "").Replace(";", "").ToLower(),
                         StrongCode = x.StrongCode
                     })
                     .Distinct()
@@ -107,11 +146,12 @@ namespace IBE.Data.Import.Test {
 
             for (int i = 0; i < wordsWithoutStrongCodeCount; i++) {
                 var item = wordsWithoutStrongCode[i];
-                var _sourceWord = item.SourceWord.Replace("·", "").Replace(",", "").Replace(".", "").ToLower();
+                var _sourceWord = item.SourceWord.Replace("·", "").Replace(",", "").Replace(".", "").Replace("*", "").Replace(";", "").ToLower();
                 var found = wordsWithStrongCode.Where(x => x.SourceWord == _sourceWord).FirstOrDefault();
                 if (found.IsNotNull()) {
                     item.StrongCode = found.StrongCode;
                     item.Save();
+                    count++;
                 }
             }
             //foreach (var item in wordsWithoutStrongCode) {

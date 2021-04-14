@@ -49,8 +49,16 @@ break;
                     bookHtml = $"{book.BaseBook.BookShortcut}&nbsp;({bookHtml})";
                 }
 
+                var pillHtml = $@"<span class=""badge bg-success rounded-pill"" style=""position: absolute; right: -10px; top: -15px"">{book.NumberOfChapters}</span>";
+                if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
+                    pillHtml = $@"<span class=""badge bg-success"" style=""position: absolute; right: -20px; top: -20px""><a href=""../../api/DownloadInterlinearPdf?q={Model.Translation.Name},{book.NumberOfBook}"" title=""Pobierz księgę w formacie PDF"" class=""text-decoration-none"" style=""color: white;""><i class=""fas fa-arrow-circle-down fa-2x""></i></a></span>";
+                }
+
+
                 <div class="col p-2" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3);" title="@book.BaseBook.BookTitle">
-                    <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@book.BaseBook.BookTitle" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@book.Chapters.Min(x=>x.NumberOfChapter)">@Html.Raw(bookHtml)&nbsp;<span class="badge bg-success rounded-pill">@book.NumberOfChapters</span></a>
+                    <span style="position: relative;">
+                        <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@book.BaseBook.BookTitle" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@book.Chapters.Min(x=>x.NumberOfChapter)">@Html.Raw(bookHtml)&nbsp;</a>@Html.Raw(pillHtml)
+                    </span>
                 </div>
             }
         </div>
@@ -142,6 +150,7 @@ break;
                             var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
                             var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
                             var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
+                            var _loginRequired = item.PasswordRequired ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
                             var _active = String.Empty;
                             if (item.Name == Model.Translation.Name) {
                                 _active = " active";
@@ -149,10 +158,10 @@ break;
 
                             <li>
                                 @if (Model.Verse.IsNotNullOrEmpty()) {
-                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)</a>
+                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
                                 }
                                 else {
-                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)</a>
+                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
                                 }
                             </li>
                         }
@@ -191,7 +200,7 @@ break;
                 }
 
                 @foreach (var i in __chapterNumbers) {
-                    if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible && !book.Chapters.Where(x => x.NumberOfChapter == i).First().IsTranslated) { continue; }
+                    if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear /*&& Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible*/ && !book.Chapters.Where(x => x.NumberOfChapter == i).First().IsTranslated) { continue; }
 
                     var __chapterNumberString = i.ToString();
                     if (Model.Translation.ChapterRomanNumbering) {
@@ -316,8 +325,8 @@ break;
                 // Wyswietlanie treści przekładu interlinearnego
                 // --------------------------------------------------
                 footNoteRefIndex = 1;
-
-                @Html.Raw(@$"<div style=""text-align: right;""><a href=""../../api/DownloadInterlinearPdf?q={Model.Translation.Name},{chapter.ParentBook.NumberOfBook},{chapter.NumberOfChapter}""><i class=""far fa-file-pdf fa-2x""></i></a>&nbsp;<a href=""../../api/DownloadInterlinearDocx?q={Model.Translation.Name},{chapter.ParentBook.NumberOfBook},{chapter.NumberOfChapter}""><i class=""far fa-file-word fa-2x""></i></a></div>")
+                
+                @Html.Raw(@$"<div style=""text-align: right;""><a href=""../../api/DownloadInterlinearPdf?q={Model.Translation.Name},{chapter.ParentBook.NumberOfBook},{chapter.NumberOfChapter}"" title=""Pobierz rozdział w formacie PDF"" style=""color: darkred""><i class=""far fa-file-pdf fa-2x""></i></a>&nbsp;<a href=""../../api/DownloadInterlinearDocx?q={Model.Translation.Name},{chapter.ParentBook.NumberOfBook},{chapter.NumberOfChapter}"" title=""Pobierz rozdział w formacie Word""><i class=""far fa-file-word fa-2x""></i></a></div>")
 
                 @foreach (var verse in chapter.Verses) {
 
@@ -362,6 +371,7 @@ break;
                         var footnoteText = word.FootnoteText;
                         if (footnoteText.IsNotNullOrEmpty() && footnoteText.Contains("<x>")) {
                             footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                                var translationName = Model.Translation.Name.Replace("+", "");
                                 var numberOfBook = m.Groups["book"].Value.ToInt();
                                 var bookShortcut = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
                                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
@@ -373,16 +383,46 @@ break;
                                     if (i != verseEnd) { versesText += ","; }
                                 }
 
-                                return $"<a href=\"../{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
+                                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
                             });
                             footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                                var translationName = Model.Translation.Name.Replace("+", "");
                                 var numberOfBook = m.Groups["book"].Value.ToInt();
                                 var bookShortcut = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
                                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
                                 var verseStart = m.Groups["verseStart"].Value.ToInt();
 
 
-                                return $"<a href=\"../{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
+                                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
+                            });
+
+                            footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                                var translationName = m.Groups["translationName"].Value;
+                                var numberOfBook = m.Groups["book"].Value.ToInt();
+                                var baseBook = Model.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).FirstOrDefault();
+                                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : ""; //Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
+                                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                                var verseStart = m.Groups["verseStart"].Value.ToInt();
+                                var verseEnd = m.Groups["verseEnd"].Value.ToInt();
+                                var versesText = String.Empty;
+                                for (int i = verseStart; i <= verseEnd; i++) {
+                                    versesText += $"{i}";
+                                    if (i != verseEnd) { versesText += ","; }
+                                }
+
+                                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
+                            });
+
+                            footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                                var translationName = m.Groups["translationName"].Value;
+                                var numberOfBook = m.Groups["book"].Value.ToInt();
+                                var baseBook = Model.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).FirstOrDefault();
+                                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : ""; //Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
+                                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                                var verseStart = m.Groups["verseStart"].Value.ToInt();
+
+
+                                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
                             });
                         }
 
@@ -399,13 +439,14 @@ break;
                         <div class="col-auto pb-3" style="padding-left: 0 !important; @activeVerse">
                             <div class="container" style="position: relative">
                                 @if (isFirst && Model.Chapter.ToInt() > 0) {
+                                    var _top = word.GrammarCode.IsNotNull() ? "22px;" : "10px;";
                                     //
                                     // Numer wersetu
                                     //
-
-                                    <div style="position: absolute; left: -15px; top: 24px; font-weight: bold;">
+                                    var chapterNumberString = Model.Translation.ChapterRomanNumbering ? chapter.NumberOfChapter.ArabicToRoman() : chapter.NumberOfChapter.ToString();
+                                    <div style="position: absolute; left: -15px; font-weight: bold; top: @_top">
                                         <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
-                                        @verse.ParentChapter.NumberOfChapter,@verse.NumberOfVerse
+                                        @chapterNumberString,@verse.NumberOfVerse
                                     </div>
                                 }
                                 @{
@@ -456,6 +497,8 @@ break;
                         }
                     </div>
                 }
+
+                @Html.Raw(@$"<div style=""text-align: left;""><br/><a href=""../../api/DownloadInterlinearPdf?q={Model.Translation.Name},{chapter.ParentBook.NumberOfBook}"" title=""Pobierz księgę w formacie PDF"" style=""color: darkred"" class=""text-decoration-none""><i class=""far fa-file-pdf""></i> Pobierz księgę w formacie PDF</a><br/><a href=""../../api/DownloadInterlinearDocx?q={Model.Translation.Name},{chapter.ParentBook.NumberOfBook}"" title=""Pobierz księgę w formacie Word"" class=""text-decoration-none""><i class=""far fa-file-word""></i> Pobierz księgę w formacie Word</a></div>")
             }
             // ------------------------------------
             // Treści pozostałych przekładów

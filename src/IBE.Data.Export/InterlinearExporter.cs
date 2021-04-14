@@ -1,5 +1,7 @@
 ﻿using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Loading;
+using Aspose.Words.Notes;
 using Aspose.Words.Saving;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
@@ -42,20 +44,111 @@ namespace IBE.Data.Export {
             SaveBuilder(saveFormat, outputPath, builder);
         }
 
-        public void Export(Book book, ExportSaveFormat saveFormat, string outputPath) {
+        public void Export(Book book, ExportSaveFormat saveFormat, string outputPath, bool addFooter = true, bool addBookAndHeader = true) {
             if (book.IsNull()) { throw new ArgumentNullException("book"); }
             if (outputPath.IsNullOrEmpty()) { throw new ArgumentNullException("outputPath"); }
 
             if (book.ParentTranslation.Type != TranslationType.Interlinear) { throw new Exception("Wrong translation type!"); }
 
             var builder = GetDocumentBuilder();
+
+            ExportBookName(book, builder);
+
+            var chapters = book.Chapters.Where(x => x.IsTranslated).OrderBy(x => x.NumberOfChapter).ToArray();
+            foreach (var chapter in chapters) {
+                //builder.MoveToDocumentEnd();
+
+                if (chapter == chapters.First()) { builder.InsertParagraph(); }
+
+                ExportChapterNumber(chapter, builder, false);
+
+                var par = builder.InsertParagraph();
+                par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+
+                foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
+                    ExportVerse(item, ref par, builder);
+                }
+
+                if (chapters.Last() == chapter && addFooter) { WriteFooter(book.ParentTranslation, par, builder); }
+                else {
+                    builder.MoveTo(par);
+                    //builder.InsertBreak(BreakType.SectionBreakContinuous);
+                }
+            }
+
+            if (addBookAndHeader) {
+                builder.MoveToDocumentEnd();
+                AddBookHeaderAndFooter(book, builder);
+            }
+
+            builder.MoveToDocumentEnd();
+
             SaveBuilder(saveFormat, outputPath, builder);
         }
 
-        public void Export(Chapter chapter, ExportSaveFormat saveFormat, string outputPath) {
+        public byte[] Export(Book book, ExportSaveFormat saveFormat, bool addFooter = true, bool addBookAndHeader = true) {
+            if (book.IsNull()) { throw new ArgumentNullException("book"); }
+
+            if (book.ParentTranslation.Type != TranslationType.Interlinear) { throw new Exception("Wrong translation type!"); }
+
+            var builder = GetDocumentBuilder();
+
+            ExportBookName(book, builder);
+
+            var chapters = book.Chapters.Where(x => x.IsTranslated).OrderBy(x => x.NumberOfChapter).ToArray();
+            foreach (var chapter in chapters) {
+                //if (chapter == chapters.First()) { builder.InsertParagraph(); }
+
+                ExportChapterNumber(chapter, builder, false);
+
+                var par = builder.InsertParagraph();
+                par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+
+                foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
+                    ExportVerse(item, ref par, builder);
+                }
+
+                if (chapters.Last() == chapter && addFooter) { WriteFooter(book.ParentTranslation, par, builder); }
+                else {
+                    builder.MoveTo(par);
+                }
+            }
+
+            if (addBookAndHeader) {
+                builder.MoveToDocumentEnd();
+                AddBookHeaderAndFooter(book, builder);
+            }
+
+            builder.MoveToDocumentEnd();
+
+            return SaveBuilder(saveFormat, builder);
+        }
+
+        public void Export(Chapter chapter, ExportSaveFormat saveFormat, string outputPath, bool addFooter = true, bool addChapterHeaderAndFooter = true) {
             if (chapter.IsNull()) { throw new ArgumentNullException("chapter"); }
             if (outputPath.IsNullOrEmpty()) { throw new ArgumentNullException("outputPath"); }
 
+            if (chapter.ParentTranslation.Type != TranslationType.Interlinear) { throw new Exception("Wrong translation type!"); }
+
+            var builder = GetDocumentBuilder();
+
+            ExportChapterNumber(chapter, builder, true);
+
+            var par = builder.InsertParagraph();
+            par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+
+            foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
+                ExportVerse(item, ref par, builder);
+            }
+
+            if (addFooter) WriteFooter(chapter.ParentTranslation, par, builder);
+            if (addChapterHeaderAndFooter) AddChapterHeaderAndFooter(chapter, builder);
+
+            SaveBuilder(saveFormat, outputPath, builder);
+        }
+
+        public byte[] Export(Chapter chapter, ExportSaveFormat saveFormat, bool addFooter = true, bool addChapterHeaderAndFooter = true) {
+            if (chapter.IsNull()) { throw new ArgumentNullException("chapter"); }
             if (chapter.ParentTranslation.Type != TranslationType.Interlinear) { throw new Exception("Wrong translation type!"); }
 
             var builder = GetDocumentBuilder();
@@ -63,16 +156,31 @@ namespace IBE.Data.Export {
             var par = builder.InsertParagraph();
             par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
             foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
-                ExportVerse(item, par, builder);
+                ExportVerse(item, ref par, builder);
             }
 
-            WriteFooter(chapter.ParentTranslation, par, builder);
-            AddChapterHeaderAndFooter(chapter, builder);
+            if (addFooter) WriteFooter(chapter.ParentTranslation, par, builder);
+            if (addChapterHeaderAndFooter) AddChapterHeaderAndFooter(chapter, builder);
 
-            SaveBuilder(saveFormat, outputPath, builder);
+            return SaveBuilder(saveFormat, builder);
         }
 
-        private static void AddChapterHeaderAndFooter(Chapter chapter, DocumentBuilder builder) {
+        private void AddBookHeaderAndFooter(Book book, DocumentBuilder builder) {
+            var bookTitle = book.BaseBook.BookTitle;
+            var translationName = book.ParentTranslation.Description;
+
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.InsertHtml($"<div style=\"font-size: 9; text-align: left; width: 100%; border-bottom: solid 1px darkgray;\">{translationName}<br/>{bookTitle}</div>");
+
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Right;
+            builder.Font.Size = 9;
+            builder.Write("Strona ");
+            builder.InsertField("PAGE", null);
+            builder.Write(" z ");
+            builder.InsertField("NUMPAGES", null);
+        }
+        private void AddChapterHeaderAndFooter(Chapter chapter, DocumentBuilder builder) {
             var chapterString = chapter.ParentBook.NumberOfBook == 230 ? chapter.ParentTranslation.ChapterPsalmString : chapter.ParentTranslation.ChapterString;
             var chapterNumber = chapter.ParentTranslation.ChapterRomanNumbering ? chapter.NumberOfChapter.ArabicToRoman() : chapter.NumberOfChapter.ToString();
             var bookTitle = chapter.ParentBook.BaseBook.BookTitle;
@@ -89,69 +197,76 @@ namespace IBE.Data.Export {
             builder.Write(" z ");
             builder.InsertField("NUMPAGES", null);
         }
-
-        public byte[] Export(Chapter chapter, ExportSaveFormat saveFormat) {
-            if (chapter.IsNull()) { throw new ArgumentNullException("chapter"); }
-            if (chapter.ParentTranslation.Type != TranslationType.Interlinear) { throw new Exception("Wrong translation type!"); }
-
-            var builder = GetDocumentBuilder();
-            ExportChapterNumber(chapter, builder, true);
-            var par = builder.InsertParagraph();
-            par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
-            foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
-                ExportVerse(item, par, builder);
-            }
-
-            WriteFooter(chapter.ParentTranslation, par, builder);
-            AddChapterHeaderAndFooter(chapter, builder);
-
-            return SaveBuilder(saveFormat, builder);
-        }
-
         private void WriteFooter(Translation translation, Paragraph par, DocumentBuilder builder) {
-            builder.MoveTo(par);
+            if (par.IsNotNull()) builder.MoveTo(par);
 
             builder.InsertParagraph();
 
-            builder.InsertHtml($"<div style=\"font-size: 11; text-align: left;\">{translation.DetailedInfo}</div>");           
+            builder.InsertHtml($"<div style=\"font-size: 11; text-align: left;\">{translation.DetailedInfo}</div>");
         }
-
-        private void ExportChapterNumber(Chapter chapter, DocumentBuilder builder, bool withBookName = false) {
-            builder.MoveToDocumentEnd();
-
-            if (withBookName) {
-                builder.Font.Size = 16;
-                builder.Font.Bold = true;
-                builder.Font.Color = Color.Black;
-                builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-                builder.CurrentParagraph.ParagraphFormat.LineSpacing = 18;
-
-                builder.Write(chapter.ParentBook.BaseBook.BookTitle);
-            }
-
-            builder.InsertParagraph();
-
-            builder.Font.Size = 14;
+        private void ExportBookName(Book book, DocumentBuilder builder) {
+            builder.Font.Size = 16;
             builder.Font.Bold = true;
             builder.Font.Color = Color.Black;
             builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Center;
             builder.CurrentParagraph.ParagraphFormat.LineSpacing = 18;
 
-            var chapterString = chapter.ParentBook.NumberOfBook == 230 ? chapter.ParentTranslation.ChapterPsalmString : chapter.ParentTranslation.ChapterString;
-            var chapterNumber = chapter.ParentTranslation.ChapterRomanNumbering ? chapter.NumberOfChapter.ArabicToRoman() : chapter.NumberOfChapter.ToString();
-            builder.Write($"{chapterString} {chapterNumber}");
+            builder.Write(book.BaseBook.BookTitle);
         }
+        private void ExportChapterNumber(Chapter chapter, DocumentBuilder builder, bool withBookName = false) {
+            if (withBookName) {
+                ExportBookName(chapter.ParentBook, builder);
+            }
+            var par = builder.InsertParagraph();
+            par.ParagraphFormat.KeepWithNext = true;
 
-        private void ExportVerse(Verse verse, Paragraph par, DocumentBuilder builder) {
-            // try GroupShape https://apireference.aspose.com/words/net/aspose.words.drawing/groupshape
-            ExportVerseNumber(verse, par, builder);
+            builder.Font.Size = 14;
+            builder.Font.Bold = true;
+            builder.Font.Color = Color.Black;
+            builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            // builder.CurrentParagraph.ParagraphFormat.LineSpacing = 18;
+
+            if (chapter.NumberOfChapter > 0) {
+                var chapterString = chapter.ParentBook.NumberOfBook == 230 ? chapter.ParentTranslation.ChapterPsalmString : chapter.ParentTranslation.ChapterString;
+                var chapterNumber = chapter.ParentTranslation.ChapterRomanNumbering ? chapter.NumberOfChapter.ArabicToRoman() : chapter.NumberOfChapter.ToString();
+                builder.Write($"{chapterString} {chapterNumber}".Trim());
+            }
+            else {
+                builder.Write($"Prolog");
+            }
+        }
+        private void ExportVerse(Verse verse, ref Paragraph par, DocumentBuilder builder) {
+            if (verse.ParentChapter.Subtitles.Count > 0) {
+                var subtitles = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse);
+                if (subtitles.Any()) {
+                    var _par = builder.InsertParagraph(); //builder.CurrentParagraph;
+                    _par.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+                    _par.ParagraphFormat.KeepWithNext = true;
+                    foreach (var subtitle in subtitles) {
+                        var run = new Run(builder.Document) {
+                            Text = subtitle.Text
+                        };
+                        run.Font.Bold = true;
+
+                        _par.AppendChild(run);
+                    }
+
+                    par = builder.InsertParagraph();
+                    par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+                    builder.MoveTo(par);
+                }
+            }
+
+            if (verse.ParentChapter.NumberOfChapter != 0) { ExportVerseNumber(verse, par, builder); }
             foreach (var item in verse.VerseWords.OrderBy(x => x.NumberOfVerseWord)) {
                 ExportVerseWord(item, par, builder);
             }
-        }
 
+            builder.MoveTo(par);
+        }
         private void ExportVerseNumber(Verse verse, Paragraph par, DocumentBuilder builder) {
-            var text = $"{verse.ParentChapter.NumberOfChapter},{verse.NumberOfVerse}";
+            var chapterNumber = verse.ParentTranslation.ChapterRomanNumbering ? verse.ParentChapter.NumberOfChapter.ArabicToRoman() : verse.ParentChapter.NumberOfChapter.ToString();
+            var text = $"{chapterNumber},{verse.NumberOfVerse}";
             var shape = new Shape(par.Document, ShapeType.TextBox) {
                 Width = 30,
                 Height = 80,
@@ -176,9 +291,9 @@ namespace IBE.Data.Export {
             par.AppendChild(shape);
             shape.Width = GetMaxTextSize(text, font11bold) * 1.2F;
         }
-
         private void ExportVerseWord(VerseWord word, Paragraph par, DocumentBuilder builder) {
-            var shape = new Shape(par.Document, ShapeType.TextBox) {
+            var doc = par.Document;
+            var shape = new Shape(doc, ShapeType.TextBox) {
                 Width = 50,
                 Height = 80,
                 BehindText = false,
@@ -188,7 +303,7 @@ namespace IBE.Data.Export {
             shape.TextBox.FitShapeToText = true;
             shape.TextBox.TextBoxWrapMode = TextBoxWrapMode.Square;
 
-            var shapePar = new Paragraph(par.Document);
+            var shapePar = new Paragraph(doc);
             shape.AppendChild(shapePar);
 
             builder.MoveTo(shape.FirstParagraph);
@@ -196,27 +311,27 @@ namespace IBE.Data.Export {
             if (word.ParentVerse.ParentChapter.ParentBook.ParentTranslation.WithStrongs) {
                 builder.Font.Size = 6;
                 builder.Font.Bold = false;
-                builder.Font.Color = Color.Black;
+                builder.Font.Color = Color.DarkBlue;
                 if (word.StrongCode.IsNotNull()) { builder.Write(word.StrongCode.Topic); } else { builder.Write("–"); }
                 builder.InsertBreak(BreakType.LineBreak);
             }
             if (word.ParentVerse.ParentChapter.ParentBook.ParentTranslation.WithGrammarCodes) {
                 builder.Font.Size = 6;
                 builder.Font.Bold = false;
-                builder.Font.Color = Color.Black;
+                builder.Font.Color = Color.DarkBlue;
                 if (word.GrammarCode.IsNotNull()) { builder.Write(word.GrammarCode.GrammarCodeVariant1); } else { builder.Write("–"); }
                 builder.InsertBreak(BreakType.LineBreak);
             }
 
             builder.Font.Size = 10;
             builder.Font.Bold = false;
-            builder.Font.Color = Color.Black;
+            builder.Font.Color = Color.DarkGreen;
             builder.Write(word.SourceWord);
             builder.InsertBreak(BreakType.LineBreak);
 
             builder.Font.Size = 9;
             builder.Font.Bold = false;
-            builder.Font.Color = Color.Black;
+            builder.Font.Color = Color.MidnightBlue;
             builder.Write(word.Transliteration);
             builder.InsertBreak(BreakType.LineBreak);
 
@@ -273,10 +388,15 @@ namespace IBE.Data.Export {
                     });
 
                     builder.MoveTo(par);
+                                        
                     var footnote = builder.InsertFootnote(FootnoteType.Footnote, "");
                     footnote.Font.Position = 11;
+                    footnote.Font.Color = Color.Blue;
+                    footnote.Font.Bold = false;
+
                     builder.MoveTo(footnote.LastParagraph);
-                    builder.InsertHtml($"<span style=\"font-size: 10pt;\"> {footnoteText}</span>");
+                    builder.InsertHtml($"<sup style=\"font-size: 8pt;\">)</sup>&nbsp;<span style=\"font-size: 10pt;\">{footnoteText}</span>");
+                    builder.MoveTo(par);
                 }
             }
         }

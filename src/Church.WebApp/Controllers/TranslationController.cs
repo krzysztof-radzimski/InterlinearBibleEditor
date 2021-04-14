@@ -30,32 +30,37 @@ namespace Church.WebApp.Controllers {
         // "{translationName}/{book?}/{chapter?}/{verse?}"
         public IActionResult Index(string translationName, string book = null, string chapter = null, string verse = null) {
             if (!String.IsNullOrEmpty(translationName)) {
+                var uow = new UnitOfWork();
+                var books = new XPQuery<BookBase>(uow).ToList();
+
                 // wyświetlamy listę ksiąg z tego przekładu
                 if (String.IsNullOrEmpty(book)) {
-                    var translation = new XPQuery<Translation>(new UnitOfWork()).Where(x => x.Name.Replace("'", "").Replace("+", "") == translationName).FirstOrDefault();
+                    var translation = new XPQuery<Translation>(uow).Where(x => x.Name.Replace("'", "").Replace("+", "") == translationName).FirstOrDefault();
                     if (translation != null) {
-                        return View(new TranslationControllerModel(translation));
+                        return View(new TranslationControllerModel(translation, books: books));
                     }
                 }
                 else {
-                    var translation = new XPQuery<Translation>(new UnitOfWork()).Where(x => x.Name.Replace("'", "").Replace("+", "") == translationName).FirstOrDefault();
+                    var translation = new XPQuery<Translation>(uow).Where(x => x.Name.Replace("'", "").Replace("+", "") == translationName).FirstOrDefault();
                     if (translation != null) {
-                        var result = new TranslationControllerModel(translation, book, chapter, verse);
+                        var result = new TranslationControllerModel(translation, book, chapter, verse, books);
 
-                        var view = new XPView(new UnitOfWork(), typeof(Translation));
+                        var view = new XPView(uow, typeof(Translation));
                         view.CriteriaString = $"[Books][[NumberOfBook] = '{book}']";
                         view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
                         view.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
                         view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
                         view.Properties.Add(new ViewProperty("Catholic", SortDirection.None, "[Catolic]", false, true));
                         view.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
+                        view.Properties.Add(new ViewProperty("OpenAccess", SortDirection.None, "[OpenAccess]", false, true));
                         foreach (ViewRecord item in view) {
                             result.Translations.Add(new TranslationInfo() {
                                 Name = item["Name"].ToString(),
                                 Description = item["Description"].ToString(),
                                 TranslationType = ((TranslationType)item["Type"]).GetDescription(),
                                 Catholic = (bool)item["Catholic"],
-                                Recommended = (bool)item["Recommended"]
+                                Recommended = (bool)item["Recommended"],
+                                PasswordRequired = !((bool)item["OpenAccess"])
                             });
                         }
 
@@ -70,16 +75,18 @@ namespace Church.WebApp.Controllers {
 
     public class TranslationControllerModel {
         public Translation Translation { get; }
+        public List<BookBase> Books { get; }
         public string Book { get; }
         public string Chapter { get; }
         public string Verse { get; }
         public List<TranslationInfo> Translations { get; }
-        public TranslationControllerModel(Translation t, string b = null, string c = null, string v = null) {
+        public TranslationControllerModel(Translation t, string b = null, string c = null, string v = null, List<BookBase> books = null) {
             Translation = t;
             Book = b;
             Chapter = c;
             Verse = v;
             Translations = new List<TranslationInfo>();
+            Books = books;
         }
     }
     public class TranslationInfo {
@@ -88,5 +95,6 @@ namespace Church.WebApp.Controllers {
         public string TranslationType { get; set; }
         public bool Catholic { get; set; }
         public bool Recommended { get; set; }
+        public bool PasswordRequired { get; set; }
     }
 }
