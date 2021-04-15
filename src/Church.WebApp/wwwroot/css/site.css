@@ -1,7 +1,11 @@
 ﻿.bible-content {
-    background-image: url(../img/banner-top.jpg);
+    background-image: url(../img/reading-bible.jpg);
     background-repeat: no-repeat;
-    background-position: center top;
+    background-position: center top;    
+}
+
+.list-group-item {
+background-color: transparent !important;
 }
 
 .pill-white {
@@ -13,8 +17,7 @@
 }
 
 .story {
-    min-width: 90%;
-    background-color: white;
+    min-width: 90%;    
     background-image: url(../img/hr.png);
     background-position: center bottom;
     background-repeat: no-repeat;
@@ -35,6 +38,14 @@
 
 .max-width-800 {
     max-width: 800px;
+    margin: auto;
+}
+.max-width-900 {
+    max-width: 900px;
+    margin: auto;
+}
+.max-width-1000 {
+    max-width: 1000px;
     margin: auto;
 }
 
