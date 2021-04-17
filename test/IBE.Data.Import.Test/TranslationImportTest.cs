@@ -5,6 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace IBE.Data.Import.Test {
     [TestClass]
@@ -90,7 +93,7 @@ namespace IBE.Data.Import.Test {
             var uow = new UnitOfWork();
 
             var trans = new XPQuery<Translation>(uow).Where(x => x.Name == "IPD+").FirstOrDefault();
-            var book = trans.Books.FirstOrDefault();          
+            var book = trans.Books.FirstOrDefault();
 
             var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".pdf");
             var licPath = @"..\..\..\..\..\..\Aspose.Total.lic";
@@ -132,7 +135,7 @@ namespace IBE.Data.Import.Test {
             var wordsWithoutStrongCode = new XPQuery<VerseWord>(uow)
                     .Where(x => x.StrongCode == null && x.ParentVerse.ParentChapter.ParentBook.ParentTranslation.Name == "IPD+")
                     .ToArray();
-            
+
             var wordsWithoutStrongCodeCount = wordsWithoutStrongCode.Length;
 
             var wordsWithStrongCode = new XPQuery<VerseWord>(uow)
@@ -164,6 +167,54 @@ namespace IBE.Data.Import.Test {
             //}
 
             uow.CommitChanges();
+        }
+
+        [TestMethod]
+        public void CreateCitationFile() {
+            var builder = new StringBuilder();
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            var trans = new XPQuery<Translation>(uow).Where(x => x.Name == "NPI+").FirstOrDefault();
+
+            var csv = Properties.Resources.Cytaty_z_G_w_NT.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var row in csv) {
+                var cells = row.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+                var xs = cells[2].Trim();
+                if (xs.Contains("Ml")) 
+                    { 
+                
+                }
+                var pattern = @"(?<abb>([0-9])?(\s)?\w+)\s(?<chapter>[0-9]+)\:(?<verse>[0-9]+)";
+                if (Regex.IsMatch(xs, pattern)) {
+                    var match = Regex.Match(xs, pattern);
+                    var abb = match.Groups["abb"].Value;
+                    var chap = match.Groups["chapter"].Value;
+                    var ver = match.Groups["verse"].Value;
+
+
+                    var book = trans.Books.Where(x => x.BaseBook.BookShortcut == abb || x.BaseBook.BookShortcut.Replace(" ","") == abb).FirstOrDefault();
+                    if (book.IsNotNull()) {
+                        var chapter = book.Chapters.Where(x => x.NumberOfChapter == chap.ToInt()).FirstOrDefault();
+                        if (chapter.IsNotNull()) {
+                            var verse = chapter.Verses.Where(x => x.NumberOfVerse == ver.ToInt()).FirstOrDefault();
+                            if (verse.IsNotNull()) {
+                                var sourceText = verse.GetSourceText();
+                                builder.AppendLine($"{cells[0].Trim()};{cells[1].Trim()};{cells[2].Trim()};{sourceText.Replace(";", ".")}");
+                            }
+                            else {
+                                builder.AppendLine($"{cells[0].Trim()};{cells[1].Trim()};{cells[2].Trim()}; ");
+                            }
+                        }
+                    }
+                }
+            }
+
+            using (var dlg = new SaveFileDialog() { Filter = "CSV file (*.csv)|*.csv" }) {
+                if (dlg.ShowDialog() == DialogResult.OK) {
+                    if (File.Exists(dlg.FileName)) { File.Delete(dlg.FileName); }
+                    File.WriteAllText(dlg.FileName, builder.ToString(), Encoding.UTF8);
+                }
+            }
         }
     }
 }

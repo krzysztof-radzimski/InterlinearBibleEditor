@@ -133,5 +133,18 @@ namespace IBE.WindowsClient.Controls {
                 }
             }
         }
+
+        private void lblGrammarCode_DoubleClick(object sender, EventArgs e) {
+            if (Word.GrammarCode.IsNotNull()) {
+                var grammarCode = XtraInputBox.Show("Insert grammar's code:", "Grammar Codes", lblGrammarCode.Text);
+                if (grammarCode.IsNotNullOrEmpty()) {
+                    var gc = new XPQuery<GrammarCode>(Word.Session).Where(x => x.GrammarCodeVariant1 == grammarCode).FirstOrDefault();
+                    if (gc.IsNotNull()) {
+                        Word.GrammarCode = gc;
+                        (Word.Session as UnitOfWork).CommitChanges();
+                    }
+                }
+            }
+        }
     }
 }

@@ -71,6 +71,182 @@ namespace Church.WebApp.Controllers {
 
             return View();
         }
+
+        public static string GetInternalVerseRangeHtml(string input, TranslationControllerModel model) {
+            input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                var translationName = model.Translation.Name.Replace("+", "");
+                var numberOfBook = m.Groups["book"].Value.ToInt();
+                var bookShortcut = model.Translation.Books.Where(x => x.NumberOfBook == numberOfBook).First().BaseBook.BookShortcut;
+                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                var verseStart = m.Groups["verseStart"].Value.ToInt();
+                var verseEnd = m.Groups["verseEnd"].Value.ToInt();
+                var versesText = String.Empty;
+                for (int i = verseStart; i <= verseEnd; i++) {
+                    versesText += $"{i}";
+                    if (i != verseEnd) { versesText += ","; }
+                }
+
+                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
+            });
+            return input;
+        }
+        public static string GetInternalVerseRangeText(string input, TranslationControllerModel model) {
+            input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                var translationName = model.Translation.Name.Replace("+", "");
+                var numberOfBook = m.Groups["book"].Value.ToInt();
+                var bookShortcut = model.Translation.Books.Where(x => x.NumberOfBook == numberOfBook).First().BaseBook.BookShortcut;
+                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                var verseStart = m.Groups["verseStart"].Value.ToInt();
+                var verseEnd = m.Groups["verseEnd"].Value.ToInt();
+                
+                return $"{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}";
+            });
+            return input;
+        }
+
+
+        public static string GetInternalVerseHtml(string input, TranslationControllerModel model) {
+            input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                var translationName = model.Translation.Name.Replace("+", "");
+                var numberOfBook = m.Groups["book"].Value.ToInt();
+                var bookShortcut = model.Translation.Books.Where(x => x.NumberOfBook == numberOfBook).First().BaseBook.BookShortcut;
+                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                var verseStart = m.Groups["verseStart"].Value.ToInt();
+
+
+                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
+            });
+            return input;
+        }
+        public static string GetInternalVerseText(string input, TranslationControllerModel model) {
+            input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                var numberOfBook = m.Groups["book"].Value.ToInt();
+                var bookShortcut = model.Translation.Books.Where(x => x.NumberOfBook == numberOfBook).First().BaseBook.BookShortcut;
+                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                var verseStart = m.Groups["verseStart"].Value.ToInt();
+
+                return $"{bookShortcut} {numberOfChapter}:{verseStart}";
+            });
+            return input;
+        }
+
+        public static string GetExternalVerseRangeHtml(string input, TranslationControllerModel model) {
+            input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                var translationName = m.Groups["translationName"].Value;
+                var numberOfBook = m.Groups["book"].Value.ToInt();
+                var baseBook = model.Books.Where(x => x.NumberOfBook == numberOfBook).FirstOrDefault();
+                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : ""; 
+                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                var verseStart = m.Groups["verseStart"].Value.ToInt();
+                var verseEnd = m.Groups["verseEnd"].Value.ToInt();
+                var versesText = String.Empty;
+                for (int i = verseStart; i <= verseEnd; i++) {
+                    versesText += $"{i}";
+                    if (i != verseEnd) { versesText += ","; }
+                }
+
+                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
+            });
+            return input;
+        }
+        public static string GetExternalVerseRangeText(string input, TranslationControllerModel model) {
+            input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                var numberOfBook = m.Groups["book"].Value.ToInt();
+                var baseBook = model.Books.Where(x => x.NumberOfBook == numberOfBook).FirstOrDefault();
+                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : ""; 
+                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                var verseStart = m.Groups["verseStart"].Value.ToInt();
+                var verseEnd = m.Groups["verseEnd"].Value.ToInt();
+            
+                return $"{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}";
+            });
+            return input;
+        }
+
+        public static string GetExternalVerseHtml(string input, TranslationControllerModel model) {
+            input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                var translationName = m.Groups["translationName"].Value;
+                var numberOfBook = m.Groups["book"].Value.ToInt();
+                var baseBook = model.Books.Where(x => x.NumberOfBook == numberOfBook).FirstOrDefault();
+                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : ""; 
+                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                var verseStart = m.Groups["verseStart"].Value.ToInt();
+
+
+                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
+            });
+            return input;
+        }
+        public static string GetExternalVerseText(string input, TranslationControllerModel model) {
+            input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                var translationName = m.Groups["translationName"].Value;
+                var numberOfBook = m.Groups["book"].Value.ToInt();
+                var baseBook = model.Books.Where(x => x.NumberOfBook == numberOfBook).FirstOrDefault();
+                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : "";
+                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                var verseStart = m.Groups["verseStart"].Value.ToInt();
+
+                return $"{bookShortcut} {numberOfChapter}:{verseStart}";
+            });
+            return input;
+        }
+
+        /*
+                            footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                                var translationName = Model.Translation.Name.Replace("+", "");
+                                var numberOfBook = m.Groups["book"].Value.ToInt();
+                                var bookShortcut = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
+                                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                                var verseStart = m.Groups["verseStart"].Value.ToInt();
+                                var verseEnd = m.Groups["verseEnd"].Value.ToInt();
+                                var versesText = String.Empty;
+                                for (int i = verseStart; i <= verseEnd; i++) {
+                                    versesText += $"{i}";
+                                    if (i != verseEnd) { versesText += ","; }
+                                }
+
+                                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
+                            });
+                            footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                                var translationName = Model.Translation.Name.Replace("+", "");
+                                var numberOfBook = m.Groups["book"].Value.ToInt();
+                                var bookShortcut = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
+                                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                                var verseStart = m.Groups["verseStart"].Value.ToInt();
+
+
+                                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
+                            });
+
+                            footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                                var translationName = m.Groups["translationName"].Value;
+                                var numberOfBook = m.Groups["book"].Value.ToInt();
+                                var baseBook = Model.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).FirstOrDefault();
+                                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : ""; //Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
+                                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                                var verseStart = m.Groups["verseStart"].Value.ToInt();
+                                var verseEnd = m.Groups["verseEnd"].Value.ToInt();
+                                var versesText = String.Empty;
+                                for (int i = verseStart; i <= verseEnd; i++) {
+                                    versesText += $"{i}";
+                                    if (i != verseEnd) { versesText += ","; }
+                                }
+
+                                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
+                            });
+
+                            footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
+                                var translationName = m.Groups["translationName"].Value;
+                                var numberOfBook = m.Groups["book"].Value.ToInt();
+                                var baseBook = Model.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).FirstOrDefault();
+                                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : ""; //Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
+                                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+                                var verseStart = m.Groups["verseStart"].Value.ToInt();
+
+
+                                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
+                            });         
+         */
     }
 
     public class TranslationControllerModel {

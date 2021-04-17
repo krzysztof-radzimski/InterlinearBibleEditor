@@ -261,6 +261,7 @@ namespace IBE.WindowsClient.Controls {
             this.lblGrammarCode.TabIndex = 3;
             this.lblGrammarCode.Text = "none";
             this.lblGrammarCode.Click += new System.EventHandler(this.lblGrammarCode_Click);
+            this.lblGrammarCode.DoubleClick += new System.EventHandler(this.lblGrammarCode_DoubleClick);
             // 
             // lblTransliteration
             // 
