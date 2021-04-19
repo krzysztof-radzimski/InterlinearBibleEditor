@@ -20,7 +20,7 @@ else if (String.IsNullOrEmpty(Model.Book)) {
 
         @switch (Model.Translation.Type) {
             case IBE.Data.Model.TranslationType.Dynamic: {
-            @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"">Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie</div>")
+            @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">Przekład dynamiczny</div>")
             break;
         }
     case IBE.Data.Model.TranslationType.Literal: {
@@ -65,16 +65,37 @@ break;
     </div>
 
     @if (Model.Translation.Introduction.IsNotNullOrEmpty()) {
-        <div class="lh-lg fs-6 max-width-800" style="text-align: justify;">
+<div class="lh-lg fs-6 max-width-800" style="text-align: justify;">
 
-            <br />
-            <h4 class="text-center">Wprowadzenie</h4>
-            @{var textIntroduction = System.Text.RegularExpressions.Regex.Replace(Model.Translation.Introduction, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                    return " " + m.Value.Trim() + "&nbsp;";
-                }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    <br />
+    <h4 class="text-center">Wprowadzenie</h4>
+    @{var textIntroduction = System.Text.RegularExpressions.Regex.Replace(Model.Translation.Introduction, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+            return " " + m.Value.Trim() + "&nbsp;";
+        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    }
+    @Html.Raw(textIntroduction)
+
+    @if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
+        var translatedBooksText = @"<h4 class=""text-center"">Status tłumaczenia</h4><p>Przekład zawiera tłumaczenie:<br/>";
+        foreach (var tBook in Model.Translation.Books) {
+            if (tBook.IsTranslated) {
+                var chapterFrom = tBook.Chapters.Where(x => x.IsTranslated).Select(x => x.NumberOfChapter).Min().ToString();
+                if (chapterFrom == "0") { chapterFrom = "prologu"; }
+                var chapterTo = tBook.Chapters.Where(x => x.IsTranslated).Select(x => x.NumberOfChapter).Max();
+                if (chapterFrom == "1" && chapterTo == 1) {
+                    translatedBooksText += $" - <i>{tBook.BaseBook.BookTitle}</i><br />";
+                }
+                else {
+                    translatedBooksText += $" - <i>{tBook.BaseBook.BookTitle}</i> rozdziały od {chapterFrom} do {chapterTo}<br />";
+                }
             }
-            @Html.Raw(textIntroduction)
-        </div>
+        }
+        translatedBooksText += "</p>";
+
+        @Html.Raw(translatedBooksText)
+    }
+
+</div>
     }
 
     <div class="lh-lg fs-6 max-width-800" style="text-align: justify;">
@@ -88,9 +109,12 @@ break;
             @Html.Raw(textDetailedInfo)
 
         }
-        <p>
-            * Prezentowane treści należą do ich właścicieli i&nbsp;wydawców. Tekst pobrany z&nbsp;udostępnionych zasobów programu <a href="https://mybible.zone/">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a>
-        </p>
+
+        @if (Model.Translation.Type != IBE.Data.Model.TranslationType.Interlinear) {
+
+            <p>* Prezentowane treści należą do ich właścicieli i&nbsp;wydawców. Tekst pobrany z&nbsp;udostępnionych zasobów programu <a href="https://mybible.zone/">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a></p>
+
+        }
     </div>
 }
 else {
@@ -106,7 +130,7 @@ else {
 
             @switch (Model.Translation.Type) {
                 case IBE.Data.Model.TranslationType.Dynamic: {
-                @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"">Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie</div>")
+                @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">Przekład dynamiczny</div>")
                 break;
             }
         case IBE.Data.Model.TranslationType.Literal: {
