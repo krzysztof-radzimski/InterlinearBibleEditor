@@ -254,7 +254,7 @@ namespace EIB.CommentaryEditor.Controls {
             this.grid.Location = new System.Drawing.Point(0, 0);
             this.grid.MainView = this.view;
             this.grid.Name = "grid";
-            this.grid.Size = new System.Drawing.Size(196, 666);
+            this.grid.Size = new System.Drawing.Size(120, 666);
             this.grid.TabIndex = 0;
             this.grid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.view});
@@ -289,10 +289,10 @@ namespace EIB.CommentaryEditor.Controls {
             this.editor.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.editor.Enabled = false;
-            this.editor.Location = new System.Drawing.Point(196, 124);
+            this.editor.Location = new System.Drawing.Point(120, 124);
             this.editor.MenuManager = this.ribbonControl;
             this.editor.Name = "editor";
-            this.editor.Size = new System.Drawing.Size(977, 706);
+            this.editor.Size = new System.Drawing.Size(1053, 706);
             this.editor.TabIndex = 1;
             // 
             // ribbonControl
@@ -921,6 +921,7 @@ namespace EIB.CommentaryEditor.Controls {
             this.lbl.Id = 69;
             this.lbl.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("lbl.ImageOptions.SvgImage")));
             this.lbl.Name = "lbl";
+            this.lbl.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
             // 
             // insertPageBreakItem21
             // 
@@ -1910,9 +1911,9 @@ namespace EIB.CommentaryEditor.Controls {
             this.tabPane1.Name = "tabPane1";
             this.tabPane1.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tab1});
-            this.tabPane1.RegularSize = new System.Drawing.Size(196, 706);
+            this.tabPane1.RegularSize = new System.Drawing.Size(120, 706);
             this.tabPane1.SelectedPage = this.tab1;
-            this.tabPane1.Size = new System.Drawing.Size(196, 706);
+            this.tabPane1.Size = new System.Drawing.Size(120, 706);
             this.tabPane1.TabIndex = 3;
             this.tabPane1.Text = "tabPane1";
             // 
@@ -1922,7 +1923,7 @@ namespace EIB.CommentaryEditor.Controls {
             this.tab1.Controls.Add(this.grid);
             this.tab1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tab1.ImageOptions.SvgImage")));
             this.tab1.Name = "tab1";
-            this.tab1.Size = new System.Drawing.Size(196, 666);
+            this.tab1.Size = new System.Drawing.Size(120, 666);
             // 
             // CommentaryControl
             // 

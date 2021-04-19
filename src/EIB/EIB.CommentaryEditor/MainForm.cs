@@ -139,6 +139,7 @@ namespace EIB.CommentaryEditor {
             var rangeEndIndex = -1;
 
             var chapter = 0;
+            var chapter2 = 0;
 
             var verseRanges = new List<VerseRange>();
             for (int i = 0; i < 5; i++) {
@@ -158,7 +159,7 @@ namespace EIB.CommentaryEditor {
                         if (text.ToLower().StartsWith("wstęp ")) {
                             rangeStartIndex = par.Range.Start.ToInt();
                         }
-                        else if (rangeStartIndex != -1 && (text.ToLower().StartsWith("list ") || text.ToLower().StartsWith("ewangelia ") || text.ToLower().StartsWith("Dzieje "))) {
+                        else if (rangeStartIndex != -1 && (text.ToLower().StartsWith("list ") || text.ToLower().StartsWith("ewangelia ") || text.ToLower().StartsWith("dzieje "))) {
                             rangeEndIndex = par.Range.Start.ToInt() - 1;
                             Commentary.Items.Add(new CommentaryItem(uow) {
                                 Book = book.NumberOfBook,
@@ -178,7 +179,7 @@ namespace EIB.CommentaryEditor {
                     else if (par.Style.Name == "heading 3") {
 
                         var patternBase = @"\((?<chapter>[0-9]+)(\,)?";
-                        var patternRange = @"((?<verseBegin{0}>[0-9]+)(\-(?<verseEnd{0}>[0-9]+))?(\.)?)";
+                        var patternRange = @"((?<verseBegin{0}>[0-9]+)([a-z])?(\-(?<verseEnd{0}>[0-9]+)([a-z])?)?(\.)?)";
 
                         var pattern = patternBase;
                         for (int i = 0; i < 5; i++) {
@@ -187,11 +188,28 @@ namespace EIB.CommentaryEditor {
                         }
                         pattern += @"\)";
 
+                        if (text.Contains(";")) {
+                            pattern = @"\((?<chapter1>[0-9]+)\,(?<verse1>[0-9]+)\;(?<chapter2>[0-9]+)\,(?<verse2>[0-9]+)\)";
+                            if (Regex.IsMatch(text, pattern)) {
+                                var m = Regex.Match(text, pattern);
+                                chapter = Convert.ToInt32(m.Groups["chapter1"].Value);
+                                chapter2 = Convert.ToInt32(m.Groups["chapter2"].Value);
+                                verseRanges[0].VerseBegin = Convert.ToInt32(m.Groups["verse1"].Value);
+                                verseRanges[0].VerseEnd = Convert.ToInt32(m.Groups["verse2"].Value);
+                                for (int i = 1; i < 5; i++) {
+                                    verseRanges[i].VerseBegin = -1;
+                                    verseRanges[i].VerseEnd = -1;
+                                }
+                                continue;
+                            }
+                        }
+
                         if (Regex.IsMatch(text, pattern)) {
-                            rangeEndIndex = SavePrevious(editor, book, rangeStartIndex, rangeEndIndex, chapter, ref verseRanges, par);
+                            rangeEndIndex = SavePrevious(editor, book, rangeStartIndex, rangeEndIndex, chapter, chapter2, ref verseRanges, par);
 
                             var m = Regex.Match(text, pattern);
                             chapter = Convert.ToInt32(m.Groups["chapter"].Value);
+                            chapter2 = Convert.ToInt32(m.Groups["chapter"].Value);
 
                             for (int i = 0; i < 5; i++) {
                                 if (m.Groups[$"verseEnd{i}"] != null && m.Groups[$"verseEnd{i}"].Success) {
@@ -222,7 +240,7 @@ namespace EIB.CommentaryEditor {
                 }
 
                 if (par == editor.Document.Paragraphs.Last()) {
-                    rangeEndIndex = SavePrevious(editor, book, rangeStartIndex, rangeEndIndex, chapter, ref verseRanges, par);
+                    rangeEndIndex = SavePrevious(editor, book, rangeStartIndex, rangeEndIndex, chapter, chapter2, ref verseRanges, par);
                 }
             }
 
@@ -232,7 +250,7 @@ namespace EIB.CommentaryEditor {
         }
 
         private int SavePrevious(RichEditControl editor, Book book, int rangeStartIndex, int rangeEndIndex,
-            int chapter, ref List<VerseRange> verseRanges,
+            int chapter, int chapter2, ref List<VerseRange> verseRanges,
             DevExpress.XtraRichEdit.API.Native.Paragraph par) {
             if (rangeStartIndex != par.Range.Start.ToInt() && chapter != 0) {
 
@@ -248,7 +266,7 @@ namespace EIB.CommentaryEditor {
                         Commentary.Items.Add(new CommentaryItem(uow) {
                             Book = book.NumberOfBook,
                             ChapterBegin = chapter,
-                            ChapterEnd = chapter,
+                            ChapterEnd = chapter2,
                             VerseBegin = verseRange.VerseBegin,
                             VerseEnd = verseRange.VerseEnd,
                             Comments = editor.Document.GetRtfText(editor.Document.CreateRange(rangeStartIndex, rangeEndIndex - rangeStartIndex))
