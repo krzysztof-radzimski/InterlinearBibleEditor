@@ -29,7 +29,11 @@ namespace Church.WebApp.Controllers {
         public IActionResult Index() {
             var qs = Request.QueryString;            
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 3) {
-                var id = qs.Value.ToLower().Replace("?id=", "").Trim().ToInt();
+                var value = qs.Value;
+                if (value.Contains("&")){
+                    value = value.Substring(0, value.IndexOf("&"));
+                }
+                var id = value.ToLower().Replace("?id=", "").Trim().ToInt();
                 var article = new XPQuery<Article>(new UnitOfWork()).Where(x => x.Oid == id).FirstOrDefault();
                 if (article.IsNotNull()) {
                     return View(article);

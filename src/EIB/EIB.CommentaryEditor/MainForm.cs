@@ -12,9 +12,11 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using DevExpress.XtraSplashScreen;
+using EIB.CommentaryEditor.Db;
 
 namespace EIB.CommentaryEditor {
-    public partial class MainForm : DevExpress.XtraBars.FluentDesignSystem.FluentDesignForm {
+    public partial class MainForm : DevExpress.XtraBars.FluentDesignSystem.FluentDesignForm, IOverlaySplashScreenHandle {
         private UnitOfWork uow;
         private const string TITLE = "EIB Commentary Editor";
         public Commentary Commentary { get; private set; }
@@ -126,127 +128,135 @@ namespace EIB.CommentaryEditor {
         }
 
         private void ImportWordFile(string filePath) {
-            var editor = new RichEditControl();
-            editor.LoadDocument(filePath);
-            var fileName = Path.GetFileNameWithoutExtension(filePath);
-            var book = new XPQuery<Book>(uow).Where(x => x.Abbreviation == fileName).FirstOrDefault();
-            if (book == null) {
-                XtraMessageBox.Show("File name not match!");
-                return;
-            }
-
-            var rangeStartIndex = -1;
-            var rangeEndIndex = -1;
-
-            var chapter = 0;
-            var chapter2 = 0;
-
-            var verseRanges = new List<VerseRange>();
-            for (int i = 0; i < 5; i++) {
-                verseRanges.Add(new VerseRange() {
-                    VerseBegin = -1,
-                    VerseEnd = -1
-                });
-            }
-
-            Commentary.Items.Where(x => x.Book == book.NumberOfBook).ToList().ForEach(x => { x.Delete(); });
-            uow.CommitChanges();
-
-            foreach (var par in editor.Document.Paragraphs) {
-                var text = editor.Document.GetText(par.Range).Trim();
-                if (par.Style != null) {
-                    if (par.Style.Name == "heading 1") {
-                        if (text.ToLower().StartsWith("wstęp ")) {
-                            rangeStartIndex = par.Range.Start.ToInt();
-                        }
-                        else if (rangeStartIndex != -1 && (text.ToLower().StartsWith("list ") || text.ToLower().StartsWith("ewangelia ") || text.ToLower().StartsWith("dzieje "))) {
-                            rangeEndIndex = par.Range.Start.ToInt() - 1;
-                            Commentary.Items.Add(new CommentaryItem(uow) {
-                                Book = book.NumberOfBook,
-                                ChapterBegin = 0,
-                                ChapterEnd = 0,
-                                VerseBegin = 0,
-                                VerseEnd = 0,
-                                Comments = editor.Document.GetRtfText(editor.Document.CreateRange(rangeStartIndex, rangeEndIndex - rangeStartIndex))
-                            });
-                            rangeStartIndex = -1;
-                            rangeEndIndex = -1;
-                        }
+            IOverlaySplashScreenHandle handle = null;
+            try {
+                handle = SplashScreenManager.ShowOverlayForm(this);
+                using (var editor = new RichEditControl()) {
+                    editor.LoadDocument(filePath);
+                    var fileName = Path.GetFileNameWithoutExtension(filePath);
+                    var book = new XPQuery<Book>(uow).Where(x => x.Abbreviation == fileName).FirstOrDefault();
+                    if (book == null) {
+                        XtraMessageBox.Show("File name not match!");
+                        return;
                     }
-                    else if (par.Style.Name == "heading 2") {
-                        if (rangeStartIndex == -1) { par.Range.Start.ToInt(); }
+
+                    var rangeStartIndex = -1;
+                    var rangeEndIndex = -1;
+
+                    var chapter = 0;
+                    var chapter2 = 0;
+
+                    var verseRanges = new List<VerseRange>();
+                    for (int i = 0; i < 5; i++) {
+                        verseRanges.Add(new VerseRange() {
+                            VerseBegin = -1,
+                            VerseEnd = -1
+                        });
                     }
-                    else if (par.Style.Name == "heading 3") {
 
-                        var patternBase = @"\((?<chapter>[0-9]+)(\,)?";
-                        var patternRange = @"((?<verseBegin{0}>[0-9]+)([a-z])?(\-(?<verseEnd{0}>[0-9]+)([a-z])?)?(\.)?)";
+                    Commentary.Items.Where(x => x.Book == book.NumberOfBook).ToList().ForEach(x => { x.Delete(); });
+                    uow.CommitChanges();
 
-                        var pattern = patternBase;
-                        for (int i = 0; i < 5; i++) {
-                            pattern += String.Format(patternRange, i);
-                            pattern += "?";
-                        }
-                        pattern += @"\)";
-
-                        if (text.Contains(";")) {
-                            pattern = @"\((?<chapter1>[0-9]+)\,(?<verse1>[0-9]+)\;(?<chapter2>[0-9]+)\,(?<verse2>[0-9]+)\)";
-                            if (Regex.IsMatch(text, pattern)) {
-                                var m = Regex.Match(text, pattern);
-                                chapter = Convert.ToInt32(m.Groups["chapter1"].Value);
-                                chapter2 = Convert.ToInt32(m.Groups["chapter2"].Value);
-                                verseRanges[0].VerseBegin = Convert.ToInt32(m.Groups["verse1"].Value);
-                                verseRanges[0].VerseEnd = Convert.ToInt32(m.Groups["verse2"].Value);
-                                for (int i = 1; i < 5; i++) {
-                                    verseRanges[i].VerseBegin = -1;
-                                    verseRanges[i].VerseEnd = -1;
+                    foreach (var par in editor.Document.Paragraphs) {
+                        var text = editor.Document.GetText(par.Range).Trim();
+                        if (par.Style != null) {
+                            if (!String.IsNullOrEmpty(text) && par.Style.Name == "heading 1") {
+                                if (text.ToLower().StartsWith("wstęp ")) {
+                                    rangeStartIndex = par.Range.Start.ToInt();
                                 }
-                                continue;
+                                else if (rangeStartIndex != -1 && (text.ToLower().StartsWith("list ") || text.ToLower().StartsWith("ewangelia ") || text.ToLower().StartsWith("dzieje "))) {
+                                    rangeEndIndex = par.Range.Start.ToInt() - 1;
+                                    Commentary.Items.Add(new CommentaryItem(uow) {
+                                        Book = book.NumberOfBook,
+                                        ChapterBegin = 0,
+                                        ChapterEnd = 0,
+                                        VerseBegin = 0,
+                                        VerseEnd = 0,
+                                        Comments = editor.Document.GetRtfText(editor.Document.CreateRange(rangeStartIndex, rangeEndIndex - rangeStartIndex))
+                                    });
+                                    rangeStartIndex = -1;
+                                    rangeEndIndex = -1;
+                                }
                             }
-                        }
+                            else if (!String.IsNullOrEmpty(text) && par.Style.Name == "heading 2") {
+                                if (rangeStartIndex == -1) { par.Range.Start.ToInt(); }
+                            }
+                            else if (!String.IsNullOrEmpty(text) && par.Style.Name == "heading 3") {
 
-                        if (Regex.IsMatch(text, pattern)) {
-                            rangeEndIndex = SavePrevious(editor, book, rangeStartIndex, rangeEndIndex, chapter, chapter2, ref verseRanges, par);
+                                var patternBase = @"\((?<chapter>[0-9]+)(\,)?";
+                                var patternRange = @"((?<verseBegin{0}>[0-9]+)([a-z])?(\-(?<verseEnd{0}>[0-9]+)([a-z])?)?(\.)?)";
 
-                            var m = Regex.Match(text, pattern);
-                            chapter = Convert.ToInt32(m.Groups["chapter"].Value);
-                            chapter2 = Convert.ToInt32(m.Groups["chapter"].Value);
-
-                            for (int i = 0; i < 5; i++) {
-                                if (m.Groups[$"verseEnd{i}"] != null && m.Groups[$"verseEnd{i}"].Success) {
-                                    verseRanges[i].VerseBegin = Convert.ToInt32(m.Groups[$"verseBegin{i}"].Value);
-                                    verseRanges[i].VerseEnd = Convert.ToInt32(m.Groups[$"verseEnd{i}"].Value);
+                                var pattern = patternBase;
+                                for (int i = 0; i < 5; i++) {
+                                    pattern += String.Format(patternRange, i);
+                                    pattern += "?";
                                 }
-                                else if (m.Groups[$"verseBegin{i}"] != null && m.Groups[$"verseBegin{i}"].Success) {
-                                    verseRanges[i].VerseBegin = Convert.ToInt32(m.Groups[$"verseBegin{i}"].Value);
-                                    verseRanges[i].VerseEnd = Convert.ToInt32(m.Groups[$"verseBegin{i}"].Value);
+                                pattern += @"\)";
+
+                                if (text.Contains(";")) {
+                                    pattern = @"\((?<chapter1>[0-9]+)\,(?<verse1>[0-9]+)\;(?<chapter2>[0-9]+)\,(?<verse2>[0-9]+)\)";
+                                    if (Regex.IsMatch(text, pattern)) {
+                                        var m = Regex.Match(text, pattern);
+                                        chapter = Convert.ToInt32(m.Groups["chapter1"].Value);
+                                        chapter2 = Convert.ToInt32(m.Groups["chapter2"].Value);
+                                        verseRanges[0].VerseBegin = Convert.ToInt32(m.Groups["verse1"].Value);
+                                        verseRanges[0].VerseEnd = Convert.ToInt32(m.Groups["verse2"].Value);
+                                        for (int i = 1; i < 5; i++) {
+                                            verseRanges[i].VerseBegin = -1;
+                                            verseRanges[i].VerseEnd = -1;
+                                        }
+                                        continue;
+                                    }
                                 }
-                                else if (chapter != 0 && i == 0) {
-                                    verseRanges[i].VerseBegin = 0;
-                                    verseRanges[i].VerseEnd = 0;
+
+                                if (Regex.IsMatch(text, pattern)) {
+                                    rangeEndIndex = SavePrevious(editor, book, rangeStartIndex, rangeEndIndex, chapter, chapter2, ref verseRanges, par);
+
+                                    var m = Regex.Match(text, pattern);
+                                    chapter = Convert.ToInt32(m.Groups["chapter"].Value);
+                                    chapter2 = Convert.ToInt32(m.Groups["chapter"].Value);
+
+                                    for (int i = 0; i < 5; i++) {
+                                        if (m.Groups[$"verseEnd{i}"] != null && m.Groups[$"verseEnd{i}"].Success) {
+                                            verseRanges[i].VerseBegin = Convert.ToInt32(m.Groups[$"verseBegin{i}"].Value);
+                                            verseRanges[i].VerseEnd = Convert.ToInt32(m.Groups[$"verseEnd{i}"].Value);
+                                        }
+                                        else if (m.Groups[$"verseBegin{i}"] != null && m.Groups[$"verseBegin{i}"].Success) {
+                                            verseRanges[i].VerseBegin = Convert.ToInt32(m.Groups[$"verseBegin{i}"].Value);
+                                            verseRanges[i].VerseEnd = Convert.ToInt32(m.Groups[$"verseBegin{i}"].Value);
+                                        }
+                                        else if (chapter != 0 && i == 0) {
+                                            verseRanges[i].VerseBegin = 0;
+                                            verseRanges[i].VerseEnd = 0;
+                                        }
+                                        else {
+                                            verseRanges[i].VerseBegin = -1;
+                                            verseRanges[i].VerseEnd = -1;
+                                        }
+                                    }
+
+                                    rangeStartIndex = par.Range.Start.ToInt();
+                                    rangeEndIndex = -1;
                                 }
                                 else {
-                                    verseRanges[i].VerseBegin = -1;
-                                    verseRanges[i].VerseEnd = -1;
+                                    if (rangeStartIndex == -1) { par.Range.Start.ToInt(); }
                                 }
                             }
-
-                            rangeStartIndex = par.Range.Start.ToInt();
-                            rangeEndIndex = -1;
                         }
-                        else {
-                            if (rangeStartIndex == -1) { par.Range.Start.ToInt(); }
+
+                        if (par == editor.Document.Paragraphs.Last()) {
+                            rangeEndIndex = SavePrevious(editor, book, rangeStartIndex, rangeEndIndex, chapter, chapter2, ref verseRanges, par);
                         }
                     }
-                }
 
-                if (par == editor.Document.Paragraphs.Last()) {
-                    rangeEndIndex = SavePrevious(editor, book, rangeStartIndex, rangeEndIndex, chapter, chapter2, ref verseRanges, par);
+                    uow.CommitChanges();
+                    Commentary = new XPQuery<Commentary>(uow).Where(x => x.Oid == Commentary.Oid).FirstOrDefault();
+                    LoadBooks();
                 }
             }
-
-            uow.CommitChanges();
-            Commentary = new XPQuery<Commentary>(uow).Where(x => x.Oid == Commentary.Oid).FirstOrDefault();
-            LoadBooks();
+            finally {
+                SplashScreenManager.CloseOverlayForm(handle);
+            }
         }
 
         private int SavePrevious(RichEditControl editor, Book book, int rangeStartIndex, int rangeEndIndex,
@@ -285,6 +295,33 @@ namespace EIB.CommentaryEditor {
             using (var dlg = new OpenFileDialog() { Filter = "Microsoft Word file (*.docx)|*.docx" }) {
                 if (dlg.ShowDialog() == DialogResult.OK) {
                     ImportWordFile(dlg.FileName);
+                }
+            }
+        }
+
+        public void QueueCloseUpAction(Action closeUpAction) {
+
+        }
+
+        public bool QueueFocus(IntPtr controlHandle) {
+            return true;
+        }
+
+        public bool QueueFocus(Control control) {
+            return true;
+        }
+
+        private void btnSaveAsCMTX_ItemClick(object sender, ItemClickEventArgs e) {
+            using (var dlg = new SaveFileDialog() { Filter = "e-Sword Commentary file (*.cmtx)|*.cmtx" }) {
+                if (dlg.ShowDialog() == DialogResult.OK) {
+                    IOverlaySplashScreenHandle handle = null;
+                    try {
+                        handle = SplashScreenManager.ShowOverlayForm(this);
+                        new eSwordExportHelper().ExportCmtx(Commentary, dlg.FileName);
+                    }
+                    finally {
+                        SplashScreenManager.CloseOverlayForm(handle);
+                    }
                 }
             }
         }

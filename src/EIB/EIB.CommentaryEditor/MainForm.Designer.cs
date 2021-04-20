@@ -172,6 +172,7 @@ namespace EIB.CommentaryEditor {
             this.btnSaveAsCMTX.Id = 3;
             this.btnSaveAsCMTX.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnSaveAsCMTX.ImageOptions.SvgImage")));
             this.btnSaveAsCMTX.Name = "btnSaveAsCMTX";
+            this.btnSaveAsCMTX.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnSaveAsCMTX_ItemClick);
             // 
             // btnClose
             // 

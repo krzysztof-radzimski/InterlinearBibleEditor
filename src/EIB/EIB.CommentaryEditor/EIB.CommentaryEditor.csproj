@@ -138,6 +138,7 @@
       <DependentUpon>CommentaryControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Db\ConnectionHelper.cs" />
+    <Compile Include="Db\eSwordExportHelper.cs" />
     <Compile Include="Db\Model\Book.cs" />
     <Compile Include="Db\Model\Chapter.cs" />
     <Compile Include="Db\Model\CommentaryItem.cs" />
