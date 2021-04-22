@@ -79,5 +79,35 @@ namespace IBE.WindowsClient.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] pl_aff {
+            get {
+                object obj = ResourceManager.GetObject("pl_aff", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] pl_dic {
+            get {
+                object obj = ResourceManager.GetObject("pl_dic", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] PolishAlphabet {
+            get {
+                object obj = ResourceManager.GetObject("PolishAlphabet", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

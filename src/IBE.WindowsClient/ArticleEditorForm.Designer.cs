@@ -143,6 +143,10 @@ namespace IBE.WindowsClient {
             this.tabs = new DevExpress.XtraBars.Navigation.TabPane();
             this.tabSettings = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
+            this.txtAuthorPicture = new DevExpress.XtraEditors.PictureEdit();
+            this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
+            this.txtType = new DevExpress.XtraEditors.LookUpEdit();
             this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             this.txtLead = new DevExpress.XtraEditors.MemoEdit();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
@@ -153,10 +157,6 @@ namespace IBE.WindowsClient {
             this.txtSubject = new DevExpress.XtraEditors.TextEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.sidePanel2 = new DevExpress.XtraEditors.SidePanel();
-            this.txtType = new DevExpress.XtraEditors.LookUpEdit();
-            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
-            this.txtAuthorPicture = new DevExpress.XtraEditors.PictureEdit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemFontEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemRichEditFontSizeEdit1)).BeginInit();
@@ -167,14 +167,14 @@ namespace IBE.WindowsClient {
             this.tabSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAuthorPicture.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtLead.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAuthor.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDate.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDate.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSubject.Properties)).BeginInit();
             this.sidePanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtAuthorPicture.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // ribbonControl1
@@ -1156,6 +1156,49 @@ namespace IBE.WindowsClient {
             this.tablePanel1.Size = new System.Drawing.Size(358, 667);
             this.tablePanel1.TabIndex = 0;
             // 
+            // txtAuthorPicture
+            // 
+            this.tablePanel1.SetColumn(this.txtAuthorPicture, 0);
+            this.txtAuthorPicture.Location = new System.Drawing.Point(3, 349);
+            this.txtAuthorPicture.MenuManager = this.ribbonControl1;
+            this.txtAuthorPicture.Name = "txtAuthorPicture";
+            this.txtAuthorPicture.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.tablePanel1.SetRow(this.txtAuthorPicture, 12);
+            this.txtAuthorPicture.Size = new System.Drawing.Size(352, 300);
+            this.txtAuthorPicture.TabIndex = 12;
+            // 
+            // labelControl6
+            // 
+            this.tablePanel1.SetColumn(this.labelControl6, 0);
+            this.labelControl6.Location = new System.Drawing.Point(3, 330);
+            this.labelControl6.Name = "labelControl6";
+            this.tablePanel1.SetRow(this.labelControl6, 11);
+            this.labelControl6.Size = new System.Drawing.Size(75, 13);
+            this.labelControl6.TabIndex = 11;
+            this.labelControl6.Text = "Author picture";
+            // 
+            // labelControl5
+            // 
+            this.tablePanel1.SetColumn(this.labelControl5, 0);
+            this.labelControl5.Location = new System.Drawing.Point(3, 285);
+            this.labelControl5.Name = "labelControl5";
+            this.tablePanel1.SetRow(this.labelControl5, 9);
+            this.labelControl5.Size = new System.Drawing.Size(24, 13);
+            this.labelControl5.TabIndex = 10;
+            this.labelControl5.Text = "Type";
+            // 
+            // txtType
+            // 
+            this.tablePanel1.SetColumn(this.txtType, 0);
+            this.txtType.Location = new System.Drawing.Point(3, 304);
+            this.txtType.MenuManager = this.ribbonControl1;
+            this.txtType.Name = "txtType";
+            this.txtType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.tablePanel1.SetRow(this.txtType, 10);
+            this.txtType.Size = new System.Drawing.Size(352, 20);
+            this.txtType.TabIndex = 9;
+            // 
             // simpleButton1
             // 
             this.tablePanel1.SetColumn(this.simpleButton1, 0);
@@ -1265,49 +1308,6 @@ namespace IBE.WindowsClient {
             this.sidePanel2.TabIndex = 4;
             this.sidePanel2.Text = "sidePanel2";
             // 
-            // txtType
-            // 
-            this.tablePanel1.SetColumn(this.txtType, 0);
-            this.txtType.Location = new System.Drawing.Point(3, 304);
-            this.txtType.MenuManager = this.ribbonControl1;
-            this.txtType.Name = "txtType";
-            this.txtType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.tablePanel1.SetRow(this.txtType, 10);
-            this.txtType.Size = new System.Drawing.Size(352, 20);
-            this.txtType.TabIndex = 9;
-            // 
-            // labelControl5
-            // 
-            this.tablePanel1.SetColumn(this.labelControl5, 0);
-            this.labelControl5.Location = new System.Drawing.Point(3, 285);
-            this.labelControl5.Name = "labelControl5";
-            this.tablePanel1.SetRow(this.labelControl5, 9);
-            this.labelControl5.Size = new System.Drawing.Size(24, 13);
-            this.labelControl5.TabIndex = 10;
-            this.labelControl5.Text = "Type";
-            // 
-            // labelControl6
-            // 
-            this.tablePanel1.SetColumn(this.labelControl6, 0);
-            this.labelControl6.Location = new System.Drawing.Point(3, 330);
-            this.labelControl6.Name = "labelControl6";
-            this.tablePanel1.SetRow(this.labelControl6, 11);
-            this.labelControl6.Size = new System.Drawing.Size(75, 13);
-            this.labelControl6.TabIndex = 11;
-            this.labelControl6.Text = "Author picture";
-            // 
-            // txtAuthorPicture
-            // 
-            this.tablePanel1.SetColumn(this.txtAuthorPicture, 0);
-            this.txtAuthorPicture.Location = new System.Drawing.Point(3, 349);
-            this.txtAuthorPicture.MenuManager = this.ribbonControl1;
-            this.txtAuthorPicture.Name = "txtAuthorPicture";
-            this.txtAuthorPicture.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.tablePanel1.SetRow(this.txtAuthorPicture, 12);
-            this.txtAuthorPicture.Size = new System.Drawing.Size(352, 300);
-            this.txtAuthorPicture.TabIndex = 12;
-            // 
             // ArticleEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1330,14 +1330,14 @@ namespace IBE.WindowsClient {
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
             this.tablePanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtAuthorPicture.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtLead.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAuthor.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDate.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDate.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSubject.Properties)).EndInit();
             this.sidePanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtAuthorPicture.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

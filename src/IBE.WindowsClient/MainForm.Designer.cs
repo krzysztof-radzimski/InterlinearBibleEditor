@@ -31,11 +31,12 @@ namespace IBE.WindowsClient {
             this.btnInterlinearEditor = new DevExpress.XtraBars.BarButtonItem();
             this.btnArticles = new DevExpress.XtraBars.BarButtonItem();
             this.btnBaseBooks = new DevExpress.XtraBars.BarButtonItem();
+            this.btnCopyDatabaseToWebFolder = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(this.components);
-            this.btnCopyDatabaseToWebFolder = new DevExpress.XtraBars.BarButtonItem();
+            this.spellChecker1 = new DevExpress.XtraSpellChecker.SpellChecker(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).BeginInit();
             this.SuspendLayout();
@@ -101,6 +102,14 @@ namespace IBE.WindowsClient {
             this.btnBaseBooks.Name = "btnBaseBooks";
             this.btnBaseBooks.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnBaseBooks_ItemClick);
             // 
+            // btnCopyDatabaseToWebFolder
+            // 
+            this.btnCopyDatabaseToWebFolder.Caption = "Copy to web folder";
+            this.btnCopyDatabaseToWebFolder.Id = 9;
+            this.btnCopyDatabaseToWebFolder.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnCopyDatabaseToWebFolder.ImageOptions.SvgImage")));
+            this.btnCopyDatabaseToWebFolder.Name = "btnCopyDatabaseToWebFolder";
+            this.btnCopyDatabaseToWebFolder.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnCopyDatabaseToWebFolder_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -131,13 +140,12 @@ namespace IBE.WindowsClient {
             this.xtraTabbedMdiManager1.MdiParent = this;
             this.xtraTabbedMdiManager1.UseFormIconAsPageImage = DevExpress.Utils.DefaultBoolean.True;
             // 
-            // btnCopyDatabaseToWebFolder
+            // spellChecker1
             // 
-            this.btnCopyDatabaseToWebFolder.Caption = "Copy to web folder";
-            this.btnCopyDatabaseToWebFolder.Id = 9;
-            this.btnCopyDatabaseToWebFolder.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnCopyDatabaseToWebFolder.ImageOptions.SvgImage")));
-            this.btnCopyDatabaseToWebFolder.Name = "btnCopyDatabaseToWebFolder";
-            this.btnCopyDatabaseToWebFolder.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnCopyDatabaseToWebFolder_ItemClick);
+            this.spellChecker1.CheckAsYouTypeOptions.CheckControlsInParentContainer = true;
+            this.spellChecker1.Culture = new System.Globalization.CultureInfo("pl-PL");
+            this.spellChecker1.ParentContainer = this;
+            this.spellChecker1.SpellCheckMode = DevExpress.XtraSpellChecker.SpellCheckMode.AsYouType;
             // 
             // MainForm
             // 
@@ -172,6 +180,7 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnArticles;
         private DevExpress.XtraBars.BarButtonItem btnBaseBooks;
         private DevExpress.XtraBars.BarButtonItem btnCopyDatabaseToWebFolder;
+        private DevExpress.XtraSpellChecker.SpellChecker spellChecker1;
     }
 }
 

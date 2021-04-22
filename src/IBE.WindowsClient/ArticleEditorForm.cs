@@ -42,6 +42,8 @@ namespace IBE.WindowsClient {
             InitTypes();
 
             Text = "New article";
+
+            editor.SpellChecker = MainForm.Instance.SpellChecker;
         }
              
 

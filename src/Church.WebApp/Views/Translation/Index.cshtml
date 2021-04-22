@@ -199,6 +199,8 @@ break;
             </button>
             <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonBooks">
                 @foreach (var _book in Model.Translation.Books) {
+                    if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !_book.IsTranslated) { continue; }
+
                     var _active = String.Empty;
                     if (_book.NumberOfBook == book.NumberOfBook) {
                         _active = " active";
