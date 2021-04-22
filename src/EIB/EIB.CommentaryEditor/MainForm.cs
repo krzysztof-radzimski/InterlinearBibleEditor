@@ -325,6 +325,17 @@ namespace EIB.CommentaryEditor {
                 }
             }
         }
+
+        private void btnEditCommentary_ItemClick(object sender, ItemClickEventArgs e) {
+            using (var dlg = new CommentaryDialog(Commentary)) {
+                if (dlg.ShowDialog() == DialogResult.OK) {
+                    if (!String.IsNullOrEmpty(Commentary.Title)) {
+                        Commentary.Save();
+                        uow.CommitChanges();                        
+                    }
+                }
+            }
+        }
     }
 
     class VerseRange {

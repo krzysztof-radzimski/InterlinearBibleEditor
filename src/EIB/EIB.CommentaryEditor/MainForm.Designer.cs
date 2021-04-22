@@ -42,6 +42,7 @@ namespace EIB.CommentaryEditor {
             this.btnAddCommentaryRange = new DevExpress.XtraBars.BarButtonItem();
             this.btnRemoveCommentaryRange = new DevExpress.XtraBars.BarButtonItem();
             this.fluentFormDefaultManager1 = new DevExpress.XtraBars.FluentDesignSystem.FluentFormDefaultManager(this.components);
+            this.btnEditCommentary = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.accordionControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentDesignFormControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fluentFormDefaultManager1)).BeginInit();
@@ -103,7 +104,8 @@ namespace EIB.CommentaryEditor {
             this.btnSave,
             this.btnAddCommentaryRange,
             this.btnRemoveCommentaryRange,
-            this.btnImportWordFile});
+            this.btnImportWordFile,
+            this.btnEditCommentary});
             this.fluentDesignFormControl1.Location = new System.Drawing.Point(0, 0);
             this.fluentDesignFormControl1.Manager = this.fluentFormDefaultManager1;
             this.fluentDesignFormControl1.Name = "fluentDesignFormControl1";
@@ -131,8 +133,8 @@ namespace EIB.CommentaryEditor {
             this.mnuFile.Id = 1;
             this.mnuFile.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnImportWordFile, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnEditCommentary),
             new DevExpress.XtraBars.LinkPersistInfo(this.btnSave),
-            new DevExpress.XtraBars.LinkPersistInfo(this.btnSaveAsCMTI, true),
             new DevExpress.XtraBars.LinkPersistInfo(this.btnSaveAsCMTX),
             new DevExpress.XtraBars.LinkPersistInfo(this.btnClose, true)});
             this.mnuFile.Name = "mnuFile";
@@ -171,6 +173,8 @@ namespace EIB.CommentaryEditor {
             this.btnSaveAsCMTX.Caption = "Save as CMTX file";
             this.btnSaveAsCMTX.Id = 3;
             this.btnSaveAsCMTX.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnSaveAsCMTX.ImageOptions.SvgImage")));
+            this.btnSaveAsCMTX.ItemShortcut = new DevExpress.XtraBars.BarShortcut(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+                | System.Windows.Forms.Keys.S));
             this.btnSaveAsCMTX.Name = "btnSaveAsCMTX";
             this.btnSaveAsCMTX.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnSaveAsCMTX_ItemClick);
             // 
@@ -219,8 +223,17 @@ namespace EIB.CommentaryEditor {
             this.btnSave,
             this.btnAddCommentaryRange,
             this.btnRemoveCommentaryRange,
-            this.btnImportWordFile});
-            this.fluentFormDefaultManager1.MaxItemId = 9;
+            this.btnImportWordFile,
+            this.btnEditCommentary});
+            this.fluentFormDefaultManager1.MaxItemId = 10;
+            // 
+            // btnEditCommentary
+            // 
+            this.btnEditCommentary.Caption = "Edit Commentary";
+            this.btnEditCommentary.Id = 9;
+            this.btnEditCommentary.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnEditCommentary.ImageOptions.SvgImage")));
+            this.btnEditCommentary.Name = "btnEditCommentary";
+            this.btnEditCommentary.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnEditCommentary_ItemClick);
             // 
             // MainForm
             // 
@@ -260,5 +273,6 @@ namespace EIB.CommentaryEditor {
         private DevExpress.XtraBars.BarButtonItem btnAddCommentaryRange;
         private DevExpress.XtraBars.BarButtonItem btnRemoveCommentaryRange;
         private DevExpress.XtraBars.BarButtonItem btnImportWordFile;
+        private DevExpress.XtraBars.BarButtonItem btnEditCommentary;
     }
 }

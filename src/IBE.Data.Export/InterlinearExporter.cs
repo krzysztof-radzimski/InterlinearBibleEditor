@@ -341,7 +341,7 @@ namespace IBE.Data.Export {
             if (word.Translation.IsNotNull()) {
 
                 if (word.Translation.Contains("<n>")) {
-                    var translation = word.Translation.Replace("<n>", "<span style=\"color: #6c757d;\">").Replace("</n>", "</span>");
+                    var translation = word.Translation.Replace("<n>", "<span style=\"color: #6c757d; font-size: 11pt;\">").Replace("</n>", "</span>");
                     if (word.WordOfJesus) {
                         translation = $"<span style=\"color: #990000;\">{translation}</span>";
                     }

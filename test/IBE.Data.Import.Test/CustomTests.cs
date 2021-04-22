@@ -12,7 +12,9 @@
   ===================================================================================*/
 
 using DevExpress.Xpo;
+using Microsoft.Data.Sqlite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 namespace IBE.Data.Import.Test {
     [TestClass]
@@ -29,6 +31,29 @@ namespace IBE.Data.Import.Test {
             // z ekumenicznej apokryfy 
             new BaseBooksImporter().Import(@"..\..\..\..\db\import\EKU'18.zip", uow);
             uow.CommitChanges();
+        }
+
+        [TestMethod]
+        public void SaveMeyersBooks() {
+            using (var conn = new SqliteConnection("Data Source=meyer.cmtx")) {
+                conn.Open();
+
+                var cmd = conn.CreateCommand();
+                int i = 40;
+                cmd.CommandText = "select comments from BookCommentary";
+                using (var reader = cmd.ExecuteReader()) {
+                    while (reader.Read()) {
+                        var comment = reader.GetValue(0);
+                        if (comment != null) {
+                            var bytes = comment as byte[];
+                            if (bytes != null) {
+                                File.WriteAllBytes($"books\\file{i}.dat", bytes);
+                            }
+
+                        }
+                    }
+                }
+            }
         }
     }
 }
