@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Church.WebApp.Controllers {
-    public class ArticlesController : Controller {
+     public class ArticlesController : Controller {
         private readonly ILogger<ArticlesController> _logger;
 
         public ArticlesController(ILogger<ArticlesController> logger) {

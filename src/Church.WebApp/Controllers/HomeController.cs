@@ -28,6 +28,8 @@ namespace IBE.WebApp.Controllers {
             return View();
         }
 
+        //[Route("/{controller}/{action}")]
+        //[Route("/{controller}/w-co-wierzymy")]
         public IActionResult WhatWeBelieve() {
             return View();
         }

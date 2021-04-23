@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Obozy dla dzieci i młodzieży";
+
+}
+
+@section Main{
+    <div id="carouselExampleFade" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="10000" style="
+            background-image: url(img/oboz1.jpg?id=2);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            min-height: 500px;">
+                </div>
+                <div class="carousel-item" data-bs-interval="10000" style="
+            background-image: url(img/oboz2.jpg?id=2);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            min-height: 500px;">
+                </div>
+                <div class="carousel-item" data-bs-interval="10000" style="
+            background-image: url(img/oboz3.jpg?id=2);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            min-height: 500px;">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Wstecz</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Dalej</span>
+            </button>
+        </div>
+}
+
+<div class="max-width-1000" style="padding-top: 20px;">
+    <h1><i class="fas fa-child"></i> @ViewData["Title"]</h1>
+    <p>Nasza zbór chętnie współfinansuje wyjazdy dla dzieci i młodzieży z domów o trudnej sytuacji bytowej. Jeżeli chciałbyś, aby twoje dziecko brało udział w jednym z takich obozów, <a href="/Home/About">skontaktuj się z nami</a>.</p>
+    <ul>
+        <li><a href="https://www.facebook.com/Fundacja.radosc">Chrześcijańska Fundacja Radość</a></li>
+        <li><a href="https://www.facebook.com/Wiarygodni-Camp-110473117117789">Wiarygodni Camp</a></li>
+        <li><a href="https://www.facebook.com/nieustraszeni">Nieustraszeni</a></li>
+        <li><a href="https://www.facebook.com/campostroda">Ostróda Camp</a></li>
+    </ul>
+</div>
