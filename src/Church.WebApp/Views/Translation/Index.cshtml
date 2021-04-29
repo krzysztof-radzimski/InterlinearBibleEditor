@@ -315,17 +315,19 @@ break;
             }
         }
 
-        if (book.NumberOfBook == 230) {
-            <h2 class="text-center p-2">@Model.Translation.ChapterPsalmString @Model.Chapter</h2>
-        }
-        else {
-            var __chapterNumberString = $"{Model.Translation.ChapterString} {Model.Chapter}";
-            if (Model.Translation.ChapterRomanNumbering) {
-                __chapterNumberString = $"{Model.Translation.ChapterString} {Model.Chapter.ToInt().ArabicToRoman()}";
+        if (book.NumberOfChapters > 1) {
+            if (book.NumberOfBook == 230) {
+                <h2 class="text-center p-2">@Model.Translation.ChapterPsalmString @Model.Chapter</h2>
             }
-            if (Model.Chapter.ToInt() == 0) { __chapterNumberString = "Prolog"; }
+            else {
+                var __chapterNumberString = $"{Model.Translation.ChapterString} {Model.Chapter}";
+                if (Model.Translation.ChapterRomanNumbering) {
+                    __chapterNumberString = $"{Model.Translation.ChapterString} {Model.Chapter.ToInt().ArabicToRoman()}";
+                }
+                if (Model.Chapter.ToInt() == 0) { __chapterNumberString = "Prolog"; }
 
-            <h2 class="text-center p-2">@__chapterNumberString</h2>
+                <h2 class="text-center p-2">@__chapterNumberString</h2>
+            }
         }
 
 

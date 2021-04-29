@@ -63,6 +63,7 @@ namespace IBE.Data.Export {
                 ExportChapterNumber(chapter, builder, false);
 
                 var par = builder.InsertParagraph();
+                par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
                 par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
 
                 foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
@@ -102,6 +103,7 @@ namespace IBE.Data.Export {
                 ExportChapterNumber(chapter, builder, false);
 
                 var par = builder.InsertParagraph();
+                par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
                 par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
 
                 foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
@@ -135,6 +137,7 @@ namespace IBE.Data.Export {
             ExportChapterNumber(chapter, builder, true);
 
             var par = builder.InsertParagraph();
+            par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
             par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
 
             foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
@@ -153,8 +156,11 @@ namespace IBE.Data.Export {
 
             var builder = GetDocumentBuilder();
             ExportChapterNumber(chapter, builder, true);
+
             var par = builder.InsertParagraph();
+            par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
             par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+
             foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
                 ExportVerse(item, ref par, builder);
             }
@@ -205,11 +211,12 @@ namespace IBE.Data.Export {
             builder.InsertHtml($"<div style=\"font-size: 11; text-align: left;\">{translation.DetailedInfo}</div>");
         }
         private void ExportBookName(Book book, DocumentBuilder builder) {
-            builder.Font.Size = 16;
-            builder.Font.Bold = true;
-            builder.Font.Color = Color.Black;
-            builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-            builder.CurrentParagraph.ParagraphFormat.LineSpacing = 18;
+            //builder.Font.Size = 16;
+            //builder.Font.Bold = true;
+            //builder.Font.Color = Color.Black;
+            //builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            //builder.CurrentParagraph.ParagraphFormat.LineSpacing = 18;
+            builder.CurrentParagraph.ParagraphFormat.Style = builder.Document.Styles["Nagłówek 1"];
 
             builder.Write(book.BaseBook.BookTitle);
         }
@@ -217,13 +224,17 @@ namespace IBE.Data.Export {
             if (withBookName) {
                 ExportBookName(chapter.ParentBook, builder);
             }
-            var par = builder.InsertParagraph();
-            par.ParagraphFormat.KeepWithNext = true;
 
-            builder.Font.Size = 14;
-            builder.Font.Bold = true;
-            builder.Font.Color = Color.Black;
-            builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            if (chapter.ParentBook.NumberOfChapters == 1) { return; }
+
+            var par = builder.InsertParagraph();
+            par.ParagraphFormat.Style = builder.Document.Styles["Nagłówek 2"];
+            //par.ParagraphFormat.KeepWithNext = true;
+            //par.ParagraphFormat.Style = builder.Document.Styles.Where(x => x.Name == "heading 2").FirstOrDefault();
+            //builder.Font.Size = 14;
+            //builder.Font.Bold = true;
+            //builder.Font.Color = Color.Black;
+            //builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Center;
             // builder.CurrentParagraph.ParagraphFormat.LineSpacing = 18;
 
             if (chapter.NumberOfChapter > 0) {
@@ -240,8 +251,9 @@ namespace IBE.Data.Export {
                 var subtitles = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse);
                 if (subtitles.Any()) {
                     var _par = builder.InsertParagraph(); //builder.CurrentParagraph;
+                    _par.ParagraphFormat.Style = builder.Document.Styles["Nagłówek 3"];
                     _par.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-                    _par.ParagraphFormat.KeepWithNext = true;
+                    //_par.ParagraphFormat.KeepWithNext = true;
                     foreach (var subtitle in subtitles) {
                         var run = new Run(builder.Document) {
                             Text = subtitle.Text
@@ -252,6 +264,7 @@ namespace IBE.Data.Export {
                     }
 
                     par = builder.InsertParagraph();
+                    par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
                     par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
                     builder.MoveTo(par);
                 }
@@ -388,7 +401,7 @@ namespace IBE.Data.Export {
                     });
 
                     builder.MoveTo(par);
-                                        
+
                     var footnote = builder.InsertFootnote(FootnoteType.Footnote, "");
                     footnote.Font.Position = 11;
                     footnote.Font.Color = Color.Blue;
@@ -432,7 +445,9 @@ namespace IBE.Data.Export {
                     CreateNoteHyperlinks = true,
                     DisplayDocTitle = true,
                     ExportDocumentStructure = true,
-                    JpegQuality = 100
+                    JpegQuality = 100,
+                    OutlineOptions = { HeadingsOutlineLevels = 3, ExpandedOutlineLevels = 3, CreateOutlinesForHeadingsInTables = true, CreateMissingOutlineLevels = true },
+                    OptimizeOutput = true                    
                 });
             }
         }
@@ -451,7 +466,9 @@ namespace IBE.Data.Export {
                     CreateNoteHyperlinks = true,
                     DisplayDocTitle = true,
                     ExportDocumentStructure = true,
-                    JpegQuality = 100
+                    JpegQuality = 100,
+                    OutlineOptions = { HeadingsOutlineLevels = 3, ExpandedOutlineLevels = 3, CreateOutlinesForHeadingsInTables = true, CreateMissingOutlineLevels = true },
+                    OptimizeOutput = true
                 });
             }
             return ms.GetBuffer();
@@ -483,6 +500,35 @@ namespace IBE.Data.Export {
                 hyperLinkStyle.Font.Color = System.Drawing.Color.Black;
                 hyperLinkStyle.Font.Underline = Underline.None;
             }
+
+            var h1 = document.Styles.Add(StyleType.Paragraph, "Nagłówek 1");
+            h1.BaseStyleName = "Heading 1";
+            h1.Font.Size = 16;
+            h1.Font.Bold = true;
+            h1.Font.Color = Color.Black;
+            h1.Font.Italic = false;
+            h1.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            h1.ParagraphFormat.LineSpacing = 18;
+            h1.ParagraphFormat.KeepWithNext = true;
+
+            var h2 = document.Styles.Add(StyleType.Paragraph, "Nagłówek 2");
+            h2.BaseStyleName = "Heading 2";
+            h2.Font.Size = 14;
+            h2.Font.Bold = true;
+            h2.Font.Color = Color.Black;
+            h2.Font.Italic = false;
+            h2.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            h2.ParagraphFormat.KeepWithNext = true;
+
+            var h3 = document.Styles.Add(StyleType.Paragraph, "Nagłówek 3");
+            h3.BaseStyleName = "Heading 3";
+            h3.Font.Size = 12;
+            h3.Font.Bold = true;
+            h3.Font.Color = Color.Black;
+            h3.Font.Italic = false;
+            h3.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            h3.ParagraphFormat.KeepWithNext = true;
+
             var builder = new DocumentBuilder(document);
             builder.Font.NoProofing = true;
             return builder;
