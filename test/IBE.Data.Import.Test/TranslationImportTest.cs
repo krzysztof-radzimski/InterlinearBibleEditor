@@ -170,6 +170,73 @@ namespace IBE.Data.Import.Test {
         }
 
         [TestMethod]
+        public void AddGrammarCodes() {
+            var count = 0;
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            uow.BeginTransaction();
+
+            var wordsWithoutGrammarCode = new XPQuery<VerseWord>(uow)
+                   .Where(x => x.GrammarCode == null && x.ParentVerse.ParentChapter.ParentBook.ParentTranslation.Name == "IPD+")
+                   .ToArray();
+
+            var wordsWithGrammarCode = new XPQuery<VerseWord>(uow)
+                    .Where(x => x.GrammarCode != null)
+                    .Select(x => new {
+                        SourceWord = x.SourceWord.Replace("·", "").Replace(",", "").Replace(".", "").Replace("*", "").Replace(";", "").ToLower(),
+                        StrongCode = x.StrongCode,
+                        GrammarCode = x.GrammarCode
+                    })
+                    .Distinct()
+                    .ToArray();
+
+            var wordsWithoutGrammarCodeCount = wordsWithoutGrammarCode.Length;
+
+            for (int i = 0; i < wordsWithoutGrammarCodeCount; i++) {
+                var item = wordsWithoutGrammarCode[i];
+                var gc = item.GrammarCode;
+                var sc = item.StrongCode;
+                var _sourceWord = item.SourceWord.Replace("·", "").Replace(",", "").Replace(".", "").Replace("*", "").Replace(";", "").ToLower();
+
+                var found = wordsWithGrammarCode.Where(x => x.SourceWord == _sourceWord && sc != null && x.StrongCode != null && x.StrongCode.Lang == sc.Lang && x.StrongCode.Code == sc.Code).FirstOrDefault();
+                if (found != null) {
+                    item.GrammarCode = found.GrammarCode;
+                    item.Save();
+                    count++;
+                }
+            }
+
+
+            uow.CommitChanges();
+        }
+
+        [TestMethod]
+        public void UpdateTransliterit() {
+            var count = 0;
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            uow.BeginTransaction();
+
+            var words = new XPQuery<VerseWord>(uow).Where(x => x.Transliteration.Contains("ph") || x.Transliteration.Contains("x")).ToArray();
+            foreach (var word in words) {
+                var tr = FixChar_PH(word.Transliteration);
+                tr = FixChar_X(tr);
+                word.Transliteration = tr;
+                word.Save();
+                count++;
+            }
+
+            uow.CommitChanges();
+        }
+
+        private string FixChar_PH(string text) {
+            return text.Replace("ph", "f");
+        }
+        private string FixChar_X(string text) {
+            return text.Replace("x", "ks");
+        }
+
+        [TestMethod]
         public void CreateCitationFile() {
             var builder = new StringBuilder();
             ConnectionHelper.Connect();
@@ -180,9 +247,8 @@ namespace IBE.Data.Import.Test {
             foreach (var row in csv) {
                 var cells = row.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
                 var xs = cells[2].Trim();
-                if (xs.Contains("Ml")) 
-                    { 
-                
+                if (xs.Contains("Ml")) {
+
                 }
                 var pattern = @"(?<abb>([0-9])?(\s)?\w+)\s(?<chapter>[0-9]+)\:(?<verse>[0-9]+)";
                 if (Regex.IsMatch(xs, pattern)) {
@@ -192,7 +258,7 @@ namespace IBE.Data.Import.Test {
                     var ver = match.Groups["verse"].Value;
 
 
-                    var book = trans.Books.Where(x => x.BaseBook.BookShortcut == abb || x.BaseBook.BookShortcut.Replace(" ","") == abb).FirstOrDefault();
+                    var book = trans.Books.Where(x => x.BaseBook.BookShortcut == abb || x.BaseBook.BookShortcut.Replace(" ", "") == abb).FirstOrDefault();
                     if (book.IsNotNull()) {
                         var chapter = book.Chapters.Where(x => x.NumberOfChapter == chap.ToInt()).FirstOrDefault();
                         if (chapter.IsNotNull()) {

@@ -10,7 +10,7 @@ namespace IBE.Data.Import.Greek {
             "ἅ","ἵ","ὕ","ἕ","ὅ","ἥ","ὥ",
             "εἁ","εἱ","εὑ","ιἑ","εὁ","εὡ",
             "υἁ","υἱ","υἑ","υἡ",
-            "ἧ","οὗ",
+            "ἧ","οὗ", "οἱ",
             "ᾇ","ᾧ","ᾗ"
             };
         private static readonly string[] UPPERS = new string[] {
@@ -19,14 +19,14 @@ namespace IBE.Data.Import.Greek {
             "Ἅ","Ἵ","Ὕ","Ἕ","Ὅ","Ἥ","Ὥ",
             "Εἁ","Εἱ","Εὑ","Ιἑ","Εὁ","Εὡ",
             "Υἁ","Υἱ","Υἑ","Υἡ",
-            "Ἧ","Οὗ",
+            "Ἧ","Οὗ", "Οἱ",
             "ᾏ","ᾯ","ᾟ"
             };
         public static string TransliterateAncientGreek(this string greekText) {
             if (greekText != null) {
                 var prepared = PrepareString(greekText);
                 var transliterit = prepared.Unidecode();
-                transliterit = transliterit.FixChar_U().FixChar_OU().FixChar_KH();
+                transliterit = transliterit.FixChar_U().FixChar_OU().FixChar_KH().FixChar_PH().FixChar_X();
                 return transliterit.Trim();
             }
             return default;
@@ -55,6 +55,12 @@ namespace IBE.Data.Import.Greek {
         }
         private static string FixChar_KH(this string text) {
             return text.Replace("kh", "ch");
+        }
+        private static string FixChar_PH(this string text) {
+            return text.Replace("ph", "f");
+        }
+        private static string FixChar_X(this string text) {
+            return text.Replace("x", "ks");
         }
         private static string FixChar_U(this string text) {
             string[] table = new string[] { "w", "r", "t", "p", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m" };
