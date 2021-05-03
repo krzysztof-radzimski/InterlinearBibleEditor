@@ -155,13 +155,14 @@
 
                                     @if (list2.Any()) {
 
-                                        foreach (var item in list2) {                                            
+                                        foreach (var item in list2) {
                                             var _name = item.Name.Replace("'", "").Replace("+", "");
                                             var _description = item.Description;
                                             var _catolicBadge = item.Catolic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
                                             var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
+                                            var _loginRequired = item.PasswordRequired ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
 
-                                            <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)</a></li>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_loginRequired)</a></li>
                                         }
                                     }
 

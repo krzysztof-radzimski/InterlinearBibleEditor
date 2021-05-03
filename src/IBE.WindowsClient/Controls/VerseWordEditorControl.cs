@@ -4,6 +4,7 @@ using IBE.Common.Extensions;
 using IBE.Data.Import.Greek;
 using IBE.Data.Model;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -36,8 +37,15 @@ namespace IBE.WindowsClient.Controls {
             if (word.GrammarCode.IsNotNull()) {
                 lblGrammarCode.DataBindings.Add("Text", word.GrammarCode, "GrammarCodeVariant1");
             }
+            else {
+                lblGrammarCode.BackColor = Color.DarkGray;
+            }
+
             if (word.StrongCode.IsNotNull()) {
                 lblStrong.DataBindings.Add("Text", word.StrongCode, "Code");
+            }
+            else {
+                lblStrong.BackColor = Color.DarkGray;
             }
         }
 
@@ -54,10 +62,12 @@ namespace IBE.WindowsClient.Controls {
                 if (strongCode.IsNotNullOrEmpty()) {
                     var sc = new XPQuery<StrongCode>(Word.Session).Where(x => x.Code == strongCode.ToInt() && x.Lang == Language.Greek).FirstOrDefault();
                     if (sc.IsNotNull()) {
+
                         Word.StrongCode = sc;
                         (Word.Session as UnitOfWork).CommitChanges();
 
                         lblStrong.DataBindings.Add("Text", Word.StrongCode, "Code");
+                        lblStrong.BackColor = Color.Transparent;
                     }
                 }
             }
@@ -68,16 +78,26 @@ namespace IBE.WindowsClient.Controls {
                 GrammarCodeClick(this, Word.GrammarCode);
             }
             else {
-                var grammarCode = XtraInputBox.Show("Insert grammar code:", "Grammar Code", "");
-                if (grammarCode.IsNotNullOrEmpty()) {
-                    var gc = new XPQuery<GrammarCode>(Word.Session).Where(x => x.GrammarCodeVariant1 == grammarCode).FirstOrDefault();
-                    if (gc.IsNotNull()) {
-                        Word.GrammarCode = gc;
+                using (var dlg = new GrammarCodeFindDialog(Word.Session)) {
+                    if (dlg.ShowDialog() == DialogResult.OK && dlg.Selected.IsNotNull()) {
+                        Word.GrammarCode = dlg.Selected;
                         (Word.Session as UnitOfWork).CommitChanges();
 
                         lblGrammarCode.DataBindings.Add("Text", Word.GrammarCode, "GrammarCodeVariant1");
+                        lblGrammarCode.BackColor = Color.Transparent;
                     }
                 }
+
+                //var grammarCode = XtraInputBox.Show("Insert grammar code:", "Grammar Code", "");
+                //if (grammarCode.IsNotNullOrEmpty()) {
+                //    var gc = new XPQuery<GrammarCode>(Word.Session).Where(x => x.GrammarCodeVariant1 == grammarCode).FirstOrDefault();
+                //    if (gc.IsNotNull()) {
+                //        Word.GrammarCode = gc;
+                //        (Word.Session as UnitOfWork).CommitChanges();
+
+                //        lblGrammarCode.DataBindings.Add("Text", Word.GrammarCode, "GrammarCodeVariant1");
+                //    }
+                //}
             }
         }
 
@@ -129,6 +149,9 @@ namespace IBE.WindowsClient.Controls {
                     if (sc.IsNotNull()) {
                         Word.StrongCode = sc;
                         (Word.Session as UnitOfWork).CommitChanges();
+
+                        lblStrong.Text = sc.Code.ToString();
+                        lblStrong.BackColor = Color.Transparent;
                     }
                 }
             }
@@ -136,14 +159,30 @@ namespace IBE.WindowsClient.Controls {
 
         private void lblGrammarCode_DoubleClick(object sender, EventArgs e) {
             if (Word.GrammarCode.IsNotNull()) {
-                var grammarCode = XtraInputBox.Show("Insert grammar's code:", "Grammar Codes", lblGrammarCode.Text);
-                if (grammarCode.IsNotNullOrEmpty()) {
-                    var gc = new XPQuery<GrammarCode>(Word.Session).Where(x => x.GrammarCodeVariant1 == grammarCode).FirstOrDefault();
-                    if (gc.IsNotNull()) {
-                        Word.GrammarCode = gc;
+
+                using (var dlg = new GrammarCodeFindDialog(Word.GrammarCode)) {
+                    if (dlg.ShowDialog() == DialogResult.OK && dlg.Selected.IsNotNull()) {
+                        Word.GrammarCode = dlg.Selected;
                         (Word.Session as UnitOfWork).CommitChanges();
+
+                        if (lblGrammarCode.DataBindings == null || lblGrammarCode.DataBindings.Count == 0) {
+                            lblGrammarCode.DataBindings.Add("Text", Word.GrammarCode, "GrammarCodeVariant1");
+                        }
+                        lblGrammarCode.Text = dlg.Selected.GrammarCodeVariant1;
+                        lblGrammarCode.BackColor = Color.Transparent;
                     }
                 }
+
+                //var grammarCode = XtraInputBox.Show("Insert grammar's code:", "Grammar Codes", lblGrammarCode.Text);
+                //if (grammarCode.IsNotNullOrEmpty()) {
+                //    var gc = new XPQuery<GrammarCode>(Word.Session).Where(x => x.GrammarCodeVariant1 == grammarCode).FirstOrDefault();
+                //    if (gc.IsNotNull()) {
+                //        Word.GrammarCode = gc;
+                //        (Word.Session as UnitOfWork).CommitChanges();
+
+                //        lblGrammarCode.Text = gc.GrammarCodeVariant1;
+                //    }
+                //}
             }
         }
     }

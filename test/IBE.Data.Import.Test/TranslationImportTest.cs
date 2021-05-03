@@ -1,4 +1,5 @@
 ﻿using DevExpress.Xpo;
+using HtmlAgilityPack;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -281,6 +282,38 @@ namespace IBE.Data.Import.Test {
                     File.WriteAllText(dlg.FileName, builder.ToString(), Encoding.UTF8);
                 }
             }
+        }
+
+        [TestMethod]
+        public void ImportRobinsonsMorphologicalAnalysisCodes() {
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            var grammarCodes = new XPQuery<GrammarCode>(uow);
+
+            var url = @"http://www.modernliteralversion.org/bibles/bs2/RMAC/RMACindex.html";
+            var web = new HtmlWeb();
+            var doc = web.Load(url);
+
+            var links = doc.DocumentNode.Descendants().Where(x => x.Name == "a").ToList();
+            foreach (var item in links) {
+                var href = item.Attributes["href"].Value;
+                var link = $"http://www.modernliteralversion.org/bibles/bs2/RMAC/{href}";
+                var doc2 = web.Load(link);
+
+                var cells = doc2.DocumentNode.Descendants().Where(x => x.Name == "td").ToList();
+                if (cells.Count > 2) {
+                    var cell = cells[2];
+                    var html = cell.InnerHtml.Replace("<br>", "<br/>");
+
+                    var gc = grammarCodes.Where(x => x.GrammarCodeVariant1 == item.InnerText.Trim()).FirstOrDefault();
+                    if (gc.IsNotNull() && gc.GrammarCodeDescription.IsNullOrEmpty()) {
+                        gc.GrammarCodeDescription = html;
+                        gc.Save();
+                    }
+                }
+            }
+
+            uow.CommitChanges();
         }
     }
 }

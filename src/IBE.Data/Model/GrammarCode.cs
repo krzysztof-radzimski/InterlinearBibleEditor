@@ -12,6 +12,8 @@
   ===================================================================================*/
 
 using DevExpress.Xpo;
+using IBE.Common.Extensions;
+using System.Xml.Linq;
 
 namespace IBE.Data.Model {
     public class GrammarCode : XPObject {
@@ -39,6 +41,19 @@ namespace IBE.Data.Model {
         public string ShortDefinition {
             get { return shortDefinition; }
             set { SetPropertyValue(nameof(ShortDefinition), ref shortDefinition, value); }
+        }
+
+        [NonPersistent]
+        public string GrammarCodeDescriptionText {
+            get {
+                if (GrammarCodeDescription.IsNotNull()) {
+                    try {
+                        var value = XElement.Parse($"<div>{GrammarCodeDescription}</div>").Value();
+                        return value.Replace("\r\n"," ").Replace("\n", " ");
+                    } catch { }
+                }
+                return default;
+            }
         }
 
         [Association("VerseWordGrammarCodes")]

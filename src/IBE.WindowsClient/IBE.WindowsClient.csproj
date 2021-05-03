@@ -61,6 +61,7 @@
     <Reference Include="DevExpress.Pdf.v20.2.Core, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v20.2.Core, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.RichEdit.v20.2.Core, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Sparkline.v20.2.Core, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.SpellChecker.v20.2.Core, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Utils.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Xpo.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
@@ -81,10 +82,14 @@
     <Reference Include="Microsoft.Web.WebView2.Wpf, Version=1.0.818.41, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.WebView2.1.0.818.41\lib\net45\Microsoft.Web.WebView2.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -94,6 +99,8 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArticleEditorForm.cs">
@@ -133,6 +140,12 @@
     </Compile>
     <Compile Include="Controls\VerseWordEditorControl.Designer.cs">
       <DependentUpon>VerseWordEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GrammarCodeFindDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GrammarCodeFindDialog.Designer.cs">
+      <DependentUpon>GrammarCodeFindDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="InterlinearEditorForm.cs">
       <SubType>Form</SubType>
@@ -177,6 +190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\VerseWordEditorControl.resx">
       <DependentUpon>VerseWordEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GrammarCodeFindDialog.resx">
+      <DependentUpon>GrammarCodeFindDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InterlinearEditorForm.resx">
       <DependentUpon>InterlinearEditorForm.cs</DependentUpon>

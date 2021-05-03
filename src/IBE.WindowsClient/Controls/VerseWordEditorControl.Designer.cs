@@ -94,6 +94,7 @@ namespace IBE.WindowsClient.Controls {
             this.btnDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
             this.btnDelete.Location = new System.Drawing.Point(246, 3);
             this.btnDelete.Name = "btnDelete";
+            this.btnDelete.PaintStyle = DevExpress.XtraEditors.Controls.PaintStyles.Light;
             this.tablePanel.SetRow(this.btnDelete, 0);
             this.btnDelete.Size = new System.Drawing.Size(21, 23);
             this.btnDelete.TabIndex = 9;
@@ -214,6 +215,8 @@ namespace IBE.WindowsClient.Controls {
             this.tablePanel.SetColumn(this.cbCitation, 1);
             this.cbCitation.Location = new System.Drawing.Point(138, 177);
             this.cbCitation.Name = "cbCitation";
+            this.cbCitation.Properties.Appearance.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold);
+            this.cbCitation.Properties.Appearance.Options.UseFont = true;
             this.cbCitation.Properties.Caption = "In citation";
             this.tablePanel.SetRow(this.cbCitation, 6);
             this.cbCitation.Size = new System.Drawing.Size(129, 18);
@@ -225,6 +228,10 @@ namespace IBE.WindowsClient.Controls {
             this.tablePanel.SetColumn(this.cbWordOfJesus, 0);
             this.cbWordOfJesus.Location = new System.Drawing.Point(3, 177);
             this.cbWordOfJesus.Name = "cbWordOfJesus";
+            this.cbWordOfJesus.Properties.Appearance.BackColor = System.Drawing.Color.Transparent;
+            this.cbWordOfJesus.Properties.Appearance.ForeColor = System.Drawing.Color.Red;
+            this.cbWordOfJesus.Properties.Appearance.Options.UseBackColor = true;
+            this.cbWordOfJesus.Properties.Appearance.Options.UseForeColor = true;
             this.cbWordOfJesus.Properties.Caption = "Word of Jesus";
             this.tablePanel.SetRow(this.cbWordOfJesus, 6);
             this.cbWordOfJesus.Size = new System.Drawing.Size(129, 18);
@@ -246,7 +253,7 @@ namespace IBE.WindowsClient.Controls {
             // 
             // lblGrammarCode
             // 
-            this.lblGrammarCode.Appearance.ForeColor = System.Drawing.Color.Maroon;
+            this.lblGrammarCode.Appearance.ForeColor = System.Drawing.Color.Red;
             this.lblGrammarCode.Appearance.Options.UseForeColor = true;
             this.lblGrammarCode.Appearance.Options.UseTextOptions = true;
             this.lblGrammarCode.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -266,7 +273,7 @@ namespace IBE.WindowsClient.Controls {
             // lblTransliteration
             // 
             this.lblTransliteration.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblTransliteration.Appearance.ForeColor = System.Drawing.Color.DarkGreen;
+            this.lblTransliteration.Appearance.ForeColor = System.Drawing.Color.Green;
             this.lblTransliteration.Appearance.Options.UseFont = true;
             this.lblTransliteration.Appearance.Options.UseForeColor = true;
             this.lblTransliteration.Appearance.Options.UseTextOptions = true;
@@ -286,7 +293,7 @@ namespace IBE.WindowsClient.Controls {
             // 
             // lblStrong
             // 
-            this.lblStrong.Appearance.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.lblStrong.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.lblStrong.Appearance.Options.UseForeColor = true;
             this.lblStrong.Appearance.Options.UseTextOptions = true;
             this.lblStrong.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
