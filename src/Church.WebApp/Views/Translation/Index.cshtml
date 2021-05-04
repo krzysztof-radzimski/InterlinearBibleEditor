@@ -49,11 +49,13 @@ break;
                     bookHtml = $"{book.BaseBook.BookShortcut}&nbsp;({bookHtml})";
                 }
 
-                var pillHtml = $@"<span class=""badge bg-success rounded-pill"" style=""position: absolute; right: -10px; top: -15px"">{book.NumberOfChapters}</span>";
-                if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
-                    pillHtml = $@"<span class=""badge bg-success"" style=""position: absolute; right: -20px; top: -20px""><a href=""../../api/DownloadInterlinearPdf?q={Model.Translation.Name},{book.NumberOfBook}"" title=""Pobierz księgę w formacie PDF"" class=""text-decoration-none"" style=""color: white;""><i class=""fas fa-arrow-circle-down fa-2x""></i></a></span>";
+                var pillHtml = "";
+                if (Model.Translation.OpenAccess) {
+                    pillHtml = $@"<span class=""badge bg-success rounded-pill"" style=""position: absolute; right: -10px; top: -15px"">{book.NumberOfChapters}</span>";
+                    if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
+                        pillHtml = $@"<span class=""badge bg-success"" style=""position: absolute; right: -20px; top: -20px""><a href=""../../api/DownloadInterlinearPdf?q={Model.Translation.Name},{book.NumberOfBook}"" title=""Pobierz księgę w formacie PDF"" class=""text-decoration-none"" style=""color: white;""><i class=""fas fa-arrow-circle-down fa-2x""></i></a></span>";
+                    }
                 }
-
 
                 <div class="col p-2" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3); opacity: 0.8;" title="@book.BaseBook.BookTitle">
                     <span style="position: relative;">
