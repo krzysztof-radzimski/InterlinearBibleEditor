@@ -14,6 +14,13 @@ namespace Church.WebApp.Controllers {
 
         [HttpGet]
         public ActionResult<bool> Get() {
+            //try {
+            //    var callingUrl = Request.Headers["Referer"].ToString();
+            //    var isLocal = Url.IsLocalUrl(callingUrl);
+            //    if (isLocal) { return true; }
+            //}
+            //catch { }
+
             var qs = Request.QueryString;
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 9) {
                 var queryString = Uri.UnescapeDataString(qs.Value);

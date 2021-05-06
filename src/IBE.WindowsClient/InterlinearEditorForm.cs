@@ -162,15 +162,18 @@ namespace IBE.WindowsClient {
                     currentControl = null;
                 }
 
+                Application.DoEvents();
+
                 var book = txtBook.EditValue as BookBaseInfo;
                 var chapterNumber = txtChapter.EditValue.ToInt();
                 var verse = new XPQuery<Verse>(Uow).Where(x => x.NumberOfVerse == verseNumber && x.ParentChapter.NumberOfChapter == chapterNumber && x.ParentChapter.ParentBook.NumberOfBook == book.NumberOfBook && x.ParentChapter.ParentBook.ParentTranslation.Name == NAME).FirstOrDefault();
                 if (verse.IsNotNull()) {
-                    var control = new VerseEditorControl(verse, Translation.BookType == TheBookType.Bible);
-                    control.Dock = DockStyle.Fill;
-                    Application.DoEvents();
+                    var control = new VerseEditorControl(verse, Translation.BookType == TheBookType.Bible) {
+                        Dock = DockStyle.Fill
+                    };                    
                     this.Controls.Add(control);
-                    Application.DoEvents();
+
+                    control.LoadData();
 
                     btnNextVerse.Enabled = true;
                     var allVerses = editVerse.DataSource as List<int>;

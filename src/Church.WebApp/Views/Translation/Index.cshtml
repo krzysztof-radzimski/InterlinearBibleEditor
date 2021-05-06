@@ -756,36 +756,40 @@ break;
 
         @section HeaderScripts {
             @if (!Model.Translation.OpenAccess) {
-                <script>
-                  
+                var isLocal = Context.Request.Host.HasValue && Context.Request.Host.Host.Contains("localhost");
+                if (!isLocal) {
 
-                    var password = "";
-                    var myCookie = document.cookie;
-                    if (myCookie) {
-                        password = getCookie("pwd");
-                    } else {
-                        password = prompt("Wprowadź hasło:", "");
-                    }
+                    <script>
 
-                    var oReq = new XMLHttpRequest();
-                    oReq.open("GET", "../../api/utils?pwd=" + password);
-                    oReq.send();
 
-                    oReq.onload = function () {
-                        if (oReq.response == "false") {
-
-                            var element = document.getElementsByTagName("body"), index;
-
-                            for (index = element.length - 1; index >= 0; index--) {
-                                element[index].parentNode.removeChild(element[index]);
-                            }
-
-                            window.location.href = '../';
-                        } else if (!myCookie) {
-                            setCookie("pwd", password, 1);
+                        var password = "";
+                        var myCookie = document.cookie;
+                        if (myCookie) {
+                            password = getCookie("pwd");
+                        } else {
+                            password = prompt("Wprowadź hasło:", "");
                         }
-                    };
-                </script>
+
+                        var oReq = new XMLHttpRequest();
+                        oReq.open("GET", "../../api/utils?pwd=" + password);
+                        oReq.send();
+
+                        oReq.onload = function () {
+                            if (oReq.response == "false") {
+
+                                var element = document.getElementsByTagName("body"), index;
+
+                                for (index = element.length - 1; index >= 0; index--) {
+                                    element[index].parentNode.removeChild(element[index]);
+                                }
+
+                                window.location.href = '../';
+                            } else if (!myCookie) {
+                                setCookie("pwd", password, 1);
+                            }
+                        };
+                    </script>
+                }
             }
         }
 

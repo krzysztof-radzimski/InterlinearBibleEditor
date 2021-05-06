@@ -35,6 +35,7 @@ namespace IBE.WindowsClient {
         }
 
         private void view_DoubleClick(object sender, System.EventArgs e) {
+            Selected = view.GetFocusedRow() as GrammarCode;
             DialogResult = System.Windows.Forms.DialogResult.OK;
         }
     }

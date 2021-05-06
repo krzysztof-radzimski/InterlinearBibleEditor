@@ -48,7 +48,7 @@ namespace IBE.WindowsClient.Controls {
         }
 
         private void VerseEditorControl_Load(object sender, EventArgs e) {
-            LoadData();
+            // LoadData();
         }
 
         public VerseWordEditorControl CreateVerseWordControl(VerseWord word) {
@@ -59,7 +59,7 @@ namespace IBE.WindowsClient.Controls {
             return control;
         }
 
-        private void LoadData() {
+        public void LoadData() {
             if (isLoading || isLoaded) { return; }
             isLoading = true;
             gridViewTranslations.LoadingPanelVisible = true;
@@ -70,11 +70,11 @@ namespace IBE.WindowsClient.Controls {
             if (subtitle.IsNotNull()) {
                 txtStoryText.Text = subtitle.Text;
                 rgStoryLevel.SelectedIndex = subtitle.Level - 1;
-
             }
 
+            //((System.ComponentModel.ISupportInitialize)(this.flowLayoutPanel)).BeginInit();
             flowLayoutPanel.SuspendLayout();
-            Application.DoEvents();
+            //Application.DoEvents();
 
             var getControls = Task.Factory.StartNew(() => {
                 var wordControls = new List<VerseWordEditorControl>();
@@ -92,7 +92,10 @@ namespace IBE.WindowsClient.Controls {
                     foreach (var control in x.Result) {
                         f.flowLayoutPanel.Controls.Add(control);
                     }
-                    f.flowLayoutPanel.ResumeLayout();
+
+                    //((System.ComponentModel.ISupportInitialize)(f.flowLayoutPanel)).EndInit();
+                    f.flowLayoutPanel.ResumeLayout(false);
+                    f.flowLayoutPanel.PerformLayout();
                 });
             });
 
