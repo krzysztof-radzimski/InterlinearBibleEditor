@@ -302,5 +302,14 @@ namespace IBE.WindowsClient {
                 }
             }
         }
+
+        private void btnSetAllAsJesusWords_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            if (currentControl.IsNotNull()) {
+                foreach (VerseWordEditorControl item in currentControl.VerseWordsControl.Controls) {
+                    item.Word.WordOfJesus = true;
+                }
+            }
+        }
     }
 }

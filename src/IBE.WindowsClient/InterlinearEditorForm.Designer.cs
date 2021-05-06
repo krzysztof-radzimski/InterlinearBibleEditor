@@ -38,9 +38,10 @@ namespace IBE.WindowsClient {
             this.btnAddWord = new DevExpress.XtraBars.BarButtonItem();
             this.btnAddWords = new DevExpress.XtraBars.BarButtonItem();
             this.btnDeleteWords = new DevExpress.XtraBars.BarButtonItem();
+            this.btnRenumerateWords = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            this.btnRenumerateWords = new DevExpress.XtraBars.BarButtonItem();
+            this.btnSetAllAsJesusWords = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editBook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editChapter)).BeginInit();
@@ -62,9 +63,10 @@ namespace IBE.WindowsClient {
             this.btnAddWord,
             this.btnAddWords,
             this.btnDeleteWords,
-            this.btnRenumerateWords});
+            this.btnRenumerateWords,
+            this.btnSetAllAsJesusWords});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 12;
+            this.ribbonControl1.MaxItemId = 13;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
@@ -177,6 +179,14 @@ namespace IBE.WindowsClient {
             this.btnDeleteWords.Name = "btnDeleteWords";
             this.btnDeleteWords.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteWords_ItemClick);
             // 
+            // btnRenumerateWords
+            // 
+            this.btnRenumerateWords.Caption = "Renumerate words";
+            this.btnRenumerateWords.Id = 11;
+            this.btnRenumerateWords.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnRenumerateWords.ImageOptions.SvgImage")));
+            this.btnRenumerateWords.Name = "btnRenumerateWords";
+            this.btnRenumerateWords.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnRenumerateWords_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -196,16 +206,17 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnAddWords);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnDeleteWords, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnRenumerateWords);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnSetAllAsJesusWords, true);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
-            // btnRenumerateWords
+            // btnSetAllAsJesusWords
             // 
-            this.btnRenumerateWords.Caption = "Renumerate words";
-            this.btnRenumerateWords.Id = 11;
-            this.btnRenumerateWords.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnRenumerateWords.ImageOptions.SvgImage")));
-            this.btnRenumerateWords.Name = "btnRenumerateWords";
-            this.btnRenumerateWords.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnRenumerateWords_ItemClick);
+            this.btnSetAllAsJesusWords.Caption = "All as Jesus words";
+            this.btnSetAllAsJesusWords.Id = 12;
+            this.btnSetAllAsJesusWords.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnSetAllAsJesusWords.ImageOptions.SvgImage")));
+            this.btnSetAllAsJesusWords.Name = "btnSetAllAsJesusWords";
+            this.btnSetAllAsJesusWords.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnSetAllAsJesusWords_ItemClick);
             // 
             // InterlinearEditorForm
             // 
@@ -243,5 +254,6 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnAddWords;
         private DevExpress.XtraBars.BarButtonItem btnDeleteWords;
         private DevExpress.XtraBars.BarButtonItem btnRenumerateWords;
+        private DevExpress.XtraBars.BarButtonItem btnSetAllAsJesusWords;
     }
 }
