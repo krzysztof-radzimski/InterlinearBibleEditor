@@ -18,11 +18,11 @@
                     }
 
                     <div class="col-sm-6">
-                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-lg h-md-250 position-relative">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-lg h-md-250 position-relative" id="article-cell">
                             <div class="col p-4 d-flex flex-column position-static">
                                 <strong class="d-inline-block mb-2 text-success pill-white">@_item.Type</strong>
                                 <h3 class="mb-0">@item.Subject</h3>
-                                <div class="mb-1 text-muted">@item.Date.Day @item.Date.ToString("MMMM") @item.Date.Year</div>
+                                <div class="mb-1 text-muted">@item.Date.GetDatePl()</div>
                                 <p class="mb-auto fst-italic">@item.AuthorName</p>
                                 <p class="mb-auto">@lead</p>
                                 <a href="../Article?id=@item.Id" class="stretched-link">Czytaj dalej...</a>
@@ -43,7 +43,7 @@
                     }
 
                     <div style="display: table-row;">
-                        <div style="display: table-cell; vertical-align: top; padding-top: 10px; padding-right: 5px;">@item.Date.Day @item.Date.ToString("MMMM") @item.Date.Year</div>
+                        <div style="display: table-cell; vertical-align: top; padding-top: 10px; padding-right: 5px;">@item.Date.GetDatePl()</div>
                         <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><a href="../Article?id=@item.Id" class="link text-decoration-none">@item.Subject</a></div>
                         <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><i>@Html.Raw(item.AuthorName.GetInitials())</i></div>
                     </div>

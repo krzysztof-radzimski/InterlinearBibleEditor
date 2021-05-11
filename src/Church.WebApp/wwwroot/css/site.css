@@ -82,6 +82,9 @@ html {
     html {
         font-size: 16px;
     }
+    #article-cell {
+        min-height: 400px;
+    }
 }
 
 .border-top {

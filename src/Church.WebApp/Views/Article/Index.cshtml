@@ -14,11 +14,14 @@
 
     <div class="row shadow-lg" style="max-width: 1040px; margin: auto;">
         <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-success pill-white">@Model.Type.GetDescription()</strong>
+            <div>
+                <strong class="d-inline-block mb-2 text-success pill-white" style="width:auto;"><a href="/articles" class="text-decoration-none" title="Więcej artykułów"><i class="far fa-arrow-alt-circle-left"></i></a></strong>
+                <strong class="d-inline-block mb-2 text-success pill-white">@Model.Type.GetDescription()</strong>
+            </div>
             <h3 class="mb-0">@Model.Subject</h3>
             <p class="mb-auto fst-italic">@Model.AuthorName</p>
             <p class="mb-auto">@Model.Lead</p>
-            <div class="mb-1 text-muted">@Model.Date.Day @Model.Date.ToString("MMMM") @Model.Date.Year</div>
+            <div class="mb-1 text-muted">@Model.Date.GetDatePl()</div>
         </div>
 
         @if (Model.AuthorPicture.IsNotNull()) {

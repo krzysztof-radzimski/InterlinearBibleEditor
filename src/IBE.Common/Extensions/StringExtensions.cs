@@ -278,4 +278,42 @@ namespace IBE.Common.Extensions {
             return T;
         }
     }
+
+    public static class DateTimeExtensions {
+        public static string GetDatePl(this DateTime date) {
+            var dateText = $"{date.Day} {date.Month.GenitivePolishMonthName()} {date.Year}";
+            
+            return dateText;
+        }
+        static string GenitivePolishMonthName(this int month) {
+            switch (month) {
+                case 1:
+                    return "stycznia";
+                case 2:
+                    return "lutego";
+                case 3:
+                    return "marca";
+                case 4:
+                    return "kwietnia";
+                case 5:
+                    return "maja";
+                case 6:
+                    return "czerwca";
+                case 7:
+                    return "lipca";
+                case 8:
+                    return "sierpnia";
+                case 9:
+                    return "września";
+                case 10:
+                    return "października";
+                case 11:
+                    return "listopada";
+                case 12:
+                    return "grudnia";
+
+            }
+            return "";
+        }
+    }
 }
