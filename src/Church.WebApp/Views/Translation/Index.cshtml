@@ -197,6 +197,24 @@ break;
                                 }
                             </li>
                         }
+
+                        if (_trans.Key == IBE.Data.Model.TranslationType.Interlinear.GetDescription() && Model.Book.ToInt() > 460) {
+                            var _model_chapter = Model.Chapter.ToInt() == 0 ? 1 : Model.Chapter.ToInt();
+                            var _model_verse = Model.Verse.ToInt() == 0 ? 1 : Model.Verse.ToInt();
+                            var url_oblubienica = $"https://biblia.oblubienica.eu/interlinearny/index/book/{Model.NTBookNumber}/chapter/{_model_chapter}/verse/{_model_verse}";
+                            <li>
+                                <a class="dropdown-item" href="@url_oblubienica" target="_blank">Ewangeliczny Przekład Interlinearny Biblii - Oblubienica.eu</a>
+                            </li>
+                        }
+                       
+                        if (_trans.Key == IBE.Data.Model.TranslationType.Interlinear.GetDescription()) {
+                            var _model_chapter = Model.Chapter.ToInt() == 0 ? 1 : Model.Chapter.ToInt();
+                            var _model_verse = Model.Verse.ToInt() == 0 ? 1 : Model.Verse.ToInt();
+                            var url_logo = $"https://app.logos.com/books/LLS%3ALEB/references/bible%2Bleb2.{Model.LogosBookNumber}.{_model_chapter}.{_model_verse}";
+                            <li>
+                                <a class="dropdown-item" href="@url_logo" target="_blank">The Lexham English Bible</a>
+                            </li>
+                        }
                     }
 
                 </ul>
@@ -398,8 +416,10 @@ break;
                     var words = verse.VerseWords.OrderBy(x => x.NumberOfVerseWord);
                     foreach (var word in words) {
                         var isFirst = word == verse.VerseWords.First();
-                        var gc = word.GrammarCode.IsNotNull() ? $"<a class=\"text-decoration-none\" style=\"padding-left: 0 !important;\" href=\"http://www.modernliteralversion.org/bibles/bs2/RMAC/{word.GrammarCode.GrammarCodeVariant1}.htm\" target=\"_blank\">{word.GrammarCode.GrammarCodeVariant1}</a>" : String.Empty;
-                        var sc = word.StrongCode.IsNotNull() ? $"<a class=\"text-decoration-none\" style=\"padding-left: 0 !important;\" href=\"https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=G{word.StrongCode.Code}&t=MGNT\" target=\"_blank\">G{word.StrongCode.Code}</a>" : String.Empty;
+                        var gcTooltip = word.GrammarCode.IsNotNull() && word.GrammarCode.ShortDefinition.IsNotNullOrEmpty() ? word.GrammarCode.ShortDefinition.Replace("\"", "'").Replace("\r\n", "").Replace("\r", "").Replace("\n", "") : $"";
+                        var scTooltip = word.StrongCode.IsNotNull() && word.StrongCode.ShortDefinition.IsNotNullOrEmpty() ? word.StrongCode.ShortDefinition.Replace("\"", "'").Replace("\r\n", "").Replace("\r", "").Replace("\n", "") : $"";
+                        var gc = word.GrammarCode.IsNotNull() ? $"<a class=\"text-decoration-none\" style=\"padding-left: 0 !important;\" href=\"http://www.modernliteralversion.org/bibles/bs2/RMAC/{word.GrammarCode.GrammarCodeVariant1}.htm\" target=\"_blank\" title=\"{gcTooltip}\">{word.GrammarCode.GrammarCodeVariant1}</a>" : String.Empty;
+                        var sc = word.StrongCode.IsNotNull() ? $"<a class=\"text-decoration-none\" style=\"padding-left: 0 !important;\" href=\"https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=G{word.StrongCode.Code}&t=MGNT\" target=\"_blank\" title=\"{scTooltip}\">G{word.StrongCode.Code}</a>" : String.Empty;
                         var translation = word.Translation;
                         if (translation.IsNullOrEmpty()) { translation = "―"; }
                         translation = translation.Replace(" ", "&nbsp;").Replace("<n>", @"<span class=""text-muted"">").Replace("</n>", "</span>");
@@ -518,19 +538,6 @@ break;
                                     storyText = System.Text.RegularExpressions.Regex.Replace(storyText, pattern2, delegate (System.Text.RegularExpressions.Match m) {
                                         return $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BookName} {m.Groups["num"].Value})";
                                     }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
-                                    //var regex = new System.Text.RegularExpressions.Regex(pattern);
-                                    //var match = regex.Match(storyText.Trim());
-                                    //if (match.Success) {
-                                    //    storyText = $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(match.Groups["book"].Value)).First().BookName} {match.Groups["num"].Value})";
-                                    //}
-                                    //else {
-                                    //    regex = new System.Text.RegularExpressions.Regex(pattern2);
-                                    //    match = regex.Match(storyText.Trim());
-                                    //    if (match.Success) {
-                                    //        storyText = $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(match.Groups["book"].Value)).First().BookName} {match.Groups["num"].Value})";
-                                    //    }
-                                    //}
                                 }
 
                                 if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
@@ -799,7 +806,6 @@ break;
                 <script>
     docReady(function () {
         setTimeout(function () {
-
             const topNavId = 'top-nav';
             const topNav = document.getElementById(topNavId);
 
@@ -810,7 +816,6 @@ break;
 
             window.scrollTo({ top: y, behavior: 'smooth' });
         }, 1000);
-
     });
                 </script>
 

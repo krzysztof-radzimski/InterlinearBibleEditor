@@ -255,6 +255,8 @@ namespace Church.WebApp.Controllers {
         public string Book { get; }
         public string Chapter { get; }
         public string Verse { get; }
+        public int NTBookNumber { get; }
+        public int LogosBookNumber { get; }
         public List<TranslationInfo> Translations { get; }
         public TranslationControllerModel(Translation t, string b = null, string c = null, string v = null, List<BookBase> books = null) {
             Translation = t;
@@ -263,6 +265,49 @@ namespace Church.WebApp.Controllers {
             Verse = v;
             Translations = new List<TranslationInfo>();
             Books = books;
+            NTBookNumber = GetNTBookNumber();
+            LogosBookNumber = GetLogosBookNumber();
+        }
+
+        private int GetNTBookNumber() {
+            var book = Book.ToInt();
+            var r = 1;
+            for (int i = 470; i <= 730; i+=10) {
+                if (i == book) {
+                    return r;
+                }
+                r++;
+            }
+            return r;
+        }
+        private int GetLogosBookNumber() {
+            var book = Book.ToInt();
+            var r = 1;
+            if (book < 470) {
+                foreach (var item in Books) {
+                    if (item.NumberOfBook < 470) {
+                        if (book == item.NumberOfBook) { return r; }
+                    }
+                    else {
+                        break;
+                    }
+                    r++;
+                }
+            }
+            else {
+                r = 61;
+                foreach (var item in Books) {
+                    if (item.NumberOfBook >= 470) {
+                        if (book == item.NumberOfBook) { return r; }
+                        r++;
+                    }
+                    else {
+                        continue;
+                    }                  
+                }
+            }
+
+            return r;
         }
     }
     public class TranslationInfo {
