@@ -212,11 +212,6 @@ namespace IBE.Data.Export {
             builder.InsertHtml($"<div style=\"font-size: 11; text-align: left;\">{translation.DetailedInfo}</div>");
         }
         private void ExportBookName(Book book, DocumentBuilder builder) {
-            //builder.Font.Size = 16;
-            //builder.Font.Bold = true;
-            //builder.Font.Color = Color.Black;
-            //builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-            //builder.CurrentParagraph.ParagraphFormat.LineSpacing = 18;
             builder.CurrentParagraph.ParagraphFormat.Style = builder.Document.Styles["Nagłówek 1"];
             builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
@@ -232,14 +227,6 @@ namespace IBE.Data.Export {
             var par = builder.InsertParagraph();
             par.ParagraphFormat.Style = builder.Document.Styles["Nagłówek 2"];
             par.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-
-            //par.ParagraphFormat.KeepWithNext = true;
-            //par.ParagraphFormat.Style = builder.Document.Styles.Where(x => x.Name == "heading 2").FirstOrDefault();
-            //builder.Font.Size = 14;
-            //builder.Font.Bold = true;
-            //builder.Font.Color = Color.Black;
-            //builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-            // builder.CurrentParagraph.ParagraphFormat.LineSpacing = 18;
 
             if (chapter.NumberOfChapter > 0) {
                 var chapterString = chapter.ParentBook.NumberOfBook == 230 ? chapter.ParentTranslation.ChapterPsalmString : chapter.ParentTranslation.ChapterString;
@@ -380,29 +367,6 @@ namespace IBE.Data.Export {
             if (word.FootnoteText.IsNotNullOrEmpty()) {
                 var footnoteText = word.FootnoteText;
                 if (footnoteText.IsNotNullOrEmpty()) {
-                    //footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
-                    //    var numberOfBook = m.Groups["book"].Value.ToInt();
-                    //    var bookShortcut = word.ParentVerse.ParentChapter.ParentBook.ParentTranslation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
-                    //    var numberOfChapter = m.Groups["chapter"].Value.ToInt();
-                    //    var verseStart = m.Groups["verseStart"].Value.ToInt();
-                    //    var verseEnd = m.Groups["verseEnd"].Value.ToInt();
-                    //    var versesText = String.Empty;
-                    //    for (int i = verseStart; i <= verseEnd; i++) {
-                    //        versesText += $"{i}";
-                    //        if (i != verseEnd) { versesText += ","; }
-                    //    }
-
-                    //    return $"{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}";
-                    //});
-                    //footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
-                    //    var numberOfBook = m.Groups["book"].Value.ToInt();
-                    //    var bookShortcut = word.ParentVerse.ParentChapter.ParentBook.ParentTranslation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
-                    //    var numberOfChapter = m.Groups["chapter"].Value.ToInt();
-                    //    var verseStart = m.Groups["verseStart"].Value.ToInt();
-
-
-                    //    return $"{bookShortcut} {numberOfChapter}:{verseStart}";
-                    //});
                     var translation = word.ParentVerse.ParentChapter.ParentBook.ParentTranslation;
                     footnoteText = GetInternalVerseRangeText(footnoteText, translation);
                     footnoteText = GetInternalVerseText(footnoteText, translation);
@@ -432,7 +396,14 @@ namespace IBE.Data.Export {
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
                 var verseEnd = m.Groups["verseEnd"].Value.ToInt();
 
-                return $"{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}";
+                var verseText = GetVerseTranslation(translation.Session, numberOfBook, numberOfChapter, verseStart, verseEnd, translationName);
+
+                var link = $"{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}";
+
+                if (verseText.IsNotNullOrEmpty()) {
+                    return $"{link} - <i>{verseText}</i>";
+                }
+                return link;
             });
             return input;
         }
@@ -444,12 +415,19 @@ namespace IBE.Data.Export {
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
 
-                return $"{bookShortcut} {numberOfChapter}:{verseStart}";
+                var verseText = GetVerseTranslation(translation.Session, numberOfBook, numberOfChapter, verseStart, translationName: translation.Name.Replace("+", ""));
+
+                var link = $"{bookShortcut} {numberOfChapter}:{verseStart}";
+
+                if (verseText.IsNotNullOrEmpty()) {
+                    return $"{link} - <i>{verseText}</i>";
+                }
+                return link;
             });
             return input;
         }
 
-        public static string GetExternalVerseText(string input, VerseWord word) {
+        public string GetExternalVerseText(string input, VerseWord word) {
             input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
                 var translationName = m.Groups["translationName"].Value;
                 var numberOfBook = m.Groups["book"].Value.ToInt();
@@ -459,7 +437,14 @@ namespace IBE.Data.Export {
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
 
-                return $"{bookShortcut} {numberOfChapter}:{verseStart}";
+                var verseText = GetVerseTranslation(translation.Session, numberOfBook, numberOfChapter, verseStart, translationName: translationName);
+
+                var link = $"{bookShortcut} {numberOfChapter}:{verseStart}";
+
+                if (verseText.IsNotNullOrEmpty()) {
+                    return $"{link} - <i>{verseText}</i>";
+                }
+                return link;
             });
             return input;
         }
@@ -476,11 +461,85 @@ namespace IBE.Data.Export {
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
                 var verseEnd = m.Groups["verseEnd"].Value.ToInt();
 
-                return $"{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}";
+                var verseText = GetVerseTranslation(translation.Session, numberOfBook, numberOfChapter, verseStart, verseEnd, translationName);
+
+                var link = $"{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}";
+
+                if (verseText.IsNotNullOrEmpty()) {
+                    return $"{link} - <i>{verseText}</i>";
+                }
+                return link;
             });
             return input;
         }
 
+        private string GetVerseTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart, int verseEnd = 0, string translationName = "NPI") {
+            //var chapterVerses = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == translationName &&
+            //            x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook);
+            var chapterVerses = new XPQuery<Verse>(session).Where(x => x.Index.StartsWith($"{translationName}.{numberOfBook}.{numberOfChapter}."));
+            if (verseEnd == 0) {
+                var verse = chapterVerses.Where(x => x.NumberOfVerse == verseStart).FirstOrDefault();
+                if (verse.IsNotNull()) {
+                    var verseText = verse.GetTranslationText();
+                    if (verseText.IsNotNullOrWhiteSpace()) {
+                        return verseText;
+                    }
+                    else {
+                        if (numberOfBook > 460) {
+                            //verse = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == "PBPW" &&
+                            //    x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook && x.NumberOfVerse == verseStart).FirstOrDefault();
+                            verse = new XPQuery<Verse>(session).Where(x => x.Index == $"PBPW.{numberOfBook}.{numberOfChapter}.{verseStart}").FirstOrDefault();
+                        }
+                        else {
+                            //verse = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == "SNP18" &&
+                            //       x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook && x.NumberOfVerse == verseStart).FirstOrDefault();
+                            verse = new XPQuery<Verse>(session).Where(x => x.Index == $"SNP18.{numberOfBook}.{numberOfChapter}.{verseStart}").FirstOrDefault();
+                        }
+                        if (verse.IsNotNull()) {
+                            verseText = verse.Text;
+                            verseText = System.Text.RegularExpressions.Regex.Replace(verseText, @"\[[0-9]+\]", "");
+
+                            return verseText;
+                        }
+                    }
+                }
+            }
+            else {
+                var verses = chapterVerses.Where(x => x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
+                if (verses.Count() > 0) {
+                    if (verses.First().GetTranslationText().IsNotNullOrWhiteSpace()) {
+                        var versesText = String.Empty;
+                        foreach (var item in verses) {
+                            versesText += item.GetTranslationText() + " ";
+                        }
+                        return versesText.Trim();
+                    }
+                    else {
+                        if (numberOfBook > 460) {
+                            //verses = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == "PBPW" &&
+                            //         x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook && x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
+                            verses = new XPQuery<Verse>(session).Where(x => x.Index.StartsWith($"PBPW.{numberOfBook}.{numberOfChapter}.") && x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
+                        }
+                        else {
+                            //verses = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == "SNP18" &&
+                            //          x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook && x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
+                            verses = new XPQuery<Verse>(session).Where(x => x.Index.StartsWith($"SNP18.{numberOfBook}.{numberOfChapter}.") && x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
+                        }
+
+                        if (verses.Count() > 0) {
+                            var versesText = String.Empty;
+                            foreach (var item in verses) {
+                                versesText += item.Text + " ";
+                            }
+                            versesText = System.Text.RegularExpressions.Regex.Replace(versesText, @"\[[0-9]+\]", "");
+
+                            return versesText.Trim();
+                        }
+                    }
+                }
+            }
+            return String.Empty;
+        }
 
         private float GetMaxTextSize(VerseWord word) {
             if (word.IsNotNull()) {

@@ -18,6 +18,7 @@ namespace IBE.Data.Model {
         private int numberOfVerse;
         private Chapter parentChapter;
         private string text;
+        private string index;
         private bool startFromNewLine;
 
         public int NumberOfVerse {
@@ -49,6 +50,12 @@ namespace IBE.Data.Model {
             get { return startFromNewLine; }
             set { SetPropertyValue(nameof(StartFromNewLine), ref startFromNewLine, value); }
         }
+
+        public string Index {
+            get { return index; }
+            set { SetPropertyValue(nameof(Index), ref index, value); }
+        }
+
 
         [NonPersistent]
         public Translation ParentTranslation {

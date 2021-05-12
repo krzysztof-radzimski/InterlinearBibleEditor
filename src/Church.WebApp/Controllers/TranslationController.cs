@@ -86,7 +86,14 @@ namespace Church.WebApp.Controllers {
                     if (i != verseEnd) { versesText += ","; }
                 }
 
-                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
+                var verseText = GetVerseTranslation(model.Books.First().Session, numberOfBook, numberOfChapter, verseStart, verseEnd, translationName);
+
+                var link = $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
+
+                if (verseText.IsNotNullOrEmpty()) {
+                    return $"{link} - <i>{verseText}</i>";
+                }
+                return link;
             });
             return input;
         }
@@ -98,7 +105,7 @@ namespace Church.WebApp.Controllers {
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
                 var verseEnd = m.Groups["verseEnd"].Value.ToInt();
-                
+
                 return $"{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}";
             });
             return input;
@@ -113,8 +120,14 @@ namespace Church.WebApp.Controllers {
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
 
+                var verseText = GetVerseTranslation(model.Books.First().Session, numberOfBook, numberOfChapter, verseStart, translationName: translationName);
 
-                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
+                var link = $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
+
+                if (verseText.IsNotNullOrEmpty()) {
+                    return $"{link} - <i>{verseText}</i>";
+                }
+                return link;
             });
             return input;
         }
@@ -135,7 +148,7 @@ namespace Church.WebApp.Controllers {
                 var translationName = m.Groups["translationName"].Value;
                 var numberOfBook = m.Groups["book"].Value.ToInt();
                 var baseBook = model.Books.Where(x => x.NumberOfBook == numberOfBook).FirstOrDefault();
-                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : ""; 
+                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : "";
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
                 var verseEnd = m.Groups["verseEnd"].Value.ToInt();
@@ -145,7 +158,14 @@ namespace Church.WebApp.Controllers {
                     if (i != verseEnd) { versesText += ","; }
                 }
 
-                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
+                var verseText = GetVerseTranslation(model.Books.First().Session, numberOfBook, numberOfChapter, verseStart, verseEnd, translationName);
+
+                var link = $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
+
+                if (verseText.IsNotNullOrEmpty()) {
+                    return $"{link} - <i>{verseText}</i>";
+                }
+                return link;
             });
             return input;
         }
@@ -153,11 +173,11 @@ namespace Church.WebApp.Controllers {
             input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
                 var numberOfBook = m.Groups["book"].Value.ToInt();
                 var baseBook = model.Books.Where(x => x.NumberOfBook == numberOfBook).FirstOrDefault();
-                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : ""; 
+                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : "";
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
                 var verseEnd = m.Groups["verseEnd"].Value.ToInt();
-            
+
                 return $"{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}";
             });
             return input;
@@ -168,12 +188,17 @@ namespace Church.WebApp.Controllers {
                 var translationName = m.Groups["translationName"].Value;
                 var numberOfBook = m.Groups["book"].Value.ToInt();
                 var baseBook = model.Books.Where(x => x.NumberOfBook == numberOfBook).FirstOrDefault();
-                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : ""; 
+                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : "";
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
 
+                var verseText = GetVerseTranslation(model.Books.First().Session, numberOfBook, numberOfChapter, verseStart, translationName: translationName);
 
-                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
+                var link = $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
+                if (verseText.IsNotNullOrEmpty()) {
+                    return $"{link} - <i>{verseText}</i>";
+                }
+                return link;
             });
             return input;
         }
@@ -191,62 +216,73 @@ namespace Church.WebApp.Controllers {
             return input;
         }
 
-        /*
-                            footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
-                                var translationName = Model.Translation.Name.Replace("+", "");
-                                var numberOfBook = m.Groups["book"].Value.ToInt();
-                                var bookShortcut = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
-                                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
-                                var verseStart = m.Groups["verseStart"].Value.ToInt();
-                                var verseEnd = m.Groups["verseEnd"].Value.ToInt();
-                                var versesText = String.Empty;
-                                for (int i = verseStart; i <= verseEnd; i++) {
-                                    versesText += $"{i}";
-                                    if (i != verseEnd) { versesText += ","; }
-                                }
+        private static string GetVerseTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart, int verseEnd = 0, string translationName = "NPI") {
+            //var chapterVerses = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == translationName &&
+            //            x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook);
+            var chapterVerses = new XPQuery<Verse>(session).Where(x => x.Index.StartsWith($"{translationName}.{numberOfBook}.{numberOfChapter}."));
+            if (verseEnd == 0) {
+                var verse = chapterVerses.Where(x => x.NumberOfVerse == verseStart).FirstOrDefault();
+                if (verse.IsNotNull()) {
+                    var verseText = verse.GetTranslationText();
+                    if (verseText.IsNotNullOrWhiteSpace()) {
+                        return verseText;
+                    }
+                    else {
+                        if (numberOfBook > 460) {
+                            //verse = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == "PBPW" &&
+                            //    x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook && x.NumberOfVerse == verseStart).FirstOrDefault();
+                            verse = new XPQuery<Verse>(session).Where(x => x.Index == $"PBPW.{numberOfBook}.{numberOfChapter}.{verseStart}").FirstOrDefault();
+                        }
+                        else {
+                            //verse = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == "SNP18" &&
+                            //       x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook && x.NumberOfVerse == verseStart).FirstOrDefault();
+                            verse = new XPQuery<Verse>(session).Where(x => x.Index == $"SNP18.{numberOfBook}.{numberOfChapter}.{verseStart}").FirstOrDefault();
+                        }
+                        if (verse.IsNotNull()) {
+                            verseText = verse.Text;
+                            verseText = System.Text.RegularExpressions.Regex.Replace(verseText, @"\[[0-9]+\]", "");
 
-                                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
-                            });
-                            footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
-                                var translationName = Model.Translation.Name.Replace("+", "");
-                                var numberOfBook = m.Groups["book"].Value.ToInt();
-                                var bookShortcut = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
-                                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
-                                var verseStart = m.Groups["verseStart"].Value.ToInt();
+                            return verseText;
+                        }
+                    }
+                }
+            }
+            else {
+                var verses = chapterVerses.Where(x => x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
+                if (verses.Count() > 0) {
+                    if (verses.First().GetTranslationText().IsNotNullOrWhiteSpace()) {
+                        var versesText = String.Empty;
+                        foreach (var item in verses) {
+                            versesText += item.GetTranslationText() + " ";
+                        }
+                        return versesText.Trim();
+                    }
+                    else {
+                        if (numberOfBook > 460) {
+                            //verses = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == "PBPW" &&
+                            //         x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook && x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
+                            verses = new XPQuery<Verse>(session).Where(x => x.Index.StartsWith($"PBPW.{numberOfBook}.{numberOfChapter}.") && x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
+                        }
+                        else {
+                            //verses = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == "SNP18" &&
+                            //          x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook && x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
+                            verses = new XPQuery<Verse>(session).Where(x => x.Index.StartsWith($"SNP18.{numberOfBook}.{numberOfChapter}.") && x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
+                        }
 
+                        if (verses.Count() > 0) {
+                            var versesText = String.Empty;
+                            foreach (var item in verses) {
+                                versesText += item.Text + " "; 
+                            }
+                            versesText = System.Text.RegularExpressions.Regex.Replace(versesText, @"\[[0-9]+\]", "");
 
-                                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
-                            });
-
-                            footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
-                                var translationName = m.Groups["translationName"].Value;
-                                var numberOfBook = m.Groups["book"].Value.ToInt();
-                                var baseBook = Model.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).FirstOrDefault();
-                                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : ""; //Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
-                                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
-                                var verseStart = m.Groups["verseStart"].Value.ToInt();
-                                var verseEnd = m.Groups["verseEnd"].Value.ToInt();
-                                var versesText = String.Empty;
-                                for (int i = verseStart; i <= verseEnd; i++) {
-                                    versesText += $"{i}";
-                                    if (i != verseEnd) { versesText += ","; }
-                                }
-
-                                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
-                            });
-
-                            footnoteText = System.Text.RegularExpressions.Regex.Replace(footnoteText, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
-                                var translationName = m.Groups["translationName"].Value;
-                                var numberOfBook = m.Groups["book"].Value.ToInt();
-                                var baseBook = Model.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).FirstOrDefault();
-                                var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : ""; //Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BaseBook.BookShortcut;
-                                var numberOfChapter = m.Groups["chapter"].Value.ToInt();
-                                var verseStart = m.Groups["verseStart"].Value.ToInt();
-
-
-                                return $"<a href=\"/{translationName}/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
-                            });         
-         */
+                            return versesText.Trim();
+                        }
+                    }
+                }
+            }
+            return String.Empty;
+        }
     }
 
     public class TranslationControllerModel {
@@ -272,7 +308,7 @@ namespace Church.WebApp.Controllers {
         private int GetNTBookNumber() {
             var book = Book.ToInt();
             var r = 1;
-            for (int i = 470; i <= 730; i+=10) {
+            for (int i = 470; i <= 730; i += 10) {
                 if (i == book) {
                     return r;
                 }
@@ -303,7 +339,7 @@ namespace Church.WebApp.Controllers {
                     }
                     else {
                         continue;
-                    }                  
+                    }
                 }
             }
 

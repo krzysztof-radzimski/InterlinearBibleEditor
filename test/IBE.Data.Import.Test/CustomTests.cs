@@ -55,5 +55,21 @@ namespace IBE.Data.Import.Test {
                 }
             }
         }
+
+        [TestMethod]
+        public void UpdateIndexs() {
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            uow.BeginTransaction();
+
+            var verses = new XPQuery<Model.Verse>(uow);
+            foreach (var item in verses) {
+                var translationName = item.ParentTranslation.Name.Replace("+", "").Replace("'", "");
+                item.Index = $"{translationName}.{item.ParentChapter.ParentBook.NumberOfBook}.{item.ParentChapter.NumberOfChapter}.{item.NumberOfVerse}";
+                item.Save();
+            }
+
+            uow.CommitChanges();
+        }
     }
 }
