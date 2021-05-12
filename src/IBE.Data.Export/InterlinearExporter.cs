@@ -6,6 +6,7 @@ using Aspose.Words.Saving;
 using DevExpress.Xpo;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
+using LinqKit;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -474,11 +475,9 @@ namespace IBE.Data.Export {
         }
 
         private string GetVerseTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart, int verseEnd = 0, string translationName = "NPI") {
-            //var chapterVerses = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == translationName &&
-            //            x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook);
-            var chapterVerses = new XPQuery<Verse>(session).Where(x => x.Index.StartsWith($"{translationName}.{numberOfBook}.{numberOfChapter}."));
             if (verseEnd == 0) {
-                var verse = chapterVerses.Where(x => x.NumberOfVerse == verseStart).FirstOrDefault();
+                var index = $"{translationName}.{numberOfBook}.{numberOfChapter}.{verseStart}";
+                var verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
                 if (verse.IsNotNull()) {
                     var verseText = verse.GetTranslationText();
                     if (verseText.IsNotNullOrWhiteSpace()) {
@@ -486,14 +485,12 @@ namespace IBE.Data.Export {
                     }
                     else {
                         if (numberOfBook > 460) {
-                            //verse = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == "PBPW" &&
-                            //    x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook && x.NumberOfVerse == verseStart).FirstOrDefault();
-                            verse = new XPQuery<Verse>(session).Where(x => x.Index == $"PBPW.{numberOfBook}.{numberOfChapter}.{verseStart}").FirstOrDefault();
+                            index = $"PBPW.{numberOfBook}.{numberOfChapter}.{verseStart}";
+                            verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
                         }
                         else {
-                            //verse = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == "SNP18" &&
-                            //       x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook && x.NumberOfVerse == verseStart).FirstOrDefault();
-                            verse = new XPQuery<Verse>(session).Where(x => x.Index == $"SNP18.{numberOfBook}.{numberOfChapter}.{verseStart}").FirstOrDefault();
+                            index = $"SNP18.{numberOfBook}.{numberOfChapter}.{verseStart}";
+                            verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
                         }
                         if (verse.IsNotNull()) {
                             verseText = verse.Text;
@@ -505,7 +502,13 @@ namespace IBE.Data.Export {
                 }
             }
             else {
-                var verses = chapterVerses.Where(x => x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
+                var predicate = PredicateBuilder.New<Verse>();
+                for (int i = verseStart; i < verseEnd + 1; i++) {
+                    var index = $"{translationName}.{numberOfBook}.{numberOfChapter}.{i}";
+                    predicate = predicate.Or(x => x.Index == index);
+                }
+                var verses = new XPQuery<Verse>(session).Where(predicate);
+
                 if (verses.Count() > 0) {
                     if (verses.First().GetTranslationText().IsNotNullOrWhiteSpace()) {
                         var versesText = String.Empty;
@@ -516,14 +519,22 @@ namespace IBE.Data.Export {
                     }
                     else {
                         if (numberOfBook > 460) {
-                            //verses = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == "PBPW" &&
-                            //         x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook && x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
-                            verses = new XPQuery<Verse>(session).Where(x => x.Index.StartsWith($"PBPW.{numberOfBook}.{numberOfChapter}.") && x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
+                            predicate = PredicateBuilder.New<Verse>();
+                            for (int i = verseStart; i < verseEnd + 1; i++) {
+                                var index = $"PBPW.{numberOfBook}.{numberOfChapter}.{i}";
+                                predicate = predicate.Or(x => x.Index == index);
+                            }
+
+                            verses = new XPQuery<Verse>(session).Where(predicate);
                         }
                         else {
-                            //verses = new XPQuery<Verse>(session).Where(x => x.ParentChapter.ParentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "") == "SNP18" &&
-                            //          x.ParentChapter.NumberOfChapter == numberOfChapter && x.ParentChapter.ParentBook.NumberOfBook == numberOfBook && x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
-                            verses = new XPQuery<Verse>(session).Where(x => x.Index.StartsWith($"SNP18.{numberOfBook}.{numberOfChapter}.") && x.NumberOfVerse >= verseStart && x.NumberOfVerse <= verseEnd);
+                            predicate = PredicateBuilder.New<Verse>();
+                            for (int i = verseStart; i < verseEnd + 1; i++) {
+                                var index = $"SNP18.{numberOfBook}.{numberOfChapter}.{i}";
+                                predicate = predicate.Or(x => x.Index == index);
+                            }
+
+                            verses = new XPQuery<Verse>(session).Where(predicate);
                         }
 
                         if (verses.Count() > 0) {
