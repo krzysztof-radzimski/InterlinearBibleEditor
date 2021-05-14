@@ -96,7 +96,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TRanslateGrammarCodesTests.cs" />
+    <Compile Include="TranslateGrammarCodesTests.cs" />
     <Compile Include="TranslationImportTest.cs" />
     <Compile Include="CustomTests.cs" />
     <Compile Include="BuildAllTest.cs" />

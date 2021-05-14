@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IBE.Data.Import.Test {
     [TestClass]
-    public class TRanslateGrammarCodesTests {
+    public class TranslateGrammarCodesTests {
 
         [TestMethod]
         public void TranslateGrammarCode() {
@@ -35,8 +35,12 @@ namespace IBE.Data.Import.Test {
     }
 
     public class GrammarCodeInfo {
+
+
         public string ShortDefinition { get; set; }
         public string GrammarCodeDescription { get; set; }
 
     }
+
+ 
 }
