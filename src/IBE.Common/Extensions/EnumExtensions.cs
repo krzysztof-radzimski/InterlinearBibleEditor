@@ -39,6 +39,17 @@ namespace IBE.Common.Extensions {
             }
         }
 
+        public static IEnumerable<string> GetEnumCategories<T>() where T : IConvertible {
+            var l = new List<string>();
+
+            var v = GetEnumValues<T>();
+            foreach (var e in v) {
+                l.Add((e as Enum).GetCategory());
+            }
+
+            return l;
+        }
+
         public static IEnumerable<string> GetEnumDescriptions<T>() where T : IConvertible {
             var l = new List<string>();
 
@@ -69,6 +80,19 @@ namespace IBE.Common.Extensions {
 
             foreach (T item in Enum.GetValues(typeof(T))) {
                 if (string.Compare((item as Enum).GetDescription(), description, true) == 0) {
+                    return item;
+                }
+            }
+            return default(T);
+        }
+
+        public static T GetEnumByCategory<T>(this string category) {
+            if (!typeof(T).IsEnum) {
+                throw new InvalidEnumArgumentException("The specified type is not an enum");
+            }
+
+            foreach (T item in Enum.GetValues(typeof(T))) {
+                if (string.Compare((item as Enum).GetCategory(), category, true) == 0) {
                     return item;
                 }
             }

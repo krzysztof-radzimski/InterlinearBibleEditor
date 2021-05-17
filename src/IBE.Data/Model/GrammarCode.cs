@@ -13,6 +13,7 @@
 
 using DevExpress.Xpo;
 using IBE.Common.Extensions;
+using IBE.Data.Model.Grammar;
 using System.ComponentModel;
 using System.Xml.Linq;
 
@@ -24,10 +25,15 @@ namespace IBE.Data.Model {
         private string grammarCodeDescription;
         private string shortDefinition;
 
-        private PartOfSpeechType partOfSpeech;
-        private CaseOfDeclinationType caseType;
-        private NumberType number;
         private AdjectiveDegreeType adjectiveDegree;
+        private CaseOfDeclinationType caseOfDeclination;
+        private FormType form;
+        private GenderType gender;
+        private NumberType number;
+        private PartOfSpeechType partOfSpeech;
+        private PersonType person;
+        private TenseType tense;
+        private VoiceType voice;
 
         public string GrammarCodeVariant1 {
             get { return grammarCodeVariant1; }
@@ -53,17 +59,37 @@ namespace IBE.Data.Model {
             get { return partOfSpeech; }
             set { SetPropertyValue(nameof(PartOfSpeech), ref partOfSpeech, value); }
         }
-        public CaseOfDeclinationType CaseType {
-            get { return caseType; }
-            set { SetPropertyValue(nameof(CaseType), ref caseType, value); }
+        public CaseOfDeclinationType CaseOfDeclination {
+            get { return caseOfDeclination; }
+            set { SetPropertyValue(nameof(CaseOfDeclination), ref caseOfDeclination, value); }
         }
         public NumberType Number {
             get { return number; }
             set { SetPropertyValue(nameof(Number), ref number, value); }
         }
-        public AdjectiveDegreeType  AdjectiveDegree {
+        public AdjectiveDegreeType AdjectiveDegree {
             get { return adjectiveDegree; }
             set { SetPropertyValue(nameof(AdjectiveDegree), ref adjectiveDegree, value); }
+        }
+        public FormType Form {
+            get { return form; }
+            set { SetPropertyValue(nameof(Form), ref form, value); }
+        }
+        public GenderType Gender {
+            get { return gender; }
+            set { SetPropertyValue(nameof(Gender), ref gender, value); }
+        }
+        public PersonType Person {
+            get { return person; }
+            set { SetPropertyValue(nameof(Person), ref person, value); }
+        }
+        public TenseType Tense {
+            get { return tense; }
+            set { SetPropertyValue(nameof(Tense), ref tense, value); }
+        }
+        public VoiceType Voice{
+            get { return voice; }
+            set { SetPropertyValue(nameof(Voice), ref voice, value); }
         }
 
         [NonPersistent]
@@ -91,130 +117,5 @@ namespace IBE.Data.Model {
         }
 
         public GrammarCode(Session session) : base(session) { }
-    }
-
-    public enum GenderType {
-        [Description("")]
-        None,
-        [Description("Męski")]
-        Masculine,
-        [Description("Żeński")]
-        Feminine,
-        [Description("Nijaki")]
-        Neuter,
-    }
-
-    public enum NumberType {
-        [Description("")]
-        None,
-        [Description("Pojedyncza")]
-        Singular,
-        [Description("Mnoga")]
-        Plural
-    }
-
-    public enum AdjectiveDegreeType {
-        [Description("")]
-        None,
-        [Description("Równy")]
-        Positive,
-        [Description("Wyższy")]
-        Comparative,
-        [Description("Najwyższy")]
-        Superlative
-    }
-
-    public enum CaseOfDeclinationType {
-        [Description("")]
-        None,
-        [Description("Biernik")]
-        Accusative,
-        [Description("Celownik")]
-        Dative,
-        [Description("Dopełniacz")]
-        Genitive,
-        [Description("Mianownik")]
-        Nominative,
-        [Description("Wołacz")]
-        Vocative,
-        [Description("Nadrzędnik")]
-        Instrumental,
-        [Description("Miejscownik")]
-        Locative
-    }
-
-    public enum PartOfSpeechType {
-        [Description("")]
-        [Category("")]
-        None,
-        [Description("Przymiotnik")]
-        [Category("A")]
-        Adjective,
-        [Description("Przysłówek")]
-        [Category("ADV")]
-        ADVerb,
-        [Description("Arameizm")]
-        [Category("ARAM")]
-        ARAM,
-        [Description("Zaimek odwrotny")]
-        [Category("C")]
-        reCiprocal_pronoun,
-        [Description("Część warunkowa lub koniunkcja ")]
-        [Category("COND")]
-        CONDitional_particle_or_conjunction,
-        [Description("Koniunkcja")]
-        [Category("CONJ")]
-        CONJunction,
-        [Description("Zaimek wskazujący")]
-        [Category("D")]
-        Demonstrative_pronoun,
-        [Description("Zaimek zwrotny")]
-        [Category("F")]
-        reFlexive_pronoun,
-        [Description("Hebraizm")]
-        [Category("HEB")]
-        HEB,
-        [Description("Zaimek pytający")]
-        [Category("I")]
-        Interrogative_pronoun,
-        [Description("Wykrzyknik")]
-        [Category("INJ")]
-        INterJection,
-        [Description("Zaimek korelacyjny")]
-        [Category("K")]
-        Correlative_pronoun,
-        [Description("Rzeczownik")]
-        [Category("N")]
-        Noun,
-        [Description("Zaimek osobowy")]
-        [Category("P")]
-        Personal_pronoun,
-        [Description("Przyimek")]
-        [Category("PREP")]
-        PREP,
-        [Description("Część rozłączna")]
-        [Category("PRT")]
-        PRT,
-        [Description("Zaimek korelacyjny lub pytający")]
-        [Category("Q")]
-        Correlative_or_interrogative_pronoun,
-        [Description("Zaimek względny")]
-        [Category("R")]
-        Relative_pronoun,
-        [Description("Zaimek dzierżawczy")]
-        [Category("S")]
-        poSsessive_pronoun,
-        [Description("Przedimek określony")]
-        [Category("T")]
-        Definite_article,
-        [Description("Czasownik")]
-        [Category("V")]
-        Verb,
-        [Description("Zaimek pytający nieokreślony")]
-        [Category("RI")]
-        interrogative_Indefinite_pronoun,
-        [Description("Zaimek nieokreślony")]
-        [Category("X")]
-        Indefinite_pronoun
     }
 }

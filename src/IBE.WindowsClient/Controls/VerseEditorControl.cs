@@ -49,6 +49,7 @@ namespace IBE.WindowsClient.Controls {
 
         private void VerseEditorControl_Load(object sender, EventArgs e) {
             // LoadData();
+            wbGrammarCodes.EnsureCoreWebView2Async();
         }
 
         public VerseWordEditorControl CreateVerseWordControl(VerseWord word) {
@@ -239,23 +240,35 @@ namespace IBE.WindowsClient.Controls {
             }
         }
 
-        private void Control_GrammarCodeClick(object sender, GrammarCode e) {
-            //            wbGrammarCodes.DocumentText = $@"
-            //<!DOCTYPE html>
+        private void Control_GrammarCodeClick(object sender, GrammarCode e) {          
+            if (e.GrammarCodeDescription.IsNotNullOrEmpty()) {
+                var htmlString= $@"
+                <!DOCTYPE html>
 
-            //<html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
-            //<head>
-            //    <meta charset=""utf-8"" />
-            //    <title>Strong</title>
-            //</head>
-            //<body>
-            //<h2>{e.GrammarCodeVariant1}</h2>
-            //<h3>{e.ShortDefinition}</h3>
-            //<p>{e.GrammarCodeDescription}</p>
-            //</body>
-            //</html>
-            //";
-            wbGrammarCodes.Source = new Uri($"http://www.modernliteralversion.org/bibles/bs2/RMAC/{e.GrammarCodeVariant1}.htm");
+                <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
+                <head>
+                    <meta charset=""utf-8"" />
+                    <title>Ggammar code</title>
+                </head>
+                <body>
+                <h2>{e.GrammarCodeVariant1}</h2>
+                <h3>{e.ShortDefinition}</h3>
+                <p>{e.GrammarCodeDescription}</p>
+                </body>
+                </html>
+                ";
+
+                //var t = wbGrammarCodes.EnsureCoreWebView2Async();
+                //t.ContinueWith(x => {
+                //    wbGrammarCodes.NavigateToString(htmlString);
+                //});
+
+                wbGrammarCodes.NavigateToString(htmlString);
+            }
+            else {
+                wbGrammarCodes.Source = new Uri($"http://www.modernliteralversion.org/bibles/bs2/RMAC/{e.GrammarCodeVariant1}.htm");
+            }
+
             tabPane1.SelectedPage = tabNavigationPage3;
             if (GrammarCodeClick.IsNotNull()) {
                 GrammarCodeClick(this, e);
@@ -338,6 +351,7 @@ if (whole != undefined) {
         }
 
         private void CoreWebView2_DOMContentLoaded1(object sender, Microsoft.Web.WebView2.Core.CoreWebView2DOMContentLoadedEventArgs e) {
+            /*
             var script = @"
 var tr = document.getElementsByTagName('tr')[0];
 if (tr != undefined) {
@@ -362,6 +376,7 @@ if (br != undefined) {
 }
 ";
             wbGrammarCodes.CoreWebView2.ExecuteScriptAsync(script);
+            */
         }
 
         private void tabPane1_SizeChanged(object sender, EventArgs e) {
