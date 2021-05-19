@@ -19,6 +19,9 @@ namespace IBE.Data.Model.Grammar {
         Attic,
         [Description("W skrócie")]
         [Category("ABB")]
-        Abbrevieated
+        Abbrevieated,
+        [Description("Pytająca")]
+        [Category("I")]
+        Interrogative
     }
 }
