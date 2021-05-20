@@ -294,7 +294,7 @@ namespace IBE.Data.Export {
             (shape.FirstParagraph.Runs.First() as Run).Font.Position = 24;
 
             par.AppendChild(shape);
-            shape.Width = GetMaxTextSize(text, font11bold) * 1.2F;
+            shape.Width = PexelsToPoints(GetMaxTextSize(text, font11bold));//1.2F;
         }
         private void ExportVerseWord(VerseWord word, Paragraph par, DocumentBuilder builder) {
             var doc = par.Document;
@@ -474,6 +474,59 @@ namespace IBE.Data.Export {
             return input;
         }
 
+        private string GetVerseOtherTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart) {
+            var index = String.Empty;
+            Verse verse = null;
+            if (numberOfBook > 460) {
+                index = $"PBPW.{numberOfBook}.{numberOfChapter}.{verseStart}";
+                verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
+            }
+            else {
+                index = $"SNP18.{numberOfBook}.{numberOfChapter}.{verseStart}";
+                verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
+            }
+            if (verse.IsNotNull()) {
+                var verseText = verse.Text;
+                verseText = System.Text.RegularExpressions.Regex.Replace(verseText, @"\[[0-9]+\]", "");
+
+                return verseText;
+            }
+            return String.Empty;
+        }
+        private string GetVersesOtherTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart, int verseEnd) {
+            IEnumerable<Verse> verses = null;
+            ExpressionStarter<Verse> predicate = null;
+            if (numberOfBook > 460) {
+                predicate = PredicateBuilder.New<Verse>();
+                for (int i = verseStart; i < verseEnd + 1; i++) {
+                    var index = $"PBPW.{numberOfBook}.{numberOfChapter}.{i}";
+                    predicate = predicate.Or(x => x.Index == index);
+                }
+
+                verses = new XPQuery<Verse>(session).Where(predicate);
+            }
+            else {
+                predicate = PredicateBuilder.New<Verse>();
+                for (int i = verseStart; i < verseEnd + 1; i++) {
+                    var index = $"SNP18.{numberOfBook}.{numberOfChapter}.{i}";
+                    predicate = predicate.Or(x => x.Index == index);
+                }
+
+                verses = new XPQuery<Verse>(session).Where(predicate);
+            }
+
+            if (verses.Count() > 0) {
+                var versesText = String.Empty;
+                foreach (var item in verses) {
+                    versesText += item.Text + " ";
+                }
+                versesText = System.Text.RegularExpressions.Regex.Replace(versesText, @"\[[0-9]+\]", "");
+
+                return versesText.Trim();
+            }
+            return String.Empty;
+        }
+
         private string GetVerseTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart, int verseEnd = 0, string translationName = "NPI") {
             if (verseEnd == 0) {
                 var index = $"{translationName}.{numberOfBook}.{numberOfChapter}.{verseStart}";
@@ -484,21 +537,25 @@ namespace IBE.Data.Export {
                         return verseText;
                     }
                     else {
-                        if (numberOfBook > 460) {
-                            index = $"PBPW.{numberOfBook}.{numberOfChapter}.{verseStart}";
-                            verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
-                        }
-                        else {
-                            index = $"SNP18.{numberOfBook}.{numberOfChapter}.{verseStart}";
-                            verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
-                        }
-                        if (verse.IsNotNull()) {
-                            verseText = verse.Text;
-                            verseText = System.Text.RegularExpressions.Regex.Replace(verseText, @"\[[0-9]+\]", "");
+                        return GetVerseOtherTranslation(session, numberOfBook, numberOfChapter, verseStart);
+                        //if (numberOfBook > 460) {
+                        //    index = $"PBPW.{numberOfBook}.{numberOfChapter}.{verseStart}";
+                        //    verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
+                        //}
+                        //else {
+                        //    index = $"SNP18.{numberOfBook}.{numberOfChapter}.{verseStart}";
+                        //    verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
+                        //}
+                        //if (verse.IsNotNull()) {
+                        //    verseText = verse.Text;
+                        //    verseText = System.Text.RegularExpressions.Regex.Replace(verseText, @"\[[0-9]+\]", "");
 
-                            return verseText;
-                        }
+                        //    return verseText;
+                        //}
                     }
+                }
+                else {
+                    return GetVerseOtherTranslation(session, numberOfBook, numberOfChapter, verseStart);
                 }
             }
             else {
@@ -518,56 +575,64 @@ namespace IBE.Data.Export {
                         return versesText.Trim();
                     }
                     else {
-                        if (numberOfBook > 460) {
-                            predicate = PredicateBuilder.New<Verse>();
-                            for (int i = verseStart; i < verseEnd + 1; i++) {
-                                var index = $"PBPW.{numberOfBook}.{numberOfChapter}.{i}";
-                                predicate = predicate.Or(x => x.Index == index);
-                            }
+                        return GetVersesOtherTranslation(session, numberOfBook, numberOfChapter, verseStart, verseEnd);
+                        //if (numberOfBook > 460) {
+                        //    predicate = PredicateBuilder.New<Verse>();
+                        //    for (int i = verseStart; i < verseEnd + 1; i++) {
+                        //        var index = $"PBPW.{numberOfBook}.{numberOfChapter}.{i}";
+                        //        predicate = predicate.Or(x => x.Index == index);
+                        //    }
 
-                            verses = new XPQuery<Verse>(session).Where(predicate);
-                        }
-                        else {
-                            predicate = PredicateBuilder.New<Verse>();
-                            for (int i = verseStart; i < verseEnd + 1; i++) {
-                                var index = $"SNP18.{numberOfBook}.{numberOfChapter}.{i}";
-                                predicate = predicate.Or(x => x.Index == index);
-                            }
+                        //    verses = new XPQuery<Verse>(session).Where(predicate);
+                        //}
+                        //else {
+                        //    predicate = PredicateBuilder.New<Verse>();
+                        //    for (int i = verseStart; i < verseEnd + 1; i++) {
+                        //        var index = $"SNP18.{numberOfBook}.{numberOfChapter}.{i}";
+                        //        predicate = predicate.Or(x => x.Index == index);
+                        //    }
 
-                            verses = new XPQuery<Verse>(session).Where(predicate);
-                        }
+                        //    verses = new XPQuery<Verse>(session).Where(predicate);
+                        //}
 
-                        if (verses.Count() > 0) {
-                            var versesText = String.Empty;
-                            foreach (var item in verses) {
-                                versesText += item.Text + " ";
-                            }
-                            versesText = System.Text.RegularExpressions.Regex.Replace(versesText, @"\[[0-9]+\]", "");
+                        //if (verses.Count() > 0) {
+                        //    var versesText = String.Empty;
+                        //    foreach (var item in verses) {
+                        //        versesText += item.Text + " ";
+                        //    }
+                        //    versesText = System.Text.RegularExpressions.Regex.Replace(versesText, @"\[[0-9]+\]", "");
 
-                            return versesText.Trim();
-                        }
+                        //    return versesText.Trim();
+                        //}
                     }
                 }
+                else {
+                    return GetVersesOtherTranslation(session, numberOfBook, numberOfChapter, verseStart, verseEnd);
+                }
             }
-            return String.Empty;
+            // return String.Empty;
         }
 
         private float GetMaxTextSize(VerseWord word) {
             if (word.IsNotNull()) {
                 var list = new List<float> {
-                    g.MeasureString(word.SourceWord, font11).Width,
+                    g.MeasureString(word.SourceWord, font10).Width,
                     g.MeasureString(word.Transliteration, font10).Width,
-                    g.MeasureString(word.Translation.RemoveAny("<n>","</n>"), word.Citation ? font11bold : font11).Width
+                    g.MeasureString(word.Translation.ReplaceAnyWith(" ", "<n>","</n>"), word.Citation ? font11bold : font11).Width
                 };
-                if (word.GrammarCode.IsNotNull()) { list.Add(g.MeasureString(word.GrammarCode.GrammarCodeVariant1, font8).Width); }
-                if (word.StrongCode.IsNotNull()) { list.Add(g.MeasureString(word.StrongCode.Topic, font8).Width); }
+                if (word.GrammarCode.IsNotNull()) { list.Add(g.MeasureString(word.GrammarCode.GrammarCodeVariant1, font10).Width); }
+                if (word.StrongCode.IsNotNull()) { list.Add(g.MeasureString(word.StrongCode.Topic, font10).Width); }
 
-                return list.Max() * 1.1F;
+                return PexelsToPoints(list.Max()); //+ 1.3F; //* 1.1F;
             }
             return default;
         }
         private float GetMaxTextSize(string text, System.Drawing.Font font) {
             return g.MeasureString(text, font).Width;
+        }
+        private float PexelsToPoints(float pixels) {
+            var points = pixels * 72 / 96;
+            return points + 11F;
         }
 
         private void SaveBuilder(ExportSaveFormat saveFormat, string outputPath, DocumentBuilder builder) {
@@ -585,7 +650,7 @@ namespace IBE.Data.Export {
                     ExportDocumentStructure = true,
                     JpegQuality = 100,
                     OutlineOptions = { HeadingsOutlineLevels = 3, ExpandedOutlineLevels = 3, CreateOutlinesForHeadingsInTables = true, CreateMissingOutlineLevels = true },
-                    OptimizeOutput = true                    
+                    OptimizeOutput = true
                 });
             }
         }

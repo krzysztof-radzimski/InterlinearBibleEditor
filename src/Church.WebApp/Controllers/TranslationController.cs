@@ -227,21 +227,11 @@ namespace Church.WebApp.Controllers {
                         return verseText;
                     }
                     else {
-                        if (numberOfBook > 460) {
-                            index = $"PBPW.{numberOfBook}.{numberOfChapter}.{verseStart}";
-                            verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
-                        }
-                        else {
-                            index = $"SNP18.{numberOfBook}.{numberOfChapter}.{verseStart}";
-                            verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
-                        }
-                        if (verse.IsNotNull()) {
-                            verseText = verse.Text;
-                            verseText = System.Text.RegularExpressions.Regex.Replace(verseText, @"\[[0-9]+\]", "");
-
-                            return verseText;
-                        }
+                        return GetOtherVerseTranslation(session, numberOfBook, numberOfChapter, verseStart);
                     }
+                }
+                else {
+                    return GetOtherVerseTranslation(session, numberOfBook, numberOfChapter, verseStart);
                 }
             }
             else {
@@ -261,36 +251,65 @@ namespace Church.WebApp.Controllers {
                         return versesText.Trim();
                     }
                     else {
-                        if (numberOfBook > 460) {
-                            predicate = PredicateBuilder.New<Verse>();
-                            for (int i = verseStart; i < verseEnd + 1; i++) {
-                                var index = $"PBPW.{numberOfBook}.{numberOfChapter}.{i}";
-                                predicate = predicate.Or(x => x.Index == index);
-                            }
-
-                            verses = new XPQuery<Verse>(session).Where(predicate);
-                        }
-                        else {
-                            predicate = PredicateBuilder.New<Verse>();
-                            for (int i = verseStart; i < verseEnd + 1; i++) {
-                                var index = $"SNP18.{numberOfBook}.{numberOfChapter}.{i}";
-                                predicate = predicate.Or(x => x.Index == index);
-                            }
-
-                            verses = new XPQuery<Verse>(session).Where(predicate);
-                        }
-
-                        if (verses.Count() > 0) {
-                            var versesText = String.Empty;
-                            foreach (var item in verses) {
-                                versesText += item.Text + " ";
-                            }
-                            versesText = System.Text.RegularExpressions.Regex.Replace(versesText, @"\[[0-9]+\]", "");
-
-                            return versesText.Trim();
-                        }
+                        return GetOtherVersesTranslation(session, numberOfBook, numberOfChapter, verseStart, verseEnd);
                     }
                 }
+                else {
+                    return GetOtherVersesTranslation(session, numberOfBook, numberOfChapter, verseStart, verseEnd);
+                }
+            }
+        }
+
+        private static string GetOtherVersesTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart, int verseEnd) {
+            IEnumerable<Verse> verses = null;
+            ExpressionStarter<Verse> predicate = null;
+            if (numberOfBook > 460) {
+                predicate = PredicateBuilder.New<Verse>();
+                for (int i = verseStart; i < verseEnd + 1; i++) {
+                    var index = $"PBPW.{numberOfBook}.{numberOfChapter}.{i}";
+                    predicate = predicate.Or(x => x.Index == index);
+                }
+
+                verses = new XPQuery<Verse>(session).Where(predicate);
+            }
+            else {
+                predicate = PredicateBuilder.New<Verse>();
+                for (int i = verseStart; i < verseEnd + 1; i++) {
+                    var index = $"SNP18.{numberOfBook}.{numberOfChapter}.{i}";
+                    predicate = predicate.Or(x => x.Index == index);
+                }
+
+                verses = new XPQuery<Verse>(session).Where(predicate);
+            }
+
+            if (verses.Count() > 0) {
+                var versesText = String.Empty;
+                foreach (var item in verses) {
+                    versesText += item.Text + " ";
+                }
+                versesText = System.Text.RegularExpressions.Regex.Replace(versesText, @"\[[0-9]+\]", "");
+
+                return versesText.Trim();
+            }
+            return String.Empty;
+        }
+
+        private static string GetOtherVerseTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart) {
+            var index = String.Empty;
+            Verse verse = null;
+            if (numberOfBook > 460) {
+                index = $"PBPW.{numberOfBook}.{numberOfChapter}.{verseStart}";
+                verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
+            }
+            else {
+                index = $"SNP18.{numberOfBook}.{numberOfChapter}.{verseStart}";
+                verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
+            }
+            if (verse.IsNotNull()) {
+                var verseText = verse.Text;
+                verseText = System.Text.RegularExpressions.Regex.Replace(verseText, @"\[[0-9]+\]", "");
+
+                return verseText;
             }
             return String.Empty;
         }

@@ -169,6 +169,14 @@ namespace IBE.Common.Extensions {
             }
             return text;
         }
+        public static string ReplaceAnyWith(this string text, string replaceWith, params string[] e) {
+            if (text.IsNotNull() && e.IsNotNull() && e.Length > 0) {
+                foreach (var c in e) {
+                    text = text.Replace(c, replaceWith);
+                }
+            }
+            return text;
+        }
 
         public static string RemovePolishChars(this string source) {
             string s = "";
