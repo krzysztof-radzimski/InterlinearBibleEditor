@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Strong";
+}
+@using IBE.Common.Extensions
+@using DevExpress.Xpo;
+@using System.Linq;
+@using IBE.Data.Model;
+
+@model IBE.Data.Model.StrongCode
+
+@if (Model != null) {
+
+    ViewData["Title"] = $"{@Model.Lang.GetCategory()}{@Model.Code}";
+    var link = $"https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=G{@Model.Code}&t=MGNT";
+
+    <div class="row shadow-lg" style="max-width: 1040px; margin: auto;">
+        <div class="col p-4 d-flex flex-column position-static">
+            <div>
+                <strong class="d-inline-block mb-2 text-success pill-white">@Model.Lang.GetCategory()@Model.Code</strong>
+            </div>
+            <h3 class="mb-0">@Model.SourceWord</h3>
+            <p class="mb-auto fst-italic">@Model.Pronunciation</p>
+            <p class="mb-auto">@Model.ShortDefinition</p>
+            <div class="mb-1">@Html.Raw(Model.Definition.Replace("\r\n","<br/>"))</div>
+
+            <p><a href="@link" target="_blank">Więcej...</a></p>
+        </div>
+    </div>
+}
