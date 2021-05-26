@@ -12,6 +12,7 @@
   ===================================================================================*/
 
 using DevExpress.Xpo;
+using System.Linq;
 
 namespace IBE.Data.Model {
     public class Book : XPObject {
@@ -134,6 +135,59 @@ namespace IBE.Data.Model {
 
         public override string ToString() {
             return BookName;
+        }
+        public int GetNTBookNumber()
+        {
+            var book = this.NumberOfBook;
+            var r = 1;
+            for (int i = 470; i <= 730; i += 10)
+            {
+                if (i == book)
+                {
+                    return r;
+                }
+                r++;
+            }
+            return r;
+        }
+        public int GetLogosBookNumber()
+        {
+            var books = new XPQuery<BookBase>(this.Session).ToList();
+            var book = this.NumberOfBook;
+            var r = 1;
+            if (book < 470)
+            {
+                foreach (var item in books)
+                {
+                    if (item.NumberOfBook < 470)
+                    {
+                        if (book == item.NumberOfBook) { return r; }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    r++;
+                }
+            }
+            else
+            {
+                r = 61;
+                foreach (var item in books)
+                {
+                    if (item.NumberOfBook >= 470)
+                    {
+                        if (book == item.NumberOfBook) { return r; }
+                        r++;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            return r;
         }
     }
 

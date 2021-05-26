@@ -155,6 +155,7 @@ namespace IBE.WindowsClient.Controls {
             this.gridViewTranslations.OptionsView.ShowIndicator = false;
             this.gridViewTranslations.OptionsView.ShowVerticalLines = DevExpress.Utils.DefaultBoolean.False;
             this.gridViewTranslations.RowSeparatorHeight = 10;
+            this.gridViewTranslations.DoubleClick += new System.EventHandler(this.gridViewTranslations_DoubleClick);
             // 
             // colTranslationName
             // 
@@ -351,7 +352,7 @@ namespace IBE.WindowsClient.Controls {
             // 
             this.tablePanel1.SetColumn(this.rgStoryLevel, 2);
             this.rgStoryLevel.EditValue = 1;
-            this.rgStoryLevel.Location = new System.Drawing.Point(13, 72);
+            this.rgStoryLevel.Location = new System.Drawing.Point(13, 63);
             this.rgStoryLevel.Name = "rgStoryLevel";
             this.rgStoryLevel.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.rgStoryLevel.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
@@ -364,7 +365,7 @@ namespace IBE.WindowsClient.Controls {
             // labelControl1
             // 
             this.tablePanel1.SetColumn(this.labelControl1, 1);
-            this.labelControl1.Location = new System.Drawing.Point(13, 27);
+            this.labelControl1.Location = new System.Drawing.Point(13, 23);
             this.labelControl1.Name = "labelControl1";
             this.tablePanel1.SetRow(this.labelControl1, 1);
             this.labelControl1.Size = new System.Drawing.Size(49, 13);
@@ -374,7 +375,7 @@ namespace IBE.WindowsClient.Controls {
             // txtStoryText
             // 
             this.tablePanel1.SetColumn(this.txtStoryText, 1);
-            this.txtStoryText.Location = new System.Drawing.Point(13, 46);
+            this.txtStoryText.Location = new System.Drawing.Point(13, 43);
             this.txtStoryText.Name = "txtStoryText";
             this.tablePanel1.SetRow(this.txtStoryText, 2);
             this.txtStoryText.Size = new System.Drawing.Size(958, 20);

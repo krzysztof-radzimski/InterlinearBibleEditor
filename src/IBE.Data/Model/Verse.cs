@@ -13,7 +13,8 @@
 
 using DevExpress.Xpo;
 
-namespace IBE.Data.Model {
+namespace IBE.Data.Model
+{
     public class Verse : XPObject {
         private int numberOfVerse;
         private Chapter parentChapter;
@@ -107,6 +108,6 @@ namespace IBE.Data.Model {
                 text += item.Transliteration + " ";
             }
             return text.Trim();
-        }
+        }       
     }
 }
