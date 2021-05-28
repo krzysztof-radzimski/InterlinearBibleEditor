@@ -238,6 +238,17 @@ namespace IBE.Data.Import.Test {
         }
 
         [TestMethod]
+        public void GetTranslationTranslatedStatusInfo() {
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            var trans = new XPQuery<Translation>(uow).Where(x => x.Name == /*"NPI+"*/"NPI+").FirstOrDefault();
+            var info = trans.GetTranslatedInfo();
+            if (info.IsNotNullOrEmpty()) { 
+            
+            }
+        }
+
+        [TestMethod]
         public void CreateCitationFile() {
             var builder = new StringBuilder();
             ConnectionHelper.Connect();

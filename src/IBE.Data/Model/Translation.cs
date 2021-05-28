@@ -12,7 +12,9 @@
   ===================================================================================*/
 
 using DevExpress.Xpo;
+using System;
 using System.ComponentModel;
+using System.Linq;
 
 namespace IBE.Data.Model {
     public class Translation : XPObject {
@@ -106,7 +108,7 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(ChapterRomanNumbering), ref chapterRomanNumbering, value); }
         }
 
-        public bool WithStrongs{
+        public bool WithStrongs {
             get { return withStrongs; }
             set { SetPropertyValue(nameof(WithStrongs), ref withStrongs, value); }
         }
@@ -117,6 +119,114 @@ namespace IBE.Data.Model {
 
         public Translation() : base(new UnitOfWork()) { }
         public Translation(Session session) : base(session) { }
+
+        public string GetTranslatedInfo() {
+            if (Type == TranslationType.Interlinear) {
+                var translatedBooksText = @"<h4 class=""text-center"">Status tłumaczenia</h4>";
+                var allBooksTranslated = !(Books.Where(x => !x.IsTranslated).Any());
+                var allChaptersTranslated = true;
+                foreach (var book in Books) {
+                    var hasNoTranslatedChapters = book.Chapters.Where(x => !x.IsTranslated).Any();
+                    if (hasNoTranslatedChapters) {
+                        allChaptersTranslated = false;
+                        break;
+                    }
+                }
+
+                if (allBooksTranslated && allChaptersTranslated) {
+                    translatedBooksText += $"<p>Tłumaczenie {Name} zostało ukończone.</p>";
+                }
+                else {
+                    translatedBooksText += "<p>Przekład zawiera tłumaczenie:</p><ul>";
+                    foreach (var book in Books.OrderBy(x => x.NumberOfBook)) {
+                        if (book.IsTranslated) {
+                            var firstTranslatedChapter = book.Chapters.Where(x => x.IsTranslated).Select(x => x.NumberOfChapter).Min();
+                            translatedBooksText += $@"<li><a href=""/{Name.Replace("+", String.Empty)}/{book.NumberOfBook}/{firstTranslatedChapter}"">{book.BaseBook.BookTitle}</a></i>";
+                            var bookTranslationCompleted = !(book.Chapters.Where(x => !x.IsTranslated).Any());
+                            if (bookTranslationCompleted) {
+                                translatedBooksText += " - księga przetłumaczona w całości";
+                            }
+                            else {
+                                translatedBooksText += "<ul>";
+                                var chapters = book.Chapters.OrderBy(x => x.NumberOfChapter);
+                                var translationStart = -1;
+                                var translationEnd = 0;
+                                foreach (var chapter in chapters) {
+                                    if (!chapter.IsTranslated) {
+                                        if (translationStart != -1 && translationEnd != 0) {
+                                            translatedBooksText += "<li>";
+
+                                            var chapterFrom = translationStart.ToString();
+                                            if (chapterFrom == "0") { chapterFrom = "prologu"; }
+
+                                            var chapterTo = translationEnd.ToString();
+                                            if (chapterTo == "0") { chapterTo = "prologu"; }
+
+                                            if (translationStart != translationEnd) {
+                                                translatedBooksText += $@"rozdziały od <a href=""/{Name.Replace("+", String.Empty)}/{book.NumberOfBook}/{translationStart}"">{chapterFrom}</a> do <a href=""/{Name.Replace("+", String.Empty)}/{book.NumberOfBook}/{translationEnd}"">{chapterTo}</a>";
+                                            }
+                                            else {
+                                                translatedBooksText += $@"rozdział <a href=""/{Name.Replace("+", String.Empty)}/{book.NumberOfBook}/{translationEnd}"">{chapterTo}</a>,";
+                                            }
+                                            translatedBooksText += "</li>";
+                                        }
+
+                                        translationStart = -1;
+                                        translationEnd = 0;
+                                    }
+                                    else {
+                                        if (translationStart == -1) {
+                                            translationStart = chapter.NumberOfChapter;
+                                        }
+                                        translationEnd = chapter.NumberOfChapter;
+                                    }
+                                }
+                                translatedBooksText += "</ul>";
+                            }
+
+                            translatedBooksText += "</li>";
+                        }
+                    }
+                    translatedBooksText += "</ul>";
+                }
+
+                return translatedBooksText;
+            }
+            return default;
+
+
+
+            /*
+             
+            
+            @if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
+                var translatedBooksText = @"<h4 class=""text-center"">Status tłumaczenia</h4><p>Przekład zawiera tłumaczenie:<br/>";
+                foreach (var tBook in Model.Translation.Books) {
+                    if (tBook.IsTranslated) {
+                        var translatedChapters = tBook.Chapters.Where(x => x.IsTranslated);
+                        if (translatedChapters.Count() == tBook.Chapters.Count) {
+                            translatedBooksText += $" - <i>{tBook.BaseBook.BookTitle}</i> księga przetłumaczona w całości<br />";
+                        }
+                        else {
+                            var chapterFrom = translatedChapters.Select(x => x.NumberOfChapter).Min().ToString();
+                            if (chapterFrom == "0") { chapterFrom = "prologu"; }
+                            var chapterTo = translatedChapters.Select(x => x.NumberOfChapter).Max();
+                            if (chapterFrom.ToInt() == chapterTo) {
+                                translatedBooksText += $" - <i>{tBook.BaseBook.BookTitle}</i> rozdział {chapterTo}<br />";
+                            }
+                            else {
+                                translatedBooksText += $" - <i>{tBook.BaseBook.BookTitle}</i> rozdziały od {chapterFrom} do {chapterTo}<br />";
+                            }
+                        }
+                    }
+                }
+                translatedBooksText += "</p>";
+
+                @Html.Raw(translatedBooksText)
+            }
+             
+             */
+        }
     }
 
     public enum TranslationType {
