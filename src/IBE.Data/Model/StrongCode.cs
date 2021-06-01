@@ -13,6 +13,9 @@
 
 using DevExpress.Xpo;
 using IBE.Common.Extensions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace IBE.Data.Model {
     public class StrongCode : XPObject {
@@ -77,6 +80,32 @@ namespace IBE.Data.Model {
             get { return GetCollection<AncientDictionaryItem>(nameof(DictionaryItems)); }
         }
 
-        public StrongCode(Session session) : base(session) { }                
+        public StrongCode(Session session) : base(session) { }
+
+        public IReadOnlyCollection<KeyValuePair<string, string>> GetVersesInfo() {
+            var result = new Dictionary<string, string>();
+            var bookShortcuts = new XPQuery<BookBase>(this.Session).Select(x => new KeyValuePair<int, string>(x.NumberOfBook, x.BookShortcut)).ToList();
+            var verses = new List<int>();
+            var words = VerseWords.Where(x => x.Translation.IsNotNullOrEmpty());
+            foreach (var word in words) {
+                if (verses.Contains(word.ParentVerse.Oid)) { continue; }
+
+                // NPI.470.14.10
+                var regex = new Regex(@"(?<translation>[A-Z]+)\.(?<book>[0-9]+)\.(?<chapter>[0-9]+)\.(?<verse>[0-9]+)");
+                var m = regex.Match(word.ParentVerse.Index);
+
+                var numOfBook = m.Groups["book"].Value.ToInt();
+                var baseBookShortcut = bookShortcuts.Where(x => x.Key == numOfBook).Select(x => x.Value).FirstOrDefault();
+
+                var siglum = $@"<a href=""/{m.Groups["translation"].Value}/{m.Groups["book"].Value}/{m.Groups["chapter"].Value}/{m.Groups["verse"].Value}"" target=""_blank"" class=""text-decoration-none"">{baseBookShortcut} {m.Groups["chapter"].Value}:{m.Groups["verse"].Value}</a>";
+                var text = word.ParentVerse.Text.Replace(word.Translation, $"<mark>{word.Translation}</mark>");
+
+                result.Add(siglum, text);
+
+                verses.Add(word.ParentVerse.Oid);
+
+            }
+            return result;
+        }
     }
 }

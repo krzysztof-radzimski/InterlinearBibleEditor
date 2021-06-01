@@ -217,7 +217,7 @@ namespace Church.WebApp.Controllers {
             return input;
         }
 
-        private static string GetVerseTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart, int verseEnd = 0, string translationName = "NPI") {
+        public static string GetVerseTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart, int verseEnd = 0, string translationName = "NPI") {
             if (verseEnd == 0) {
                 var index = $"{translationName}.{numberOfBook}.{numberOfChapter}.{verseStart}";
                 var verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();

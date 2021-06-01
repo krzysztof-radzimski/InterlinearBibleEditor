@@ -48,6 +48,13 @@ background-color: transparent !important;
     max-width: 1000px;
     margin: auto;
 }
+.max-width-1040 {
+    max-width: 1040px;
+    margin: auto;
+}
+.mw-10-per {
+    min-width: 10%;
+}
 
 a.navbar-brand {
     white-space: normal;

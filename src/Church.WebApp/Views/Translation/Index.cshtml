@@ -460,7 +460,7 @@ break;
                                             }
 
                                             @if (Model.Translation.WithGrammarCodes) {
-                                                if (gc.IsNullOrEmpty()) {
+                                                if (word.GrammarCode.GrammarCodeVariant1.IsNullOrEmpty()) {
                                                     gc = "–";
                                                 }
                                                 @Html.Raw(gc)
