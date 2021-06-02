@@ -336,6 +336,7 @@ namespace Church.WebApp.Controllers {
         }
 
         private int GetNTBookNumber() {
+            if (Translation.Name.Replace("+", String.Empty) == "IPD") { return 67; }
             var book = Book.ToInt();
             var r = 1;
             for (int i = 470; i <= 730; i += 10) {

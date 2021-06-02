@@ -11,10 +11,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace IBE.WindowsClient.Controls
-{
-    public partial class VerseEditorControl : XtraUserControl
-    {
+namespace IBE.WindowsClient.Controls {
+    public partial class VerseEditorControl : XtraUserControl {
         public static int PANE_HEIGHT = 400;
 
         bool isLoading = false;
@@ -26,28 +24,22 @@ namespace IBE.WindowsClient.Controls
         public event EventHandler<GrammarCode> GrammarCodeClick;
 
         public FlowLayoutPanel VerseWordsControl { get { return flowLayoutPanel; } }
-        public VerseEditorControl()
-        {
+        public VerseEditorControl() {
             InitializeComponent();
 
             tabPane1.Height = PANE_HEIGHT;
         }
 
-        public VerseEditorControl(Verse verse, bool loadOtherTranslations = true) : this()
-        {
+        public VerseEditorControl(Verse verse, bool loadOtherTranslations = true) : this() {
             Verse = verse;
             LoadOtherTranslations = loadOtherTranslations;
         }
 
-        public bool IsModified()
-        {
+        public bool IsModified() {
             if (Verse.IsNotNull() && Verse.Text.IsNullOrEmpty()) { return true; }
-            foreach (var item in flowLayoutPanel.Controls)
-            {
-                if (item is VerseWordEditorControl)
-                {
-                    if ((item as VerseWordEditorControl).Modified)
-                    {
+            foreach (var item in flowLayoutPanel.Controls) {
+                if (item is VerseWordEditorControl) {
+                    if ((item as VerseWordEditorControl).Modified) {
                         return true;
                     }
                 }
@@ -55,14 +47,12 @@ namespace IBE.WindowsClient.Controls
             return default;
         }
 
-        private void VerseEditorControl_Load(object sender, EventArgs e)
-        {
+        private void VerseEditorControl_Load(object sender, EventArgs e) {
             // LoadData();
             wbGrammarCodes.EnsureCoreWebView2Async();
         }
 
-        public VerseWordEditorControl CreateVerseWordControl(VerseWord word)
-        {
+        public VerseWordEditorControl CreateVerseWordControl(VerseWord word) {
             var control = new VerseWordEditorControl(word);
             control.StrongClick += Control_StrongClick;
             control.GrammarCodeClick += Control_GrammarCodeClick;
@@ -70,8 +60,7 @@ namespace IBE.WindowsClient.Controls
             return control;
         }
 
-        public void LoadData()
-        {
+        public void LoadData() {
             if (isLoading || isLoaded) { return; }
             isLoading = true;
             gridViewTranslations.LoadingPanelVisible = true;
@@ -79,8 +68,7 @@ namespace IBE.WindowsClient.Controls
 
             cbStartFromNewLine.DataBindings.Add("Checked", Verse, "StartFromNewLine");
             var subtitle = Verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == Verse.NumberOfVerse).FirstOrDefault();
-            if (subtitle.IsNotNull())
-            {
+            if (subtitle.IsNotNull()) {
                 txtStoryText.Text = subtitle.Text;
                 rgStoryLevel.SelectedIndex = subtitle.Level - 1;
             }
@@ -89,12 +77,10 @@ namespace IBE.WindowsClient.Controls
             flowLayoutPanel.SuspendLayout();
             //Application.DoEvents();
 
-            var getControls = Task.Factory.StartNew(() =>
-            {
+            var getControls = Task.Factory.StartNew(() => {
                 var wordControls = new List<VerseWordEditorControl>();
                 var words = Verse.VerseWords.OrderBy(x => x.NumberOfVerseWord);
-                foreach (var word in words)
-                {
+                foreach (var word in words) {
                     var control = CreateVerseWordControl(word);
                     wordControls.Add(control);
                 }
@@ -102,12 +88,9 @@ namespace IBE.WindowsClient.Controls
                 return wordControls;
             });
 
-            getControls.ContinueWith((x) =>
-            {
-                this.SafeInvoke(f =>
-                {
-                    foreach (var control in x.Result)
-                    {
+            getControls.ContinueWith((x) => {
+                this.SafeInvoke(f => {
+                    foreach (var control in x.Result) {
                         f.flowLayoutPanel.Controls.Add(control);
                     }
 
@@ -117,33 +100,27 @@ namespace IBE.WindowsClient.Controls
                 });
             });
 
-            if (LoadOtherTranslations)
-            {
-                var getTranslations = Task.Factory.StartNew(() =>
-                {
+            if (LoadOtherTranslations) {
+                var getTranslations = Task.Factory.StartNew(() => {
                     var list = new List<TranslationVerseInfo>();
                     var view = new XPView(Verse.Session, typeof(Translation));
                     view.CriteriaString = "[Type] = 4";
                     view.Properties.Add(new ViewProperty("Oid", SortDirection.None, "[Oid]", false, true));
                     view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
-                    foreach (ViewRecord item in view)
-                    {
+                    foreach (ViewRecord item in view) {
                         var id = item["Oid"].ToInt();
                         var name = item["Name"].ToString();
-                        var tvi = new TranslationVerseInfo()
-                        {
+                        var tvi = new TranslationVerseInfo() {
                             TranslationName = name
                         };
 
                         var _view = new XPView(Verse.Session, typeof(Verse));
                         _view.CriteriaString = $"[NumberOfVerse] = {Verse.NumberOfVerse} AND [ParentChapter.NumberOfChapter] = {Verse.ParentChapter.NumberOfChapter} AND [ParentChapter.ParentBook.NumberOfBook] = {Verse.ParentChapter.ParentBook.NumberOfBook} AND [ParentChapter.ParentBook.ParentTranslation.Name] = '{name.Replace("'", "''")}'";
                         _view.Properties.Add(new ViewProperty("Text", SortDirection.None, "[Text]", false, true));
-                        foreach (ViewRecord _item in _view)
-                        {
+                        foreach (ViewRecord _item in _view) {
                             tvi.VerseText = _item["Text"].ToString().Replace("<pb/>", "").Replace("<t>", "").Replace("<m>", "").Replace("</t>", "").Replace("</m>", "").Replace("<e>", "").Replace("</e>", "");
                         }
-                        if (tvi.VerseText.IsNotNullOrEmpty())
-                        {
+                        if (tvi.VerseText.IsNotNullOrEmpty()) {
                             list.Add(tvi);
                         }
                     }
@@ -151,10 +128,8 @@ namespace IBE.WindowsClient.Controls
                     return list;
                 });
 
-                getTranslations.ContinueWith((x) =>
-                {
-                    this.SafeInvoke(f =>
-                    {
+                getTranslations.ContinueWith((x) => {
+                    this.SafeInvoke(f => {
                         f.gridTranslations.DataSource = x.Result;
                         f.gridViewTranslations.BestFitColumns();
                         f.gridViewTranslations.LoadingPanelVisible = false;
@@ -164,8 +139,7 @@ namespace IBE.WindowsClient.Controls
                     });
                 });
             }
-            else
-            {
+            else {
                 tabTranslations.PageVisible = false;
                 isLoading = false;
                 isLoaded = true;
@@ -173,8 +147,7 @@ namespace IBE.WindowsClient.Controls
             }
         }
 
-        private void Control_DeleteClick(object sender, VerseWord e)
-        {
+        private void Control_DeleteClick(object sender, VerseWord e) {
             e.Delete();
             (e.Session as UnitOfWork).CommitChanges();
 
@@ -184,32 +157,26 @@ namespace IBE.WindowsClient.Controls
             control = null;
         }
 
-        public void DeleteAll()
-        {
+        public void DeleteAll() {
             var controls = flowLayoutPanel.Controls.OfType<VerseWordEditorControl>();
-            foreach (var item in controls)
-            {
+            foreach (var item in controls) {
                 Control_DeleteClick(item, item.Word);
             }
         }
 
-        public void Save()
-        {
+        public void Save() {
             gridViewTranslations.Focus();
             Application.DoEvents();
 
-            foreach (var item in flowLayoutPanel.Controls)
-            {
-                if (item is VerseWordEditorControl)
-                {
+            foreach (var item in flowLayoutPanel.Controls) {
+                if (item is VerseWordEditorControl) {
                     var word = (item as VerseWordEditorControl).Word;
                     word.Save();
                 }
             }
 
             var text = String.Empty;
-            foreach (var verseWord in Verse.VerseWords.OrderBy(x => x.NumberOfVerseWord))
-            {
+            foreach (var verseWord in Verse.VerseWords.OrderBy(x => x.NumberOfVerseWord)) {
                 text += $"{verseWord.Translation} ";
             }
 
@@ -219,21 +186,17 @@ namespace IBE.WindowsClient.Controls
             var uow = Verse.Session as UnitOfWork;
 
             // save story 
-            if (txtStoryText.Text.IsNotNullOrEmpty())
-            {
+            if (txtStoryText.Text.IsNotNullOrEmpty()) {
                 var subtitle = Verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == Verse.NumberOfVerse).FirstOrDefault();
-                if (subtitle.IsNull())
-                {
-                    subtitle = new Subtitle(uow)
-                    {
+                if (subtitle.IsNull()) {
+                    subtitle = new Subtitle(uow) {
                         BeforeVerseNumber = Verse.NumberOfVerse,
                         ParentChapter = Verse.ParentChapter,
                         Level = rgStoryLevel.SelectedIndex + 1,
                         Text = txtStoryText.Text
                     };
                 }
-                else
-                {
+                else {
                     subtitle.BeforeVerseNumber = Verse.NumberOfVerse;
                     subtitle.ParentChapter = Verse.ParentChapter;
                     subtitle.Level = rgStoryLevel.SelectedIndex + 1;
@@ -243,15 +206,13 @@ namespace IBE.WindowsClient.Controls
             }
 
 
-            if (uow.IsNotNull())
-            {
+            if (uow.IsNotNull()) {
                 uow.CommitChanges();
                 uow.ReloadChangedObjects();
             }
         }
 
-        private void Control_StrongClick(object sender, StrongCode e)
-        {
+        private void Control_StrongClick(object sender, StrongCode e) {
             //            wbStrong.DocumentText = $@"
             //<!DOCTYPE html>
 
@@ -274,16 +235,13 @@ namespace IBE.WindowsClient.Controls
 
             wbStrong.Source = new Uri($"https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=G{e.Code}&t=MGNT");
             tabPane1.SelectedPage = tabNavigationPage2;
-            if (StrongClick.IsNotNull())
-            {
+            if (StrongClick.IsNotNull()) {
                 StrongClick(this, e);
             }
         }
 
-        private void Control_GrammarCodeClick(object sender, GrammarCode e)
-        {
-            if (e.GrammarCodeDescription.IsNotNullOrEmpty())
-            {
+        private void Control_GrammarCodeClick(object sender, GrammarCode e) {
+            if (e.GrammarCodeDescription.IsNotNullOrEmpty()) {
                 var htmlString = $@"
                 <!DOCTYPE html>
 
@@ -307,20 +265,17 @@ namespace IBE.WindowsClient.Controls
 
                 wbGrammarCodes.NavigateToString(htmlString);
             }
-            else
-            {
+            else {
                 wbGrammarCodes.Source = new Uri($"http://www.modernliteralversion.org/bibles/bs2/RMAC/{e.GrammarCodeVariant1}.htm");
             }
 
             tabPane1.SelectedPage = tabNavigationPage3;
-            if (GrammarCodeClick.IsNotNull())
-            {
+            if (GrammarCodeClick.IsNotNull()) {
                 GrammarCodeClick(this, e);
             }
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
+        protected override void OnLoad(EventArgs e) {
             base.OnLoad(e);
 
             //gridTranslations.ForceInitialize();
@@ -328,26 +283,22 @@ namespace IBE.WindowsClient.Controls
             //SetColumnWidth(gridViewTranslations, colVerseText, 85);
         }
 
-        public void SetColumnWidth(GridView view, GridColumn column, int percent)
-        {
+        public void SetColumnWidth(GridView view, GridColumn column, int percent) {
             var viewInfo = view.GetViewInfo() as GridViewInfo;
             int totalWidth = viewInfo.ViewRects.ColumnPanelWidth;
             column.Width = (totalWidth * percent) / 100;
         }
 
-        class TranslationVerseInfo
-        {
+        class TranslationVerseInfo {
             public string TranslationName { get; set; }
             public string VerseText { get; set; }
         }
 
-        private void wbStrong_CoreWebView2InitializationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs e)
-        {
+        private void wbStrong_CoreWebView2InitializationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs e) {
             wbStrong.CoreWebView2.DOMContentLoaded += CoreWebView2_DOMContentLoaded;
         }
 
-        private void CoreWebView2_DOMContentLoaded(object sender, Microsoft.Web.WebView2.Core.CoreWebView2DOMContentLoadedEventArgs e)
-        {
+        private void CoreWebView2_DOMContentLoaded(object sender, Microsoft.Web.WebView2.Core.CoreWebView2DOMContentLoadedEventArgs e) {
             var script = @"
 var appBar = document.getElementById('appBar');
 if (appBar != undefined) {
@@ -395,13 +346,11 @@ if (whole != undefined) {
             wbStrong.CoreWebView2.ExecuteScriptAsync(script);
         }
 
-        private void wbGrammarCodes_CoreWebView2InitializationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs e)
-        {
+        private void wbGrammarCodes_CoreWebView2InitializationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs e) {
             wbGrammarCodes.CoreWebView2.DOMContentLoaded += CoreWebView2_DOMContentLoaded1;
         }
 
-        private void CoreWebView2_DOMContentLoaded1(object sender, Microsoft.Web.WebView2.Core.CoreWebView2DOMContentLoadedEventArgs e)
-        {
+        private void CoreWebView2_DOMContentLoaded1(object sender, Microsoft.Web.WebView2.Core.CoreWebView2DOMContentLoadedEventArgs e) {
             /*
             var script = @"
 var tr = document.getElementsByTagName('tr')[0];
@@ -430,37 +379,32 @@ if (br != undefined) {
             */
         }
 
-        private void tabPane1_SizeChanged(object sender, EventArgs e)
-        {
+        private void tabPane1_SizeChanged(object sender, EventArgs e) {
             PANE_HEIGHT = tabPane1.Height;
         }
 
-        private void gcStrongShortDefinition_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
-        {
+        private void gcStrongShortDefinition_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e) {
             // save strong changes
             var sc = txtShortDefinition.Tag as StrongCode;
-            if (sc.IsNotNull())
-            {
+            if (sc.IsNotNull()) {
                 sc.Definition = txtDefinition.Text;
                 sc.ShortDefinition = txtShortDefinition.Text;
                 sc.Save();
 
                 var uow = sc.Session as UnitOfWork;
-                if (uow.IsNotNull())
-                {
+                if (uow.IsNotNull()) {
                     uow.CommitChanges();
                     uow.ReloadChangedObjects();
                 }
             }
         }
 
-        private void gridViewTranslations_DoubleClick(object sender, EventArgs e)
-        {
+        private void gridViewTranslations_DoubleClick(object sender, EventArgs e) {
             var info = gridViewTranslations.GetFocusedRow() as TranslationVerseInfo;
-            if (info.IsNotNull() && info.TranslationName.Contains("TRO"))
-            {
-                var ntBookNumber = Verse.ParentChapter.ParentBook.GetNTBookNumber();
-                System.Diagnostics.Process.Start($"https://biblia.oblubienica.eu/interlinearny/index/book/{ntBookNumber}/chapter/{Verse.ParentChapter.NumberOfChapter}/verse/{Verse.NumberOfVerse}");
+            if (info.IsNotNull() && info.TranslationName.Contains("TRO")) {
+                System.Diagnostics.Process.Start(Verse.GetOblubienicaUrl());
+                // var ntBookNumber = Verse.ParentChapter.ParentBook.GetNTBookNumber();
+                // System.Diagnostics.Process.Start($"https://biblia.oblubienica.eu/interlinearny/index/book/{ntBookNumber}/chapter/{Verse.ParentChapter.NumberOfChapter}/verse/{Verse.NumberOfVerse}");
             }
         }
     }

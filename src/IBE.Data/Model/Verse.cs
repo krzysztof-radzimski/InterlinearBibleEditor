@@ -12,9 +12,10 @@
   ===================================================================================*/
 
 using DevExpress.Xpo;
+using IBE.Common.Extensions;
+using System.Text.RegularExpressions;
 
-namespace IBE.Data.Model
-{
+namespace IBE.Data.Model {
     public class Verse : XPObject {
         private int numberOfVerse;
         private Chapter parentChapter;
@@ -70,21 +71,21 @@ namespace IBE.Data.Model
 
         public Verse(Session session) : base(session) { }
 
-        public string GetLink() {
-            var result = string.Empty;
-            if (ParentChapter != null && parentChapter.ParentBook != null) {
-                result = $@"<a class=""verse-reference"" href=""B:{ParentChapter.ParentBook.NumberOfBook} {parentChapter.NumberOfChapter}:{NumberOfVerse}"">{GetShortcut()}</a>";
-            }
-            return result;
-        }
+        //public string GetLink() {
+        //    var result = string.Empty;
+        //    if (ParentChapter != null && parentChapter.ParentBook != null) {
+        //        result = $@"<a class=""verse-reference"" href=""B:{ParentChapter.ParentBook.NumberOfBook} {parentChapter.NumberOfChapter}:{NumberOfVerse}"">{GetShortcut()}</a>";
+        //    }
+        //    return result;
+        //}
 
-        public string GetShortcut() {
-            var result = string.Empty;
-            if (ParentChapter != null && parentChapter.ParentBook != null) {
-                result = $"{parentChapter.ParentBook.BookShortcut} {parentChapter.NumberOfChapter}:{NumberOfVerse}";
-            }
-            return result;
-        }
+        //public string GetShortcut() {
+        //    var result = string.Empty;
+        //    if (ParentChapter != null && parentChapter.ParentBook != null) {
+        //        result = $"{parentChapter.ParentBook.BookShortcut} {parentChapter.NumberOfChapter}:{NumberOfVerse}";
+        //    }
+        //    return result;
+        //}
 
         public string GetSourceText() {
             var text = string.Empty;
@@ -108,6 +109,50 @@ namespace IBE.Data.Model
                 text += item.Transliteration + " ";
             }
             return text.Trim();
-        }       
+        }
+
+        public string GetOblubienicaUrl() {
+            var vi = GetVerseIndex();
+            if (!vi.IsEmpty) {               
+                return $"https://biblia.oblubienica.eu/interlinearny/index/book/{vi.NTBookNumber}/chapter/{vi.NumberOfChapter}/verse/{vi.NumberOfVerse}";
+            }
+            return default;
+        }
+        public VerseIndex GetVerseIndex() {
+            return new VerseIndex(Index);
+        }
+    }
+
+    public class VerseIndex {
+        public string TranslationName { get; }
+        public int NumberOfBook { get; }
+        public int NumberOfChapter { get; }
+        public int NumberOfVerse { get; }
+        private VerseIndex() { }
+        public VerseIndex(string index) {
+            try {
+                var regex = new Regex(@"(?<translation>[A-Z]+)\.(?<book>[0-9]+)\.(?<chapter>[0-9]+)\.(?<verse>[0-9]+)");
+                var m = regex.Match(index);
+                TranslationName = m.Groups["translation"].Value;
+                NumberOfBook = m.Groups["book"].Value.ToInt();
+                NumberOfChapter = m.Groups["chapter"].Value.ToInt();
+                NumberOfVerse = m.Groups["verse"].Value.ToInt();
+            }
+            catch { }
+        }
+        public bool IsEmpty { get => TranslationName.IsNullOrEmpty() && NumberOfBook == 0 && NumberOfChapter == 0 && NumberOfVerse == 0; }
+        public int NTBookNumber {
+            get {
+                if (TranslationName == "IPD") { return 67; }
+                var r = 1;
+                for (int i = 470; i <= 730; i += 10) {
+                    if (i == NumberOfBook) {
+                        return r;
+                    }
+                    r++;
+                }
+                return r;
+            }
+        }
     }
 }
