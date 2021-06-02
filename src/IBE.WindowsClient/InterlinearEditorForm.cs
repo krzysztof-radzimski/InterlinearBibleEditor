@@ -46,7 +46,7 @@ namespace IBE.WindowsClient {
 
             Uow = new UnitOfWork();
 
-            Translation = new XPQuery<Translation>(Uow).Where(x => x.Name == verse.ParentTranslation.Name).FirstOrDefault();
+            Translation = verse.ParentTranslation;// new XPQuery<Translation>(Uow).Where(x => x.Name == verse.ParentTranslation.Name).FirstOrDefault();
             NAME = Translation.Name;
 
             var view = new XPView(Uow, typeof(BookBase));
@@ -63,19 +63,21 @@ namespace IBE.WindowsClient {
                 });
             }
 
+            var index = verse.GetVerseIndex();
+            btnOblubienicaEu.Visibility = index.NumberOfBook >= 470 ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
             editBook.DataSource = list;
 
             this.Load += new EventHandler(delegate (object sender, EventArgs e) {
                 Application.DoEvents();
-                var bookInfo = list.Where(x => x.NumberOfBook == verse.ParentChapter.ParentBook.NumberOfBook).FirstOrDefault();
+                var bookInfo = list.Where(x => x.NumberOfBook == index.NumberOfBook).FirstOrDefault();
                 txtBook.EditValue = bookInfo;
                 editBook_EditValueChanged(this, new DevExpress.XtraEditors.Controls.ChangingEventArgs(null, bookInfo));
                 Application.DoEvents();
-                txtChapter.EditValue = verse.ParentChapter.NumberOfChapter;
-                editChapter_EditValueChanged(this, new DevExpress.XtraEditors.Controls.ChangingEventArgs(null, verse.ParentChapter.NumberOfChapter));
+                txtChapter.EditValue = index.NumberOfChapter;
+                editChapter_EditValueChanged(this, new DevExpress.XtraEditors.Controls.ChangingEventArgs(null, index.NumberOfChapter));
                 Application.DoEvents();
-                txtVerse.EditValue = verse.NumberOfVerse;
-                editVerse_EditValueChanged(this, new DevExpress.XtraEditors.Controls.ChangingEventArgs(null, verse.NumberOfVerse));
+                txtVerse.EditValue = index.NumberOfVerse;
+                editVerse_EditValueChanged(this, new DevExpress.XtraEditors.Controls.ChangingEventArgs(null, index.NumberOfVerse));
                 Application.DoEvents();
             });
         }
@@ -170,7 +172,7 @@ namespace IBE.WindowsClient {
                 if (verse.IsNotNull()) {
                     var control = new VerseEditorControl(verse, Translation.BookType == TheBookType.Bible) {
                         Dock = DockStyle.Fill
-                    };                    
+                    };
                     this.Controls.Add(control);
 
                     control.LoadData();
@@ -183,6 +185,8 @@ namespace IBE.WindowsClient {
                     btnPreviousVerse.Enabled = verseNumber > 1;
 
                     this.Text = $"{book.BookTitle} {chapterNumber}:{verseNumber}";
+                    
+                    btnOblubienicaEu.Visibility = book.NumberOfBook >= 470 ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
                 }
             }
         }
@@ -310,6 +314,13 @@ namespace IBE.WindowsClient {
                     item.Word.WordOfJesus = true;
                 }
             }
+        }
+
+        private void btnOblubienicaEu_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            if (currentControl.IsNotNull()) {
+                System.Diagnostics.Process.Start(currentControl.Verse.GetOblubienicaUrl());
+            }            
         }
     }
 }

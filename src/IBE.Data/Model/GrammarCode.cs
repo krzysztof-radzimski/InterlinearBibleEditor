@@ -14,7 +14,10 @@
 using DevExpress.Xpo;
 using IBE.Common.Extensions;
 using IBE.Data.Model.Grammar;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace IBE.Data.Model {
@@ -117,5 +120,31 @@ namespace IBE.Data.Model {
         }
 
         public GrammarCode(Session session) : base(session) { }
+
+
+        public IReadOnlyCollection<KeyValuePair<string, string>> GetVersesInfo() {
+            var result = new Dictionary<string, string>();
+            var bookShortcuts = new XPQuery<BookBase>(this.Session).Select(x => new KeyValuePair<int, string>(x.NumberOfBook, x.BookShortcut)).ToList();
+            var verses = new List<int>();
+            var words = VerseWords.Where(x => x.Translation.IsNotNullOrEmpty());
+            foreach (var word in words) {
+                if (verses.Contains(word.ParentVerse.Oid)) { continue; }
+
+                // NPI.470.14.10
+                var index = word.ParentVerse.GetVerseIndex();
+                if (!index.IsEmpty) {                    
+                    var baseBookShortcut = bookShortcuts.Where(x => x.Key == index.NumberOfBook).Select(x => x.Value).FirstOrDefault();
+
+                    var siglum = $@"<a href=""/{index.TranslationName}/{index.NumberOfBook}/{index.NumberOfChapter}/{index.NumberOfVerse}"" target=""_blank"" class=""text-decoration-none"">{baseBookShortcut} {index.NumberOfChapter}:{index.NumberOfVerse}</a>";
+                    var text = word.ParentVerse.Text.Replace(word.Translation, $"<mark>{word.Translation}</mark>");
+
+                    result.Add(siglum, text);
+
+                    verses.Add(word.ParentVerse.Oid);
+                }
+
+            }
+            return result;
+        }
     }
 }

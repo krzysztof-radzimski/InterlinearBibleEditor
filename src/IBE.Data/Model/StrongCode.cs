@@ -91,18 +91,17 @@ namespace IBE.Data.Model {
                 if (verses.Contains(word.ParentVerse.Oid)) { continue; }
 
                 // NPI.470.14.10
-                var regex = new Regex(@"(?<translation>[A-Z]+)\.(?<book>[0-9]+)\.(?<chapter>[0-9]+)\.(?<verse>[0-9]+)");
-                var m = regex.Match(word.ParentVerse.Index);
+                var index = word.ParentVerse.GetVerseIndex();
+                if (!index.IsEmpty) {
+                    var baseBookShortcut = bookShortcuts.Where(x => x.Key == index.NumberOfBook).Select(x => x.Value).FirstOrDefault();
 
-                var numOfBook = m.Groups["book"].Value.ToInt();
-                var baseBookShortcut = bookShortcuts.Where(x => x.Key == numOfBook).Select(x => x.Value).FirstOrDefault();
+                    var siglum = $@"<a href=""/{index.TranslationName}/{index.NumberOfBook}/{index.NumberOfChapter}/{index.NumberOfVerse}"" target=""_blank"" class=""text-decoration-none"">{baseBookShortcut} {index.NumberOfChapter}:{index.NumberOfVerse}</a>";
+                    var text = word.ParentVerse.Text.Replace(word.Translation, $"<mark>{word.Translation}</mark>");
 
-                var siglum = $@"<a href=""/{m.Groups["translation"].Value}/{m.Groups["book"].Value}/{m.Groups["chapter"].Value}/{m.Groups["verse"].Value}"" target=""_blank"" class=""text-decoration-none"">{baseBookShortcut} {m.Groups["chapter"].Value}:{m.Groups["verse"].Value}</a>";
-                var text = word.ParentVerse.Text.Replace(word.Translation, $"<mark>{word.Translation}</mark>");
+                    result.Add(siglum, text);
 
-                result.Add(siglum, text);
-
-                verses.Add(word.ParentVerse.Oid);
+                    verses.Add(word.ParentVerse.Oid);
+                }
 
             }
             return result;

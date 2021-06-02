@@ -22,5 +22,27 @@
             <div class="mb-1">@Html.Raw(Model.GrammarCodeDescription.Replace("\r\n", "<br/>"))</div>
             <p><a href="@link" target="_blank">Więcej...</a></p>
         </div>
+
+
+        @{
+            var verses = Model.GetVersesInfo();
+            if (verses.Count > 0) {
+
+                <div class="container">
+                    <div class="row p-1">
+                        <div class="col-auto fw-bold p-1 border-top border-bottom mw-10-per">Siglum</div>
+                        <div class="col fw-bold p-1 border-top border-bottom border-start">Treść</div>
+                    </div>
+
+                    @foreach (var item in verses) {
+                        <div class="row p-1">
+                            <div class="col-auto p-1 border-bottom mw-10-per">@Html.Raw(item.Key)</div>
+                            <div class="col p-1 border-start border-bottom">@Html.Raw(item.Value.Replace("―", String.Empty).Replace(" < n>", @"<span class=""text-muted"">").Replace("</n>", "</span>"))</div>
+                        </div>
+                    }
+
+                </div>
+            }
+        }
     </div>
 }
