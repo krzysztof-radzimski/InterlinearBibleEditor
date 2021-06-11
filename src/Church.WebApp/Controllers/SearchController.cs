@@ -53,7 +53,7 @@ namespace Church.WebApp.Controllers {
             var critera = String.Empty;
             foreach (var word in words) {
 
-                critera += $"Contains(Lower([Text]),'{word}')";
+                critera += $"Contains(Lower([Text]),'{word.ToLower()}')";
 
                 if (word != words.Last()) {
                     critera += " AND ";
