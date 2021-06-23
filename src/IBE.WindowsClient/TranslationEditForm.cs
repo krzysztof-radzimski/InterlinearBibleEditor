@@ -154,6 +154,17 @@ namespace IBE.WindowsClient {
                         };
 
                         foreach (var __item in _item.Verses.OrderBy(x => x.NumberOfVerse)) {
+#if DEBUG
+                            if (item.NumberOfBook == 470 && _item.NumberOfChapter == 1 && __item.NumberOfVerse == 18) 
+                                { 
+                            
+                            }
+#endif
+
+                            var subtitles = _item.Subtitles.ToList();
+                            var subtitle1 = subtitles.Where(x => x.BeforeVerseNumber == __item.NumberOfVerse && x.Level == 1).FirstOrDefault();
+                            var subtitle2 = subtitles.Where(x => x.BeforeVerseNumber == __item.NumberOfVerse && x.Level == 2).FirstOrDefault();
+
                             var len = __item.Text.IsNotNullOrEmpty() ? __item.Text.Length : 0;
                             var __text = __item.Text;
                             if (len > 40) { __text = __text.Substring(0, 40) + "..."; }
@@ -166,6 +177,8 @@ namespace IBE.WindowsClient {
                                 Value = __item.Text,
                                 Number = __item.NumberOfVerse,
                                 StartFromNewLine = __item.StartFromNewLine,
+                                SubtitleLevel1 = subtitle1.IsNotNull() ? subtitle1.Text : String.Empty,
+                                SubtitleLevel2 = subtitle2.IsNotNull() ? subtitle2.Text : String.Empty,
                                 IsNew = false,
                                 Changed = false
                             };
@@ -288,6 +301,43 @@ namespace IBE.WindowsClient {
                         ParentChapter = new XPQuery<Chapter>(uow).Where(x => x.Oid == parentChapterItem.Tag).FirstOrDefault()
                     };
 
+                    if (verseItem.SubtitleLevel1.IsNotNullOrEmpty()) {
+                        var subtitle1 = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse && x.Level ==1).FirstOrDefault();
+                        if (subtitle1.IsNotNull()) {
+                            subtitle1.BeforeVerseNumber = verse.NumberOfVerse;
+                            subtitle1.ParentChapter = verse.ParentChapter;
+                            subtitle1.Level = 1;
+                            subtitle1.Text = verseItem.SubtitleLevel1;
+                        }
+                        else {
+                            subtitle1 = new Subtitle(uow) {
+                                BeforeVerseNumber = verse.NumberOfVerse,
+                                ParentChapter = verse.ParentChapter,
+                                Level = 1,
+                                Text = verseItem.SubtitleLevel1
+                            };
+                        }
+                        subtitle1.Save();
+                    }
+                    if (verseItem.SubtitleLevel2.IsNotNullOrEmpty()) {
+                        var subtitle2 = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse && x.Level == 2).FirstOrDefault();
+                        if (subtitle2.IsNotNull()) {
+                            subtitle2.BeforeVerseNumber = verse.NumberOfVerse;
+                            subtitle2.ParentChapter = verse.ParentChapter;
+                            subtitle2.Level = 1;
+                            subtitle2.Text = verseItem.SubtitleLevel2;
+                        }
+                        else {
+                            subtitle2 = new Subtitle(uow) {
+                                BeforeVerseNumber = verse.NumberOfVerse,
+                                ParentChapter = verse.ParentChapter,
+                                Level = 1,
+                                Text = verseItem.SubtitleLevel2
+                            };
+                        }
+                        subtitle2.Save();
+                    }
+
                     verse.Save();
                     uow.CommitChanges();
                     uow.ReloadChangedObjects();
@@ -345,6 +395,14 @@ namespace IBE.WindowsClient {
                         }
                         if (verse.Number != txtNumberOfVerse.Text.ToInt()) {
                             verse.Number = txtNumberOfVerse.Text.ToInt();
+                            verse.Changed = true;
+                        }
+                        if (verse.SubtitleLevel1!=txtSubtitleLevel1.Text) {
+                            verse.SubtitleLevel1 = txtSubtitleLevel1.Text;
+                            verse.Changed = true;
+                        }
+                        if (verse.SubtitleLevel2 != txtSubtitleLevel2.Text) {
+                            verse.SubtitleLevel2 = txtSubtitleLevel2.Text;
                             verse.Changed = true;
                         }
                     }
@@ -539,6 +597,8 @@ namespace IBE.WindowsClient {
 
                     txtNumberOfVerse.Text = e.Number.ToString();
                     cbStartFromNewLine.Checked = e.StartFromNewLine;
+                    txtSubtitleLevel1.Text = e.SubtitleLevel1;
+                    txtSubtitleLevel2.Text = e.SubtitleLevel2;
                     editor.Text = e.Value;
                 }
                 tabVerse.Tag = e;
@@ -694,29 +754,19 @@ namespace IBE.WindowsClient {
     public enum IbeTreeItemType { Root, Book, Chapter, Verse }
 
     public abstract class IbeTreeItem {
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int Number { get; set; }
+        [Browsable(false)] [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] public int Number { get; set; }
 
         public string ID { get; set; }
         public string ParentID { get; set; }
         public string Text { get; set; }
 
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int Tag { get; set; }
+        [Browsable(false)] [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] public int Tag { get; set; }
 
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IbeTreeItemType Type { get; protected set; }
+        [Browsable(false)] [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] public IbeTreeItemType Type { get; protected set; }
 
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool Changed { get; set; }
+        [Browsable(false)] [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] public bool Changed { get; set; }
 
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool IsNew { get; set; }
+        [Browsable(false)] [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] public bool IsNew { get; set; }
 
         public IbeTreeItem() { }
     }
@@ -755,25 +805,20 @@ namespace IBE.WindowsClient {
     }
 
     public class IbeVerseTreeItem : IbeTreeItem {
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool StartFromNewLine { get; set; }
+        [Browsable(false)] [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] public bool StartFromNewLine { get; set; }
 
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string Value { get; set; }
+        [Browsable(false)] [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] public string Value { get; set; }
 
-        public IbeVerseTreeItem() {
-            Type = IbeTreeItemType.Verse;
-        }
+        [Browsable(false)] [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] public string SubtitleLevel1 { get; set; }
+        [Browsable(false)] [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] public string SubtitleLevel2 { get; set; }
+
+        public IbeVerseTreeItem() { Type = IbeTreeItemType.Verse; }
     }
 
     public class IbeBaseBookItem {
         public int Id { get; set; }
         public string Text { get; set; }
         public IbeBaseBookItem() { }
-        public override string ToString() {
-            return Text;
-        }
+        public override string ToString() => Text;
     }
 }

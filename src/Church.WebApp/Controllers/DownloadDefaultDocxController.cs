@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 namespace Church.WebApp.Controllers {
     [ApiController]
     [Route("api/[controller]")]
-    public class DownloadInterlinearDocxController : Controller {
+    public class DownloadDefaultDocxController : Controller {
         private readonly IConfiguration Configuration;
-        public DownloadInterlinearDocxController(IConfiguration configuration) {
+        public DownloadDefaultDocxController(IConfiguration configuration) {
             Configuration = configuration;
         }
 
@@ -55,7 +55,7 @@ namespace Church.WebApp.Controllers {
                     licData = System.IO.File.ReadAllBytes(licPath);
                 }
 
-                var result = new InterlinearExporter(licData).Export(chapter, ExportSaveFormat.Docx);
+                var result = new DefaultExporter(licData).Export(chapter, ExportSaveFormat.Docx);
 
                 return new MemoryStream(result);
             }
@@ -75,7 +75,7 @@ namespace Church.WebApp.Controllers {
                     licData = System.IO.File.ReadAllBytes(licPath);
                 }
 
-                var result = new InterlinearExporter(licData).Export(book, ExportSaveFormat.Docx);
+                var result = new DefaultExporter(licData).Export(book, ExportSaveFormat.Docx);
 
                 return new MemoryStream(result);
             }

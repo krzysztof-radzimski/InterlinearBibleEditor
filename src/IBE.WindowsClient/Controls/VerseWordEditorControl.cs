@@ -47,6 +47,49 @@ namespace IBE.WindowsClient.Controls {
             else {
                 lblStrong.BackColor = Color.DarkGray;
             }
+
+            AddStrongToolTip(word.StrongCode);
+            AddGrammarToolTip(word.GrammarCode);
+        }
+
+        private void AddGrammarToolTip(GrammarCode code) {
+            if (code.IsNotNull()) {
+                var grammarToolTip = new DevExpress.Utils.SuperToolTip() {
+                    AllowHtmlText = DevExpress.Utils.DefaultBoolean.True
+                };
+                grammarToolTip.Items.Add(new DevExpress.Utils.ToolTipTitleItem() {
+                    AllowHtmlText = DevExpress.Utils.DefaultBoolean.True,
+                    Text = code.ShortDefinition
+                });
+                grammarToolTip.Items.Add(new DevExpress.Utils.ToolTipSeparatorItem());
+                grammarToolTip.Items.Add(new DevExpress.Utils.ToolTipItem() {
+                    AllowHtmlText = DevExpress.Utils.DefaultBoolean.True,
+                    Text = code.GrammarCodeDescriptionText
+                });
+
+
+                lblGrammarCode.SuperTip = grammarToolTip;
+            }
+        }
+
+        private void AddStrongToolTip(StrongCode code) {
+            if (code.IsNotNull()) {
+                var strongToolTip = new DevExpress.Utils.SuperToolTip() {
+                    AllowHtmlText = DevExpress.Utils.DefaultBoolean.True
+                };
+                strongToolTip.Items.Add(new DevExpress.Utils.ToolTipTitleItem() {
+                    AllowHtmlText = DevExpress.Utils.DefaultBoolean.True,
+                    Text = code.ShortDefinition
+                });
+                strongToolTip.Items.Add(new DevExpress.Utils.ToolTipSeparatorItem());
+                strongToolTip.Items.Add(new DevExpress.Utils.ToolTipItem() {
+                    AllowHtmlText = DevExpress.Utils.DefaultBoolean.True,
+                    Text = code.Definition
+                });
+
+
+                lblStrong.SuperTip = strongToolTip;
+            }
         }
 
         private void Word_Changed(object sender, DevExpress.Xpo.ObjectChangeEventArgs e) {
@@ -68,6 +111,8 @@ namespace IBE.WindowsClient.Controls {
 
                         lblStrong.DataBindings.Add("Text", Word.StrongCode, "Code");
                         lblStrong.BackColor = Color.Transparent;
+
+                        AddStrongToolTip(Word.StrongCode);
                     }
                 }
             }
@@ -85,6 +130,8 @@ namespace IBE.WindowsClient.Controls {
 
                         lblGrammarCode.DataBindings.Add("Text", Word.GrammarCode, "GrammarCodeVariant1");
                         lblGrammarCode.BackColor = Color.Transparent;
+
+                        AddGrammarToolTip(Word.GrammarCode);
                     }
                 }
 

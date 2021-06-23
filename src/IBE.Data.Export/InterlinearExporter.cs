@@ -58,7 +58,6 @@ namespace IBE.Data.Export {
 
             var chapters = book.Chapters.Where(x => x.IsTranslated).OrderBy(x => x.NumberOfChapter).ToArray();
             foreach (var chapter in chapters) {
-                //builder.MoveToDocumentEnd();
 
                 if (chapter == chapters.First()) { builder.InsertParagraph(); }
 
@@ -100,8 +99,6 @@ namespace IBE.Data.Export {
 
             var chapters = book.Chapters.Where(x => x.IsTranslated).OrderBy(x => x.NumberOfChapter).ToArray();
             foreach (var chapter in chapters) {
-                //if (chapter == chapters.First()) { builder.InsertParagraph(); }
-
                 ExportChapterNumber(chapter, builder, false);
 
                 var par = builder.InsertParagraph();
@@ -228,6 +225,7 @@ namespace IBE.Data.Export {
             var par = builder.InsertParagraph();
             par.ParagraphFormat.Style = builder.Document.Styles["Nagłówek 2"];
             par.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            par.ParagraphFormat.KeepWithNext = true;
 
             if (chapter.NumberOfChapter > 0) {
                 var chapterString = chapter.ParentBook.NumberOfBook == 230 ? chapter.ParentTranslation.ChapterPsalmString : chapter.ParentTranslation.ChapterString;
@@ -242,10 +240,11 @@ namespace IBE.Data.Export {
             if (verse.ParentChapter.Subtitles.Count > 0) {
                 var subtitles = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse);
                 if (subtitles.Any()) {
-                    var _par = builder.InsertParagraph(); //builder.CurrentParagraph;
+                    var _par = builder.InsertParagraph();
                     _par.ParagraphFormat.Style = builder.Document.Styles["Nagłówek 3"];
                     _par.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-                    //_par.ParagraphFormat.KeepWithNext = true;
+                    _par.ParagraphFormat.KeepWithNext = true;
+
                     foreach (var subtitle in subtitles) {
                         var run = new Run(builder.Document) {
                             Text = subtitle.Text
@@ -258,6 +257,7 @@ namespace IBE.Data.Export {
                     par = builder.InsertParagraph();
                     par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
                     par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+                    par.ParagraphFormat.KeepWithNext = false;
                     builder.MoveTo(par);
                 }
             }
@@ -538,20 +538,6 @@ namespace IBE.Data.Export {
                     }
                     else {
                         return GetVerseOtherTranslation(session, numberOfBook, numberOfChapter, verseStart);
-                        //if (numberOfBook > 460) {
-                        //    index = $"PBPW.{numberOfBook}.{numberOfChapter}.{verseStart}";
-                        //    verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
-                        //}
-                        //else {
-                        //    index = $"SNP18.{numberOfBook}.{numberOfChapter}.{verseStart}";
-                        //    verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
-                        //}
-                        //if (verse.IsNotNull()) {
-                        //    verseText = verse.Text;
-                        //    verseText = System.Text.RegularExpressions.Regex.Replace(verseText, @"\[[0-9]+\]", "");
-
-                        //    return verseText;
-                        //}
                     }
                 }
                 else {
@@ -576,41 +562,12 @@ namespace IBE.Data.Export {
                     }
                     else {
                         return GetVersesOtherTranslation(session, numberOfBook, numberOfChapter, verseStart, verseEnd);
-                        //if (numberOfBook > 460) {
-                        //    predicate = PredicateBuilder.New<Verse>();
-                        //    for (int i = verseStart; i < verseEnd + 1; i++) {
-                        //        var index = $"PBPW.{numberOfBook}.{numberOfChapter}.{i}";
-                        //        predicate = predicate.Or(x => x.Index == index);
-                        //    }
-
-                        //    verses = new XPQuery<Verse>(session).Where(predicate);
-                        //}
-                        //else {
-                        //    predicate = PredicateBuilder.New<Verse>();
-                        //    for (int i = verseStart; i < verseEnd + 1; i++) {
-                        //        var index = $"SNP18.{numberOfBook}.{numberOfChapter}.{i}";
-                        //        predicate = predicate.Or(x => x.Index == index);
-                        //    }
-
-                        //    verses = new XPQuery<Verse>(session).Where(predicate);
-                        //}
-
-                        //if (verses.Count() > 0) {
-                        //    var versesText = String.Empty;
-                        //    foreach (var item in verses) {
-                        //        versesText += item.Text + " ";
-                        //    }
-                        //    versesText = System.Text.RegularExpressions.Regex.Replace(versesText, @"\[[0-9]+\]", "");
-
-                        //    return versesText.Trim();
-                        //}
                     }
                 }
                 else {
                     return GetVersesOtherTranslation(session, numberOfBook, numberOfChapter, verseStart, verseEnd);
                 }
             }
-            // return String.Empty;
         }
 
         private float GetMaxTextSize(VerseWord word) {

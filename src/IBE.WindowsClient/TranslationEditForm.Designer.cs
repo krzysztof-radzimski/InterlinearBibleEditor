@@ -36,9 +36,7 @@ namespace IBE.WindowsClient {
             this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl10 = new DevExpress.XtraEditors.LabelControl();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
-            this.labelControl30 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl29 = new DevExpress.XtraEditors.LabelControl();
-            this.cbWithStrongs = new DevExpress.XtraEditors.CheckEdit();
+            this.cbHidden = new DevExpress.XtraEditors.CheckEdit();
             this.ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
             this.btnSave = new DevExpress.XtraBars.BarButtonItem();
             this.btnAddBook = new DevExpress.XtraBars.BarButtonItem();
@@ -49,6 +47,10 @@ namespace IBE.WindowsClient {
             this.btnDeleteBook = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.labelControl35 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl30 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl29 = new DevExpress.XtraEditors.LabelControl();
+            this.cbWithStrongs = new DevExpress.XtraEditors.CheckEdit();
             this.cbWithGrammarCodes = new DevExpress.XtraEditors.CheckEdit();
             this.labelControl13 = new DevExpress.XtraEditors.LabelControl();
             this.cbOpenAccess = new DevExpress.XtraEditors.CheckEdit();
@@ -118,12 +120,15 @@ namespace IBE.WindowsClient {
             this.cbStartFromNewLine = new DevExpress.XtraEditors.CheckEdit();
             this.sidePanel1 = new DevExpress.XtraEditors.SidePanel();
             this.treeList = new DevExpress.XtraTreeList.TreeList();
-            this.labelControl35 = new DevExpress.XtraEditors.LabelControl();
-            this.cbHidden = new DevExpress.XtraEditors.CheckEdit();
+            this.labelControl36 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl37 = new DevExpress.XtraEditors.LabelControl();
+            this.txtSubtitleLevel1 = new DevExpress.XtraEditors.TextEdit();
+            this.txtSubtitleLevel2 = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cbWithStrongs.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbHidden.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbWithStrongs.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbWithGrammarCodes.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbOpenAccess.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbChapterRomanNumbering.Properties)).BeginInit();
@@ -172,7 +177,8 @@ namespace IBE.WindowsClient {
             ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).BeginInit();
             this.sidePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbHidden.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSubtitleLevel1.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSubtitleLevel2.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // labelControl1
@@ -336,36 +342,16 @@ namespace IBE.WindowsClient {
             this.tablePanel1.Size = new System.Drawing.Size(1169, 866);
             this.tablePanel1.TabIndex = 0;
             // 
-            // labelControl30
+            // cbHidden
             // 
-            this.tablePanel1.SetColumn(this.labelControl30, 0);
-            this.labelControl30.Location = new System.Drawing.Point(3, 205);
-            this.labelControl30.Name = "labelControl30";
-            this.tablePanel1.SetRow(this.labelControl30, 8);
-            this.labelControl30.Size = new System.Drawing.Size(110, 13);
-            this.labelControl30.TabIndex = 30;
-            this.labelControl30.Text = "Show Strong\'s Codes";
-            // 
-            // labelControl29
-            // 
-            this.tablePanel1.SetColumn(this.labelControl29, 0);
-            this.labelControl29.Location = new System.Drawing.Point(3, 229);
-            this.labelControl29.Name = "labelControl29";
-            this.tablePanel1.SetRow(this.labelControl29, 9);
-            this.labelControl29.Size = new System.Drawing.Size(121, 13);
-            this.labelControl29.TabIndex = 29;
-            this.labelControl29.Text = "Show Grammar\'s Codes";
-            // 
-            // cbWithStrongs
-            // 
-            this.tablePanel1.SetColumn(this.cbWithStrongs, 1);
-            this.cbWithStrongs.Location = new System.Drawing.Point(152, 203);
-            this.cbWithStrongs.MenuManager = this.ribbonControl1;
-            this.cbWithStrongs.Name = "cbWithStrongs";
-            this.cbWithStrongs.Properties.Caption = "";
-            this.tablePanel1.SetRow(this.cbWithStrongs, 8);
-            this.cbWithStrongs.Size = new System.Drawing.Size(541, 18);
-            this.cbWithStrongs.TabIndex = 28;
+            this.tablePanel1.SetColumn(this.cbHidden, 1);
+            this.cbHidden.Location = new System.Drawing.Point(152, 251);
+            this.cbHidden.MenuManager = this.ribbonControl1;
+            this.cbHidden.Name = "cbHidden";
+            this.cbHidden.Properties.Caption = "";
+            this.tablePanel1.SetRow(this.cbHidden, 10);
+            this.cbHidden.Size = new System.Drawing.Size(541, 18);
+            this.cbHidden.TabIndex = 32;
             // 
             // ribbonControl1
             // 
@@ -465,6 +451,47 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnAddVerses);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
+            // 
+            // labelControl35
+            // 
+            this.tablePanel1.SetColumn(this.labelControl35, 0);
+            this.labelControl35.Location = new System.Drawing.Point(3, 253);
+            this.labelControl35.Name = "labelControl35";
+            this.tablePanel1.SetRow(this.labelControl35, 10);
+            this.labelControl35.Size = new System.Drawing.Size(69, 13);
+            this.labelControl35.TabIndex = 31;
+            this.labelControl35.Text = "Hide in menu";
+            // 
+            // labelControl30
+            // 
+            this.tablePanel1.SetColumn(this.labelControl30, 0);
+            this.labelControl30.Location = new System.Drawing.Point(3, 205);
+            this.labelControl30.Name = "labelControl30";
+            this.tablePanel1.SetRow(this.labelControl30, 8);
+            this.labelControl30.Size = new System.Drawing.Size(110, 13);
+            this.labelControl30.TabIndex = 30;
+            this.labelControl30.Text = "Show Strong\'s Codes";
+            // 
+            // labelControl29
+            // 
+            this.tablePanel1.SetColumn(this.labelControl29, 0);
+            this.labelControl29.Location = new System.Drawing.Point(3, 229);
+            this.labelControl29.Name = "labelControl29";
+            this.tablePanel1.SetRow(this.labelControl29, 9);
+            this.labelControl29.Size = new System.Drawing.Size(121, 13);
+            this.labelControl29.TabIndex = 29;
+            this.labelControl29.Text = "Show Grammar\'s Codes";
+            // 
+            // cbWithStrongs
+            // 
+            this.tablePanel1.SetColumn(this.cbWithStrongs, 1);
+            this.cbWithStrongs.Location = new System.Drawing.Point(152, 203);
+            this.cbWithStrongs.MenuManager = this.ribbonControl1;
+            this.cbWithStrongs.Name = "cbWithStrongs";
+            this.cbWithStrongs.Properties.Caption = "";
+            this.tablePanel1.SetRow(this.cbWithStrongs, 8);
+            this.cbWithStrongs.Size = new System.Drawing.Size(541, 18);
+            this.cbWithStrongs.TabIndex = 28;
             // 
             // cbWithGrammarCodes
             // 
@@ -1154,6 +1181,10 @@ namespace IBE.WindowsClient {
             this.tableVerseControls.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 50F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
+            this.tableVerseControls.Controls.Add(this.txtSubtitleLevel2);
+            this.tableVerseControls.Controls.Add(this.txtSubtitleLevel1);
+            this.tableVerseControls.Controls.Add(this.labelControl37);
+            this.tableVerseControls.Controls.Add(this.labelControl36);
             this.tableVerseControls.Controls.Add(this.txtNumberOfVerse);
             this.tableVerseControls.Controls.Add(this.editor);
             this.tableVerseControls.Controls.Add(this.labelControl15);
@@ -1164,6 +1195,8 @@ namespace IBE.WindowsClient {
             this.tableVerseControls.Name = "tableVerseControls";
             this.tableVerseControls.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
             this.tableVerseControls.Size = new System.Drawing.Size(823, 845);
@@ -1172,11 +1205,11 @@ namespace IBE.WindowsClient {
             // txtNumberOfVerse
             // 
             this.tableVerseControls.SetColumn(this.txtNumberOfVerse, 1);
-            this.txtNumberOfVerse.Location = new System.Drawing.Point(23, 23);
+            this.txtNumberOfVerse.Location = new System.Drawing.Point(110, 79);
             this.txtNumberOfVerse.MenuManager = this.ribbonControl1;
             this.txtNumberOfVerse.Name = "txtNumberOfVerse";
-            this.tableVerseControls.SetRow(this.txtNumberOfVerse, 1);
-            this.txtNumberOfVerse.Size = new System.Drawing.Size(797, 20);
+            this.tableVerseControls.SetRow(this.txtNumberOfVerse, 3);
+            this.txtNumberOfVerse.Size = new System.Drawing.Size(710, 20);
             this.txtNumberOfVerse.TabIndex = 3;
             // 
             // editor
@@ -1187,42 +1220,42 @@ namespace IBE.WindowsClient {
             this.tableVerseControls.SetColumnSpan(this.editor, 2);
             this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.editor.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
-            this.editor.Location = new System.Drawing.Point(3, 43);
+            this.editor.Location = new System.Drawing.Point(3, 105);
             this.editor.MenuManager = this.ribbonControl1;
             this.editor.Name = "editor";
-            this.tableVerseControls.SetRow(this.editor, 2);
-            this.editor.Size = new System.Drawing.Size(817, 799);
+            this.tableVerseControls.SetRow(this.editor, 4);
+            this.editor.Size = new System.Drawing.Size(817, 737);
             this.editor.TabIndex = 0;
             // 
             // labelControl15
             // 
             this.tableVerseControls.SetColumn(this.labelControl15, 0);
-            this.labelControl15.Location = new System.Drawing.Point(3, 23);
+            this.labelControl15.Location = new System.Drawing.Point(3, 82);
             this.labelControl15.Name = "labelControl15";
-            this.tableVerseControls.SetRow(this.labelControl15, 1);
-            this.labelControl15.Size = new System.Drawing.Size(14, 13);
+            this.tableVerseControls.SetRow(this.labelControl15, 3);
+            this.labelControl15.Size = new System.Drawing.Size(44, 13);
             this.labelControl15.TabIndex = 2;
             this.labelControl15.Text = "Number:";
             // 
             // labelControl14
             // 
             this.tableVerseControls.SetColumn(this.labelControl14, 0);
-            this.labelControl14.Location = new System.Drawing.Point(3, 3);
+            this.labelControl14.Location = new System.Drawing.Point(3, 5);
             this.labelControl14.Name = "labelControl14";
             this.tableVerseControls.SetRow(this.labelControl14, 0);
-            this.labelControl14.Size = new System.Drawing.Size(14, 13);
+            this.labelControl14.Size = new System.Drawing.Size(101, 13);
             this.labelControl14.TabIndex = 1;
             this.labelControl14.Text = "Start from new line:";
             // 
             // cbStartFromNewLine
             // 
             this.tableVerseControls.SetColumn(this.cbStartFromNewLine, 1);
-            this.cbStartFromNewLine.Location = new System.Drawing.Point(23, 3);
+            this.cbStartFromNewLine.Location = new System.Drawing.Point(110, 3);
             this.cbStartFromNewLine.MenuManager = this.ribbonControl1;
             this.cbStartFromNewLine.Name = "cbStartFromNewLine";
             this.cbStartFromNewLine.Properties.Caption = "";
             this.tableVerseControls.SetRow(this.cbStartFromNewLine, 0);
-            this.cbStartFromNewLine.Size = new System.Drawing.Size(797, 18);
+            this.cbStartFromNewLine.Size = new System.Drawing.Size(710, 18);
             this.cbStartFromNewLine.TabIndex = 0;
             // 
             // sidePanel1
@@ -1249,26 +1282,45 @@ namespace IBE.WindowsClient {
             this.treeList.NodeChanged += new DevExpress.XtraTreeList.NodeChangedEventHandler(this.treeList_NodeChanged);
             this.treeList.FocusedNodeChanged += new DevExpress.XtraTreeList.FocusedNodeChangedEventHandler(this.TreeListFocusedNodeChanged);
             // 
-            // labelControl35
+            // labelControl36
             // 
-            this.tablePanel1.SetColumn(this.labelControl35, 0);
-            this.labelControl35.Location = new System.Drawing.Point(3, 253);
-            this.labelControl35.Name = "labelControl35";
-            this.tablePanel1.SetRow(this.labelControl35, 10);
-            this.labelControl35.Size = new System.Drawing.Size(69, 13);
-            this.labelControl35.TabIndex = 31;
-            this.labelControl35.Text = "Hide in menu";
+            this.tableVerseControls.SetColumn(this.labelControl36, 0);
+            this.labelControl36.Location = new System.Drawing.Point(3, 30);
+            this.labelControl36.Name = "labelControl36";
+            this.tableVerseControls.SetRow(this.labelControl36, 1);
+            this.labelControl36.Size = new System.Drawing.Size(75, 13);
+            this.labelControl36.TabIndex = 4;
+            this.labelControl36.Text = "Subtitle level 1";
             // 
-            // cbHidden
+            // labelControl37
             // 
-            this.tablePanel1.SetColumn(this.cbHidden, 1);
-            this.cbHidden.Location = new System.Drawing.Point(152, 251);
-            this.cbHidden.MenuManager = this.ribbonControl1;
-            this.cbHidden.Name = "cbHidden";
-            this.cbHidden.Properties.Caption = "";
-            this.tablePanel1.SetRow(this.cbHidden, 10);
-            this.cbHidden.Size = new System.Drawing.Size(541, 18);
-            this.cbHidden.TabIndex = 32;
+            this.tableVerseControls.SetColumn(this.labelControl37, 0);
+            this.labelControl37.Location = new System.Drawing.Point(3, 56);
+            this.labelControl37.Name = "labelControl37";
+            this.tableVerseControls.SetRow(this.labelControl37, 2);
+            this.labelControl37.Size = new System.Drawing.Size(75, 13);
+            this.labelControl37.TabIndex = 5;
+            this.labelControl37.Text = "Subtitle level 2";
+            // 
+            // txtSubtitleLevel1
+            // 
+            this.tableVerseControls.SetColumn(this.txtSubtitleLevel1, 1);
+            this.txtSubtitleLevel1.Location = new System.Drawing.Point(110, 27);
+            this.txtSubtitleLevel1.MenuManager = this.ribbonControl1;
+            this.txtSubtitleLevel1.Name = "txtSubtitleLevel1";
+            this.tableVerseControls.SetRow(this.txtSubtitleLevel1, 1);
+            this.txtSubtitleLevel1.Size = new System.Drawing.Size(710, 20);
+            this.txtSubtitleLevel1.TabIndex = 6;
+            // 
+            // txtSubtitleLevel2
+            // 
+            this.tableVerseControls.SetColumn(this.txtSubtitleLevel2, 1);
+            this.txtSubtitleLevel2.Location = new System.Drawing.Point(110, 53);
+            this.txtSubtitleLevel2.MenuManager = this.ribbonControl1;
+            this.txtSubtitleLevel2.Name = "txtSubtitleLevel2";
+            this.tableVerseControls.SetRow(this.txtSubtitleLevel2, 2);
+            this.txtSubtitleLevel2.Size = new System.Drawing.Size(710, 20);
+            this.txtSubtitleLevel2.TabIndex = 7;
             // 
             // TranslationEditForm
             // 
@@ -1284,8 +1336,9 @@ namespace IBE.WindowsClient {
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
             this.tablePanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cbWithStrongs.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbHidden.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cbWithStrongs.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbWithGrammarCodes.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbOpenAccess.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbChapterRomanNumbering.Properties)).EndInit();
@@ -1337,7 +1390,8 @@ namespace IBE.WindowsClient {
             ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).EndInit();
             this.sidePanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.treeList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbHidden.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSubtitleLevel1.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSubtitleLevel2.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1440,5 +1494,9 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnDeleteBook;
         private DevExpress.XtraEditors.CheckEdit cbHidden;
         private DevExpress.XtraEditors.LabelControl labelControl35;
+        private DevExpress.XtraEditors.LabelControl labelControl36;
+        private DevExpress.XtraEditors.TextEdit txtSubtitleLevel2;
+        private DevExpress.XtraEditors.TextEdit txtSubtitleLevel1;
+        private DevExpress.XtraEditors.LabelControl labelControl37;
     }
 }

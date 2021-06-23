@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 namespace Church.WebApp.Controllers {
     [ApiController]
     [Route("api/[controller]")]
-    public class DownloadInterlinearDocxController : Controller {
+    public class DownloadDefaultPdfController : Controller {
         private readonly IConfiguration Configuration;
-        public DownloadInterlinearDocxController(IConfiguration configuration) {
+        public DownloadDefaultPdfController(IConfiguration configuration) {
             Configuration = configuration;
         }
 
@@ -24,20 +24,20 @@ namespace Church.WebApp.Controllers {
 
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 5) {
                 var queryString = Uri.UnescapeDataString(qs.Value).RemoveAny("?q=");
-                var stream = await CreateDocx(queryString);
+                var stream = await CreatePdf(queryString);
 
-                return File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "file.docx");
+                return File(stream, "application/pdf", "file.pdf");
             }
 
             return NotFound();
         }
 
-        private async Task<Stream> CreateDocx(string queryString) {
+        private async Task<Stream> CreatePdf(string queryString) {
             Book book;
+            Chapter chapter;
+            //string path;
             var paramsTable = queryString.Split(',');
             if (paramsTable.Length == 3) {
-                Chapter chapter;
-
                 var translationName = paramsTable[0];
                 var bookNumber = paramsTable[1].ToInt();
                 var chapterNumber = paramsTable[2].ToInt();
@@ -55,7 +55,8 @@ namespace Church.WebApp.Controllers {
                     licData = System.IO.File.ReadAllBytes(licPath);
                 }
 
-                var result = new InterlinearExporter(licData).Export(chapter, ExportSaveFormat.Docx);
+                var result = new DefaultExporter(licData).Export(chapter, ExportSaveFormat.Pdf);
+
 
                 return new MemoryStream(result);
             }
@@ -75,7 +76,8 @@ namespace Church.WebApp.Controllers {
                     licData = System.IO.File.ReadAllBytes(licPath);
                 }
 
-                var result = new InterlinearExporter(licData).Export(book, ExportSaveFormat.Docx);
+                var result = new DefaultExporter(licData).Export(book, ExportSaveFormat.Pdf);
+
 
                 return new MemoryStream(result);
             }

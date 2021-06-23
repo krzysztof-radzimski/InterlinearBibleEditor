@@ -73,5 +73,12 @@ namespace IBE.WindowsClient {
             var path2 = "../../../Church.WebApp/Data/IBE.SQLite3";
             File.Copy(path, path2, true);
         }
+
+        private void btnStrongsCodes_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var frm = new StrongsCodesForm();
+            frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
+            frm.MdiParent = this;
+            frm.Show();
+        }
     }
 }
