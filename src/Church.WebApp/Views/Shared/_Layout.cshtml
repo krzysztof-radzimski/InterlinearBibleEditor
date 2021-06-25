@@ -74,7 +74,7 @@
                                             Type = (TranslationType)item["Type"],
                                             Name = item["Name"].ToString().Replace("'", ""),
                                             Description = item["Description"].ToString(),
-                                            Catolic = (bool)item["Catolic"],
+                                            Catholic = (bool)item["Catolic"],
                                             Recommended = (bool)item["Recommended"],
                                             PasswordRequired = !((bool)item["OpenAccess"])
                                         });
@@ -99,7 +99,7 @@
                                         foreach (var item in list.Where(x => x.Type == type)) {
                                             var _name = item.Name.Replace("'", "").Replace("+", "");
                                             var _description = item.Description;
-                                            var _catolicBadge = item.Catolic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
+                                            var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
                                             var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
                                             var _notrecommendedBadge = type == TranslationType.Dynamic ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
                                             var _loginRequired = item.PasswordRequired ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
@@ -146,7 +146,7 @@
                                                 Type = (TranslationType)item["Type"],
                                                 Name = item["Name"].ToString().Replace("'", ""),
                                                 Description = item["Description"].ToString(),
-                                                Catolic = (bool)item["Catolic"],
+                                                Catholic = (bool)item["Catolic"],
                                                 Recommended = (bool)item["Recommended"],
                                                 PasswordRequired = !((bool)item["OpenAccess"])
                                             }); ;
@@ -158,7 +158,7 @@
                                         foreach (var item in list2) {
                                             var _name = item.Name.Replace("'", "").Replace("+", "");
                                             var _description = item.Description;
-                                            var _catolicBadge = item.Catolic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
+                                            var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
                                             var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
                                             var _loginRequired = item.PasswordRequired ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
 

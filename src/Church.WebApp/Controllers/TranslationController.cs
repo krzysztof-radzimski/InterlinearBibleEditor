@@ -11,15 +11,16 @@
 
   ===================================================================================*/
 
+using Church.WebApp.Models;
 using DevExpress.Xpo;
-using IBE.Data.Model;
 using IBE.Common.Extensions;
+using IBE.Data.Model;
+using LinqKit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LinqKit;
 
 namespace Church.WebApp.Controllers {
     public class TranslationController : Controller {
@@ -58,7 +59,7 @@ namespace Church.WebApp.Controllers {
                             result.Translations.Add(new TranslationInfo() {
                                 Name = item["Name"].ToString(),
                                 Description = item["Description"].ToString(),
-                                TranslationType = ((TranslationType)item["Type"]).GetDescription(),
+                                Type = (TranslationType)item["Type"],
                                 Catholic = (bool)item["Catholic"],
                                 Recommended = (bool)item["Recommended"],
                                 PasswordRequired = !((bool)item["OpenAccess"])
@@ -313,76 +314,5 @@ namespace Church.WebApp.Controllers {
             }
             return String.Empty;
         }
-    }
-
-    public class TranslationControllerModel {
-        public Translation Translation { get; }
-        public List<BookBase> Books { get; }
-        public string Book { get; }
-        public string Chapter { get; }
-        public string Verse { get; }
-        public int NTBookNumber { get; }
-        public int LogosBookNumber { get; }
-        public List<TranslationInfo> Translations { get; }
-        public TranslationControllerModel(Translation t, string b = null, string c = null, string v = null, List<BookBase> books = null) {
-            Translation = t;
-            Book = b;
-            Chapter = c;
-            Verse = v;
-            Translations = new List<TranslationInfo>();
-            Books = books;
-            NTBookNumber = GetNTBookNumber();
-            LogosBookNumber = GetLogosBookNumber();
-        }
-
-        private int GetNTBookNumber() {
-            if (Translation.Name.Replace("+", String.Empty) == "IPD") { return 67; }
-            var book = Book.ToInt();
-            var r = 1;
-            for (int i = 470; i <= 730; i += 10) {
-                if (i == book) {
-                    return r;
-                }
-                r++;
-            }
-            return r;
-        }
-        private int GetLogosBookNumber() {
-            var book = Book.ToInt();
-            var r = 1;
-            if (book < 470) {
-                foreach (var item in Books) {
-                    if (item.NumberOfBook < 470) {
-                        if (book == item.NumberOfBook) { return r; }
-                    }
-                    else {
-                        break;
-                    }
-                    r++;
-                }
-            }
-            else {
-                r = 61;
-                foreach (var item in Books) {
-                    if (item.NumberOfBook >= 470) {
-                        if (book == item.NumberOfBook) { return r; }
-                        r++;
-                    }
-                    else {
-                        continue;
-                    }
-                }
-            }
-
-            return r;
-        }
-    }
-    public class TranslationInfo {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string TranslationType { get; set; }
-        public bool Catholic { get; set; }
-        public bool Recommended { get; set; }
-        public bool PasswordRequired { get; set; }
     }
 }

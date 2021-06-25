@@ -1,13 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace IBE.WebApp {
     public class Startup {
@@ -51,8 +46,8 @@ namespace IBE.WebApp {
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            var path= $"{env.ContentRootPath}\\Data\\IBE.SQLite3";
-           
+            var path = $"{env.ContentRootPath}\\Data\\IBE.SQLite3";
+
             var connectionString = $"XpoProvider=SQLite;data source={path}";
             Data.ConnectionHelper.Connect(connectionString: connectionString);
         }

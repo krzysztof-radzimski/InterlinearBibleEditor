@@ -3,7 +3,7 @@
     var selectedVerses = new List<int>();
 }
 
-@model Church.WebApp.Controllers.TranslationControllerModel
+@model Church.WebApp.Models.TranslationControllerModel
 @using IBE.Common.Extensions
 
 @if (Model == null) {
@@ -798,8 +798,6 @@ break;
                 if (!isLocal) {
 
                     <script>
-
-
                         var password = "";
                         var myCookie = document.cookie;
                         if (myCookie) {
