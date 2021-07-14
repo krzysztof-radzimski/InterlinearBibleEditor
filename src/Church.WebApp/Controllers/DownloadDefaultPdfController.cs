@@ -25,7 +25,7 @@ namespace Church.WebApp.Controllers {
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 5) {
                 var queryString = Uri.UnescapeDataString(qs.Value).RemoveAny("?q=");
                 var stream = await CreatePdf(queryString);
-
+                if (stream.IsNull()) { return NotFound(); }
                 return File(stream, "application/pdf", "file.pdf");
             }
 
@@ -44,7 +44,9 @@ namespace Church.WebApp.Controllers {
 
                 var uow = new UnitOfWork();
 
-                var trans = new XPQuery<Translation>(uow).Where(x => x.Name == translationName).FirstOrDefault();
+                var trans = new XPQuery<Translation>(uow).Where(x => !x.Hidden && x.Name == translationName).FirstOrDefault();
+                if (trans.IsNull()) { return default; }
+
                 book = trans.Books.Where(x => x.NumberOfBook == bookNumber).FirstOrDefault();
                 chapter = book.Chapters.Where(x => x.NumberOfChapter == chapterNumber).FirstOrDefault();
 
@@ -66,7 +68,9 @@ namespace Church.WebApp.Controllers {
 
                 var uow = new UnitOfWork();
 
-                var trans = new XPQuery<Translation>(uow).Where(x => x.Name == translationName).FirstOrDefault();
+                var trans = new XPQuery<Translation>(uow).Where(x => !x.Hidden && x.Name == translationName).FirstOrDefault();
+                if (trans.IsNull()) { return default; }
+
                 book = trans.Books.Where(x => x.NumberOfBook == bookNumber).FirstOrDefault();
 
                 var licPath = Configuration["AsposeLic"];

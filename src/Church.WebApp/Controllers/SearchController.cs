@@ -48,7 +48,10 @@ namespace Church.WebApp.Controllers {
         }
 
         private IActionResult _Search(string[] words) {
-            var view = new XPView(new UnitOfWork(), typeof(Verse));
+            var session = new UnitOfWork();
+            var view = new XPView(session, typeof(Verse));
+            var bookShortcuts = new XPQuery<BookBase>(session).Select(x => new KeyValuePair<int, string>(x.NumberOfBook, x.BookShortcut)).ToList();
+            var translationNames = new XPQuery<Translation>(session).Where(x=>!x.Hidden).Select(x => new KeyValuePair<string, string>(x.Name.Replace("'", "").Replace("+", ""), x.Description)).ToList();
 
             var critera = String.Empty;
             foreach (var word in words) {
@@ -63,23 +66,31 @@ namespace Church.WebApp.Controllers {
             view.CriteriaString = critera;
 
 
-            view.Properties.Add(new ViewProperty("NumberOfBook", SortDirection.None, "[ParentChapter.ParentBook.NumberOfBook]", false, true));
-            view.Properties.Add(new ViewProperty("BookShortcut", SortDirection.None, "[ParentChapter.ParentBook.BookShortcut]", false, true));
-            view.Properties.Add(new ViewProperty("NumberOfChapter", SortDirection.None, "[ParentChapter.NumberOfChapter]", false, true));
+            //view.Properties.Add(new ViewProperty("NumberOfBook", SortDirection.None, "[ParentChapter.ParentBook.NumberOfBook]", false, true));
+            //view.Properties.Add(new ViewProperty("BookShortcut", SortDirection.None, "[ParentChapter.ParentBook.BookShortcut]", false, true));
+            //view.Properties.Add(new ViewProperty("NumberOfChapter", SortDirection.None, "[ParentChapter.NumberOfChapter]", false, true));
             view.Properties.Add(new ViewProperty("NumberOfVerse", SortDirection.None, "[NumberOfVerse]", false, true));
             view.Properties.Add(new ViewProperty("VerseText", SortDirection.None, "[Text]", false, true));
-            view.Properties.Add(new ViewProperty("TranslationName", SortDirection.None, "[ParentChapter.ParentBook.ParentTranslation.Description]", false, true));
-            view.Properties.Add(new ViewProperty("Translation", SortDirection.None, "[ParentChapter.ParentBook.ParentTranslation.Name]", false, true));
+            //view.Properties.Add(new ViewProperty("TranslationName", SortDirection.None, "[ParentChapter.ParentBook.ParentTranslation.Description]", false, true));
+            //view.Properties.Add(new ViewProperty("Translation", SortDirection.None, "[ParentChapter.ParentBook.ParentTranslation.Name]", false, true));
+            view.Properties.Add(new ViewProperty("Index", SortDirection.None, "[Index]", false, true));
 
             var model = new SearchResultsModel(words);
             foreach (ViewRecord record in view) {
+
+                var index = new VerseIndex(record["Index"].ToString());
+                var baseBookShortcut = bookShortcuts.Where(x => x.Key == index.NumberOfBook).Select(x => x.Value).FirstOrDefault();
+                var translation = translationNames.Where(x => x.Key == index.TranslationName).FirstOrDefault();
+                if (translation.IsNull() || translation.Key.IsNull()) { continue; }
+                var translationDesc = translation.Value;
+
                 model.Add(new SearchItemModel() {
-                    Book = record["NumberOfBook"].ToInt(),
-                    BookShortcut = record["BookShortcut"].ToString(),
-                    Chapter = record["NumberOfChapter"].ToInt(),
+                    Book = index.NumberOfBook,//record["NumberOfBook"].ToInt(),
+                    BookShortcut = baseBookShortcut,//record["BookShortcut"].ToString(),
+                    Chapter = index.NumberOfChapter,//record["NumberOfChapter"].ToInt(),
                     Verse = record["NumberOfVerse"].ToInt(),
-                    TranslationName = record["TranslationName"].ToString(),
-                    Translation = record["Translation"].ToString().Replace("'", "").Replace("+", ""),
+                    TranslationName = translationDesc,//record["TranslationName"].ToString(),
+                    Translation = index.TranslationName,//record["Translation"].ToString().Replace("'", "").Replace("+", ""),
                     VerseText = record["VerseText"].ToString()
                 });
             }

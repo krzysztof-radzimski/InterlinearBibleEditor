@@ -30,7 +30,7 @@
                 var _active = item == result.First() ? " active" : "";
                 var _true = item == result.First() ? "true" : "false";
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link@_active" id="@item.Key.ToLower()-tab" data-bs-toggle="tab" data-bs-target="#@item.Key.ToLower()" type="button" role="tab" aria-controls="@item.Key.ToLower()" aria-selected="@_true">@item.Key</button>
+                    <button class="nav-link@_active" id="@item.Key.ToLower()-tab" data-bs-toggle="tab" data-bs-target="#@item.Key.ToLower()" type="button" role="tab" aria-controls="@item.Key.ToLower()" aria-selected="@_true" title="@item.First().TranslationName">@item.Key</button>
                 </li>
             }
 
