@@ -31,6 +31,7 @@ namespace IBE.WindowsClient {
             view.Properties.Add(new ViewProperty("Catolic", SortDirection.None, "[Catolic]", false, true));
             view.Properties.Add(new ViewProperty("OpenAccess", SortDirection.None, "[OpenAccess]", false, true));
             view.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
+            view.Properties.Add(new ViewProperty("Hidden", SortDirection.None, "[Hidden]", false, true));
             view.Properties.Add(new ViewProperty("ChapterString", SortDirection.None, "[ChapterString]", false, true));
             view.Properties.Add(new ViewProperty("ChapterPsalmString", SortDirection.None, "[ChapterPsalmString]", false, true));
             view.Properties.Add(new ViewProperty("BookType", SortDirection.None, "[BookType]", false, true));
