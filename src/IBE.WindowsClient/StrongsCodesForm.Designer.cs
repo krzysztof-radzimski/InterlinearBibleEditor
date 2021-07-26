@@ -27,6 +27,7 @@ namespace IBE.WindowsClient {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StrongsCodesForm));
             this.grid = new DevExpress.XtraGrid.GridControl();
             this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.colTopic = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colSourceWord = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colTrans = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colShortDefinition = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -59,6 +60,7 @@ namespace IBE.WindowsClient {
             this.view.Appearance.Row.Options.UseFont = true;
             this.view.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.view.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.colTopic,
             this.colSourceWord,
             this.colTrans,
             this.colShortDefinition,
@@ -74,13 +76,21 @@ namespace IBE.WindowsClient {
             this.view.OptionsView.ShowGroupPanel = false;
             this.view.OptionsView.ShowIndicator = false;
             // 
+            // colTopic
+            // 
+            this.colTopic.Caption = "Topic";
+            this.colTopic.FieldName = "Topic";
+            this.colTopic.Name = "colTopic";
+            this.colTopic.Visible = true;
+            this.colTopic.VisibleIndex = 0;
+            // 
             // colSourceWord
             // 
-            this.colSourceWord.Caption = "Code";
+            this.colSourceWord.Caption = "Source Word";
             this.colSourceWord.FieldName = "SourceWord";
             this.colSourceWord.Name = "colSourceWord";
             this.colSourceWord.Visible = true;
-            this.colSourceWord.VisibleIndex = 1;
+            this.colSourceWord.VisibleIndex = 2;
             // 
             // colTrans
             // 
@@ -88,7 +98,7 @@ namespace IBE.WindowsClient {
             this.colTrans.FieldName = "Transliteration";
             this.colTrans.Name = "colTrans";
             this.colTrans.Visible = true;
-            this.colTrans.VisibleIndex = 0;
+            this.colTrans.VisibleIndex = 1;
             // 
             // colShortDefinition
             // 
@@ -96,7 +106,7 @@ namespace IBE.WindowsClient {
             this.colShortDefinition.FieldName = "ShortDefinition";
             this.colShortDefinition.Name = "colShortDefinition";
             this.colShortDefinition.Visible = true;
-            this.colShortDefinition.VisibleIndex = 2;
+            this.colShortDefinition.VisibleIndex = 3;
             // 
             // colDefinition
             // 
@@ -107,7 +117,7 @@ namespace IBE.WindowsClient {
             this.colDefinition.FieldName = "Definition";
             this.colDefinition.Name = "colDefinition";
             this.colDefinition.Visible = true;
-            this.colDefinition.VisibleIndex = 3;
+            this.colDefinition.VisibleIndex = 4;
             // 
             // repositoryItemRichTextEdit1
             // 
@@ -154,5 +164,6 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraEditors.Repository.RepositoryItemHypertextLabel repositoryItemHypertextLabel1;
         private DevExpress.XtraEditors.Repository.RepositoryItemRichTextEdit repositoryItemRichTextEdit1;
         private DevExpress.XtraGrid.Columns.GridColumn colTrans;
+        private DevExpress.XtraGrid.Columns.GridColumn colTopic;
     }
 }
