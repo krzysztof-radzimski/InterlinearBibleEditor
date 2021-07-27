@@ -515,7 +515,7 @@ else
                     var words = verse.VerseWords.OrderBy(x => x.NumberOfVerseWord);
                     foreach (var word in words)
                     {
-                        var isFirst = word == verse.VerseWords.First();
+                        var isFirst = word == words.First();
                         var gcTooltip = word.GrammarCode.IsNotNull() && word.GrammarCode.ShortDefinition.IsNotNullOrEmpty() ? word.GrammarCode.ShortDefinition.Replace("\"", "'").Replace("\r\n", "").Replace("\r", "").Replace("\n", "") : $"";
                         var scTooltip = word.StrongCode.IsNotNull() && word.StrongCode.ShortDefinition.IsNotNullOrEmpty() ? word.StrongCode.ShortDefinition.Replace("\"", "'").Replace("\r\n", "").Replace("\r", "").Replace("\n", "") : $"";
                         var gc = word.GrammarCode.IsNotNull() ? $"<a class=\"text-decoration-none\" style=\"padding-left: 0 !important;\" href=\"/GrammarsCode?id={word.GrammarCode.GrammarCodeVariant1}\" target=\"_blank\" title=\"{gcTooltip}\">{word.GrammarCode.GrammarCodeVariant1}</a>" : String.Empty;
