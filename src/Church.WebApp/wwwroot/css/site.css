@@ -1,11 +1,11 @@
 ﻿.bible-content {
     background-image: url(../img/reading-bible.jpg);
     background-repeat: no-repeat;
-    background-position: center top;    
+    background-position: center top;
 }
 
 .list-group-item {
-background-color: transparent !important;
+    background-color: transparent !important;
 }
 
 .pill-white {
@@ -17,13 +17,14 @@ background-color: transparent !important;
 }
 
 .story {
-    min-width: 90%;    
+    min-width: 90%;
     background-image: url(../img/hr.png);
     background-position: center bottom;
     background-repeat: no-repeat;
     background-size: contain;
     text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
 }
+
 .white-shadow {
     text-shadow: 1px 1px 4px rgba(255, 255, 255, 1);
 }
@@ -40,18 +41,22 @@ background-color: transparent !important;
     max-width: 800px;
     margin: auto;
 }
+
 .max-width-900 {
     max-width: 900px;
     margin: auto;
 }
+
 .max-width-1000 {
     max-width: 1000px;
     margin: auto;
 }
+
 .max-width-1040 {
     max-width: 1040px;
     margin: auto;
 }
+
 .mw-10-per {
     min-width: 10%;
 }
@@ -89,6 +94,7 @@ html {
     html {
         font-size: 16px;
     }
+
     #article-cell {
         min-height: 400px;
     }
@@ -194,7 +200,45 @@ a:hover #baptysci-logo {
     font-size: 70%;
 }
 
+hr.fancy-line {
+    border: 0;
+    height: 1px;
+    position: relative;
+    margin: 0.5em 0; /* Keep other elements away from pseudo elements*/
+}
+
+    hr.fancy-line:before {
+        top: -0.5em;
+        height: 1em;
+    }
+
+    hr.fancy-line:after {
+        content: '';
+        height: 0.5em; /* half the height of :before */
+        top: 1px; /* height of hr*/
+    }
+
+    hr.fancy-line:before, hr.fancy-line:after {
+        content: '';
+        position: absolute;
+        width: 100%;
+    }
+
+    hr.fancy-line, hr.fancy-line:before {
+        background: -moz-radial-gradient(center, ellipse cover, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 75%);
+        background: -webkit-gradient(radial, center center, 0px, center center, 75%, color-stop(0%,rgba(0,0,0,0.5)), color-stop(75%,rgba(0,0,0,0)));
+        background: -webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,0.5) 0%,rgba(0,0,0,0) 75%);
+        background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%,rgba(0,0,0,0) 75%);
+    }
+#main-hr-line {
+    top: -53px;
+    display:block;
+}
+
 @media only screen and (max-width: 995px) {
+    #main-hr-line {
+        display: none;
+    }
     #carouselExampleFade {
         display: none;
     }

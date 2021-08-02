@@ -46,17 +46,16 @@
 }
 
 <div style="padding-top: 20px;" class="max-width-1000">
-
-    <h1><i class="fab fa-gratipay"></i> Witamy!</h1>
+    <div class="text-center"><img src="../img/baptysci-logo.svg" style="max-height: 50px; opacity: 0.7;"/></div>
+    <h1 class="text-center" style="opacity: 0.9;"> Kościół Chrześcijan Baptystów<br />w Nowym Dworze Mazowieckim</h1>
+    <hr id="main-hr-line" class="fancy-line"/>
 
     @if (Model.IsNotNull() && Model.Count > 0) {
-        <h3>Ostatnie kazania</h3>
-
-        @foreach (var item in Model) {
+        foreach (var item in Model) {
             var lead = item.Lead;
 
             <a href="../Article?id=@item.Id" class="list-group-item list-group-item-action m-0 border-0" aria-current="true">
-                <div class="card bg-transparent m-0 p-0" >
+                <div class="card bg-transparent m-0 p-0 shadow-lg">
                     <div class="row g-0 m-0">
                         <div class="col-md-4">
                             <div class="col-auto d-none d-lg-block" style="background-image: url('data:image/png;base64, @item.AuthorPicture'); background-repeat: no-repeat; background-position: center center; background-size: cover; max-width: 350px; width: 100%; height: 245px;"></div>
@@ -167,7 +166,7 @@
         Nic piękniejszego nie może spotkać człowieka, jak doświadczyć tej miłości, której źródłem jest Bóg.
     </p>
 
-    <hr />
+    <hr class="fancy-line"/>
     <p class="fs-6">
 
         <strong>

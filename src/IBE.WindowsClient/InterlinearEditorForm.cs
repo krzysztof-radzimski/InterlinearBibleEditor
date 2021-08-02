@@ -2,12 +2,14 @@
 using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraEditors;
 using IBE.Common.Extensions;
+using IBE.Data.Export;
 using IBE.Data.Import.Greek;
 using IBE.Data.Model;
 using IBE.WindowsClient.Controls;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -177,7 +179,8 @@ namespace IBE.WindowsClient {
 
                     control.LoadData();
 
-                    btnNextVerse.Enabled = true;
+                    btnExportChapterToPDF.Enabled = btnExportChapterToWord.Enabled = btnNextVerse.Enabled = true;
+                   
                     var allVerses = editVerse.DataSource as List<int>;
                     if (allVerses.IsNotNull() && allVerses.Count > 0 && verseNumber == allVerses.Last()) {
                         btnNextVerse.Enabled = false;
@@ -185,7 +188,7 @@ namespace IBE.WindowsClient {
                     btnPreviousVerse.Enabled = verseNumber > 1;
 
                     this.Text = $"{book.BookTitle} {chapterNumber}:{verseNumber}";
-                    
+
                     btnOblubienicaEu.Visibility = book.NumberOfBook >= 470 ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
                 }
             }
@@ -320,7 +323,34 @@ namespace IBE.WindowsClient {
             var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
             if (currentControl.IsNotNull()) {
                 System.Diagnostics.Process.Start(currentControl.Verse.GetOblubienicaUrl());
-            }            
+            }
         }
+
+        private void btnExportChapterToPDF_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            Export(ExportSaveFormat.Pdf);
+        }
+        private void btnExportChapterToWord_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            Export(ExportSaveFormat.Docx);
+        }
+
+        private void Export(ExportSaveFormat format) {
+            var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            if (currentControl.IsNotNull()) {
+                Chapter chapter = currentControl.Verse.ParentChapter;
+                if (chapter.IsNotNull()) {
+                    var licPath = System.Configuration.ConfigurationManager.AppSettings["AsposeLic"];
+                    var licInfo = new System.IO.FileInfo(licPath);
+                    byte[] licData = null;
+                    if (licInfo.Exists) {
+                        licData = System.IO.File.ReadAllBytes(licPath);
+                    }
+                    var outputPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + (format == ExportSaveFormat.Docx ? ".docx" : ".pdf"));
+                    new InterlinearExporter(licData).Export(chapter, format, outputPath);
+                    if (File.Exists(outputPath)) { System.Diagnostics.Process.Start(outputPath); }
+                }
+            }
+        }
+
+       
     }
 }

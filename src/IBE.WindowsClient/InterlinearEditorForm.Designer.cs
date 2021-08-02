@@ -40,9 +40,11 @@ namespace IBE.WindowsClient {
             this.btnDeleteWords = new DevExpress.XtraBars.BarButtonItem();
             this.btnRenumerateWords = new DevExpress.XtraBars.BarButtonItem();
             this.btnSetAllAsJesusWords = new DevExpress.XtraBars.BarButtonItem();
+            this.btnOblubienicaEu = new DevExpress.XtraBars.BarButtonItem();
+            this.btnExportChapterToPDF = new DevExpress.XtraBars.BarButtonItem();
+            this.btnExportChapterToWord = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            this.btnOblubienicaEu = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editBook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editChapter)).BeginInit();
@@ -66,9 +68,11 @@ namespace IBE.WindowsClient {
             this.btnDeleteWords,
             this.btnRenumerateWords,
             this.btnSetAllAsJesusWords,
-            this.btnOblubienicaEu});
+            this.btnOblubienicaEu,
+            this.btnExportChapterToPDF,
+            this.btnExportChapterToWord});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 14;
+            this.ribbonControl1.MaxItemId = 16;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
@@ -197,6 +201,33 @@ namespace IBE.WindowsClient {
             this.btnSetAllAsJesusWords.Name = "btnSetAllAsJesusWords";
             this.btnSetAllAsJesusWords.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnSetAllAsJesusWords_ItemClick);
             // 
+            // btnOblubienicaEu
+            // 
+            this.btnOblubienicaEu.Caption = "Oblubienica.eu";
+            this.btnOblubienicaEu.Id = 13;
+            this.btnOblubienicaEu.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnOblubienicaEu.ImageOptions.SvgImage")));
+            this.btnOblubienicaEu.Name = "btnOblubienicaEu";
+            this.btnOblubienicaEu.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+            this.btnOblubienicaEu.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnOblubienicaEu_ItemClick);
+            // 
+            // btnExportChapterToPDF
+            // 
+            this.btnExportChapterToPDF.Caption = "Export chapter to PDF";
+            this.btnExportChapterToPDF.Enabled = false;
+            this.btnExportChapterToPDF.Id = 14;
+            this.btnExportChapterToPDF.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportChapterToPDF.ImageOptions.SvgImage")));
+            this.btnExportChapterToPDF.Name = "btnExportChapterToPDF";
+            this.btnExportChapterToPDF.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportChapterToPDF_ItemClick);
+            // 
+            // btnExportChapterToWord
+            // 
+            this.btnExportChapterToWord.Caption = "Export chapter to Word";
+            this.btnExportChapterToWord.Enabled = false;
+            this.btnExportChapterToWord.Id = 15;
+            this.btnExportChapterToWord.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportChapterToWord.ImageOptions.SvgImage")));
+            this.btnExportChapterToWord.Name = "btnExportChapterToWord";
+            this.btnExportChapterToWord.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportChapterToWord_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -218,17 +249,10 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnRenumerateWords);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnSetAllAsJesusWords, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnOblubienicaEu, true);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnExportChapterToPDF, true);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnExportChapterToWord);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
-            // 
-            // btnOblubienicaEu
-            // 
-            this.btnOblubienicaEu.Caption = "Oblubienica.eu";
-            this.btnOblubienicaEu.Id = 13;
-            this.btnOblubienicaEu.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnOblubienica.ImageOptions.SvgImage")));
-            this.btnOblubienicaEu.Name = "btnOblubienicaEu";
-            this.btnOblubienicaEu.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
-            this.btnOblubienicaEu.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnOblubienicaEu_ItemClick);
             // 
             // InterlinearEditorForm
             // 
@@ -268,5 +292,7 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnRenumerateWords;
         private DevExpress.XtraBars.BarButtonItem btnSetAllAsJesusWords;
         private DevExpress.XtraBars.BarButtonItem btnOblubienicaEu;
+        private DevExpress.XtraBars.BarButtonItem btnExportChapterToPDF;
+        private DevExpress.XtraBars.BarButtonItem btnExportChapterToWord;
     }
 }
