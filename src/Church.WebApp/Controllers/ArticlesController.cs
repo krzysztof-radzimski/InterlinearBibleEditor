@@ -65,6 +65,55 @@ namespace Church.WebApp.Controllers {
         public string Subject { get; set; }
         public string AuthorName { get; set; }
         public DateTime Date { get; set; }
+
+        public string GetDaysAgo() {
+            const int SECOND = 1;
+            const int MINUTE = 60 * SECOND;
+            const int HOUR = 60 * MINUTE;
+            const int DAY = 24 * HOUR;
+            const int MONTH = 30 * DAY;
+
+            var ts = new TimeSpan(DateTime.UtcNow.Ticks - Date.Ticks);
+            double delta = Math.Abs(ts.TotalSeconds);
+
+            if (delta < 1 * MINUTE)
+                return ts.Seconds == 1 ? "sekundę temu" : ts.Seconds + " sekund temu";
+
+            if (delta < 2 * MINUTE)
+                return "minutę temu";
+
+            if (delta < 45 * MINUTE)
+                return ts.Minutes + " minut temu";
+
+            if (delta < 90 * MINUTE)
+                return "godzinę temu";
+
+            if (delta < 24 * HOUR)
+                return ts.Hours + " godzin temu";
+
+            if (delta < 48 * HOUR)
+                return "wczoraj";
+
+            if (delta < 30 * DAY)
+                return ts.Days + " dni temu";
+
+            if (delta < 12 * MONTH) {
+                int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
+                switch (months) {
+                    case 0:
+                    case 1: { return "miesiąc temu"; }
+                    case 2:
+                    case 3:
+                    case 4: { return months+ " miesiące temu"; }
+                    default: { return months + " miesięcy temu"; }
+                }
+            }
+            else {
+                int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
+                return years <= 1 ? "rok temu" : years + " lat temu";
+            }
+        }
+
     }
 
     public class ArticleInfo : ArticleInfoBase {

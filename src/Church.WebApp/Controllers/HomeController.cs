@@ -11,12 +11,18 @@
 
   ===================================================================================*/
 
+using DevExpress.Xpo;
+using IBE.Data.Model;
 using IBE.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using IBE.Common.Extensions;
 
-namespace IBE.WebApp.Controllers {
+namespace Church.WebApp.Controllers {
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
 
@@ -25,7 +31,20 @@ namespace IBE.WebApp.Controllers {
         }
 
         public IActionResult Index() {
-            return View();
+            var articles = new XPQuery<Article>(new UnitOfWork()).OrderByDescending(x => x.Date).Take(4);
+            var list = new List<ArticleInfo>();
+            foreach (var item in articles) {
+                    list.Add(new ArticleInfo() {
+                        AuthorName = item.AuthorName,
+                        AuthorPicture = item.AuthorPicture.IsNotNull() ? Convert.ToBase64String(item.AuthorPicture) : String.Empty,
+                        Date = item.Date,
+                        Id = item.Oid,
+                        Lead = item.Lead,
+                        Subject = item.Subject,
+                        Type = item.Type.GetDescription()
+                    });               
+            }
+            return View(list);
         }
 
         //[Route("/{controller}/{action}")]
