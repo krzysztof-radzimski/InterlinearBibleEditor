@@ -20,7 +20,7 @@ namespace BooksMaker.WindowsClient.Controls {
         public event ItemClickEventHandler CancelButtonClicked;
 
         public EditorControl() {
-            InitializeComponent();
+            InitializeComponent(); 
         }
 
         private void btnSave_ItemClick(object sender, ItemClickEventArgs e) {

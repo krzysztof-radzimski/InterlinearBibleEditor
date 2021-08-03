@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 
 namespace BooksMaker.WindowsClient.Model {
-    public class DocumentBibliography : List<BibliographyItem> { }
+    public class DocumentBibliography : List<BibliographyItem>, IBaseDocumentPart {
+        public string NameOfPart { get; set; }
+        public byte[] OpenXmlBytes { get; set; }
+        public DocumentPartType PartType => DocumentPartType.Bibliography;
+    }
     public class BibliographyItem {
         public string Author { get; set; }
         public string Title { get; set; }

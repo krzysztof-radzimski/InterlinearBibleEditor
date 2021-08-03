@@ -93,9 +93,10 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\BaseDocumentPart.cs" />
     <Compile Include="Model\Document.cs" />
     <Compile Include="Model\DocumentBibliography.cs" />
-    <Compile Include="Model\DocumentImagesToc.cs" />
+    <Compile Include="Model\DocumentImagesIndex.cs" />
     <Compile Include="Model\DocumentIntroduction.cs" />
     <Compile Include="Model\DocumentProperties.cs" />
     <Compile Include="Model\DocumentSection.cs" />

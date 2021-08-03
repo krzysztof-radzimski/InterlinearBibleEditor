@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BooksMaker.WindowsClient.Model {
     public class Document {
@@ -13,6 +9,6 @@ namespace BooksMaker.WindowsClient.Model {
         public List<DocumentSection> Sections { get; set; }
         public DocumentSummary Summary { get; set; }
         public DocumentBibliography Bibliography { get; set; }
-        public DocumentImagesToc ImagesToc { get; set; }
+        public DocumentImagesIndex ImagesToc { get; set; }
     }
 }
