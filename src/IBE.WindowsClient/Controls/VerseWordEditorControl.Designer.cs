@@ -232,7 +232,7 @@ namespace IBE.WindowsClient.Controls {
             this.cbWordOfJesus.Properties.Appearance.ForeColor = System.Drawing.Color.Red;
             this.cbWordOfJesus.Properties.Appearance.Options.UseBackColor = true;
             this.cbWordOfJesus.Properties.Appearance.Options.UseForeColor = true;
-            this.cbWordOfJesus.Properties.Caption = "Word of Jesus";
+            this.cbWordOfJesus.Properties.Caption = "Word of God";
             this.tablePanel.SetRow(this.cbWordOfJesus, 6);
             this.cbWordOfJesus.Size = new System.Drawing.Size(129, 18);
             this.cbWordOfJesus.TabIndex = 5;

@@ -195,7 +195,7 @@ namespace IBE.WindowsClient {
             // 
             // btnSetAllAsJesusWords
             // 
-            this.btnSetAllAsJesusWords.Caption = "All as Jesus words";
+            this.btnSetAllAsJesusWords.Caption = "All as God\'s words";
             this.btnSetAllAsJesusWords.Id = 12;
             this.btnSetAllAsJesusWords.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnSetAllAsJesusWords.ImageOptions.SvgImage")));
             this.btnSetAllAsJesusWords.Name = "btnSetAllAsJesusWords";
