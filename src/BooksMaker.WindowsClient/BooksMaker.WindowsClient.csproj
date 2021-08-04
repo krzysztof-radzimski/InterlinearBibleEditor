@@ -96,13 +96,11 @@
     <Compile Include="Model\BaseDocumentPart.cs" />
     <Compile Include="Model\Document.cs" />
     <Compile Include="Model\DocumentBibliography.cs" />
-    <Compile Include="Model\DocumentImagesIndex.cs" />
     <Compile Include="Model\DocumentIntroduction.cs" />
     <Compile Include="Model\DocumentProperties.cs" />
     <Compile Include="Model\DocumentSection.cs" />
     <Compile Include="Model\DocumentSummary.cs" />
     <Compile Include="Model\DocumentTitlePage.cs" />
-    <Compile Include="Model\DocumentToc.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\EditorControl.resx">

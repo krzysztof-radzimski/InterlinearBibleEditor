@@ -13,11 +13,9 @@
 
     public enum DocumentPartType {
         TitlePage,
-        TOC,
         Introduction,
         Content,
         Summary,
-        Bibliography,
-        ImageIndex
+        Bibliography
     }
 }
