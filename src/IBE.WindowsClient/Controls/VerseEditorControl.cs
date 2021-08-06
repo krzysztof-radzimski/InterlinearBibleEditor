@@ -54,7 +54,7 @@ namespace IBE.WindowsClient.Controls {
 
         public VerseWordEditorControl CreateVerseWordControl(VerseWord word) {
             var control = new VerseWordEditorControl(word);
-        
+
             control.StrongClick += Control_StrongClick;
             control.GrammarCodeClick += Control_GrammarCodeClick;
             control.DeleteClick += Control_DeleteClick;
@@ -109,7 +109,7 @@ namespace IBE.WindowsClient.Controls {
                 var getTranslations = Task.Factory.StartNew(() => {
                     var list = new List<TranslationVerseInfo>();
                     var view = new XPView(Verse.Session, typeof(Translation)) {
-                        CriteriaString = "[Type] = 4"
+                        CriteriaString = "[Type] = 4 AND [Hidden] = 0"
                     };
                     view.Properties.Add(new ViewProperty("Oid", SortDirection.None, "[Oid]", false, true));
                     view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
@@ -142,7 +142,7 @@ namespace IBE.WindowsClient.Controls {
                         f.gridViewTranslations.LoadingPanelVisible = false;
 
                         f.isLoading = false;
-                     
+
                         f.SetEnabled();
                     });
                 });
@@ -240,22 +240,6 @@ namespace IBE.WindowsClient.Controls {
         }
 
         private void Control_StrongClick(object sender, StrongCode e) {
-            //            wbStrong.DocumentText = $@"
-            //<!DOCTYPE html>
-
-            //<html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
-            //<head>
-            //    <meta charset=""utf-8"" />
-            //    <title>Strong</title>
-            //</head>
-            //<body>
-            //<h2>{e.SourceWord}</h2>
-            //<h3>{e.ShortDefinition}</h3>
-            //<p>{e.Definition}</p>
-            //</body>
-            //</html>
-            //";
-
             txtShortDefinition.EditValue = e.ShortDefinition;
             txtShortDefinition.Tag = e;
             txtDefinition.EditValue = e.Definition;
@@ -285,11 +269,6 @@ namespace IBE.WindowsClient.Controls {
                 </html>
                 ";
 
-                //var t = wbGrammarCodes.EnsureCoreWebView2Async();
-                //t.ContinueWith(x => {
-                //    wbGrammarCodes.NavigateToString(htmlString);
-                //});
-
                 wbGrammarCodes.NavigateToString(htmlString);
             }
             else {
@@ -304,10 +283,6 @@ namespace IBE.WindowsClient.Controls {
 
         protected override void OnLoad(EventArgs e) {
             base.OnLoad(e);
-
-            //gridTranslations.ForceInitialize();
-            //SetColumnWidth(gridViewTranslations, colTranslationName, 15);
-            //SetColumnWidth(gridViewTranslations, colVerseText, 85);
         }
 
         public void SetColumnWidth(GridView view, GridColumn column, int percent) {
@@ -373,39 +348,6 @@ if (whole != undefined) {
             wbStrong.CoreWebView2.ExecuteScriptAsync(script);
         }
 
-        private void wbGrammarCodes_CoreWebView2InitializationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs e) {
-            wbGrammarCodes.CoreWebView2.DOMContentLoaded += CoreWebView2_DOMContentLoaded1;
-        }
-
-        private void CoreWebView2_DOMContentLoaded1(object sender, Microsoft.Web.WebView2.Core.CoreWebView2DOMContentLoadedEventArgs e) {
-            /*
-            var script = @"
-var tr = document.getElementsByTagName('tr')[0];
-if (tr != undefined) {
-    tr.parentElement.removeChild(tr);
-}
-
-var br = document.getElementsByTagName('br')[0];
-if (br != undefined) {
-    br.parentElement.removeChild(br);
-}
-var br = document.getElementsByTagName('br')[0];
-if (br != undefined) {
-    br.parentElement.removeChild(br);
-}
-var br = document.getElementsByTagName('br')[0];
-if (br != undefined) {
-    br.parentElement.removeChild(br);
-}
-var br = document.getElementsByTagName('br')[0];
-if (br != undefined) {
-    br.parentElement.removeChild(br);
-}
-";
-            wbGrammarCodes.CoreWebView2.ExecuteScriptAsync(script);
-            */
-        }
-
         private void tabPane1_SizeChanged(object sender, EventArgs e) {
             PANE_HEIGHT = tabPane1.Height;
         }
@@ -430,8 +372,6 @@ if (br != undefined) {
             var info = gridViewTranslations.GetFocusedRow() as TranslationVerseInfo;
             if (info.IsNotNull() && info.TranslationName.Contains("TRO")) {
                 System.Diagnostics.Process.Start(Verse.GetOblubienicaUrl());
-                // var ntBookNumber = Verse.ParentChapter.ParentBook.GetNTBookNumber();
-                // System.Diagnostics.Process.Start($"https://biblia.oblubienica.eu/interlinearny/index/book/{ntBookNumber}/chapter/{Verse.ParentChapter.NumberOfChapter}/verse/{Verse.NumberOfVerse}");
             }
         }
 

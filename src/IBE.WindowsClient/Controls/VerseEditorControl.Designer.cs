@@ -309,7 +309,6 @@ namespace IBE.WindowsClient.Controls {
             this.wbGrammarCodes.Size = new System.Drawing.Size(974, 372);
             this.wbGrammarCodes.TabIndex = 0;
             this.wbGrammarCodes.ZoomFactor = 1D;
-            this.wbGrammarCodes.CoreWebView2InitializationCompleted += new System.EventHandler<Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs>(this.wbGrammarCodes_CoreWebView2InitializationCompleted);
             // 
             // tabNavigationPage4
             // 
