@@ -18,6 +18,7 @@ namespace IBE.WindowsClient {
         string NAME = "NPI+";
         UnitOfWork Uow = null;
         Translation Translation = null;
+       public VerseEditorControl VerseControl { get; private set; }
         public InterlinearEditorForm() {
             InitializeComponent();
             this.Text = "Interlinear Bible Editor";
@@ -40,6 +41,9 @@ namespace IBE.WindowsClient {
             }
 
             editBook.DataSource = list;
+
+            VerseControl = new VerseEditorControl() { Dock = DockStyle.Fill};
+            this.Controls.Add(VerseControl);
         }
 
         public InterlinearEditorForm(Verse verse) {
@@ -53,7 +57,6 @@ namespace IBE.WindowsClient {
 
             var view = new XPView(Uow, typeof(BookBase));
             view.CriteriaString = $"[Status.BookType] = {(int)Translation.BookType}";
-            // view.CriteriaString = "[Status.Oid] = 1 OR [Status.Oid] = 2"; // tylko kanoniczne
             view.Properties.Add(new ViewProperty("NumberOfBook", SortDirection.None, "[NumberOfBook]", false, true));
             view.Properties.Add(new ViewProperty("BookTitle", SortDirection.None, "[BookTitle]", false, true));
 
@@ -68,6 +71,9 @@ namespace IBE.WindowsClient {
             var index = verse.GetVerseIndex();
             btnOblubienicaEu.Visibility = index.NumberOfBook >= 470 ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
             editBook.DataSource = list;
+
+            VerseControl = new VerseEditorControl() { Dock = DockStyle.Fill };
+            this.Controls.Add(VerseControl);
 
             this.Load += new EventHandler(delegate (object sender, EventArgs e) {
                 Application.DoEvents();
@@ -85,10 +91,11 @@ namespace IBE.WindowsClient {
         }
 
         private void btnSaveVerse_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
-            if (currentControl.IsNotNull()) {
-                currentControl.Save();
-            }
+            //var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            //if (currentControl.IsNotNull()) {
+            //    currentControl.Save();
+            //}
+            VerseControl.Save();
         }
 
 
@@ -154,16 +161,25 @@ namespace IBE.WindowsClient {
             var arg = e as DevExpress.XtraEditors.Controls.ChangingEventArgs;
             if (arg.IsNotNull()) {
                 var verseNumber = arg.NewValue.ToInt();
-                var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
-                if (currentControl.IsNotNull()) {
-                    if (currentControl.IsModified()) {
-                        if (XtraMessageBox.Show("Do you want to save your changes before opening a new verse?", "Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
-                            currentControl.Save();
-                        }
+                //var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+                //if (currentControl.IsNotNull()) {
+                //    if (currentControl.IsModified()) {
+                //        if (XtraMessageBox.Show("Do you want to save your changes before opening a new verse?", "Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                //            currentControl.Save();
+                //        }
+                //    }
+                //    this.Controls.Remove(currentControl);
+                //    currentControl.Dispose();
+                //    currentControl = null;
+                //}
+                if (VerseControl.Verse.IsNotNull() && VerseControl.IsModified()) {
+                    if (XtraMessageBox.Show("Do you want to save your changes before opening a new verse?", "Save", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                        VerseControl.Save();
                     }
-                    this.Controls.Remove(currentControl);
-                    currentControl.Dispose();
-                    currentControl = null;
+                    VerseControl.Clear();
+                }
+                else {
+                    VerseControl.Clear();
                 }
 
                 Application.DoEvents();
@@ -172,12 +188,13 @@ namespace IBE.WindowsClient {
                 var chapterNumber = txtChapter.EditValue.ToInt();
                 var verse = new XPQuery<Verse>(Uow).Where(x => x.NumberOfVerse == verseNumber && x.ParentChapter.NumberOfChapter == chapterNumber && x.ParentChapter.ParentBook.NumberOfBook == book.NumberOfBook && x.ParentChapter.ParentBook.ParentTranslation.Name == NAME).FirstOrDefault();
                 if (verse.IsNotNull()) {
-                    var control = new VerseEditorControl(verse, Translation.BookType == TheBookType.Bible) {
-                        Dock = DockStyle.Fill
-                    };
-                    this.Controls.Add(control);
+                    //var control = new VerseEditorControl(verse, Translation.BookType == TheBookType.Bible) {
+                    //    Dock = DockStyle.Fill
+                    //};
+                    //this.Controls.Add(control);
 
-                    control.LoadData();
+                    //control.LoadData();
+                    VerseControl.LoadData(verse, Translation.BookType == TheBookType.Bible);
 
                     btnExportChapterToPDF.Enabled = btnExportChapterToWord.Enabled = btnNextVerse.Enabled = true;
                    
@@ -214,7 +231,7 @@ namespace IBE.WindowsClient {
         }
 
         private void btnAddWord_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            var currentControl = VerseControl;// this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
             if (currentControl.IsNotNull()) {
                 var position = XtraInputBox.Show("Indicate the word index :", "Insert new word at index", "1");
                 if (position.IsNotNullOrEmpty()) {
@@ -250,7 +267,7 @@ namespace IBE.WindowsClient {
         }
 
         private void btnAddWords_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            var currentControl = VerseControl;//this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
             if (currentControl.IsNotNull()) {
                 var start = 1;
                 if (currentControl.Verse.VerseWords.IsNotNull() && currentControl.Verse.VerseWords.Count > 0) {
@@ -291,7 +308,7 @@ namespace IBE.WindowsClient {
         }
 
         private void btnDeleteWords_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            var currentControl = VerseControl;//this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
             if (currentControl.IsNotNull()) {
                 if (XtraMessageBox.Show("Delete all words?", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
                     currentControl.DeleteAll();
@@ -300,7 +317,7 @@ namespace IBE.WindowsClient {
         }
 
         private void btnRenumerateWords_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            var currentControl = VerseControl;//this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
             if (currentControl.IsNotNull()) {
                 var i = 1;
                 foreach (VerseWordEditorControl item in currentControl.VerseWordsControl.Controls) {
@@ -311,7 +328,7 @@ namespace IBE.WindowsClient {
         }
 
         private void btnSetAllAsJesusWords_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            var currentControl = VerseControl;//this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
             if (currentControl.IsNotNull()) {
                 foreach (VerseWordEditorControl item in currentControl.VerseWordsControl.Controls) {
                     item.Word.WordOfJesus = true;
@@ -320,7 +337,7 @@ namespace IBE.WindowsClient {
         }
 
         private void btnOblubienicaEu_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            var currentControl = VerseControl;//this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
             if (currentControl.IsNotNull()) {
                 System.Diagnostics.Process.Start(currentControl.Verse.GetOblubienicaUrl());
             }
@@ -334,7 +351,7 @@ namespace IBE.WindowsClient {
         }
 
         private void Export(ExportSaveFormat format) {
-            var currentControl = this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            var currentControl = VerseControl;//this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
             if (currentControl.IsNotNull()) {
                 Chapter chapter = currentControl.Verse.ParentChapter;
                 if (chapter.IsNotNull()) {
@@ -350,7 +367,5 @@ namespace IBE.WindowsClient {
                 }
             }
         }
-
-       
     }
 }
