@@ -36,6 +36,9 @@ namespace IBE.WindowsClient {
             h4Command.ForceExecute(h1Command.CreateDefaultCommandUIState());
             SetParagraphHeading5LevelCommand h5Command = new SetParagraphHeading5LevelCommand(editor);
             h5Command.ForceExecute(h1Command.CreateDefaultCommandUIState());
+
+            AddQuoteStyle();
+
             editor.Document.Delete(editor.Document.Paragraphs[0].Range);
 
             XHtmlDocumentExporter.Register(editor);
@@ -45,7 +48,20 @@ namespace IBE.WindowsClient {
 
             editor.SpellChecker = MainForm.Instance.SpellChecker;
         }
-             
+
+        private void AddQuoteStyle() {
+            var qstyle = editor.Document.ParagraphStyles["Quote"];
+            if (qstyle == null) {
+                qstyle = editor.Document.ParagraphStyles.CreateNew();
+                qstyle.Name = "Quote";
+                qstyle.LineSpacingType = DevExpress.XtraRichEdit.API.Native.ParagraphLineSpacing.Single;
+                qstyle.Alignment = DevExpress.XtraRichEdit.API.Native.ParagraphAlignment.Justify;
+                qstyle.FontSize = 10;
+                qstyle.LeftIndent = 50;
+
+                editor.Document.ParagraphStyles.Add(qstyle);
+            }
+        }
 
         public ArticleEditorForm(Article article) : this() {
             Article = article;
@@ -59,6 +75,7 @@ namespace IBE.WindowsClient {
 
                 if (Article.DocumentData.IsNotNull()) {
                     editor.LoadDocument(Article.DocumentData);
+                    AddQuoteStyle();
                 }
 
                 txtType.EditValue = Article.Type;
@@ -121,6 +138,15 @@ namespace IBE.WindowsClient {
             var fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".html");
             editor.SaveDocument(fileName, XHtmlDocumentFormat.Id);
             System.Diagnostics.Process.Start(fileName);
+        }
+
+        private void btnQuote_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var pos = editor.Document.CaretPosition;
+            var par = editor.Document.Paragraphs.Get(pos);
+            var style = editor.Document.ParagraphStyles["Quote"];
+            if (style.IsNotNull()) {
+                par.Style = style;
+            }
         }
     }
 }

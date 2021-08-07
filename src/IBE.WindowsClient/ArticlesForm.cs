@@ -1,5 +1,6 @@
 ﻿using DevExpress.Xpo;
 using DevExpress.XtraBars.Ribbon;
+using DevExpress.XtraEditors;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
 using System;
@@ -13,7 +14,7 @@ namespace IBE.WindowsClient {
         public ArticlesForm() {
             InitializeComponent();
             Text = "Articles";
-            Uow = new UnitOfWork();         
+            Uow = new UnitOfWork();
             LoadData();
         }
 
@@ -50,6 +51,19 @@ namespace IBE.WindowsClient {
                     frm.IconOptions.SvgImage = btnAddArticle.ImageOptions.SvgImage;
                     frm.MdiParent = this.MdiParent;
                     frm.Show();
+                }
+            }
+        }
+
+        private void btnDeleteArticle_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var record = gridView.GetFocusedRow() as ViewRecord;
+            if (record.IsNotNull()) {
+                var article = new XPQuery<Article>(Uow).Where(x => x.Oid == record["Id"].ToInt()).FirstOrDefault();
+                if (article.IsNotNull()) {
+                    if (XtraMessageBox.Show("Are you sure delete selected article?", "Delete", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.Yes) {
+                        article.Delete();
+                        LoadData();
+                    }
                 }
             }
         }

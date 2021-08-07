@@ -170,7 +170,7 @@ namespace IBE.WindowsClient.Controllers {
             if (dynMethod.IsNotNull()) {
                 var info = dynMethod.Invoke(this, new object[] { run }) as FootNoteExportInfo;
                 if (info.IsNotNull()) {
-                    DocumentContentWriter.Write($"<a href=\"#footnote{info.Number}\">{info.NumberText}</a>");
+                    DocumentContentWriter.Write($"<a href=\"#footnote{info.Number}\" style=\"vertical-align: super; font-size: smaller;\">{info.NumberText})</a>");
 
                     var text = info.Note.TextBuffer.ToString().Replace("#", "").Trim();
                     footnotes.Add($"<a id=\"footnote{info.Number}\" name=\"footnote{info.Number}\"></a><span style=\"vertical-align: super; font-size: smaller;\">{info.NumberText}</span>&nbsp;{text}<br/>");
@@ -248,6 +248,13 @@ namespace IBE.WindowsClient.Controllers {
                     }
                     DocumentContentWriter.Write("<h5>");
                 }
+                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "quote") {
+                    if (inList) {
+                        inList = false;
+                        DocumentContentWriter.Write("</ol>");
+                    }
+                    DocumentContentWriter.Write(@"<p class=""mt-3 quote"">");
+                }
                 else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "normal") {
                     if (inList) {
                         inList = false;
@@ -292,6 +299,9 @@ namespace IBE.WindowsClient.Controllers {
                     DocumentContentWriter.Write("</h5>");
                 }
                 else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "normal") {
+                    DocumentContentWriter.Write(@"</p>");
+                }
+                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "quote") {
                     DocumentContentWriter.Write(@"</p>");
                 }
             }

@@ -76,6 +76,10 @@ namespace Church.WebApp.Controllers {
             var ts = new TimeSpan(DateTime.UtcNow.Ticks - Date.Ticks);
             double delta = Math.Abs(ts.TotalSeconds);
 
+            if (DateTime.UtcNow.Ticks < Date.Ticks) {
+                return "nadchodzące";
+            }
+
             if (delta < 1 * MINUTE)
                 return ts.Seconds == 1 ? "sekundę temu" : ts.Seconds + " sekund temu";
 

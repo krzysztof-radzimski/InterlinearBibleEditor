@@ -157,6 +157,7 @@ namespace IBE.WindowsClient {
             this.txtSubject = new DevExpress.XtraEditors.TextEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.sidePanel2 = new DevExpress.XtraEditors.SidePanel();
+            this.btnQuote = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemFontEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemRichEditFontSizeEdit1)).BeginInit();
@@ -277,9 +278,10 @@ namespace IBE.WindowsClient {
             this.insertEndnoteItem1,
             this.navigationNotesItem1,
             this.showNotesItem1,
-            this.btnSave});
+            this.btnSave,
+            this.btnQuote});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 96;
+            this.ribbonControl1.MaxItemId = 97;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.homeRibbonPage1,
@@ -965,6 +967,7 @@ namespace IBE.WindowsClient {
             this.stylesRibbonPageGroup1.CaptionButtonVisible = DevExpress.Utils.DefaultBoolean.True;
             this.stylesRibbonPageGroup1.ImageOptions.Image = ((System.Drawing.Image)(resources.GetObject("stylesRibbonPageGroup1.ImageOptions.Image")));
             this.stylesRibbonPageGroup1.ItemLinks.Add(this.galleryChangeStyleItem1);
+            this.stylesRibbonPageGroup1.ItemLinks.Add(this.btnQuote);
             this.stylesRibbonPageGroup1.Name = "stylesRibbonPageGroup1";
             // 
             // editingRibbonPageGroup1
@@ -1308,6 +1311,14 @@ namespace IBE.WindowsClient {
             this.sidePanel2.TabIndex = 4;
             this.sidePanel2.Text = "sidePanel2";
             // 
+            // btnQuote
+            // 
+            this.btnQuote.Caption = "Quote";
+            this.btnQuote.Id = 96;
+            this.btnQuote.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnQuote.ImageOptions.SvgImage")));
+            this.btnQuote.Name = "btnQuote";
+            this.btnQuote.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnQuote_ItemClick);
+            // 
             // ArticleEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1471,5 +1482,6 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraEditors.PictureEdit txtAuthorPicture;
         private DevExpress.XtraEditors.LabelControl labelControl6;
         private DevExpress.XtraEditors.LabelControl labelControl5;
+        private DevExpress.XtraBars.BarButtonItem btnQuote;
     }
 }

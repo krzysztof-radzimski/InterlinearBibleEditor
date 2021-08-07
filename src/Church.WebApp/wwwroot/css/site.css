@@ -230,15 +230,26 @@ hr.fancy-line {
         background: -webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,0.5) 0%,rgba(0,0,0,0) 75%);
         background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%,rgba(0,0,0,0) 75%);
     }
+
 #main-hr-line {
     top: -53px;
-    display:block;
+    display: block;
 }
+
+.quote {
+    margin-left: 1.5em;
+    font-size: 1em !important;
+}
+
+    .quote span {
+        font-size: 1em !important;
+    }
 
 @media only screen and (max-width: 995px) {
     #main-hr-line {
         display: none;
     }
+
     #carouselExampleFade {
         display: none;
     }

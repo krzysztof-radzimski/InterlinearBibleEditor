@@ -31,6 +31,7 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.grid = new DevExpress.XtraGrid.GridControl();
             this.gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.btnDeleteArticle = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
@@ -42,9 +43,10 @@ namespace IBE.WindowsClient {
             this.ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.ribbonControl1.ExpandCollapseItem,
             this.ribbonControl1.SearchEditItem,
-            this.btnAddArticle});
+            this.btnAddArticle,
+            this.btnDeleteArticle});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 2;
+            this.ribbonControl1.MaxItemId = 3;
             this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
@@ -69,6 +71,7 @@ namespace IBE.WindowsClient {
             // ribbonPageGroup1
             // 
             this.ribbonPageGroup1.ItemLinks.Add(this.btnAddArticle);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnDeleteArticle);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
@@ -98,6 +101,14 @@ namespace IBE.WindowsClient {
             this.gridView.OptionsView.ShowIndicator = false;
             this.gridView.DoubleClick += new System.EventHandler(this.gridView_DoubleClick);
             // 
+            // btnDeleteArticle
+            // 
+            this.btnDeleteArticle.Caption = "Delete";
+            this.btnDeleteArticle.Id = 2;
+            this.btnDeleteArticle.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteArticle.ImageOptions.SvgImage")));
+            this.btnDeleteArticle.Name = "btnDeleteArticle";
+            this.btnDeleteArticle.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteArticle_ItemClick);
+            // 
             // ArticlesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -124,5 +135,6 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnAddArticle;
         private DevExpress.XtraBars.Ribbon.RibbonPage rpHome;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
+        private DevExpress.XtraBars.BarButtonItem btnDeleteArticle;
     }
 }
