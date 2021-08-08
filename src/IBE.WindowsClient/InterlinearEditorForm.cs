@@ -70,6 +70,7 @@ namespace IBE.WindowsClient {
 
             var index = verse.GetVerseIndex();
             btnOblubienicaEu.Visibility = index.NumberOfBook >= 470 ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
+            btnLogosSeptuagint.Visibility = index.NumberOfBook < 470 ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
             editBook.DataSource = list;
 
             VerseControl = new VerseEditorControl() { Dock = DockStyle.Fill };
@@ -207,6 +208,8 @@ namespace IBE.WindowsClient {
                     this.Text = $"{book.BookTitle} {chapterNumber}:{verseNumber}";
 
                     btnOblubienicaEu.Visibility = book.NumberOfBook >= 470 ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
+                    btnLogosSeptuagint.Visibility = book.NumberOfBook < 470 ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
+
                 }
             }
         }
@@ -365,6 +368,13 @@ namespace IBE.WindowsClient {
                     new InterlinearExporter(licData).Export(chapter, format, outputPath);
                     if (File.Exists(outputPath)) { System.Diagnostics.Process.Start(outputPath); }
                 }
+            }
+        }
+
+        private void btnLogosSeptuagint_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var currentControl = VerseControl;//this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            if (currentControl.IsNotNull()) {
+                System.Diagnostics.Process.Start(currentControl.Verse.GetLogosSeptuagintUrl());
             }
         }
     }

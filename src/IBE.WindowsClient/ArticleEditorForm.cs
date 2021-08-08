@@ -141,12 +141,16 @@ namespace IBE.WindowsClient {
         }
 
         private void btnQuote_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var pos = editor.Document.CaretPosition;
-            var par = editor.Document.Paragraphs.Get(pos);
+           //var pos = editor.Document.CaretPosition;
+           var sel = editor.Document.Selection;
+           var pars = editor.Document.Paragraphs.Get(sel);
+            //var par = editor.Document.Paragraphs.Get(pos);
             var style = editor.Document.ParagraphStyles["Quote"];
-            if (style.IsNotNull()) {
-                par.Style = style;
-            }
+            foreach (var par in pars) {
+                if (style.IsNotNull()) {
+                    par.Style = style;
+                }
+            }           
         }
     }
 }

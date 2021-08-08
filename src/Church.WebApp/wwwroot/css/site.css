@@ -237,12 +237,29 @@ hr.fancy-line {
 }
 
 .quote {
-    margin-left: 1.5em;
-    font-size: 1em !important;
+    margin-left: 2em;
+    font-size: 100% !important;
+    position: relative;
 }
 
     .quote span {
-        font-size: 1em !important;
+        font-size: 110% !important;
+    }
+
+    .quote::before {
+        content: open-quote;
+        font-size: 200%;
+        position: absolute;
+        left: -20px;
+        font-family: 'Font Awesome 5 Free';
+    }
+
+    .quote::after {
+        content: close-quote;
+        font-size: 200%;
+        font-family: 'Font Awesome 5 Free';
+        position: absolute;
+        bottom: -10px;
     }
 
 @media only screen and (max-width: 995px) {

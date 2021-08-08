@@ -32,12 +32,12 @@ namespace IBE.WindowsClient {
             this.btnArticles = new DevExpress.XtraBars.BarButtonItem();
             this.btnBaseBooks = new DevExpress.XtraBars.BarButtonItem();
             this.btnCopyDatabaseToWebFolder = new DevExpress.XtraBars.BarButtonItem();
+            this.btnStrongsCodes = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(this.components);
             this.spellChecker1 = new DevExpress.XtraSpellChecker.SpellChecker(this.components);
-            this.btnStrongsCodes = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).BeginInit();
             this.SuspendLayout();
@@ -67,10 +67,8 @@ namespace IBE.WindowsClient {
             this.ribbonControl1.ShowExpandCollapseButton = DevExpress.Utils.DefaultBoolean.False;
             this.ribbonControl1.ShowPageHeadersInFormCaption = DevExpress.Utils.DefaultBoolean.True;
             this.ribbonControl1.ShowQatLocationSelector = false;
-            this.ribbonControl1.ShowToolbarCustomizeItem = false;
             this.ribbonControl1.Size = new System.Drawing.Size(1125, 67);
             this.ribbonControl1.StatusBar = this.ribbonStatusBar1;
-            this.ribbonControl1.Toolbar.ShowCustomizeItem = false;
             // 
             // btnTranslations
             // 
@@ -112,6 +110,14 @@ namespace IBE.WindowsClient {
             this.btnCopyDatabaseToWebFolder.Name = "btnCopyDatabaseToWebFolder";
             this.btnCopyDatabaseToWebFolder.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnCopyDatabaseToWebFolder_ItemClick);
             // 
+            // btnStrongsCodes
+            // 
+            this.btnStrongsCodes.Caption = "Strongs Codes";
+            this.btnStrongsCodes.Id = 10;
+            this.btnStrongsCodes.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnStrongsCodes.ImageOptions.SvgImage")));
+            this.btnStrongsCodes.Name = "btnStrongsCodes";
+            this.btnStrongsCodes.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnStrongsCodes_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -149,14 +155,6 @@ namespace IBE.WindowsClient {
             this.spellChecker1.Culture = new System.Globalization.CultureInfo("pl-PL");
             this.spellChecker1.ParentContainer = this;
             this.spellChecker1.SpellCheckMode = DevExpress.XtraSpellChecker.SpellCheckMode.AsYouType;
-            // 
-            // btnStrongsCodes
-            // 
-            this.btnStrongsCodes.Caption = "Strongs Codes";
-            this.btnStrongsCodes.Id = 10;
-            this.btnStrongsCodes.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnStrongsCodes.ImageOptions.SvgImage")));
-            this.btnStrongsCodes.Name = "btnStrongsCodes";
-            this.btnStrongsCodes.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnStrongsCodes_ItemClick);
             // 
             // MainForm
             // 

@@ -45,6 +45,7 @@ namespace IBE.WindowsClient {
             this.btnExportChapterToWord = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.btnLogosSeptuagint = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editBook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editChapter)).BeginInit();
@@ -70,9 +71,10 @@ namespace IBE.WindowsClient {
             this.btnSetAllAsJesusWords,
             this.btnOblubienicaEu,
             this.btnExportChapterToPDF,
-            this.btnExportChapterToWord});
+            this.btnExportChapterToWord,
+            this.btnLogosSeptuagint});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 16;
+            this.ribbonControl1.MaxItemId = 17;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
@@ -249,10 +251,20 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnRenumerateWords);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnSetAllAsJesusWords, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnOblubienicaEu, true);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnLogosSeptuagint);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnExportChapterToPDF, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnExportChapterToWord);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
+            // 
+            // btnLogosSeptuagint
+            // 
+            this.btnLogosSeptuagint.Caption = "Logos Setuagint";
+            this.btnLogosSeptuagint.Id = 16;
+            this.btnLogosSeptuagint.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnLogosSeptuagint.ImageOptions.SvgImage")));
+            this.btnLogosSeptuagint.Name = "btnLogosSeptuagint";
+            this.btnLogosSeptuagint.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+            this.btnLogosSeptuagint.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnLogosSeptuagint_ItemClick);
             // 
             // InterlinearEditorForm
             // 
@@ -294,5 +306,6 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnOblubienicaEu;
         private DevExpress.XtraBars.BarButtonItem btnExportChapterToPDF;
         private DevExpress.XtraBars.BarButtonItem btnExportChapterToWord;
+        private DevExpress.XtraBars.BarButtonItem btnLogosSeptuagint;
     }
 }

@@ -113,13 +113,21 @@ namespace IBE.Data.Model {
 
         public string GetOblubienicaUrl() {
             var vi = GetVerseIndex();
-            if (!vi.IsEmpty) {               
+            if (!vi.IsEmpty) {
                 return $"https://biblia.oblubienica.eu/interlinearny/index/book/{vi.NTBookNumber}/chapter/{vi.NumberOfChapter}/verse/{vi.NumberOfVerse}";
             }
             return default;
         }
         public VerseIndex GetVerseIndex() {
             return new VerseIndex(Index);
+        }
+
+        public string GetLogosSeptuagintUrl() {
+            var vi = GetVerseIndex();
+            if (!vi.IsEmpty) {
+                return $"https://app.logos.com/books/LLS%3ALELXX/references/bible%2Blxx2.{vi.OTBookNumber}.{vi.NumberOfChapter}.{vi.NumberOfVerse}";
+            }
+            return default;
         }
     }
 
@@ -146,6 +154,19 @@ namespace IBE.Data.Model {
                 if (TranslationName == "IPD") { return 67; }
                 var r = 1;
                 for (int i = 470; i <= 730; i += 10) {
+                    if (i == NumberOfBook) {
+                        return r;
+                    }
+                    r++;
+                }
+                return r;
+            }
+        }
+        public int OTBookNumber {
+            get {
+                if (NumberOfBook > 460) { return 0; }
+                var r = 1;
+                for (int i = 10; i <= 470; i += 10) {
                     if (i == NumberOfBook) {
                         return r;
                     }
