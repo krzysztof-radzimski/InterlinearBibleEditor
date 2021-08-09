@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Artykuł";
+    var host = this.Context.Request.Host;
 }
 @using IBE.Common.Extensions
 @using DevExpress.Xpo;
@@ -7,6 +8,18 @@
 @using IBE.Data.Model;
 
 @model IBE.Data.Model.Article
+
+@section HeaderScripts {
+    @if (Model.IsNotNull()) {
+        <!-- social sharing metadata -->
+        <meta property="og:title" content="@Model.Subject" />
+        <meta property="og:description" content="@Model.Lead" />
+        <meta property="og:image" content="http://@host/api/ArticleImage?id=@Model.Oid" />
+        <meta property="og:url" content="http://@host/Article?id=@Model.Oid" />
+        <meta property="og:type" content="article" />
+        <meta property="og:locale" content="pl_PL" />
+    }
+}
 
 @if (Model != null) {
 

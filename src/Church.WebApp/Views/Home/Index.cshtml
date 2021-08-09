@@ -1,8 +1,19 @@
 ﻿@{
     ViewData["Title"] = "Strona startowa";
+    var host = this.Context.Request.Host;
 }
 @using IBE.Common.Extensions
 @model List<Church.WebApp.Controllers.ArticleInfo>
+
+@section HeaderScripts {
+    <!-- social sharing metadata -->
+    <meta property="og:title" content="Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim" />
+    <meta property="og:description" content="Jesteśmy grupą chrześcijan, którzy pragną być kościołem Jezusa Chrystusa w Nowym Dworze Mazowieckim. Znikome znaczenie ma budynek kościelny czy przyjęty porządek nabożeństwa. Najważniejszy jest Bóg Ojciec, Syn i Duch Święty, Któremu należy się wszelka cześć, chwała i szacunek, którego czcimy i wielbimy. Ważny jest również człowiek, za którego nasz Pan oddał swoje życie i przelał bezcenną krew na krzyżu." />
+    <meta property="og:image" content="http://@host/img/brama.jpg" />
+    <meta property="og:url" content="http://@host" />"
+    <meta property="og:type" content="page" />
+    <meta property="og:locale" content="pl_PL" />
+}
 
 @section Main{
     @*<div id="carouselExampleFade" class="carousel slide" data-bs-ride="carousel">
@@ -46,9 +57,9 @@
 }
 
 <div style="padding-top: 20px;" class="max-width-1000">
-    <div class="text-center"><img src="../img/baptysci-logo.svg" style="max-height: 50px; opacity: 0.7;"/></div>
+    <div class="text-center"><img src="../img/baptysci-logo.svg" style="max-height: 50px; opacity: 0.7;" /></div>
     <h1 class="text-center" style="opacity: 0.9;"> Kościół Chrześcijan Baptystów<br />w Nowym Dworze Mazowieckim</h1>
-    <hr id="main-hr-line" class="fancy-line"/>
+    <hr id="main-hr-line" class="fancy-line" />
 
     @if (Model.IsNotNull() && Model.Count > 0) {
         foreach (var item in Model) {
@@ -72,7 +83,9 @@
                 </div>
             </a>
         }
-
+        <div class="d-flex flex-row-reverse mt-3">
+            <a href="../Articles" class="btn btn-secondary">Więcej...</a>
+        </div>
     }
 
 
@@ -167,7 +180,7 @@
         Nic piękniejszego nie może spotkać człowieka, jak doświadczyć tej miłości, której źródłem jest Bóg.
     </p>
 
-    <hr class="fancy-line"/>
+    <hr class="fancy-line" />
     <p class="fs-6">
 
         <strong>
