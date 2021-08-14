@@ -87,6 +87,8 @@ namespace IBE.Data.Model {
         //    return result;
         //}
 
+        public string GetBookName() => ParentChapter.ParentBook.BaseBook.BookName;
+
         public string GetSourceText() {
             var text = string.Empty;
             foreach (var item in VerseWords) {
@@ -139,7 +141,7 @@ namespace IBE.Data.Model {
         private VerseIndex() { }
         public VerseIndex(string index) {
             try {
-                var regex = new Regex(@"(?<translation>[A-Z]+)\.(?<book>[0-9]+)\.(?<chapter>[0-9]+)\.(?<verse>[0-9]+)");
+                var regex = new Regex(@"(?<translation>[A-Z0-9]+)\.(?<book>[0-9]+)\.(?<chapter>[0-9]+)\.(?<verse>[0-9]+)");
                 var m = regex.Match(index);
                 TranslationName = m.Groups["translation"].Value;
                 NumberOfBook = m.Groups["book"].Value.ToInt();

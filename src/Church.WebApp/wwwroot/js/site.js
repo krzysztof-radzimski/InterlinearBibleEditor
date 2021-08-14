@@ -34,3 +34,24 @@ function setCookie(cname, cvalue, exdays) {
     var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
+function copyToClipboard(element) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($(element).text()).select();
+    document.execCommand("copy");
+    $temp.remove();
+}
+function copyToClipboard2(element, startText) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val(startText + ' ' + $(element).text()).select();
+    document.execCommand("copy");
+    $temp.remove();
+}
+function copyToClipboard3(fullText) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val(fullText).select();
+    document.execCommand("copy");
+    $temp.remove();
+}
