@@ -405,21 +405,34 @@ break;
                 // --------------------------------------------------
                 footNoteRefIndex = 1;
 
-                <div class="dropdown d-grid gap-2 d-md-flex justify-content-md-end" style="width: auto;">
-                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuDownloadInterlinear" data-bs-toggle="dropdown" aria-expanded="false">
-                        Pobierz rozdział
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadInterlinear">
-                        <li><a class="dropdown-item" href="/api/DownloadInterlinearPdf?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-pdf"></i>&nbsp;Pobierz rozdział w formacie PDF</a></li>
-                        <li><a class="dropdown-item" href="/api/DownloadInterlinearDocx?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-word"></i>&nbsp;Pobierz rozdział w formacie Microsoft Word</a></li>
-                    </ul>
+                var translatedChapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
+                var transliteratedChapterText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
+                var sourceChapterText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
+                @foreach (var verse in chapter.Verses) {
+                    translatedChapterText += $"{verse.NumberOfVerse}. {verse.GetTranslationText().Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
+                    transliteratedChapterText += $"{verse.NumberOfVerse}. {verse.GetTransliterationText().Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
+                    sourceChapterText += $"{verse.NumberOfVerse}. {verse.GetSourceText().Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
+                }
 
-                    <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="dropdown d-grid gap-2 d-md-flex justify-content-md-end" style="width: auto;">
+                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
                         Pobierz księgę
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook">
-                        <li><a class="dropdown-item" href="/api/DownloadInterlinearPdf?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-pdf"></i>&nbsp;Pobierz księgę w formacie PDF</a></li>
-                        <li><a class="dropdown-item" href="/api/DownloadInterlinearDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word"></i>&nbsp;Pobierz księgę w formacie Microsoft Word</a></li>
+                        <li><a class="dropdown-item" href="/api/DownloadInterlinearPdf?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Pobierz księgę w formacie PDF</a></li>
+                        <li><a class="dropdown-item" href="/api/DownloadInterlinearDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz księgę w formacie Microsoft Word</a></li>
+                    </ul>
+
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuDownloadInterlinear" data-bs-toggle="dropdown" aria-expanded="false">
+                        Pobierz rozdział
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadInterlinear">
+                        <li><a class="dropdown-item" href="/api/DownloadInterlinearPdf?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Pobierz rozdział w formacie PDF</a></li>
+                        <li><a class="dropdown-item" href="/api/DownloadInterlinearDocx?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz rozdział w formacie Microsoft Word</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@sourceChapterText')"><i class="fas fa-copy" style="width:18px;"></i>&nbsp;Kopiuj tekst grecki rozdziału</a></li>
+                        <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@transliteratedChapterText')"><i class="far fa-file-alt" style="width:18px;"></i>&nbsp;Kopiuj transliterację tekstu greckiego rozdziału</a></li>
+                        <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@translatedChapterText')"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść rozdziału</a></li>
                     </ul>
                 </div>
 
@@ -503,9 +516,9 @@ break;
                                         <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: 0;">@chapterNumberString,@verse.NumberOfVerse</a>
                                         <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse">
                                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń</a></li>
-                                            <li><a class="dropdown-item" onclick="copyToClipboard3('(@Model.Translation.Name.Replace("'","") @book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse) @verse.GetSourceText()')" style="cursor: pointer;"><i class="fas fa-copy" style="width:18px;"></i>&nbsp;Kopiuj tekst grecki</a></li>
-                                            <li><a class="dropdown-item" onclick="copyToClipboard3('(@Model.Translation.Name.Replace("'","") @book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse) @verse.GetTransliterationText()')" style="cursor: pointer;"><i class="far fa-file-alt" style="width:18px;"></i>&nbsp;Kopiuj transliterację tekstu greckiego</a></li>
-                                            <li><a class="dropdown-item" onclick="copyToClipboard3('(@Model.Translation.Name.Replace("'","") @book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse) @verse.Text.Replace("<n>","").Replace("</n>","").Replace(" ― "," ")')" style="cursor: pointer;"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść wersetu</a></li>
+                                            <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @verse.GetSourceText()')" style="cursor: pointer;"><i class="fas fa-copy" style="width:18px;"></i>&nbsp;Kopiuj tekst grecki</a></li>
+                                            <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @verse.GetTransliterationText()')" style="cursor: pointer;"><i class="far fa-file-alt" style="width:18px;"></i>&nbsp;Kopiuj transliterację tekstu greckiego</a></li>
+                                            <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @verse.Text.Replace("<n>","").Replace("</n>","").Replace(" ― "," ")')" style="cursor: pointer;"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść wersetu</a></li>
                                         </ul>
                                         @*@chapterNumberString,@verse.NumberOfVerse*@
                                     </div>
@@ -564,22 +577,28 @@ break;
             // Treści pozostałych przekładów
             // ------------------------------------
             else if (!Model.Translation.Hidden) {
-
+                var chapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
+                foreach (var verse in chapter.Verses) {
+                    var _verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+                    _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
+                    chapterText += $"{verse.NumberOfVerse}. {_verseText} ";
+                }
                 <div class="dropdown d-grid gap-2 d-md-flex justify-content-md-end" style="width: auto;">
-                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuDownloadDefault" data-bs-toggle="dropdown" aria-expanded="false">
-                        Pobierz rozdział
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadDefault">
-                        <li><a class="dropdown-item" href="/api/DownloadDefaultPdf?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-pdf"></i>&nbsp;Pobierz rozdział w formacie PDF</a></li>
-                        <li><a class="dropdown-item" href="/api/DownloadDefaultDocx?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-word"></i>&nbsp;Pobierz rozdział w formacie Microsoft Word</a></li>
-                    </ul>
-
-                    <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
                         Pobierz księgę
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook">
                         <li><a class="dropdown-item" href="/api/DownloadDefaultPdf?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-pdf"></i>&nbsp;Pobierz księgę w formacie PDF</a></li>
                         <li><a class="dropdown-item" href="/api/DownloadDefaultDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word"></i>&nbsp;Pobierz księgę w formacie Microsoft Word</a></li>
+                    </ul>
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuDownloadDefault" data-bs-toggle="dropdown" aria-expanded="false">
+                        Pobierz rozdział
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadDefault">
+                        <li><a class="dropdown-item" href="/api/DownloadDefaultPdf?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-pdf"></i>&nbsp;Pobierz rozdział w formacie PDF</a></li>
+                        <li><a class="dropdown-item" href="/api/DownloadDefaultDocx?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-word"></i>&nbsp;Pobierz rozdział w formacie Microsoft Word</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@chapterText')"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść rozdziału</a></li>
                     </ul>
                 </div>
 
@@ -628,7 +647,7 @@ break;
 
                     var text = " " + verse.Text;
                     if (text.Contains("<n>") && text.Contains("*")) {
-                        var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!";
+                        var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\*";
                         var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
                         var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
                         var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
@@ -740,12 +759,16 @@ break;
 
                     var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "background-color: #fffee3;" : " ";
 
+                    var __verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+                    __verseText = System.Text.RegularExpressions.Regex.Replace(__verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
+
+
                     <span id="span-verse-@verse.NumberOfVerse" class="lh-lg fs-5" style="@activeVerse">
                         <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
                         <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: 0;">@verse.NumberOfVerse.</a><span id="verseText_@verse.NumberOfVerse">@Html.Raw(text.Trim())</span>
                         <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse">
                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń</a></li>
-                            <li><a class="dropdown-item" onclick="copyToClipboard2('#verseText_@verse.NumberOfVerse', '(@Model.Translation.Name.Replace("'","") @book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse)')" style="cursor: pointer;"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść wersetu</a></li>
+                            <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @__verseText')" style="cursor: pointer;"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść wersetu</a></li>
                         </ul>
                     </span>
 
