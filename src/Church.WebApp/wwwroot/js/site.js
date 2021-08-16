@@ -11,7 +11,7 @@ function docReady(fn) {
     } else {
         document.addEventListener("DOMContentLoaded", fn);
     }
-}    
+}
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -54,4 +54,33 @@ function copyToClipboard3(fullText) {
     $temp.val(fullText).select();
     document.execCommand("copy");
     $temp.remove();
+}
+function onModalSaveButtonClick(startText) {
+    var text = startText;
+    var $checked = $(".verse-list-item");
+    for (var i = 1; i < $checked.length + 1; i++) {
+        var $item = $checked[i - 1];
+        if ($item != undefined) {
+            var $input = $item.previousElementSibling;
+            if ($input.checked) {
+                var $name = "#verse-hidden-" + i;
+                var itemVal = $($name).val();
+
+                text += itemVal + " ";
+                $input.checked = false;
+            }
+        }
+    }
+
+    var $temp = $("<input>");
+    $("#copyVersesModal").append($temp);
+    $temp.val(text).select();
+    document.execCommand("copy");
+    $temp.remove();
+
+    $("#close-modal-btn").click();
+
+    //var $myModalEl = $('#copyVersesModal');
+    //var $myModal = new bootstrap.Modal($myModalEl, {});
+    //$myModal.toggle();
 }

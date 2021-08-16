@@ -118,57 +118,57 @@
                         </li>
 
                         @*@{
-                            var callingUrl = Context.Request.Headers["Host"].ToString();
-                            var isLocal = callingUrl.Contains("localhost");
-                        }*@
+                                var callingUrl = Context.Request.Headers["Host"].ToString();
+                                var isLocal = callingUrl.Contains("localhost");
+                            }*@
 
-                        
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <div style="display: inline-block; width: 25px;"><i class="fas fa-book"></i></div> Patrologia
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown2">
-                                    @{
 
-                                        var view2 = new XPView(new UnitOfWork(), typeof(Translation));
-                                        view2.CriteriaString = "[BookType] = 2 AND [Hidden] = 0";
-                                        view2.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
-                                        view2.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
-                                        view2.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
-                                        view2.Properties.Add(new ViewProperty("Catolic", SortDirection.None, "[Catolic]", false, true));
-                                        view2.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
-                                        view2.Properties.Add(new ViewProperty("OpenAccess", SortDirection.None, "[OpenAccess]", false, true));
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div style="display: inline-block; width: 25px;"><i class="fas fa-book"></i></div> Patrologia
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown2">
+                                @{
 
-                                        var list2 = new List<TranslationInfo>();
-                                        foreach (ViewRecord item in view2) {
-                                            list2.Add(new TranslationInfo() {
-                                                Type = (TranslationType)item["Type"],
-                                                Name = item["Name"].ToString().Replace("'", ""),
-                                                Description = item["Description"].ToString(),
-                                                Catholic = (bool)item["Catolic"],
-                                                Recommended = (bool)item["Recommended"],
-                                                PasswordRequired = !((bool)item["OpenAccess"])
-                                            }); ;
-                                        }
+                                    var view2 = new XPView(new UnitOfWork(), typeof(Translation));
+                                    view2.CriteriaString = "[BookType] = 2 AND [Hidden] = 0";
+                                    view2.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
+                                    view2.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
+                                    view2.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+                                    view2.Properties.Add(new ViewProperty("Catolic", SortDirection.None, "[Catolic]", false, true));
+                                    view2.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
+                                    view2.Properties.Add(new ViewProperty("OpenAccess", SortDirection.None, "[OpenAccess]", false, true));
+
+                                    var list2 = new List<TranslationInfo>();
+                                    foreach (ViewRecord item in view2) {
+                                        list2.Add(new TranslationInfo() {
+                                            Type = (TranslationType)item["Type"],
+                                            Name = item["Name"].ToString().Replace("'", ""),
+                                            Description = item["Description"].ToString(),
+                                            Catholic = (bool)item["Catolic"],
+                                            Recommended = (bool)item["Recommended"],
+                                            PasswordRequired = !((bool)item["OpenAccess"])
+                                        }); ;
                                     }
+                                }
 
-                                    @if (list2.Any()) {
+                                @if (list2.Any()) {
 
-                                        foreach (var item in list2) {
-                                            var _name = item.Name.Replace("'", "").Replace("+", "");
-                                            var _description = item.Description;
-                                            var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
-                                            var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
-                                            var _loginRequired = item.PasswordRequired ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
+                                    foreach (var item in list2) {
+                                        var _name = item.Name.Replace("'", "").Replace("+", "");
+                                        var _description = item.Description;
+                                        var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
+                                        var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
+                                        var _loginRequired = item.PasswordRequired ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
 
-                                            <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_loginRequired)</a></li>
-                                        }
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_loginRequired)</a></li>
                                     }
+                                }
 
-                                </ul>
-                            </li>
-                        
+                            </ul>
+                        </li>
+
 
                         <li class="nav-item">
                             <div class="btn-group" role="group" aria-label="Przyciski">
@@ -208,6 +208,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/BootstrapMenu.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
