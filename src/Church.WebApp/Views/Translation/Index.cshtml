@@ -401,12 +401,13 @@ break;
         <div class="lh-base fs-6" style="max-width: 1000px; margin: auto; text-align: justify; position: relative;">
 
             @{
-                var startText = $"({Model.Translation.Name.Replace('\'', ' ')}) {book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
+                var __translationName = $"({Model.Translation.Name.Replace('\'', ' ')})";
+                var __chapterNumber = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}";
             }
 
             <!-- Modal -->
             <div class="modal fade" id="copyVersesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-scrollable" style="height: 350px;">
+                <div class="modal-dialog modal-dialog-scrollable" style="height: 60vh; width: 50vw; max-width:100%;">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Wybierz wersety do skopiowania</h5>
@@ -417,8 +418,6 @@ break;
                                 @foreach (var verse in chapter.Verses) {
                                     var _verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
                                     _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
-                                    if (_verseText.Length > 40) { _verseText = _verseText.Substring(0, 40) + "..."; }
-
                                     <li class="list-group-item">
                                         <input class="form-check-input me-1" type="checkbox" value="@verse.NumberOfVerse" aria-label="Werset @verse.NumberOfVerse">
                                         <span class="verse-list-item">@verse.NumberOfVerse. @_verseText.Trim()</span>
@@ -428,7 +427,7 @@ break;
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close-modal-btn">Zamknij</button>
-                            <button type="button" class="btn btn-primary" onclick="onModalSaveButtonClick('@startText')">Kopiuj</button>
+                            <button type="button" class="btn btn-primary" onclick="onModalSaveButtonClick('@__chapterNumber', '@__translationName')">Kopiuj</button>
                         </div>
                     </div>
                 </div>
@@ -441,7 +440,7 @@ break;
                 // --------------------------------------------------
                 footNoteRefIndex = 1;
 
-                var translatedChapterText = startText; //$"({Model.Translation.Name.Replace('\'', ' ')}) {book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
+                var translatedChapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
                 var transliteratedChapterText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
                 var sourceChapterText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
                 @foreach (var verse in chapter.Verses) {
@@ -554,14 +553,15 @@ break;
                                         <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
                                         <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: 0;">@chapterNumberString,@verse.NumberOfVerse</a>
                                         <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse">
-                                            <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń</a></li>
+                                            <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń</a></li>
+                                            <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index&literal=true" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @verse.GetSourceText()')" style="cursor: pointer;"><i class="fas fa-copy" style="width:18px;"></i>&nbsp;Kopiuj tekst grecki</a></li>
                                             <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @verse.GetTransliterationText()')" style="cursor: pointer;"><i class="far fa-file-alt" style="width:18px;"></i>&nbsp;Kopiuj transliterację tekstu greckiego</a></li>
                                             <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @clipboardShortText')" style="cursor: pointer;"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść wersetu</a></li>
 
                                         </ul>
-                                        <input id="verse-hidden-@verse.NumberOfVerse" type="hidden" value="@verse.NumberOfVerse. @clipboardShortText" data-bs-number="@verse.NumberOfVerse" />
+                                        <input id="verse-hidden-@verse.NumberOfVerse" type="hidden" value="@clipboardShortText" data-bs-number="@verse.NumberOfVerse" />
                                     </div>
                                 }
                                 @{
@@ -619,7 +619,7 @@ break;
             // ------------------------------------
             else if (!Model.Translation.Hidden) {
 
-                var chapterText = startText;
+                var chapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
                 foreach (var verse in chapter.Verses) {
                     var _verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
                     _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
@@ -808,13 +808,15 @@ break;
                     var __verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
                     __verseText = System.Text.RegularExpressions.Regex.Replace(__verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
                     var clipboardText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}:{verse.NumberOfVerse}({Model.Translation.Name.Replace('\'', ' ')}) {__verseText}";
-                    var clipboardShortText = $"{verse.NumberOfVerse}. {__verseText}";
+                    var clipboardShortText = $"{__verseText}";
 
                     <span id="span-verse-@verse.NumberOfVerse" class="lh-lg fs-5" style="@activeVerse">
                         <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
                         <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: 0;">@verse.NumberOfVerse.</a><span id="verseText_@verse.NumberOfVerse">@Html.Raw(text.Trim())</span>
                         <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse">
-                            <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń</a></li>
+                            <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń</a></li>
+                            <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index&literal=true" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" onclick="copyToClipboard3('@clipboardText')" style="cursor: pointer;"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj werset</a></li>
                         </ul>
                         <input id="verse-hidden-@verse.NumberOfVerse" type="hidden" value="@clipboardShortText" data-bs-number="@verse.NumberOfVerse" />
@@ -957,18 +959,19 @@ break;
             @if (!String.IsNullOrEmpty(Model.Verse)) {
 
                 <script>
-    docReady(function () {
-        setTimeout(function () {
-            const topNavId = 'top-nav';
-            const topNav = document.getElementById(topNavId);
+                    docReady(function () {
+                        setTimeout(function () {
+                            const topNavId = 'top-nav';
+                            const topNav = document.getElementById(topNavId);
 
-            const id = 'Verse_@selectedVerses.First()';
-            const yOffset = -(topNav.offsetHeight); //-55;
-            const element = document.getElementById(id);
-            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                            const id = 'Verse_@selectedVerses.First()';
+                            const yOffset = -(topNav.offsetHeight); //-55;
+                            const element = document.getElementById(id);
+                            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
-            window.scrollTo({ top: y, behavior: 'smooth' });
-        }, 1000);
+                            window.scrollTo({ top: y, behavior: 'smooth' });
+                        }, 1000);
+                    });
                 </script>
 
             }

@@ -96,7 +96,7 @@ html {
     }
 
     #article-cell {
-        min-height: 400px;
+        min-height: 95%;
     }
 }
 
@@ -290,4 +290,28 @@ hr.fancy-line {
     #WhatWeBelieveIcon {
         display: none;
     }
+}
+
+@media (max-width: 991px) and (min-width: 768px) {
+    .col-md-8 {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 1126px) and (min-width: 991px) {
+    .navbar-brand img {
+        display: none;
+    }
+
+    .navbar-brand {
+        font-size: small;
+    }
+}
+
+.verse-list-item {
+    text-overflow: ellipsis; /* IE, Safari (WebKit) */
+    overflow: hidden; /* don't show excess chars */
+    white-space: nowrap; /* force single line */
+    width: 35vw; /*This property playing a major role just showing the first 2 letter*/
+    display: inline-block;
 }

@@ -22,11 +22,11 @@
 
         <div class="container">
             <div class="row p-1">
-                <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 8%;">Łącze</div>
-                <div class="col-auto fw-bold p-1 border-top border-bottom border-start" style="width: 8%;">Rodzaj</div>
-                <div class="col-auto fw-bold p-1 border-top border-bottom border-start" style="width: 15%;">Nazwa</div>
+                <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 8%; min-width: 50px;">Łącze</div>
+                <div class="col-auto fw-bold p-1 border-top border-bottom border-start" style="width: 8%; min-width: 80px;">Rodzaj</div>
+                <div class="col-auto fw-bold p-1 border-top border-bottom border-start" style="width: 15%; min-width: 100px;">Nazwa</div>
                 <div class="col fw-bold p-1 border-top border-bottom border-start">Treść</div>
-                <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 5%;">&nbsp;</div>
+                <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 5%; min-width: 50px;">&nbsp;</div>
             </div>
 
             @foreach (var item in Model.Verses) {
@@ -43,11 +43,11 @@
                 var link = $@"<a href=""/{index.TranslationName}/{index.NumberOfBook}/{index.NumberOfChapter}/{index.NumberOfVerse}"" class=""text-decoration-none"" title=""{translationDesc}"">{translationName}</a>";
 
         <div class="row p-1" @Html.Raw(styles)>
-            <div class="col-auto p-1 border-bottom" style="width: 8%; font-size: 80%;">@Html.Raw(link)</div>
-            <div class="col-auto p-1 border-bottom border-start" style="width: 8%; font-size: 80%;">@translationType</div>
-            <div class="col-auto p-1 border-bottom border-start" style="width: 15%; font-size: 80%;">@translationDesc</div>
+            <div class="col-auto p-1 border-bottom" style="width: 8%; font-size: 80%; min-width: 50px;">@Html.Raw(link)</div>
+            <div class="col-auto p-1 border-bottom border-start" style="width: 8%; font-size: 80%; min-width: 80px;">@translationType</div>
+            <div class="col-auto p-1 border-bottom border-start" style="width: 15%; font-size: 80%; min-width: 100px">@translationDesc</div>
             <div class="col p-1 border-start border-bottom" id="verseText_@index.TranslationName">@Html.Raw(item.Text.Replace("―", String.Empty).Replace("<n>", @"<span class=""text-muted"">").Replace("</n>", "</span>"))</div>
-            <div class="col-auto p-1 border-bottom border-start" style="width: 5%;"><a class="dropdown-item" onclick="copyToClipboard2('#verseText_@index.TranslationName', '(@index.TranslationName @name)')" style="cursor: pointer;" title="Kopiuj treść wersetu"><i class="far fa-copy"></i></a></div>
+            <div class="col-auto p-1 border-bottom border-start" style="width: 5%; min-width: 50px;"><a class="dropdown-item" onclick="copyToClipboard2('#verseText_@index.TranslationName', '(@index.TranslationName @name)')" style="cursor: pointer;" title="Kopiuj treść wersetu"><i class="far fa-copy"></i></a></div>
         </div>
             }
 

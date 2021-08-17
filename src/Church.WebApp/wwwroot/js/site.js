@@ -55,8 +55,14 @@ function copyToClipboard3(fullText) {
     document.execCommand("copy");
     $temp.remove();
 }
-function onModalSaveButtonClick(startText) {
-    var text = startText;
+function onModalSaveButtonClick(chapter, translation) {
+    var stext = chapter + ":";
+    var text = "";
+    var first = true;
+    var nextSeq = false;
+    var current = 1;
+    var count = 0;
+    var number = "";
     var $checked = $(".verse-list-item");
     for (var i = 1; i < $checked.length + 1; i++) {
         var $item = $checked[i - 1];
@@ -66,21 +72,49 @@ function onModalSaveButtonClick(startText) {
                 var $name = "#verse-hidden-" + i;
                 var itemVal = $($name).val();
 
+                number = $($name).attr("data-bs-number");
+                if (number != undefined) {
+                    if (!first) {
+                        if ((current + 1) == i) {
+                            // do nothing
+                        } else {
+                            stext += ",";
+                            stext += number;
+                        }
+                    } else {
+                        if (nextSeq) { stext += ","; }
+                        stext += number;
+                    }
+                }
+
                 text += itemVal + " ";
                 $input.checked = false;
+                first = false;
+                current = i;
+                count++;
+            } else {
+                if (!first) {
+                    first = true;
+                    if (count > 1) {
+                        stext += "-";
+                        stext += number;
+                        count = 0;
+                        nextSeq = true;
+                    }
+                }
             }
         }
     }
 
+   
+
+    stext += " „" + text.trim() + "” " + translation;
+
     var $temp = $("<input>");
     $("#copyVersesModal").append($temp);
-    $temp.val(text).select();
+    $temp.val(stext).select();
     document.execCommand("copy");
     $temp.remove();
 
     $("#close-modal-btn").click();
-
-    //var $myModalEl = $('#copyVersesModal');
-    //var $myModal = new bootstrap.Modal($myModalEl, {});
-    //$myModal.toggle();
 }
