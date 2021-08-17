@@ -312,6 +312,6 @@ hr.fancy-line {
     text-overflow: ellipsis; /* IE, Safari (WebKit) */
     overflow: hidden; /* don't show excess chars */
     white-space: nowrap; /* force single line */
-    width: 35vw; /*This property playing a major role just showing the first 2 letter*/
+    width: 50vw; /*This property playing a major role just showing the first 2 letter*/
     display: inline-block;
 }
