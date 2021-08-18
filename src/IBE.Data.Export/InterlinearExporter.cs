@@ -317,14 +317,14 @@ namespace IBE.Data.Export {
                 builder.Font.Size = 6;
                 builder.Font.Bold = false;
                 builder.Font.Color = Color.DarkBlue;
-                if (word.StrongCode.IsNotNull()) { builder.Write(word.StrongCode.Topic); } else { builder.Write("–"); }
+                if (word.StrongCode.IsNotNull() && word.StrongCode.Topic.IsNotNullOrEmpty()) { builder.Write(word.StrongCode.Topic); } else { builder.Write("–"); }
                 builder.InsertBreak(BreakType.LineBreak);
             }
             if (word.ParentVerse.ParentChapter.ParentBook.ParentTranslation.WithGrammarCodes) {
                 builder.Font.Size = 6;
                 builder.Font.Bold = false;
                 builder.Font.Color = Color.DarkBlue;
-                if (word.GrammarCode.IsNotNull()) { builder.Write(word.GrammarCode.GrammarCodeVariant1); } else { builder.Write("–"); }
+                if (word.GrammarCode.IsNotNull() && word.GrammarCode.GrammarCodeVariant1.IsNotNullOrEmpty()) { builder.Write(word.GrammarCode.GrammarCodeVariant1); } else { builder.Write("–"); }
                 builder.InsertBreak(BreakType.LineBreak);
             }
 
