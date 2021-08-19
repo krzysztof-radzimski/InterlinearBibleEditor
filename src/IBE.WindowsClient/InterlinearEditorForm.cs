@@ -197,7 +197,7 @@ namespace IBE.WindowsClient {
                     //control.LoadData();
                     VerseControl.LoadData(verse, Translation.BookType == TheBookType.Bible);
 
-                    btnExportChapterToPDF.Enabled = btnExportChapterToWord.Enabled = btnNextVerse.Enabled = true;
+                    btnExportChapterToPDF.Enabled = btnExportChapterToWord.Enabled = btnExportBookToDocx.Enabled = btnExportBookToPdf.Enabled = btnNextVerse.Enabled = true;
                    
                     var allVerses = editVerse.DataSource as List<int>;
                     if (allVerses.IsNotNull() && allVerses.Count > 0 && verseNumber == allVerses.Last()) {
@@ -371,11 +371,37 @@ namespace IBE.WindowsClient {
             }
         }
 
+        private void ExportBook(ExportSaveFormat format) {
+            var currentControl = VerseControl;//this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+            if (currentControl.IsNotNull()) {
+              var book = currentControl.Verse.ParentChapter.ParentBook;
+                if (book.IsNotNull()) {
+                    var licPath = System.Configuration.ConfigurationManager.AppSettings["AsposeLic"];
+                    var licInfo = new System.IO.FileInfo(licPath);
+                    byte[] licData = null;
+                    if (licInfo.Exists) {
+                        licData = System.IO.File.ReadAllBytes(licPath);
+                    }
+                    var outputPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + (format == ExportSaveFormat.Docx ? ".docx" : ".pdf"));
+                    new InterlinearExporter(licData).ExportBookTranslation(book, format, outputPath);
+                    if (File.Exists(outputPath)) { System.Diagnostics.Process.Start(outputPath); }
+                }
+            }
+        }
+
         private void btnLogosSeptuagint_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             var currentControl = VerseControl;//this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
             if (currentControl.IsNotNull()) {
                 System.Diagnostics.Process.Start(currentControl.Verse.GetLogosSeptuagintUrl());
             }
+        }
+
+        private void btnExportBookToPdf_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            ExportBook(ExportSaveFormat.Pdf);
+        }
+
+        private void btnExportBookToDocx_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            ExportBook(ExportSaveFormat.Docx);
         }
     }
 }

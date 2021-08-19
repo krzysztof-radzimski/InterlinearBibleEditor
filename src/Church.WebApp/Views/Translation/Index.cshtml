@@ -456,6 +456,10 @@ break;
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook">
                         <li><a class="dropdown-item" href="/api/DownloadInterlinearPdf?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Pobierz księgę w formacie PDF</a></li>
                         <li><a class="dropdown-item" href="/api/DownloadInterlinearDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz księgę w formacie Microsoft Word</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/api/DownloadInterlinearTranslationPdf?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Pobierz tłumaczenie księgi w formacie PDF</a></li>
+                        <li><a class="dropdown-item" href="/api/DownloadInterlinearTranslationDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz tłumaczenie księgi w formacie Microsoft Word</a></li>
+
                     </ul>
 
                     <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuDownloadInterlinear" data-bs-toggle="dropdown" aria-expanded="false">

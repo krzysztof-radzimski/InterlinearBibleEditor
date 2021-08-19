@@ -21,6 +21,7 @@ namespace IBE.Data.Export {
         private System.Drawing.Font font10;
         private System.Drawing.Font font9;
         private System.Drawing.Font font8;
+        private int footNoteIndex = 1;
 
         private InterlinearExporter() { }
         public InterlinearExporter(byte[] asposeLicense) : this() {
@@ -34,6 +35,94 @@ namespace IBE.Data.Export {
             font10 = new System.Drawing.Font("Times New Roman", 10F, FontStyle.Regular);
             font11 = new System.Drawing.Font("Times New Roman", 11F, FontStyle.Regular);
             font11bold = new System.Drawing.Font("Times New Roman", 11F, FontStyle.Bold);
+        }
+
+        public void ExportBookTranslation(Book book, ExportSaveFormat saveFormat, string outputPath, bool addFooter = true, bool addBookAndHeader = true) {
+            if (book.IsNull()) { throw new ArgumentNullException("book"); }
+            if (outputPath.IsNullOrEmpty()) { throw new ArgumentNullException("outputPath"); }
+
+            if (book.ParentTranslation.Type != TranslationType.Interlinear) { throw new Exception("Wrong translation type!"); }
+
+            footNoteIndex = 1;
+
+            var builder = GetDocumentBuilder();
+
+            ExportBookName(book, builder);
+
+            var chapters = book.Chapters.Where(x => x.IsTranslated).OrderBy(x => x.NumberOfChapter).ToArray();
+            foreach (var chapter in chapters) {
+
+                if (chapter == chapters.First()) { builder.InsertParagraph(); }
+
+                ExportChapterNumber(chapter, builder, false);
+
+                var par = builder.InsertParagraph();
+                par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
+                par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+
+                foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
+                    ExportVerseTranslation(item, ref par, builder);
+                }
+
+                if (chapters.Last() == chapter && addFooter) { WriteFooter(book.ParentTranslation, par, builder); }
+                else {
+                    builder.MoveTo(par);
+                    //builder.InsertBreak(BreakType.SectionBreakContinuous);
+                }
+            }
+
+
+            if (addBookAndHeader) {
+                builder.MoveToDocumentEnd();
+                AddBookHeaderAndFooter(book, builder);
+            }
+
+            builder.MoveToDocumentEnd();
+
+            SaveBuilder(saveFormat, outputPath, builder);
+        }
+        public byte[] ExportBookTranslation(Book book, ExportSaveFormat saveFormat, bool addFooter = true, bool addBookAndHeader = true) {
+            if (book.IsNull()) { throw new ArgumentNullException("book"); }
+         
+            if (book.ParentTranslation.Type != TranslationType.Interlinear) { throw new Exception("Wrong translation type!"); }
+
+            footNoteIndex = 1;
+
+            var builder = GetDocumentBuilder();
+
+            ExportBookName(book, builder);
+
+            var chapters = book.Chapters.Where(x => x.IsTranslated).OrderBy(x => x.NumberOfChapter).ToArray();
+            foreach (var chapter in chapters) {
+
+                if (chapter == chapters.First()) { builder.InsertParagraph(); }
+
+                ExportChapterNumber(chapter, builder, false);
+
+                var par = builder.InsertParagraph();
+                par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
+                par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+
+                foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
+                    ExportVerseTranslation(item, ref par, builder);
+                }
+
+                if (chapters.Last() == chapter && addFooter) { WriteFooter(book.ParentTranslation, par, builder); }
+                else {
+                    builder.MoveTo(par);
+                    //builder.InsertBreak(BreakType.SectionBreakContinuous);
+                }
+            }
+
+
+            if (addBookAndHeader) {
+                builder.MoveToDocumentEnd();
+                AddBookHeaderAndFooter(book, builder);
+            }
+
+            builder.MoveToDocumentEnd();
+
+            return SaveBuilder(saveFormat, builder);
         }
 
         public void Export(Translation translation, ExportSaveFormat saveFormat, string outputPath) {
@@ -168,6 +257,161 @@ namespace IBE.Data.Export {
             if (addChapterHeaderAndFooter) AddChapterHeaderAndFooter(chapter, builder);
 
             return SaveBuilder(saveFormat, builder);
+        }
+
+        private void ExportVerseTranslation(Verse verse, ref Paragraph par, DocumentBuilder builder) {
+            var footNotes = new Dictionary<int, string>();
+
+            var book = verse.ParentChapter.ParentBook;
+            if (verse.ParentChapter.Subtitles.Count > 0) {
+                var subtitles = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).OrderBy(x => x.Level);
+                if (subtitles.Any()) {
+                    var _par = builder.InsertParagraph();
+                    _par.ParagraphFormat.Style = builder.Document.Styles["Nagłówek 3"];
+                    _par.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+                    _par.ParagraphFormat.KeepWithNext = true;
+
+                    foreach (var subtitle in subtitles) {
+                        var storyText = subtitle.Text;
+                        // <x>230 1-41</x>
+                        if (storyText.Contains("<x>")) {
+                            var pattern = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+\-[0-9]+)\<\/x\>";
+                            var pattern2 = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+(\s)?\:(\s)?[0-9]+\-[0-9]+)\<\/x\>";
+
+                            storyText = System.Text.RegularExpressions.Regex.Replace(storyText, pattern, delegate (System.Text.RegularExpressions.Match m) {
+                                return $"({verse.ParentTranslation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BookName} {m.Groups["num"].Value})";
+                            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                            storyText = System.Text.RegularExpressions.Regex.Replace(storyText, pattern2, delegate (System.Text.RegularExpressions.Match m) {
+                                return $"({verse.ParentTranslation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BookName} {m.Groups["num"].Value})";
+                            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                        }
+
+                        if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+                            storyText = System.Text.RegularExpressions.Regex.Replace(storyText, @"\sPAN(A)?(EM)?(U)?(IE)?", delegate (System.Text.RegularExpressions.Match m) {
+                                return " JAHWE";
+                            });
+                        }
+
+                        var run = new Run(builder.Document) {
+                            Text = storyText
+                        };
+                        run.Font.Bold = true;
+
+                        _par.AppendChild(run);
+                    }
+
+                    par = builder.InsertParagraph();
+                    par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
+                    par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+                    par.ParagraphFormat.KeepWithNext = false;
+                    builder.MoveTo(par);
+                }
+            }
+
+
+            var text = " " + verse.Text;
+            if (text.Contains("<n>") && text.Contains("*")) {
+                var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!";
+                var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
+                var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
+                var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
+                var f4 = $@"\[\*\*\*\*\s?(?<f4>[{footNoteTextPatternFragment}]+)\]";
+                var f5 = $@"\[\*\*\*\*\*\s?(?<f4>[{footNoteTextPatternFragment}]+)\]";
+                var footNoteTextPattern = $@"\<n\>{f1}(\s+)?({f2})?(\s+)?({f3})?(\s+)?({f4})?(\s+)?({f5})?\</n\>";
+
+                text = System.Text.RegularExpressions.Regex.Replace(text, footNoteTextPattern, delegate (System.Text.RegularExpressions.Match m) {
+                    if (m.Groups != null && m.Groups.Count > 0) {
+                        if (m.Groups["f1"] != null && m.Groups["f1"].Success) {
+                            footNotes.Add(footNoteIndex, $@"{m.Groups["f1"].Value}");
+                            footNoteIndex++;
+                        }
+                        if (m.Groups["f2"] != null && m.Groups["f2"].Success) {
+                            footNotes.Add(footNoteIndex, $@"{m.Groups["f2"].Value}");
+                            footNoteIndex++;
+                        }
+                        if (m.Groups["f3"] != null && m.Groups["f3"].Success) {
+                            footNotes.Add(footNoteIndex, $@"{m.Groups["f3"].Value}");
+                            footNoteIndex++;
+                        }
+                        if (m.Groups["f4"] != null && m.Groups["f4"].Success) {
+                            footNotes.Add(footNoteIndex, $@"{m.Groups["f4"].Value}");
+                            footNoteIndex++;
+                        }
+                        if (m.Groups["f5"] != null && m.Groups["f5"].Success) {
+                            footNotes.Add(footNoteIndex, $@"{m.Groups["f5"].Value}</p>");
+                            footNoteIndex++;
+                        }
+                    }
+
+                    var result = String.Empty;
+                    return result;
+                }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            }
+
+            // Słowa Jezusa
+            text = text.Replace("<J>", @"<span style=""color: darkred;"">").Replace("</J>", "</span>");
+
+            // Elementy dodane
+            text = text.Replace("<n>", @"<span style=""color: darkgray;"">").Replace("</n>", "</span>");
+
+            text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
+
+            // zamiana na imię Boże
+            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+                text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
+                    var prefix = m.Groups["prefix"].Value;
+                    return $"{prefix}JAHWE{m.Value.Last()}";
+                });
+            }
+            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+                text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>JHWH)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
+                    var prefix = m.Groups["prefix"].Value;
+                    return $"{prefix}JAHWE{m.Value.Last()}";
+                });
+            }
+            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+                text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(a)?(y)?(ie)?(ę)?(o)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
+                    var prefix = m.Groups["prefix"].Value;
+                    return $"{prefix}JAHWE{m.Value.Last()}";
+                });
+            }
+            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.NewTestament) {
+                text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(?<ending>(a)?(y)?(ie)?(ę)?(o)?))[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
+                    var prefix = m.Groups["prefix"].Value;
+                    var ending = m.Groups["ending"].Value;
+                    var root = "Pan";
+                    if (ending == "ie") { root += "u"; }
+                    if (ending == "o") { root += "ie"; }
+                    if (ending == "y" || ending == "ę") { root += "a"; }
+                    return $"{prefix}{root}{m.Value.Last()}";
+                });
+            }
+
+            // usuwam sierotki
+            text = System.Text.RegularExpressions.Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                return " " + m.Value.Trim() + "&nbsp;";
+            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+            // usuwam puste przypisy
+            text = System.Text.RegularExpressions.Regex.Replace(text, @"\[[0-9]+\]", delegate (System.Text.RegularExpressions.Match m) {
+                return String.Empty;
+            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+
+            builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Justify;
+            builder.CurrentParagraph.ParagraphFormat.LineSpacingRule = LineSpacingRule.Multiple;
+            builder.CurrentParagraph.ParagraphFormat.LineSpacing = 18;
+            builder.CurrentParagraph.ParagraphFormat.KeepWithNext = false;
+
+           builder.InsertHtml($"<b>{verse.NumberOfVerse}</b>.&nbsp;");
+
+            builder.InsertHtml($"{text}");
+            if (footNotes.Count > 0) {
+                foreach (var item in footNotes) {
+                    builder.InsertFootnote(FootnoteType.Footnote, item.Value, $"{item.Key})");
+                }
+            }
+            builder.Write(" ");
         }
 
         private void AddBookHeaderAndFooter(Book book, DocumentBuilder builder) {
@@ -408,7 +652,6 @@ namespace IBE.Data.Export {
             });
             return input;
         }
-
         private string GetInternalVerseText(string input, Translation translation) {
             input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
                 var numberOfBook = m.Groups["book"].Value.ToInt();
@@ -427,7 +670,6 @@ namespace IBE.Data.Export {
             });
             return input;
         }
-
         public string GetExternalVerseText(string input, VerseWord word) {
             input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
                 var translationName = m.Groups["translationName"].Value;
@@ -449,8 +691,6 @@ namespace IBE.Data.Export {
             });
             return input;
         }
-
-
         private string GetExternalVerseRangeText(string input, VerseWord word) {
             input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<translationName>[a-zA-Z]+)\s(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
                 var numberOfBook = m.Groups["book"].Value.ToInt();
@@ -473,7 +713,6 @@ namespace IBE.Data.Export {
             });
             return input;
         }
-
         private string GetVerseOtherTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart) {
             var index = String.Empty;
             Verse verse = null;

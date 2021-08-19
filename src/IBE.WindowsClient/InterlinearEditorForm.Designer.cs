@@ -43,9 +43,11 @@ namespace IBE.WindowsClient {
             this.btnOblubienicaEu = new DevExpress.XtraBars.BarButtonItem();
             this.btnExportChapterToPDF = new DevExpress.XtraBars.BarButtonItem();
             this.btnExportChapterToWord = new DevExpress.XtraBars.BarButtonItem();
+            this.btnLogosSeptuagint = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            this.btnLogosSeptuagint = new DevExpress.XtraBars.BarButtonItem();
+            this.btnExportBookToPdf = new DevExpress.XtraBars.BarButtonItem();
+            this.btnExportBookToDocx = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editBook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.editChapter)).BeginInit();
@@ -72,9 +74,11 @@ namespace IBE.WindowsClient {
             this.btnOblubienicaEu,
             this.btnExportChapterToPDF,
             this.btnExportChapterToWord,
-            this.btnLogosSeptuagint});
+            this.btnLogosSeptuagint,
+            this.btnExportBookToPdf,
+            this.btnExportBookToDocx});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 17;
+            this.ribbonControl1.MaxItemId = 19;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
@@ -214,7 +218,7 @@ namespace IBE.WindowsClient {
             // 
             // btnExportChapterToPDF
             // 
-            this.btnExportChapterToPDF.Caption = "Export chapter to PDF";
+            this.btnExportChapterToPDF.Caption = "Export chapter";
             this.btnExportChapterToPDF.Enabled = false;
             this.btnExportChapterToPDF.Id = 14;
             this.btnExportChapterToPDF.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportChapterToPDF.ImageOptions.SvgImage")));
@@ -223,12 +227,21 @@ namespace IBE.WindowsClient {
             // 
             // btnExportChapterToWord
             // 
-            this.btnExportChapterToWord.Caption = "Export chapter to Word";
+            this.btnExportChapterToWord.Caption = "Export chapter";
             this.btnExportChapterToWord.Enabled = false;
             this.btnExportChapterToWord.Id = 15;
             this.btnExportChapterToWord.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportChapterToWord.ImageOptions.SvgImage")));
             this.btnExportChapterToWord.Name = "btnExportChapterToWord";
             this.btnExportChapterToWord.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportChapterToWord_ItemClick);
+            // 
+            // btnLogosSeptuagint
+            // 
+            this.btnLogosSeptuagint.Caption = "Logos Setuagint";
+            this.btnLogosSeptuagint.Id = 16;
+            this.btnLogosSeptuagint.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnLogosSeptuagint.ImageOptions.SvgImage")));
+            this.btnLogosSeptuagint.Name = "btnLogosSeptuagint";
+            this.btnLogosSeptuagint.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+            this.btnLogosSeptuagint.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnLogosSeptuagint_ItemClick);
             // 
             // rpHome
             // 
@@ -254,17 +267,28 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnLogosSeptuagint);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnExportChapterToPDF, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnExportChapterToWord);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnExportBookToPdf, true);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnExportBookToDocx);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
-            // btnLogosSeptuagint
+            // btnExportBookToPdf
             // 
-            this.btnLogosSeptuagint.Caption = "Logos Setuagint";
-            this.btnLogosSeptuagint.Id = 16;
-            this.btnLogosSeptuagint.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnLogosSeptuagint.ImageOptions.SvgImage")));
-            this.btnLogosSeptuagint.Name = "btnLogosSeptuagint";
-            this.btnLogosSeptuagint.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
-            this.btnLogosSeptuagint.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnLogosSeptuagint_ItemClick);
+            this.btnExportBookToPdf.Caption = "Export book";
+            this.btnExportBookToPdf.Enabled = false;
+            this.btnExportBookToPdf.Id = 17;
+            this.btnExportBookToPdf.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportBookToPdf.ImageOptions.SvgImage")));
+            this.btnExportBookToPdf.Name = "btnExportBookToPdf";
+            this.btnExportBookToPdf.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportBookToPdf_ItemClick);
+            // 
+            // btnExportBookToDocx
+            // 
+            this.btnExportBookToDocx.Caption = "Export book";
+            this.btnExportBookToDocx.Enabled = false;
+            this.btnExportBookToDocx.Id = 18;
+            this.btnExportBookToDocx.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportBookToDocx.ImageOptions.SvgImage")));
+            this.btnExportBookToDocx.Name = "btnExportBookToDocx";
+            this.btnExportBookToDocx.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportBookToDocx_ItemClick);
             // 
             // InterlinearEditorForm
             // 
@@ -307,5 +331,7 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnExportChapterToPDF;
         private DevExpress.XtraBars.BarButtonItem btnExportChapterToWord;
         private DevExpress.XtraBars.BarButtonItem btnLogosSeptuagint;
+        private DevExpress.XtraBars.BarButtonItem btnExportBookToPdf;
+        private DevExpress.XtraBars.BarButtonItem btnExportBookToDocx;
     }
 }
