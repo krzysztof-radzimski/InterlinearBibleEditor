@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.Words" Version="21.4.0" />
+    <PackageReference Include="Aspose.Words" Version="21.8.0" />
     <PackageReference Include="LinqKit" Version="1.1.24" />   
   </ItemGroup>
 
