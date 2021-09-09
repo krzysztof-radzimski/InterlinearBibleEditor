@@ -450,7 +450,7 @@ break;
                 }
 
                 <div class="dropdown d-grid gap-2 d-md-flex justify-content-md-end" style="width: auto;">
-                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
                         Pobierz księgę
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook">
@@ -462,7 +462,7 @@ break;
 
                     </ul>
 
-                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuDownloadInterlinear" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadInterlinear" data-bs-toggle="dropdown" aria-expanded="false">
                         Pobierz rozdział
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadInterlinear">
@@ -630,14 +630,14 @@ break;
                     chapterText += $"{verse.NumberOfVerse}. {_verseText} ";
                 }
                 <div class="dropdown d-grid gap-2 d-md-flex justify-content-md-end" style="width: auto;">
-                    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
                         Pobierz księgę
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook">
                         <li><a class="dropdown-item" href="/api/DownloadDefaultPdf?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-pdf"></i>&nbsp;Pobierz księgę w formacie PDF</a></li>
                         <li><a class="dropdown-item" href="/api/DownloadDefaultDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word"></i>&nbsp;Pobierz księgę w formacie Microsoft Word</a></li>
                     </ul>
-                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuDownloadDefault" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadDefault" data-bs-toggle="dropdown" aria-expanded="false">
                         Pobierz rozdział
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadDefault">
@@ -648,8 +648,6 @@ break;
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#copyVersesModal"><i class="far fa-check-square" style="width:18px;"></i>&nbsp;Kopiuj wybrane wersety</a></li>
                     </ul>
-
-
                 </div>
 
                 foreach (var verse in chapter.Verses) {
@@ -811,7 +809,7 @@ break;
 
                     var __verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
                     __verseText = System.Text.RegularExpressions.Regex.Replace(__verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
-                    var clipboardText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}:{verse.NumberOfVerse}({Model.Translation.Name.Replace('\'', ' ')}) {__verseText}";
+                    var clipboardText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}:{verse.NumberOfVerse} „{__verseText}” ({Model.Translation.Name.Replace('\'', ' ')})";
                     var clipboardShortText = $"{__verseText}";
 
                     <span id="span-verse-@verse.NumberOfVerse" class="lh-lg fs-5" style="@activeVerse">
@@ -923,40 +921,41 @@ break;
 
 
         @section HeaderScripts {
-            @if (!Model.Translation.OpenAccess) {
-                var isLocal = Context.Request.Host.HasValue && Context.Request.Host.Host.Contains("localhost");
-                if (!isLocal) {
+            @*
+                @if (!Model.Translation.OpenAccess) {
+                    var isLocal = Context.Request.Host.HasValue && Context.Request.Host.Host.Contains("localhost");
+                    if (!isLocal) {
 
-                    <script>
-                        var password = "";
-                        var myCookie = document.cookie;
-                        if (myCookie) {
-                            password = getCookie("pwd");
-                        } else {
-                            password = prompt("Wprowadź hasło:", "");
-                        }
-
-                        var oReq = new XMLHttpRequest();
-                        oReq.open("GET", "../../api/utils?pwd=" + password);
-                        oReq.send();
-
-                        oReq.onload = function () {
-                            if (oReq.response == "false") {
-
-                                var element = document.getElementsByTagName("body"), index;
-
-                                for (index = element.length - 1; index >= 0; index--) {
-                                    element[index].parentNode.removeChild(element[index]);
-                                }
-
-                                window.location.href = '../';
-                            } else if (!myCookie) {
-                                setCookie("pwd", password, 1);
+                        <script>
+                            var password = "";
+                            var myCookie = document.cookie;
+                            if (myCookie) {
+                                password = getCookie("pwd");
+                            } else {
+                                password = prompt("Wprowadź hasło:", "");
                             }
-                        };
-                    </script>
-                }
-            }
+
+                            var oReq = new XMLHttpRequest();
+                            oReq.open("GET", "../../api/utils?pwd=" + password);
+                            oReq.send();
+
+                            oReq.onload = function () {
+                                if (oReq.response == "false") {
+
+                                    var element = document.getElementsByTagName("body"), index;
+
+                                    for (index = element.length - 1; index >= 0; index--) {
+                                        element[index].parentNode.removeChild(element[index]);
+                                    }
+
+                                    window.location.href = '../';
+                                } else if (!myCookie) {
+                                    setCookie("pwd", password, 1);
+                                }
+                            };
+                        </script>
+                    }
+                }*@
         }
 
         @section Scripts  {

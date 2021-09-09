@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = "Zalogowany";
+}
+
+<div class="row shadow-lg" style="max-width: 1040px; margin: auto; min-height: 80vh;">
+    <div class="container">
+        <div class="col-md-6 p-4">
+            <h1><i class="fas fa-church"></i> @ViewData["Title"]</h1>
+            <p>Witaj @User.Identity.Name. Masz teraz dostęp do wszystkich przekładów. </p>
+        </div>
+    </div>
+</div>

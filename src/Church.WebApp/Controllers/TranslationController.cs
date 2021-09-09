@@ -30,6 +30,7 @@ namespace Church.WebApp.Controllers {
         }
 
         // "{translationName}/{book?}/{chapter?}/{verse?}"
+        [TranslationAuthorize]
         public IActionResult Index(string translationName, string book = null, string chapter = null, string verse = null) {
             if (!String.IsNullOrEmpty(translationName)) {
                 var uow = new UnitOfWork();

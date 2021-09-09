@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Church.WebApp.Controllers {
     [ApiController]
@@ -23,8 +24,14 @@ namespace Church.WebApp.Controllers {
             var qs = Request.QueryString;
 
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 5) {
-                var queryString = Uri.UnescapeDataString(qs.Value).RemoveAny("?q=");
-                var stream = await CreateDocx(queryString);
+                var queryString = HttpUtility.UrlDecode(qs.Value).RemoveAny("?q=");
+                Stream stream = null;
+                try {
+                    stream = await CreateDocx(queryString);
+                }
+                catch (AuthException) {
+                    return new RedirectResult("/Account/Index?ReturnUrl=" + Request.Path + HttpUtility.UrlDecode(Request.QueryString.Value));
+                }
                 if (stream.IsNull()) { return NotFound(); }
                 return File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "file.docx");
             }
@@ -46,6 +53,9 @@ namespace Church.WebApp.Controllers {
 
                 var trans = new XPQuery<Translation>(uow).Where(x => !x.Hidden && x.Name == translationName).FirstOrDefault();
                 if (trans.IsNull()) { return default; }
+                if (!trans.OpenAccess && !User.Identity.IsAuthenticated) {
+                    throw new AuthException();
+                }
 
                 book = trans.Books.Where(x => x.NumberOfBook == bookNumber).FirstOrDefault();
                 chapter = book.Chapters.Where(x => x.NumberOfChapter == chapterNumber).FirstOrDefault();
@@ -69,6 +79,9 @@ namespace Church.WebApp.Controllers {
 
                 var trans = new XPQuery<Translation>(uow).Where(x => !x.Hidden && x.Name == translationName).FirstOrDefault();
                 if (trans.IsNull()) { return default; }
+                if (!trans.OpenAccess && !User.Identity.IsAuthenticated) {
+                    throw new AuthException();
+                }
 
                 book = trans.Books.Where(x => x.NumberOfBook == bookNumber).FirstOrDefault();
 

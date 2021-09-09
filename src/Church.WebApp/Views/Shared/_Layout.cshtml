@@ -176,6 +176,12 @@
                                 <a class="nav-link" href="https://m.me/koscioljezusa" target="_blank" title="Wyślij wiadomość"><i class="fab fa-facebook-messenger"></i></a>&nbsp;&nbsp;
                                 <a class="nav-link" href="https://www.facebook.com/koscioljezusa" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>&nbsp;&nbsp;
                                 <a class="nav-link" href="https://www.youtube.com/channel/UCD1go_K0JxyNkuss9mZ-8HQ" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>&nbsp;&nbsp;
+                                @if (User.Identity.IsAuthenticated) {
+                                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout" title="Wyloguj"><i class="fas fa-sign-out-alt"></i></a>
+                                }
+                                else {
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Secured" title="Zaloguj"><i class="fas fa-sign-in-alt"></i></a>
+                                }
                             </div>
                         </li>
                     </ul>

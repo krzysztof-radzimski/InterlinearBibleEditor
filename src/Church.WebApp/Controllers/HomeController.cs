@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using IBE.Common.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Church.WebApp.Controllers {
     public class HomeController : Controller {
@@ -62,6 +63,11 @@ namespace Church.WebApp.Controllers {
         }
 
         public IActionResult Privacy() {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult Secured() {
             return View();
         }
 
