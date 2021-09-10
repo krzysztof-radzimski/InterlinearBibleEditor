@@ -13,44 +13,46 @@
     var name = $"{first.GetBookName()} {first.ParentChapter.NumberOfChapter}:{first.NumberOfVerse}";
     ViewData["Title"] = $"Porównanie tłumaczeń {name}";
 
-    <div class="row shadow-lg" style="max-width: 1040px; margin: auto;">
-        <div class="col p-4 d-flex flex-column position-static">
-            <div>
-                <strong class="d-inline-block mb-2 text-success pill-white" style="width: auto;">&nbsp;@ViewData["Title"]&nbsp;</strong>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="row p-1">
-                <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 8%; min-width: 50px;">Łącze</div>
-                <div class="col-auto fw-bold p-1 border-top border-bottom border-start" style="width: 8%; min-width: 80px;">Rodzaj</div>
-                <div class="col-auto fw-bold p-1 border-top border-bottom border-start" style="width: 15%; min-width: 100px;">Nazwa</div>
-                <div class="col fw-bold p-1 border-top border-bottom border-start">Treść</div>
-                <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 5%; min-width: 50px;">&nbsp;</div>
+    <div style="min-height: 80vh;">
+        <div class="row p-4">
+            <div class="col d-flex flex-column position-static">
+                <div>
+                    <strong class="d-inline-block mb-2 text-success pill-white" style="width: auto;">&nbsp;@ViewData["Title"]&nbsp;</strong>
+                </div>
             </div>
 
-            @foreach (var item in Model.Verses) {
-                var index = item.GetVerseIndex();
-                if (index.IsNull()) { continue; }
+            <div class="container">
+                <div class="row p-1">
+                    <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 8%; min-width: 50px;">Łącze</div>
+                    <div class="col-auto fw-bold p-1 border-top border-bottom border-start" style="width: 8%; min-width: 80px;">Rodzaj</div>
+                    <div class="col-auto fw-bold p-1 border-top border-bottom border-start" style="width: 15%; min-width: 100px;">Nazwa</div>
+                    <div class="col fw-bold p-1 border-top border-bottom border-start">Treść</div>
+                    <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 5%; min-width: 50px;">&nbsp;</div>
+                </div>
 
-                var styles = "";
-                var selected = index.TranslationName == Model.Index.TranslationName;
-                if (selected) { styles = @"style=""background-color: #fcf8e3;"""; }
-                var translationName = item.ParentTranslation.Name;
-                var translationDesc = item.ParentTranslation.Description;
-                var translationType = item.ParentTranslation.Type.GetDescription();
+                @foreach (var item in Model.Verses) {
+                    var index = item.GetVerseIndex();
+                    if (index.IsNull()) { continue; }
 
-                var link = $@"<a href=""/{index.TranslationName}/{index.NumberOfBook}/{index.NumberOfChapter}/{index.NumberOfVerse}"" class=""text-decoration-none"" title=""{translationDesc}"">{translationName}</a>";
+                    var styles = "";
+                    var selected = index.TranslationName == Model.Index.TranslationName;
+                    if (selected) { styles = @"style=""background-color: #fcf8e3;"""; }
+                    var translationName = item.ParentTranslation.Name;
+                    var translationDesc = item.ParentTranslation.Description;
+                    var translationType = item.ParentTranslation.Type.GetDescription();
 
-        <div class="row p-1" @Html.Raw(styles)>
-            <div class="col-auto p-1 border-bottom" style="width: 8%; font-size: 80%; min-width: 50px;">@Html.Raw(link)</div>
-            <div class="col-auto p-1 border-bottom border-start" style="width: 8%; font-size: 80%; min-width: 80px;">@translationType</div>
-            <div class="col-auto p-1 border-bottom border-start" style="width: 15%; font-size: 80%; min-width: 100px">@translationDesc</div>
-            <div class="col p-1 border-start border-bottom" id="verseText_@index.TranslationName">@Html.Raw(item.Text.Replace("―", String.Empty).Replace("<n>", @"<span class=""text-muted"">").Replace("</n>", "</span>"))</div>
-            <div class="col-auto p-1 border-bottom border-start" style="width: 5%; min-width: 50px;"><a class="dropdown-item" onclick="copyToClipboard2('#verseText_@index.TranslationName', '@name (@index.TranslationName)')" style="cursor: pointer;" title="Kopiuj treść wersetu"><i class="far fa-copy"></i></a></div>
-        </div>
-            }
+                    var link = $@"<a href=""/{index.TranslationName}/{index.NumberOfBook}/{index.NumberOfChapter}/{index.NumberOfVerse}"" class=""text-decoration-none"" title=""{translationDesc}"">{translationName}</a>";
 
+                    <div class="row p-1" @Html.Raw(styles)>
+                        <div class="col-auto p-1 border-bottom" style="width: 8%; font-size: 80%; min-width: 50px;">@Html.Raw(link)</div>
+                        <div class="col-auto p-1 border-bottom border-start" style="width: 8%; font-size: 80%; min-width: 80px;">@translationType</div>
+                        <div class="col-auto p-1 border-bottom border-start" style="width: 15%; font-size: 80%; min-width: 100px">@translationDesc</div>
+                        <div class="col p-1 border-start border-bottom" id="verseText_@index.TranslationName">@Html.Raw(item.Text.Replace("―", String.Empty).Replace("<n>", @"<span class=""text-muted"">").Replace("</n>", "</span>"))</div>
+                        <div class="col-auto p-1 border-bottom border-start" style="width: 5%; min-width: 50px;"><a class="dropdown-item" onclick="copyToClipboard2('#verseText_@index.TranslationName', '@name (@index.TranslationName)')" style="cursor: pointer;" title="Kopiuj treść wersetu"><i class="far fa-copy"></i></a></div>
+                    </div>
+                }
+
+            </div>
         </div>
     </div>
 }

@@ -17,8 +17,17 @@ namespace IBE.WebApp {
         public void ConfigureServices(IServiceCollection services) {
             services.AddAuthentication("CookieAuthentication")
                 .AddCookie("CookieAuthentication", config => {
+
                     config.Cookie.Name = "UserLoginCookie";
+                    config.Cookie.SameSite = SameSiteMode.Strict;
+                    config.Cookie.SecurePolicy = CookieSecurePolicy.None;
+                    //config.Cookie.Expiration = System.TimeSpan.FromDays(1);
+                    config.Cookie.MaxAge = System.TimeSpan.FromDays(2);
+                    config.Cookie.HttpOnly = true;
+
                     config.LoginPath = "/Account/Index";
+                    config.LogoutPath = "/Account/Logout";
+                    config.ExpireTimeSpan = System.TimeSpan.FromDays(1);
                 });
             services.AddControllersWithViews();
         }
@@ -39,13 +48,13 @@ namespace IBE.WebApp {
 
             app.UseRouting();
 
-            var cookiePolicyOptions = new CookiePolicyOptions {
-                MinimumSameSitePolicy = SameSiteMode.Strict,
-                HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always,
-                Secure = CookieSecurePolicy.None,
-            };
+            //var cookiePolicyOptions = new CookiePolicyOptions {
+            //    MinimumSameSitePolicy = SameSiteMode.Strict,
+            //    HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always,
+            //    Secure = CookieSecurePolicy.None,
+            //};
 
-            app.UseCookiePolicy(cookiePolicyOptions);
+            //app.UseCookiePolicy(cookiePolicyOptions);
 
             app.UseAuthentication();
             app.UseAuthorization();

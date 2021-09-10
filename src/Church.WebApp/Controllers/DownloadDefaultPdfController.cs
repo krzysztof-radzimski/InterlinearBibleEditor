@@ -83,6 +83,10 @@ namespace Church.WebApp.Controllers {
                 var uow = new UnitOfWork();
 
                 var trans = new XPQuery<Translation>(uow).Where(x => !x.Hidden && x.Name == translationName).FirstOrDefault();
+                if (trans.IsNull() && translationName.EndsWith(" ")) {
+                    translationName = translationName.Trim() + "+";
+                    trans = new XPQuery<Translation>(uow).Where(x => x.Name == translationName).FirstOrDefault();
+                }
                 if (trans.IsNull()) { return default; }
                 if (!trans.OpenAccess && !User.Identity.IsAuthenticated) {
                     throw new AuthException();

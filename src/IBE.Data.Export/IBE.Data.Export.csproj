@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net48;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net48</TargetFrameworks>
+    <!--<TargetFramework>netstandard2.1</TargetFramework>-->
     <Authors>Krzysztof Radzimski</Authors>
     <Company>ITORG Krzysztof Radzimski</Company>
     <Description>IBE export data classes.</Description>
@@ -22,7 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.Words" Version="21.8.0" />
+    <PackageReference Include="Aspose.Words" Version="21.9.0" />
     <PackageReference Include="LinqKit" Version="1.1.24" />   
   </ItemGroup>
 
