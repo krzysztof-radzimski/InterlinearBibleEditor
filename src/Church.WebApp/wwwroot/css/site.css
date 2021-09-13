@@ -1,5 +1,5 @@
 ﻿.bible-content {
-    background-image: url(../img/reading-bible.jpg);
+    background-image: url(../img/reading-bible-2021.jpg);
     background-repeat: no-repeat;
     background-position: center top;
 }
@@ -127,7 +127,7 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
-    background: url('../img/background.jpg') no-repeat center center fixed;
+    background: url('../img/background-2021.jpg') no-repeat center center fixed;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -165,7 +165,7 @@ figure {
 
 .scrollable-menu {
     height: auto;
-    max-height: 70vh;
+    max-height: 80vh;
     overflow-x: hidden;
 }
 

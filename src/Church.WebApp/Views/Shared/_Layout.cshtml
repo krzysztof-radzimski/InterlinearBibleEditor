@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/site.css?id=16" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="icon" type="image/svg+xml" href="~/img/baptysci-logo.svg" />
 
     @RenderSection("HeaderScripts", required: false)
@@ -99,10 +99,15 @@
                                         foreach (var item in list.Where(x => x.Type == type)) {
                                             var _name = item.Name.Replace("'", "").Replace("+", "");
                                             var _description = item.Description;
-                                            var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
-                                            var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
-                                            var _notrecommendedBadge = type == TranslationType.Dynamic ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
-                                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
+                                            //var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
+                                            //var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
+                                            //var _notrecommendedBadge = type == TranslationType.Dynamic ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
+                                            //var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
+                                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" title=""Przekład katolicki"">katolicki</abbr>" : "";
+                                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                                            var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
+                                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a></li>
 
                                         }
@@ -158,9 +163,14 @@
                                     foreach (var item in list2) {
                                         var _name = item.Name.Replace("'", "").Replace("+", "");
                                         var _description = item.Description;
-                                        var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
-                                        var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
-                                        var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
+                                        //var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
+                                        //var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
+                                        //var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
+
+                                        var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" title=""Przekład katolicki"">katolicki</abbr>" : "";
+                                        var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                                        var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+
 
                                         <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_loginRequired)</a></li>
                                     }

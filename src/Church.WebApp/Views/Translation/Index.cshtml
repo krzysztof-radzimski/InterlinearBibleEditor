@@ -20,28 +20,21 @@ else if (String.IsNullOrEmpty(Model.Book)) {
     ViewData["Title"] = Model.Translation.Description;
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-
-        @switch (Model.Translation.Type) {
-            case IBE.Data.Model.TranslationType.Dynamic: {
-            @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">Przekład dynamiczny</div>")
-            break;
+        @if (Model.Translation.Type == IBE.Data.Model.TranslationType.Dynamic) {
+            <button type="button" class="btn btn-danger btn-sm" title="Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie" disabled>Przekład dynamiczny</button>
         }
-    case IBE.Data.Model.TranslationType.Literal: {
-    @Html.Raw(@"<div class=""alert alert-success mb-0"" role=""alert"">Przekład dosłowny</div>")
-    break;
-}
-case IBE.Data.Model.TranslationType.Default: {
-@Html.Raw(@"<div class=""alert alert-info mb-0"" role=""alert"">Przekład literacki</div>")
-break;
-}
-}
-
+        else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Literal) {
+            <button type="button" class="btn btn-success btn-sm" title="Przekład dosłowny" disabled>Przekład dosłowny</button>
+        }
+        else {
+            <button type="button" class="btn btn-info btn-sm" title="Przekład literacki" disabled>Przekład literacki</button>
+        }
     </div>
 
     <h2 class="text-center p-2 max-width-800">@Model.Translation.Description</h2>
 
     <div class="container">
-        <div class="row border bg-light justify-content-center max-width-800">
+        <div class="row justify-content-center max-width-800">
             @foreach (var book in Model.Translation.Books) {
 
                 if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !book.IsTranslated && Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) { continue; }
@@ -52,15 +45,9 @@ break;
                     bookHtml = $"{book.BaseBook.BookShortcut}&nbsp;({bookHtml})";
                 }
 
-                var pillHtml = "";
-                if (Model.Translation.OpenAccess) {
-                    pillHtml = $@"<span class=""badge bg-success rounded-pill"" style=""position: absolute; right: -10px; top: -15px"">{book.NumberOfChapters}</span>";
-                    if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
-                        pillHtml = $@"<span class=""badge bg-success"" style=""position: absolute; right: -20px; top: -20px""><a href=""../../api/DownloadInterlinearPdf?q={Model.Translation.Name},{book.NumberOfBook}"" title=""Pobierz księgę w formacie PDF"" class=""text-decoration-none"" style=""color: white;""><i class=""fas fa-arrow-circle-down fa-2x""></i></a></span>";
-                    }
-                }
+                var pillHtml = $@"<span class=""badge bg-success rounded-pill"" style=""position: absolute; right: -10px; top: -15px"">{book.NumberOfChapters}</span>";
 
-                <div class="col p-2" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3); opacity: 0.8;" title="@book.BaseBook.BookTitle">
+                <div class="col p-2" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3);" title="@book.BaseBook.BookTitle">
                     <span style="position: relative;">
                         <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@book.BaseBook.BookTitle" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@book.Chapters.Min(x=>x.NumberOfChapter)">@Html.Raw(bookHtml)&nbsp;</a>@Html.Raw(pillHtml)
                     </span>
@@ -110,36 +97,30 @@ else {
     //
     // Wyświetlanie treści rozdziałów poszczególnych ksiąg
     //
-
     IBE.Data.Model.Book book = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(Model.Book)).FirstOrDefault();
     if (book.IsNotNull()) {
         ViewData["Title"] = Model.Translation.Description + " - " + book.BaseBook.BookTitle;
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 
-            @switch (Model.Translation.Type) {
-                case IBE.Data.Model.TranslationType.Dynamic: {
-                @Html.Raw(@"<div class=""alert alert-danger mb-0"" role=""alert"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">Przekład dynamiczny</div>")
-                break;
+            @if (Model.Translation.Type == IBE.Data.Model.TranslationType.Dynamic) {
+                <button type="button" class="btn btn-danger btn-sm" title="Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie" disabled>Przekład dynamiczny</button>
             }
-        case IBE.Data.Model.TranslationType.Literal: {
-        @Html.Raw(@"<div class=""alert alert-success mb-0"" role=""alert"">Przekład dosłowny</div>")
-        break;
-    }
-case IBE.Data.Model.TranslationType.Default: {
-@Html.Raw(@"<div class=""alert alert-info mb-0"" role=""alert"">Przekład literacki</div>")
-break;
-}
-}
+            else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Literal) {
+                <button type="button" class="btn btn-success btn-sm" title="Przekład dosłowny" disabled>Przekład dosłowny</button>
+            }
+            else {
+                <button type="button" class="btn btn-info btn-sm" title="Przekład literacki" disabled>Przekład literacki</button>
+            }
+
 
             @if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
-                <div class="alert alert-warning mb-0" role="alert">Uwaga! @book.BaseBook.BookTitle jest księgą wtórnie-kanoniczną</div>
+                <button type="button" class="btn btn-danger btn-sm" disabled>Uwaga! @book.BaseBook.BookTitle jest księgą wtórnie-kanoniczną</button>
             }
             else if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.Apocrypha) {
-                <div class="alert alert-warning mb-0" role="alert">Uwaga! @book.BaseBook.BookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej</div>
+                <button type="button" class="btn btn-danger btn-sm" disabled>Uwaga! @book.BaseBook.BookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej</button>
             }
             @if (Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) {
-
                 <button class="btn btn-primary dropdown-toggle my-dropdown" type="button" id="dropdownMenuButtonTranslations" data-bs-toggle="dropdown" aria-expanded="false">
                     Inny przekład
                 </button>
@@ -160,10 +141,10 @@ break;
                         <li><h6 class="dropdown-header disabled">@_trans.Key</h6></li>
 
                         foreach (var item in _trans) {
-                            var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
-                            var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
-                            var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
-                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
+                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" title=""Przekład katolicki"">katolicki</abbr>" : "";
+                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                            var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
+                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
                             var _active = String.Empty;
                             if (item.Name == Model.Translation.Name) {
                                 _active = " active";
@@ -210,10 +191,15 @@ break;
                     }
                     @foreach (var _trans in _allTranslations) {
                         foreach (var item in _trans) {
-                            var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
-                            var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
-                            var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
-                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
+                            //var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
+                            //var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
+                            //var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
+                            //var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
+                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" title=""Przekład katolicki"">katolicki</abbr>" : "";
+                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                            var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
+                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+
                             var _active = String.Empty;
                             if (item.Name == Model.Translation.Name) {
                                 _active = " active";
@@ -398,7 +384,7 @@ break;
             }
         }
 
-        <div class="lh-base fs-6" style="max-width: 1000px; margin: auto; text-align: justify; position: relative;">
+        <div class="lh-base fs-6" style="max-width: 1000px; margin: auto; text-align: justify; position: relative;" id="chapterContent">
 
             @{
                 var __translationName = $"({Model.Translation.Name.Replace('\'', ' ')})";
@@ -416,7 +402,7 @@ break;
                         <div class="modal-body">
                             <ul class="list-group">
                                 @foreach (var verse in chapter.Verses) {
-                                    var _verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+                                    var _verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
                                     _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
                                     <li class="list-group-item">
                                         <input class="form-check-input me-1" type="checkbox" value="@verse.NumberOfVerse" aria-label="Werset @verse.NumberOfVerse">
@@ -444,9 +430,9 @@ break;
                 var transliteratedChapterText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
                 var sourceChapterText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
                 @foreach (var verse in chapter.Verses) {
-                    translatedChapterText += $"{verse.NumberOfVerse}. {verse.GetTranslationText().Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
-                    transliteratedChapterText += $"{verse.NumberOfVerse}. {verse.GetTransliterationText().Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
-                    sourceChapterText += $"{verse.NumberOfVerse}. {verse.GetSourceText().Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
+                    translatedChapterText += $"{verse.NumberOfVerse}. {verse.GetTranslationText().Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
+                    transliteratedChapterText += $"{verse.NumberOfVerse}. {verse.GetTransliterationText().Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
+                    sourceChapterText += $"{verse.NumberOfVerse}. {verse.GetSourceText().Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace("<e>", "").Replace("</e>", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
                 }
 
                 <div class="dropdown d-grid gap-2 d-md-flex justify-content-md-end" style="width: auto;">
@@ -463,7 +449,7 @@ break;
                     </ul>
 
                     <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadInterlinear" data-bs-toggle="dropdown" aria-expanded="false">
-                        Pobierz rozdział
+                        Pobierz / kopiuj rozdział
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadInterlinear">
                         <li><a class="dropdown-item" href="/api/DownloadInterlinearPdf?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Pobierz rozdział w formacie PDF</a></li>
@@ -548,7 +534,7 @@ break;
                             <div class="container" style="position: relative">
                                 @if (isFirst && Model.Chapter.ToInt() > 0) {
                                     var _top = word.GrammarCode.IsNotNull() ? "22px;" : "10px;";
-                                    var clipboardShortText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+                                    var clipboardShortText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
                                     //
                                     // Numer wersetu
                                     //
@@ -557,8 +543,15 @@ break;
                                         <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
                                         <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: 0;">@chapterNumberString,@verse.NumberOfVerse</a>
                                         <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse">
-                                            <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń</a></li>
+                                            <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
                                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index&literal=true" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
+
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie PDF</a></li>
+                                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie Microsoft Word</a></li>
+                                            <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index&literal=true"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie PDF</a></li>
+                                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index&literal=true"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie Microsoft Word</a></li>
+
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @verse.GetSourceText()')" style="cursor: pointer;"><i class="fas fa-copy" style="width:18px;"></i>&nbsp;Kopiuj tekst grecki</a></li>
                                             <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @verse.GetTransliterationText()')" style="cursor: pointer;"><i class="far fa-file-alt" style="width:18px;"></i>&nbsp;Kopiuj transliterację tekstu greckiego</a></li>
@@ -625,7 +618,7 @@ break;
 
                 var chapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
                 foreach (var verse in chapter.Verses) {
-                    var _verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+                    var _verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<e>", "").Replace("</e>", "").Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
                     _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
                     chapterText += $"{verse.NumberOfVerse}. {_verseText} ";
                 }
@@ -638,7 +631,7 @@ break;
                         <li><a class="dropdown-item" href="/api/DownloadDefaultDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word"></i>&nbsp;Pobierz księgę w formacie Microsoft Word</a></li>
                     </ul>
                     <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadDefault" data-bs-toggle="dropdown" aria-expanded="false">
-                        Pobierz rozdział
+                        Pobierz / kopiuj rozdział
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadDefault">
                         <li><a class="dropdown-item" href="/api/DownloadDefaultPdf?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-pdf"></i>&nbsp;Pobierz rozdział w formacie PDF</a></li>
@@ -807,7 +800,7 @@ break;
 
                     var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "background-color: #fffee3;" : " ";
 
-                    var __verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+                    var __verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
                     __verseText = System.Text.RegularExpressions.Regex.Replace(__verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
                     var clipboardText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}:{verse.NumberOfVerse} „{__verseText}” ({Model.Translation.Name.Replace('\'', ' ')})";
                     var clipboardShortText = $"{__verseText}";
@@ -816,8 +809,17 @@ break;
                         <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
                         <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: 0;">@verse.NumberOfVerse.</a><span id="verseText_@verse.NumberOfVerse">@Html.Raw(text.Trim())</span>
                         <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse">
-                            <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń</a></li>
+                            <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index&literal=true" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
+
+
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie PDF</a></li>
+                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie Microsoft Word</a></li>
+                            <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index&literal=true"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie PDF</a></li>
+                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index&literal=true"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie Microsoft Word</a></li>
+
+
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" onclick="copyToClipboard3('@clipboardText')" style="cursor: pointer;"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj werset</a></li>
                         </ul>
@@ -873,8 +875,8 @@ break;
             }
 
 
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center pagination-sm">
+            <nav aria-label="Page navigation example" id="chapterNav1">
+                <ul class="pagination justify-content-center">
                     <li class="page-item@_disabledStart">
                         <a class="page-link" aria-label="Poprzedni" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@(chapter.NumberOfChapter - 1)">
                             <span aria-hidden="true">&laquo;</span>
@@ -921,41 +923,18 @@ break;
 
 
         @section HeaderScripts {
-            @*
-                @if (!Model.Translation.OpenAccess) {
-                    var isLocal = Context.Request.Host.HasValue && Context.Request.Host.Host.Contains("localhost");
-                    if (!isLocal) {
+            @if (Model.IsNotNull() && Model.Translation.IsNotNull() && book.IsNotNull()) {
+                var __host = this.Context.Request.Host;
+                var __path = this.Context.Request.Path;
 
-                        <script>
-                            var password = "";
-                            var myCookie = document.cookie;
-                            if (myCookie) {
-                                password = getCookie("pwd");
-                            } else {
-                                password = prompt("Wprowadź hasło:", "");
-                            }
-
-                            var oReq = new XMLHttpRequest();
-                            oReq.open("GET", "../../api/utils?pwd=" + password);
-                            oReq.send();
-
-                            oReq.onload = function () {
-                                if (oReq.response == "false") {
-
-                                    var element = document.getElementsByTagName("body"), index;
-
-                                    for (index = element.length - 1; index >= 0; index--) {
-                                        element[index].parentNode.removeChild(element[index]);
-                                    }
-
-                                    window.location.href = '../';
-                                } else if (!myCookie) {
-                                    setCookie("pwd", password, 1);
-                                }
-                            };
-                        </script>
-                    }
-                }*@
+                <!-- social sharing metadata -->
+                <meta property="og:title" content="@book.BaseBook.BookTitle" />
+                <meta property="og:description" content="@Model.Translation.Description" />
+                <meta property="og:image" content="http://@__host/img/KCHB_NDM_2021.jpg" />
+                <meta property="og:url" content="http://@__host@__path" />
+                <meta property="og:type" content="article" />
+                <meta property="og:locale" content="pl_PL" />
+            }
         }
 
         @section Scripts  {
@@ -978,6 +957,14 @@ break;
                 </script>
 
             }
+
+            <script>
+                docReady(function () {
+                    setTimeout(function () {
+                        copyNav();
+                    });
+                });
+            </script>
         }
     }
 }

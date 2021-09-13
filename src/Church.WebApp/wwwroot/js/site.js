@@ -1,9 +1,4 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-
-function docReady(fn) {
+﻿function docReady(fn) {
     // see if DOM is already available
     if (document.readyState === "complete" || document.readyState === "interactive") {
         // call on next available tick
@@ -12,28 +7,6 @@ function docReady(fn) {
         document.addEventListener("DOMContentLoaded", fn);
     }
 }
-
-//function getCookie(cname) {
-//    var name = cname + "=";
-//    var decodedCookie = decodeURIComponent(document.cookie);
-//    var ca = decodedCookie.split(';');
-//    for (var i = 0; i < ca.length; i++) {
-//        var c = ca[i];
-//        while (c.charAt(0) == ' ') {
-//            c = c.substring(1);
-//        }
-//        if (c.indexOf(name) == 0) {
-//            return c.substring(name.length, c.length);
-//        }
-//    }
-//    return "";
-//}
-//function setCookie(cname, cvalue, exdays) {
-//    var d = new Date();
-//    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-//    var expires = "expires=" + d.toUTCString();
-//    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-//}
 function copyToClipboard(element) {
     var $temp = $("<input>");
     $("body").append($temp);
@@ -100,13 +73,18 @@ function onModalSaveButtonClick(chapter, translation) {
                         stext += number;
                         count = 0;
                         nextSeq = true;
+                    } else if (count == 1) {                        
+                        count = 0;
+                        nextSeq = true;
                     }
                 }
             }
         }
     }
 
-   
+    if (count > 1) {
+        stext += "nn";
+    }
 
     stext += " „" + text.trim() + "” " + translation;
 
@@ -117,4 +95,11 @@ function onModalSaveButtonClick(chapter, translation) {
     $temp.remove();
 
     $("#close-modal-btn").click();
+}
+
+function copyNav() {
+    var $nav = $('nav[id^="chapterNav"]:last');
+    var num = parseInt($nav.prop("id").match(/\d+/g), 10) + 1;
+    var $cloned = $nav.clone().prop('id', 'chapterNav' + num);
+    $("#chapterContent").before($cloned);
 }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace IBE.Data.Export {
-    public class DefaultExporter : BaseExporter {
+    public class DefaultExporter : BaseDefaultExporter {
         private int footNoteIndex = 1;
         private DefaultExporter() : base() { }
         public DefaultExporter(byte[] asposeLicense) : base(asposeLicense) { }

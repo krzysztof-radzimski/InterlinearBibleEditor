@@ -1,8 +1,8 @@
 ﻿using DevExpress.Xpo;
 using IBE.Common.Extensions;
+using IBE.Data.Export;
 using IBE.Data.Model;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Church.WebApp.Controllers {
@@ -26,10 +26,5 @@ namespace Church.WebApp.Controllers {
             }
             return View();
         }
-    }
-
-    public class CompareVerseModel {
-        public VerseIndex Index { get; set; }
-        public List<Verse> Verses { get; set; }
-    }
+    }  
 }
