@@ -178,7 +178,6 @@ else {
                             </li>
                         }
                     }
-
                 </ul>
             }
             else if (Model.Translation.BookType == IBE.Data.Model.TheBookType.ChurchFathersLetter) {
@@ -435,7 +434,7 @@ else {
                     sourceChapterText += $"{verse.NumberOfVerse}. {verse.GetSourceText().Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace("<e>", "").Replace("</e>", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
                 }
 
-                <div class="dropdown d-grid gap-2 d-md-flex justify-content-md-end" style="width: auto;">
+                <div class="dropdown d-grid gap-2 d-md-flex justify-content-center" style="width: auto;" id="divDownload">
                     <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
                         Pobierz księgę
                     </button>
@@ -622,7 +621,7 @@ else {
                     _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
                     chapterText += $"{verse.NumberOfVerse}. {_verseText} ";
                 }
-                <div class="dropdown d-grid gap-2 d-md-flex justify-content-md-end" style="width: auto;">
+                <div class="dropdown d-grid gap-2 d-md-flex justify-content-center" style="width: auto;"  id="divDownload">
                     <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
                         Pobierz księgę
                     </button>
@@ -876,7 +875,7 @@ else {
 
 
             <nav aria-label="Page navigation example" id="chapterNav1">
-                <ul class="pagination justify-content-center">
+                <ul class="pagination justify-content-center" style="margin-bottom: 0;">
                     <li class="page-item@_disabledStart">
                         <a class="page-link" aria-label="Poprzedni" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@(chapter.NumberOfChapter - 1)">
                             <span aria-hidden="true">&laquo;</span>
@@ -924,14 +923,20 @@ else {
 
         @section HeaderScripts {
             @if (Model.IsNotNull() && Model.Translation.IsNotNull() && book.IsNotNull()) {
-                var __host = this.Context.Request.Host;
+                var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
                 var __path = this.Context.Request.Path;
-
+                var __title = book.BaseBook.BookTitle;
+                if (Model.Chapter.IsNotNullOrEmpty() && chapterNumber != 0) {
+                    __title += $" {chapterNumber}";
+                }
+                if (Model.Verse.IsNotNullOrEmpty()) {
+                    __title += $":{Model.Verse}";
+                }
                 <!-- social sharing metadata -->
-                <meta property="og:title" content="@book.BaseBook.BookTitle" />
+                <meta property="og:title" content="@__title" />
                 <meta property="og:description" content="@Model.Translation.Description" />
-                <meta property="og:image" content="http://@__host/img/KCHB_NDM_2021.jpg" />
-                <meta property="og:url" content="http://@__host@__path" />
+                <meta property="og:image" content="@__host/img/biblelink.jpg" />
+                <meta property="og:url" content="@__host@__path" />
                 <meta property="og:type" content="article" />
                 <meta property="og:locale" content="pl_PL" />
             }

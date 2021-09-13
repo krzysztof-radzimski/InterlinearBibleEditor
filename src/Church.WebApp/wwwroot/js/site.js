@@ -101,5 +101,5 @@ function copyNav() {
     var $nav = $('nav[id^="chapterNav"]:last');
     var num = parseInt($nav.prop("id").match(/\d+/g), 10) + 1;
     var $cloned = $nav.clone().prop('id', 'chapterNav' + num);
-    $("#chapterContent").before($cloned);
+    $("#divDownload").prepend($cloned);
 }
