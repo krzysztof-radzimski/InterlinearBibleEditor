@@ -16,50 +16,15 @@
 }
 
 @section Main{
-    @*<div id="carouselExampleFade" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active" data-bs-interval="10000" style="
-            background-image: url(img/Placeholder1.jpg?id=2);
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            min-height: 500px;">
-                </div>
-                <div class="carousel-item" data-bs-interval="10000" style="
-            background-image: url(img/Placeholder2.jpg?id=2);
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            min-height: 500px;">
-                </div>
-                <div class="carousel-item" data-bs-interval="10000" style="
-            background-image: url(img/Placeholder3.jpg?id=2);
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            min-height: 500px;">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Wstecz</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Dalej</span>
-            </button>
-        </div>*@
+
 }
 
 <div style="padding-top: 20px;" class="max-width-1000">
-    <div class="text-center"><img src="../img/baptysci-logo.svg" style="max-height: 50px; opacity: 0.7;" /></div>
-    <h1 class="text-center" style="opacity: 0.9;"> Kościół Chrześcijan Baptystów<br />w Nowym Dworze Mazowieckim</h1>
-    <hr id="main-hr-line" class="fancy-line" />
+    <br />
+    <p class="fs-5 text-center shadow p-3 mb-5 bg-body rounded"><img src="~/img/Ban_500x90_Bapt_Photo.jpg" style="width: 100%;" alt="Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim" /></p>
+    @*<div class="text-center"><img src="../img/baptysci-logo.svg" style="max-height: 50px; opacity: 0.7;" /></div>
+        <h1 class="text-center" style="opacity: 0.9;"> Kościół Chrześcijan Baptystów<br />w Nowym Dworze Mazowieckim</h1>
+        <hr id="main-hr-line" class="fancy-line" />*@
 
     @if (Model.IsNotNull() && Model.Count > 0) {
         foreach (var item in Model) {
@@ -87,7 +52,6 @@
             <a href="../Articles" class="btn btn-secondary">Więcej...</a>
         </div>
     }
-
 
     <p class="fs-5 mt-3">
         Cieszymy się, że trafiłeś na tę stronę. Pragniemy przekazać Ci, dobrą nowinę o&#160;Królestwie naszego Pana i&#160;Zbawiciela Jezusa Chrystusa:

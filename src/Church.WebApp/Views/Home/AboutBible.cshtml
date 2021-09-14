@@ -1,0 +1,200 @@
+﻿@{
+    ViewData["Title"] = "O Biblii, czyli Piśmie Świętym Starego i Nowego Przymierza";
+    var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
+    var __path = this.Context.Request.Path;
+
+}
+
+@section HeaderScripts {
+
+    <!-- social sharing metadata -->
+    <meta property="og:title" content="@ViewData["Title"] - Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim" />
+    <meta property="og:description" content="@ViewData["Title"]" />
+    <meta property="og:image" content="@__host/img/biblelink.jpg" />
+    <meta property="og:url" content="@__host@__path" />
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="pl_PL" />
+
+    <style>
+        .list-group-item {
+            display: list-item;
+        }
+    </style>
+}
+
+
+<div class="clearfix max-width-1000" style="padding-top: 20px;">
+    <h1><i class="fas fa-bible"></i> O Biblii<span style="font-size: 70%"> – czyli Piśmie Świętym Starego i Nowego Przymierza</span></h1>
+    <br/>
+    <p class="fs-5 text-center shadow p-3 mb-5 bg-body rounded">
+        <img src="~/img/biblelink.jpg" style="width: 100%; max-height: 300px; " class="shadow-lg" />
+    </p>
+    <p class="fs-5">
+        <i>Słowo zachęty,</i><br />
+        Biblia, czyli Pismo Święte Starego i Nowego Testamentu (Przymierza), to sześćdziesiąt sześć ksiąg, powstałych na przestrzeni tysiąca czterystu lat, w których uwieczniono słowa wkraczające w ludzką rzeczywistość stopniowo, aż do pojawienia się Słowa, które stało się ciałem w Jezusie Chrystusie.
+    </p>
+    <p class="fs-5">
+        Księgi te są dla chrześcijan zarówno źródłem definiowania prawdy jak i pogłębianiu relacji z naszym Panem, który do ówczesnych uczonych powiedział: „Zagłębiacie się w Pisma, ponieważ sądzicie, że macie w nich życie wieczne, podczas gdy one składają świadectwo o Mnie. A jednak nie chcecie przyjść do Mnie, aby zyskać życie.” (J 5:39).
+    </p>
+    <p class="fs-5">
+        Obyś – drogi czytelniku – odnalazł tego, który jest „Drogą, Prawdą i Życiem” (Jan 14:6), oby Jego słowo „było zawsze na twoich ustach i w twoim sercu” (Pwt 30:14).
+    </p>
+    <p class="fs-5 text-end"><i>Autorzy strony</i></p>
+
+
+    @using DevExpress.Xpo
+    @using IBE.Data.Model
+    @using IBE.Common.Extensions
+    @using System.Linq;
+    @using Church.WebApp.Models
+    @{
+        var bible = new XPQuery<BookBase>(new UnitOfWork()).ToList();
+        var oldTestament = bible.Where(x => x.StatusBookType == TheBookType.Bible && x.StatusCanonType == CanonType.Canon && x.StatusBiblePart == BiblePart.OldTestament).OrderBy(x => x.NumberOfBook);
+        var newTestament = bible.Where(x => x.StatusBookType == TheBookType.Bible && x.StatusCanonType == CanonType.Canon && x.StatusBiblePart == BiblePart.NewTestament).OrderBy(x => x.NumberOfBook);
+    }
+
+    <h2>Księgi Starego Testamentu (Przymierza)</h2>
+    <ol class="list-group-flush" style="padding-left: 35px;">
+        @foreach (var item in oldTestament) {
+            <li class="list-group-item">
+                <span style="font-size: 120%; font-weight: bold; padding-top: 10px;">
+                    <a href="/UBG18/@item.NumberOfBook/1" title="Uwspółcześniona Biblia Gdańska">@item.BookTitle</a>
+                </span><span> | <a href="/BW/@item.NumberOfBook/1" title="Biblia Warszawska">BW</a> | <a href="/SNP18/@item.NumberOfBook/1" title="Biblia to jest Pismo Święte Starego i Nowego Przymierza EIB">SNP</a></span>
+                <br />
+                <div style=" display: table;">
+                    @if (item.AuthorName.IsNotNullOrEmpty()) {
+                        var __text = item.AuthorName;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
+                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                        </div>
+                    }
+
+                    @if (item.TimeOfWriting.IsNotNullOrEmpty()) {
+                        var __text = item.TimeOfWriting;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
+                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                        </div>
+                    }
+
+                    @if (item.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
+                        var __text = item.PlaceWhereBookWasWritten;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
+                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                        </div>
+                    }
+
+                    @if (item.Purpose.IsNotNullOrEmpty()) {
+                        var __text = item.Purpose;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
+                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                        </div>
+                    }
+
+                    @if (item.Subject.IsNotNullOrEmpty()) {
+                        var __text = item.Subject;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
+                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                        </div>
+                    }
+                </div>
+            </li>
+        }
+    </ol>
+    <h2>Księgi Nowego Testamentu (Przymierza)</h2>
+    <ol class="list-group-flush" style="padding-left: 35px;">
+        @foreach (var item in newTestament) {
+            <li class="list-group-item">
+                <span style="font-size: 120%; font-weight: bold; padding-top: 10px;">
+                    <a href="/UBG18/@item.NumberOfBook/1" title="Uwspółcześniona Biblia Gdańska">@item.BookTitle</a>
+                </span><span> | <a href="/BW/@item.NumberOfBook/1" title="Biblia Warszawska">BW</a> | <a href="/SNP18/@item.NumberOfBook/1" title="Biblia to jest Pismo Święte Starego i Nowego Przymierza EIB">SNP</a> | <a href="/PBD/@item.NumberOfBook/1" title=" Nowego Przymierze EIB Przekład Dosłowny">PBD</a></span>
+                <br />
+                <div style=" display: table;">
+                    @if (item.AuthorName.IsNotNullOrEmpty()) {
+                        var __text = item.AuthorName;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
+                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                        </div>
+                    }
+
+                    @if (item.TimeOfWriting.IsNotNullOrEmpty()) {
+                        var __text = item.TimeOfWriting;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
+                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                        </div>
+                    }
+
+                    @if (item.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
+                        var __text = item.PlaceWhereBookWasWritten;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
+                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                        </div>
+                    }
+
+                    @if (item.Purpose.IsNotNullOrEmpty()) {
+                        var __text = item.Purpose;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
+                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                        </div>
+                    }
+
+                    @if (item.Subject.IsNotNullOrEmpty()) {
+                        var __text = item.Subject;
+                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                            return " " + m.Value.Trim() + "&nbsp;";
+                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                        <div style="display: table-row">
+                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
+                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                        </div>
+                    }
+                </div>
+            </li>
+        }
+    </ol>
+</div>

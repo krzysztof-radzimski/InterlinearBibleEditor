@@ -290,11 +290,18 @@ hr.fancy-line {
     #WhatWeBelieveIcon {
         display: none;
     }
+
+    #WalicowLogo {
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 991px) and (min-width: 768px) {
     .col-md-8 {
         width: 100% !important;
+    }
+    #WalicowLogo {
+        max-width: 100%;
     }
 }
 
@@ -305,6 +312,9 @@ hr.fancy-line {
 
     .navbar-brand {
         font-size: small;
+    }
+    #WalicowLogo {
+        max-width: 100%;
     }
 }
 

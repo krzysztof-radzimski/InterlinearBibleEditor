@@ -1,6 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Artykuł";
-    var host = this.Context.Request.Host;
+    
+    var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
+    var __path = this.Context.Request.Path;
+
 }
 @using IBE.Common.Extensions
 @using DevExpress.Xpo;
@@ -12,10 +15,10 @@
 @section HeaderScripts {
     @if (Model.IsNotNull()) {
         <!-- social sharing metadata -->
-        <meta property="og:title" content="@Model.Subject" />
+        <meta property="og:title" content="@Model.Subject  - Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim" />
         <meta property="og:description" content="@Model.Lead" />
-        <meta property="og:image" content="http://@host/api/ArticleImage?id=@Model.Oid" />
-        <meta property="og:url" content="http://@host/Article?id=@Model.Oid" />
+        <meta property="og:image" content="@__host/api/ArticleImage?id=@Model.Oid" />
+        <meta property="og:url" content="@__host/Article?id=@Model.Oid" />
         <meta property="og:type" content="article" />
         <meta property="og:locale" content="pl_PL" />
     }
@@ -44,35 +47,7 @@
     <div style="text-align: justify; max-width: 900px; margin: auto;">
         @{
             var text = Model.Text;
-            //if (text.IsNotNullOrEmpty() && text.Contains("<x>")) {
-            //    var books = new XPQuery<BookBase>(Model.Session);
-
-            //    text = System.Text.RegularExpressions.Regex.Replace(text, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
-            //        //var translationName = "NPI";
-            //        var numberOfBook = m.Groups["book"].Value.ToInt();
-            //        var bookShortcut = books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BookShortcut;
-            //        var numberOfChapter = m.Groups["chapter"].Value.ToInt();
-            //        var verseStart = m.Groups["verseStart"].Value.ToInt();
-            //        var verseEnd = m.Groups["verseEnd"].Value.ToInt();
-            //        var versesText = String.Empty;
-            //        for (int i = verseStart; i <= verseEnd; i++) {
-            //            versesText += $"{i}";
-            //            if (i != verseEnd) { versesText += ","; }
-            //        }
-
-            //        return $"<a href=\"../BW/{numberOfBook}/{numberOfChapter}/{versesText}\">{bookShortcut} {numberOfChapter}:{verseStart}-{verseEnd}</a>";
-            //    });
-            //    text = System.Text.RegularExpressions.Regex.Replace(text, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
-            //        var numberOfBook = m.Groups["book"].Value.ToInt();
-            //        var bookShortcut = books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BookShortcut;
-            //        var numberOfChapter = m.Groups["chapter"].Value.ToInt();
-            //        var verseStart = m.Groups["verseStart"].Value.ToInt();
-
-
-            //        return $"<a href=\"../BW/{numberOfBook}/{numberOfChapter}/{verseStart}\">{bookShortcut} {numberOfChapter}:{verseStart}</a>";
-            //    });
-            //}
-
+            
             // usuwam sierotki
             text = System.Text.RegularExpressions.Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
                 return " " + m.Value.Trim() + "&nbsp;";

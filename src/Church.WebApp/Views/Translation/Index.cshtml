@@ -88,7 +88,7 @@ else if (String.IsNullOrEmpty(Model.Book)) {
 
         @if (Model.Translation.Type != IBE.Data.Model.TranslationType.Interlinear) {
 
-            <p>* Prezentowane treści należą do ich właścicieli i&nbsp;wydawców. Tekst pobrany z&nbsp;udostępnionych zasobów programu <a href="https://mybible.zone/">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a></p>
+            <p>* Prezentowane treści należą do ich właścicieli i&nbsp;wydawców. Tekst pobrany z&nbsp;udostępnionych zasobów programu <a href="https://mybible.zone/index-eng.php">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a></p>
 
         }
     </div>
@@ -295,7 +295,7 @@ else {
 
                             <div style="display: table-row">
                                 <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
-                                <div style="display: table-cell">@book.BaseBook.AuthorName</div>
+                                <div style="display: table-cell">@Html.Raw(__text)</div>
                             </div>
                         }
 
@@ -307,7 +307,7 @@ else {
 
                             <div style="display: table-row">
                                 <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
-                                <div style="display: table-cell">@book.BaseBook.TimeOfWriting</div>
+                                <div style="display: table-cell">@Html.Raw(__text)</div>
                             </div>
                         }
 
@@ -319,7 +319,7 @@ else {
 
                             <div style="display: table-row">
                                 <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
-                                <div style="display: table-cell">@book.BaseBook.PlaceWhereBookWasWritten</div>
+                                <div style="display: table-cell">@Html.Raw(__text)</div>
                             </div>
                         }
 
@@ -331,7 +331,7 @@ else {
 
                             <div style="display: table-row">
                                 <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
-                                <div style="display: table-cell">@book.BaseBook.Purpose</div>
+                                <div style="display: table-cell">@Html.Raw(__text)</div>
                             </div>
                         }
 
@@ -343,7 +343,7 @@ else {
 
                             <div style="display: table-row">
                                 <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
-                                <div style="display: table-cell">@book.BaseBook.Subject</div>
+                                <div style="display: table-cell">@Html.Raw(__text)</div>
                             </div>
                         }
                     </div>
@@ -621,7 +621,7 @@ else {
                     _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
                     chapterText += $"{verse.NumberOfVerse}. {_verseText} ";
                 }
-                <div class="dropdown d-grid gap-2 d-md-flex justify-content-center" style="width: auto;"  id="divDownload">
+                <div class="dropdown d-grid gap-2 d-md-flex justify-content-center" style="width: auto;" id="divDownload">
                     <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
                         Pobierz księgę
                     </button>
@@ -915,7 +915,7 @@ else {
             </div>
             @if (Model.Translation.Type != IBE.Data.Model.TranslationType.Interlinear) {
                 <p class="fs-80per">
-                    * Prezentowane treści należą do ich właścicieli i&nbsp;wydawców. Tekst pobrany z&nbsp;udostępnionych zasobów programu <a href="https://mybible.zone/">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a>
+                    * Prezentowane treści należą do ich właścicieli i&nbsp;wydawców. Tekst pobrany z&nbsp;udostępnionych zasobów programu <a href="https://mybible.zone/index-eng.php">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a>
                 </p>
             }
         </div>
@@ -932,6 +932,8 @@ else {
                 if (Model.Verse.IsNotNullOrEmpty()) {
                     __title += $":{Model.Verse}";
                 }
+                __title += " - Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim";
+
                 <!-- social sharing metadata -->
                 <meta property="og:title" content="@__title" />
                 <meta property="og:description" content="@Model.Translation.Description" />
