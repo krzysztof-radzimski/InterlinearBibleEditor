@@ -541,7 +541,7 @@ else {
                                     <div style="position: absolute; left: -40px; font-weight: bold; top: @_top">
                                         <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
                                         <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: 0;">@chapterNumberString,@verse.NumberOfVerse</a>
-                                        <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse">
+                                        <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse" style="min-width: 50vw;">
                                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
                                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index&literal=true" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
 
@@ -807,7 +807,7 @@ else {
                     <span id="span-verse-@verse.NumberOfVerse" class="lh-lg fs-5" style="@activeVerse">
                         <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
                         <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: 0;">@verse.NumberOfVerse.</a><span id="verseText_@verse.NumberOfVerse">@Html.Raw(text.Trim())</span>
-                        <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse">
+                        <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse" style="min-width: 50vw;">
                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index&literal=true" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
 
