@@ -25,7 +25,7 @@
 
 <div class="clearfix max-width-1000" style="padding-top: 20px;">
     <h1><i class="fas fa-bible"></i> O Biblii<span style="font-size: 70%"> – czyli Piśmie Świętym Starego i Nowego Przymierza</span></h1>
-    <br/>
+    <br />
     <p class="fs-5 text-center shadow p-3 mb-5 bg-body rounded">
         <img src="~/img/biblelink.jpg" style="width: 100%; max-height: 300px; " class="shadow-lg" />
     </p>
@@ -53,148 +53,171 @@
         var newTestament = bible.Where(x => x.StatusBookType == TheBookType.Bible && x.StatusCanonType == CanonType.Canon && x.StatusBiblePart == BiblePart.NewTestament).OrderBy(x => x.NumberOfBook);
     }
 
-    <h2>Księgi Starego Testamentu (Przymierza)</h2>
-    <ol class="list-group-flush" style="padding-left: 35px;">
-        @foreach (var item in oldTestament) {
-            <li class="list-group-item">
-                <span style="font-size: 120%; font-weight: bold; padding-top: 10px;">
-                    <a href="/UBG18/@item.NumberOfBook/1" title="Uwspółcześniona Biblia Gdańska">@item.BookTitle</a>
-                </span><span> | <a href="/BW/@item.NumberOfBook/1" title="Biblia Warszawska">BW</a> | <a href="/SNP18/@item.NumberOfBook/1" title="Biblia to jest Pismo Święte Starego i Nowego Przymierza EIB">SNP</a></span>
-                <br />
-                <div style=" display: table;">
-                    @if (item.AuthorName.IsNotNullOrEmpty()) {
-                        var __text = item.AuthorName;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    <p class="fs-80per">* Opisy ksiąg pochodzą z <a href="http://feib.pl">Przekładu Dosłownego Pisma Świetego Starego i Nowego Przymierza EIB</a>.</p>
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
-                            <div style="display: table-cell">@Html.Raw(__text)</div>
-                        </div>
-                    }
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Księgi Starego Testamentu (Przymierza)
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <ol class="list-group-flush" style="padding-left: 35px;">
+                        @foreach (var item in oldTestament) {
+                            <li class="list-group-item">
+                                <span style="font-size: 120%; font-weight: bold; padding-top: 10px;">
+                                    <a href="/UBG18/@item.NumberOfBook/1" title="Uwspółcześniona Biblia Gdańska">@item.BookTitle</a>
+                                </span><span> | <a href="/BW/@item.NumberOfBook/1" title="Biblia Warszawska">BW</a> | <a href="/SNP18/@item.NumberOfBook/1" title="Biblia to jest Pismo Święte Starego i Nowego Przymierza EIB">SNP</a></span>
+                                <br />
+                                <div style=" display: table;">
+                                    @if (item.AuthorName.IsNotNullOrEmpty()) {
+                                        var __text = item.AuthorName;
+                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                            return " " + m.Value.Trim() + "&nbsp;";
+                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                    @if (item.TimeOfWriting.IsNotNullOrEmpty()) {
-                        var __text = item.TimeOfWriting;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        <div style="display: table-row">
+                                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
+                                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                                        </div>
+                                    }
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
-                            <div style="display: table-cell">@Html.Raw(__text)</div>
-                        </div>
-                    }
+                                    @if (item.TimeOfWriting.IsNotNullOrEmpty()) {
+                                        var __text = item.TimeOfWriting;
+                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                            return " " + m.Value.Trim() + "&nbsp;";
+                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                    @if (item.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
-                        var __text = item.PlaceWhereBookWasWritten;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        <div style="display: table-row">
+                                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
+                                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                                        </div>
+                                    }
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
-                            <div style="display: table-cell">@Html.Raw(__text)</div>
-                        </div>
-                    }
+                                    @if (item.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
+                                        var __text = item.PlaceWhereBookWasWritten;
+                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                            return " " + m.Value.Trim() + "&nbsp;";
+                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                    @if (item.Purpose.IsNotNullOrEmpty()) {
-                        var __text = item.Purpose;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        <div style="display: table-row">
+                                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
+                                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                                        </div>
+                                    }
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
-                            <div style="display: table-cell">@Html.Raw(__text)</div>
-                        </div>
-                    }
+                                    @if (item.Purpose.IsNotNullOrEmpty()) {
+                                        var __text = item.Purpose;
+                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                            return " " + m.Value.Trim() + "&nbsp;";
+                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                    @if (item.Subject.IsNotNullOrEmpty()) {
-                        var __text = item.Subject;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        <div style="display: table-row">
+                                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
+                                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                                        </div>
+                                    }
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
-                            <div style="display: table-cell">@Html.Raw(__text)</div>
-                        </div>
-                    }
+                                    @if (item.Subject.IsNotNullOrEmpty()) {
+                                        var __text = item.Subject;
+                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                            return " " + m.Value.Trim() + "&nbsp;";
+                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                                        <div style="display: table-row">
+                                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
+                                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                                        </div>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    </ol>
                 </div>
-            </li>
-        }
-    </ol>
-    <h2>Księgi Nowego Testamentu (Przymierza)</h2>
-    <ol class="list-group-flush" style="padding-left: 35px;">
-        @foreach (var item in newTestament) {
-            <li class="list-group-item">
-                <span style="font-size: 120%; font-weight: bold; padding-top: 10px;">
-                    <a href="/UBG18/@item.NumberOfBook/1" title="Uwspółcześniona Biblia Gdańska">@item.BookTitle</a>
-                </span><span> | <a href="/BW/@item.NumberOfBook/1" title="Biblia Warszawska">BW</a> | <a href="/SNP18/@item.NumberOfBook/1" title="Biblia to jest Pismo Święte Starego i Nowego Przymierza EIB">SNP</a> | <a href="/PBD/@item.NumberOfBook/1" title=" Nowego Przymierze EIB Przekład Dosłowny">PBD</a></span>
-                <br />
-                <div style=" display: table;">
-                    @if (item.AuthorName.IsNotNullOrEmpty()) {
-                        var __text = item.AuthorName;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Księgi Nowego Testamentu (Przymierza)
+                </button>
+            </h2><div id="collapseTwo" class="accordion-collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <ol class="list-group-flush" style="padding-left: 35px;" start="40">
+                        @foreach (var item in newTestament) {
+                            <li class="list-group-item">
+                                <span style="font-size: 120%; font-weight: bold; padding-top: 10px;">
+                                    <a href="/UBG18/@item.NumberOfBook/1" title="Uwspółcześniona Biblia Gdańska">@item.BookTitle</a>
+                                </span><span> | <a href="/BW/@item.NumberOfBook/1" title="Biblia Warszawska">BW</a> | <a href="/SNP18/@item.NumberOfBook/1" title="Biblia to jest Pismo Święte Starego i Nowego Przymierza EIB">SNP</a> | <a href="/PBD/@item.NumberOfBook/1" title=" Nowego Przymierze EIB Przekład Dosłowny">PBD</a></span>
+                                <br />
+                                <div style=" display: table;">
+                                    @if (item.AuthorName.IsNotNullOrEmpty()) {
+                                        var __text = item.AuthorName;
+                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                            return " " + m.Value.Trim() + "&nbsp;";
+                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
-                            <div style="display: table-cell">@Html.Raw(__text)</div>
-                        </div>
-                    }
+                                        <div style="display: table-row">
+                                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
+                                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                                        </div>
+                                    }
 
-                    @if (item.TimeOfWriting.IsNotNullOrEmpty()) {
-                        var __text = item.TimeOfWriting;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                    @if (item.TimeOfWriting.IsNotNullOrEmpty()) {
+                                        var __text = item.TimeOfWriting;
+                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                            return " " + m.Value.Trim() + "&nbsp;";
+                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
-                            <div style="display: table-cell">@Html.Raw(__text)</div>
-                        </div>
-                    }
+                                        <div style="display: table-row">
+                                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
+                                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                                        </div>
+                                    }
 
-                    @if (item.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
-                        var __text = item.PlaceWhereBookWasWritten;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                    @if (item.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
+                                        var __text = item.PlaceWhereBookWasWritten;
+                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                            return " " + m.Value.Trim() + "&nbsp;";
+                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
-                            <div style="display: table-cell">@Html.Raw(__text)</div>
-                        </div>
-                    }
+                                        <div style="display: table-row">
+                                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
+                                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                                        </div>
+                                    }
 
-                    @if (item.Purpose.IsNotNullOrEmpty()) {
-                        var __text = item.Purpose;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                    @if (item.Purpose.IsNotNullOrEmpty()) {
+                                        var __text = item.Purpose;
+                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                            return " " + m.Value.Trim() + "&nbsp;";
+                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
-                            <div style="display: table-cell">@Html.Raw(__text)</div>
-                        </div>
-                    }
+                                        <div style="display: table-row">
+                                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
+                                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                                        </div>
+                                    }
 
-                    @if (item.Subject.IsNotNullOrEmpty()) {
-                        var __text = item.Subject;
-                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                            return " " + m.Value.Trim() + "&nbsp;";
-                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                    @if (item.Subject.IsNotNullOrEmpty()) {
+                                        var __text = item.Subject;
+                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                                            return " " + m.Value.Trim() + "&nbsp;";
+                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                        <div style="display: table-row">
-                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
-                            <div style="display: table-cell">@Html.Raw(__text)</div>
-                        </div>
-                    }
+                                        <div style="display: table-row">
+                                            <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
+                                            <div style="display: table-cell">@Html.Raw(__text)</div>
+                                        </div>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    </ol>
                 </div>
-            </li>
-        }
-    </ol>
+            </div>
+        </div>
+    </div>
 </div>

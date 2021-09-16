@@ -300,6 +300,7 @@ hr.fancy-line {
     .col-md-8 {
         width: 100% !important;
     }
+
     #WalicowLogo {
         max-width: 100%;
     }
@@ -313,6 +314,7 @@ hr.fancy-line {
     .navbar-brand {
         font-size: small;
     }
+
     #WalicowLogo {
         max-width: 100%;
     }
@@ -325,3 +327,14 @@ hr.fancy-line {
     width: 50vw; /*This property playing a major role just showing the first 2 letter*/
     display: inline-block;
 }
+
+.accordion-button {
+    color: #000 !important;
+    background-color: #fff !important;
+    font-weight: bold;
+}
+
+    .accordion-button:not(.collapsed) {
+        color: #000 !important;
+        background-color: #fff !important;
+    }
