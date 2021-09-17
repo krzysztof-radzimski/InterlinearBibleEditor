@@ -541,18 +541,18 @@ else {
                         var translationFontColor = word.WordOfJesus ? "text-danger" : "";
 
                         <div class="col-auto pb-3" style="padding-left: 0 !important; @activeVerse">
-                            <div class="container" style="position: relative">
-                                @if (isFirst && Model.Chapter.ToInt() > 0) {
-                                    var _top = word.GrammarCode.IsNotNull() ? "22px;" : "10px;";
+                            <div class="container position-relative">
+                                @if (isFirst && Model.Chapter.ToInt() > 0) {                                    
                                     var clipboardShortText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
                                     //
                                     // Numer wersetu
                                     //
                                     var chapterNumberString = Model.Translation.ChapterRomanNumbering ? chapter.NumberOfChapter.ArabicToRoman() : chapter.NumberOfChapter.ToString();
-                                    <div style="position: absolute; left: -40px; font-weight: bold; top: @_top">
+                                    <div class="position-absolute verse-interlinear-div" style="left: -20px; font-weight: bold;">
                                         <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
-                                        <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent; border: 0;">@chapterNumberString,@verse.NumberOfVerse</a>
-                                        <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse" style="min-width: 50vw;">
+                                        <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold verse-interlinear-btn" role="button" data-bs-toggle="dropdown" aria-expanded="false">@verse.NumberOfVerse.</a>
+                                        <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse" style="width: 550px; max-width: 70vw;">
+                                            <li><span class="dropdown-header fs-5 disabled">@book.BaseBook.BookShortcut @chapterNumberString:@verse.NumberOfVerse</span></li>
                                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
                                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index&literal=true" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
 
@@ -651,7 +651,7 @@ else {
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#copyVersesModal"><i class="far fa-check-square" style="width:18px;"></i>&nbsp;Kopiuj wybrane wersety</a></li>
                     </ul>
-                </div>         
+                </div>
 
                 foreach (var verse in chapter.Verses) {
                     //
@@ -867,9 +867,9 @@ else {
             _disabledEnd = chapter.NumberOfChapter == book.NumberOfChapters ? " disabled" : "";
 
 
-            if ((chapter.NumberOfChapter - 3) > 1) {
-                tableOfNumber.Add(chapter.NumberOfChapter - 3);
-            }
+            //if ((chapter.NumberOfChapter - 3) > 1) {
+            //    tableOfNumber.Add(chapter.NumberOfChapter - 3);
+            //}
             if ((chapter.NumberOfChapter - 2) > 1) {
                 tableOfNumber.Add(chapter.NumberOfChapter - 2);
             }

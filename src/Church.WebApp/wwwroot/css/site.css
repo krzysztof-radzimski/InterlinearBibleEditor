@@ -24,6 +24,7 @@
     background-size: contain;
     text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
 }
+
 .story2 {
     min-width: 90%;
     text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
@@ -364,13 +365,11 @@ hr.fancy-line {
 
 @media only screen and (max-width: 1920px) {
     .my-dropdown {
-
     }
 }
 
 @media only screen and (max-width: 1024px) {
     .my-dropdown {
-       
     }
 }
 
@@ -396,11 +395,62 @@ hr.fancy-line {
 }
 
 .verse-btn {
-    background-color: rgba(255,255,255,0.4);
+    background-color: rgba(255,255,255,0.4) !important;
     border: 0;
     top: -2px;
     left: -38px;
 }
+
     .verse-btn:hover {
-        background-color: rgba(255,255,255,1);
+        background-color: rgba(255,255,255,1) !important;
     }
+
+.verse-interlinear-btn {
+    background-color: rgba(255,255,255,0.4) !important;
+    border: 2px solid transparent;
+    border-radius: 2px;
+}
+
+    .verse-interlinear-btn:hover {
+        background-color: darkgreen !important;
+        color:white;
+        border: 2px solid darkgreen;
+        border-radius: 2px;
+    }
+
+.verse-interlinear-div {
+    left: -20px;
+    top: 57px;
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 1024px) {
+    .verse-interlinear-div {
+        top: 56px;
+    }
+}
+@media only screen and (max-width: 995px) {
+    .verse-interlinear-div {
+        top: 47px;
+    }
+}
+@media only screen and (max-width: 800px) {
+    .verse-interlinear-div {
+        top: 56px;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .verse-interlinear-div {
+        top: 56px;
+    }
+}
+@media only screen and (max-width: 550px) {
+    .verse-interlinear-div {
+        top: 47px;
+    }
+}
+@media only screen and (max-width: 400px) {
+    .verse-interlinear-div {
+        top: 47px;
+    }
+}
