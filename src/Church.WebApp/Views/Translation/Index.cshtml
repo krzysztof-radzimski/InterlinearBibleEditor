@@ -21,13 +21,13 @@ else if (String.IsNullOrEmpty(Model.Book)) {
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         @if (Model.Translation.Type == IBE.Data.Model.TranslationType.Dynamic) {
-            <button type="button" class="btn btn-danger btn-sm" title="Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie" disabled>Przekład dynamiczny</button>
+            <abbr type="button" class="btn btn-outline-danger" title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Przekład dynamiczny</abbr>
         }
         else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Literal) {
-            <button type="button" class="btn btn-success btn-sm" title="Przekład dosłowny" disabled>Przekład dosłowny</button>
+            <abbr type="button" class="btn btn-outline-success" title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Przekład dosłowny</abbr>
         }
         else {
-            <button type="button" class="btn btn-info btn-sm" title="Przekład literacki" disabled>Przekład literacki</button>
+            <abbr type="button" class="btn btn-outline-info" title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Przekład literacki</abbr>
         }
     </div>
 
@@ -104,21 +104,29 @@ else {
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 
             @if (Model.Translation.Type == IBE.Data.Model.TranslationType.Dynamic) {
-                <button type="button" class="btn btn-danger btn-sm" title="Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie" disabled>Przekład dynamiczny</button>
+                <abbr type="button" class="btn btn-outline-danger" title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Przekład dynamiczny</abbr>
             }
             else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Literal) {
-                <button type="button" class="btn btn-success btn-sm" title="Przekład dosłowny" disabled>Przekład dosłowny</button>
+                <abbr type="button" class="btn btn-outline-success" title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Przekład dosłowny</abbr>
             }
             else {
-                <button type="button" class="btn btn-info btn-sm" title="Przekład literacki" disabled>Przekład literacki</button>
+                <abbr type="button" class="btn btn-outline-info" title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Przekład literacki</abbr>
+            }
+
+            @if (Model.Translation.Catolic) {
+                <abbr type="button" class="btn btn-outline-dark" title="Przekład katolicki">Katolicki</abbr>
+            }
+
+            @if (Model.Translation.Recommended) {
+                <abbr type="button" class="btn btn-outline-success" title="Polecamy ten przekład">Polecamy</abbr>
             }
 
 
             @if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
-                <button type="button" class="btn btn-danger btn-sm" disabled>Uwaga! @book.BaseBook.BookTitle jest księgą wtórnie-kanoniczną</button>
+                <abbr type="button" class="btn btn-outline-danger" title="Uwaga! @book.BaseBook.BookTitle jest księgą wtórnie-kanoniczną">Wtórnie-kanoniczna</abbr>
             }
             else if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.Apocrypha) {
-                <button type="button" class="btn btn-danger btn-sm" disabled>Uwaga! @book.BaseBook.BookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej</button>
+                <abbr type="button" class="btn btn-outline-danger" title="Uwaga! @book.BaseBook.BookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej">Apokryf</abbr>
             }
             @if (Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) {
                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButtonTranslations" data-bs-toggle="dropdown" aria-expanded="false">
@@ -347,7 +355,9 @@ else {
                             </div>
                         }
                     </div>
-                    <p class="fs-70per"><br />* Opis księgi pochodzi z <a href="http://feib.pl">Przekładu Dosłownego Pisma Świetego Starego i Nowego Przymierza EIB</a>.</p>
+                    @if (Model.Translation.Name != "PBD") {
+                        <p class="fs-70per"><br />* Opis księgi pochodzi z <a href="http://feib.pl" target="_blank">Przekładu Dosłownego Pisma Świetego Starego i Nowego Przymierza EIB</a>.</p>
+                    }
                 </div>
             }
         }
@@ -641,7 +651,7 @@ else {
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#copyVersesModal"><i class="far fa-check-square" style="width:18px;"></i>&nbsp;Kopiuj wybrane wersety</a></li>
                     </ul>
-                </div>
+                </div>         
 
                 foreach (var verse in chapter.Verses) {
                     //
@@ -673,10 +683,10 @@ else {
                                 }
 
                                 if (story.Level == 1) {
-                                    <h4 class="text-center p-2">@storyText</h4>
+                                    <div class="w-100 fs-4 pb-3 p-4 fw-bold text-center story2">@storyText</div>
                                 }
                                 else {
-                                    <h5 class="text-center p-2">@storyText</h5>
+                                    <div class="w-100 fs-5 pb-3 p-4 fw-bold text-center story2">@storyText</div>
                                 }
                             }
                         }
@@ -805,10 +815,10 @@ else {
                     var clipboardText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}:{verse.NumberOfVerse} „{__verseText}” ({Model.Translation.Name.Replace('\'', ' ')})";
                     var clipboardShortText = $"{__verseText}";
 
-                    <span id="span-verse-@verse.NumberOfVerse" class="lh-lg fs-5" style="margin-inline-start: 40px; @activeVerse">
+                    <span id="span-verse-@verse.NumberOfVerse" class="lh-lg fs-5" style="margin-inline-end: 15px; margin-inline-start: 15px; @activeVerse">
                         <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
                         <span id="verseText_@verse.NumberOfVerse" class="position-relative">
-                            <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold dropdown-toggle position-absolute" role="button" data-bs-toggle="" aria-expanded="false" style="background-color: transparent; border: 0; left: -45px;" onclick="showDopdownMenu(this, 'verseDropDownMenu_@verse.NumberOfVerse')">@verse.NumberOfVerse.</a>&nbsp;<span id="verseMenuText_@verse.NumberOfVerse">@Html.Raw(text.Trim())</span>
+                            <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold position-absolute verse-btn" role="button" data-bs-toggle="" aria-expanded="false" onclick="showDopdownMenu(this, 'verseDropDownMenu_@verse.NumberOfVerse')">@verse.NumberOfVerse.</a>&nbsp;<span id="verseMenuText_@verse.NumberOfVerse">@Html.Raw(text.Trim())</span>
                             <ul id="verseDropDownMenu_@verse.NumberOfVerse" class="my-dropdown" aria-labelledby="verseMenu_@verse.NumberOfVerse">
                                 <li><span class="dropdown-header fs-5 disabled">@book.BaseBook.BookShortcut @chapterNumber:@verse.NumberOfVerse&nbsp;<button class="btn btn-danger float-end" type="button" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');">Zamknij</button></span></li>
                                 <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>

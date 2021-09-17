@@ -24,6 +24,10 @@
     background-size: contain;
     text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
 }
+.story2 {
+    min-width: 90%;
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
+}
 
 .white-shadow {
     text-shadow: 1px 1px 4px rgba(255, 255, 255, 1);
@@ -390,3 +394,13 @@ hr.fancy-line {
         left: calc(50vw - 44%);
     }
 }
+
+.verse-btn {
+    background-color: rgba(255,255,255,0.4);
+    border: 0;
+    top: -2px;
+    left: -38px;
+}
+    .verse-btn:hover {
+        background-color: rgba(255,255,255,1);
+    }
