@@ -2,6 +2,7 @@
     public class Jota : IAlphabet {
         public string Polish => "j";
         public string Small => "ι";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
 
         public string BreathingDashDash => "ι";
@@ -38,5 +39,9 @@
 
         public string BreathingMacronDash => "ῑ";
         public string BreathingBreveDash => "ῐ";
+
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

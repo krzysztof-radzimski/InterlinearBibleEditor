@@ -2,7 +2,9 @@
     public interface IAlphabet {
         string Polish { get; }
         string Small { get; }
+        string SmallAtTheEnd { get; }
         string Large { get; }
+
         string BreathingDashDash { get; }
         string BreathingDashDashSubscript { get; }
         string BreathingDashAcute { get; }
@@ -37,5 +39,7 @@
 
         string BreathingMacronDash { get; }
         string BreathingBreveDash { get; }
+
+        string ReplaceWhen(string previous);
     }
 }

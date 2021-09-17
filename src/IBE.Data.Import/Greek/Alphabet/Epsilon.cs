@@ -2,6 +2,7 @@
     public class Epsilon : IAlphabet {
         public string Polish => "e";
         public string Small => "ε";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
 
         public string BreathingDashDash => "ε";
@@ -37,7 +38,10 @@
         public string BreathingDiaeresisCircumflex => "";
 
         public string BreathingMacronDash => "";
-
         public string BreathingBreveDash => "";
+
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

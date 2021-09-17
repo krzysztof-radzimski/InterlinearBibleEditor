@@ -2,6 +2,7 @@
     public class Eta : IAlphabet {
         public string Polish => "e";
         public string Small => "η";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
 
         public string BreathingDashDash => "η";
@@ -38,5 +39,9 @@
 
         public string BreathingMacronDash => "";
         public string BreathingBreveDash => "";
+
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

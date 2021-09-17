@@ -2,6 +2,7 @@
     public class Ksi : IAlphabet {
         public string Polish => "k";
         public string Small => "ξ";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
 
         public string BreathingDashDash => "";
@@ -63,5 +64,8 @@
         public string BreathingMacronDash => "";
 
         public string BreathingBreveDash => "";
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

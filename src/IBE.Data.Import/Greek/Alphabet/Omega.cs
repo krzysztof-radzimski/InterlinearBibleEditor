@@ -2,6 +2,7 @@
     public class Omega : IAlphabet {
         public string Polish => "o";
         public string Small => "ω";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
 
         public string BreathingDashDash => "ω";
@@ -38,5 +39,8 @@
 
         public string BreathingMacronDash => "";
         public string BreathingBreveDash => "";
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

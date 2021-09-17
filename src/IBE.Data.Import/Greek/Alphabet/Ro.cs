@@ -2,6 +2,7 @@
     public class Ro : IAlphabet {
         public string Polish => "r";
         public string Small => "ρ";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
 
         public string BreathingDashDash => "ρ";
@@ -38,5 +39,9 @@
 
         public string BreathingMacronDash => "";
         public string BreathingBreveDash => "";
+
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

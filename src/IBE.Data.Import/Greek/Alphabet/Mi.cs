@@ -2,6 +2,7 @@
     public class Mi : IAlphabet {
         public string Polish => "m";
         public string Small => "μ";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
 
         public string BreathingDashDash => "";
@@ -63,5 +64,9 @@
         public string BreathingMacronDash => "";
 
         public string BreathingBreveDash => "";
+
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

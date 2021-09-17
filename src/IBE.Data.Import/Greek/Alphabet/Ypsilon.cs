@@ -2,6 +2,7 @@
     public class Ypsilon : IAlphabet {
         public string Polish => "y";
         public string Small => "υ";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
 
         public string BreathingDashDash => "υ";
@@ -38,5 +39,9 @@
 
         public string BreathingMacronDash => "ῡ";
         public string BreathingBreveDash => "ῠ";
+
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

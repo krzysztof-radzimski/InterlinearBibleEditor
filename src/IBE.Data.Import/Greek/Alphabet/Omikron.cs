@@ -2,6 +2,7 @@
     public class Omikron : IAlphabet {
         public string Polish => "o";
         public string Small => "ο";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
 
         public string BreathingDashDash => "ο";
@@ -38,5 +39,9 @@
 
         public string BreathingMacronDash => "";
         public string BreathingBreveDash => "";
+
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

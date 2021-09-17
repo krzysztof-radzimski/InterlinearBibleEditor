@@ -2,6 +2,7 @@
     public class Fi : IAlphabet {
         public string Polish => "f";
         public string Small => "φ";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
 
         public string BreathingDashDash => "";
@@ -38,5 +39,9 @@
 
         public string BreathingMacronDash => "";
         public string BreathingBreveDash => "";
+
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

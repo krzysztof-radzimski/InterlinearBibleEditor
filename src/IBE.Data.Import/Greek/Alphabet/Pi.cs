@@ -2,6 +2,7 @@
     public class Pi : IAlphabet {
         public string Polish => "p";
         public string Small => "π";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper().ToUpper();
 
         public string BreathingDashDash => "";
@@ -63,5 +64,9 @@
         public string BreathingMacronDash => "";
 
         public string BreathingBreveDash => "";
+
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

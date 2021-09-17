@@ -2,6 +2,7 @@
     public class Alfa : IAlphabet {
         public string Polish => "a";
         public string Small => "α";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
        
         public string BreathingDashDash => "α";
@@ -37,7 +38,10 @@
         public string BreathingDiaeresisCircumflex => "";
 
         public string BreathingMacronDash => "ᾱ";
-
         public string BreathingBreveDash => "ᾰ";
+
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

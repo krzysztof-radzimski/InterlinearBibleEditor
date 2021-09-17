@@ -2,6 +2,7 @@
     public class Gamma : IAlphabet {
         public string Polish => "g";
         public string Small => "γ";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
 
         public string BreathingDashDash => "";
@@ -34,5 +35,8 @@
         public string BreathingDiaeresisCircumflex => "";
         public string BreathingMacronDash => "";
         public string BreathingBreveDash => "";
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

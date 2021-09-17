@@ -1,9 +1,8 @@
 ﻿namespace IBE.Data.Import.Greek.Alphabet {
     public class Zeta : IAlphabet {
         public string Polish => "z";
-
         public string Small => "ζ";
-
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
 
         public string BreathingDashDash => "";
@@ -65,5 +64,9 @@
         public string BreathingMacronDash => "";
 
         public string BreathingBreveDash => "";
+
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }

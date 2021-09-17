@@ -3,6 +3,7 @@
         public string Polish => "b";
 
         public string Small => "β";
+        public string SmallAtTheEnd => "";
 
         public string Large => Small.ToUpper();
 
@@ -65,5 +66,9 @@
         public string BreathingMacronDash => "";
 
         public string BreathingBreveDash => "";
+
+        public string ReplaceWhen(string previous) {
+            return default;
+        }
     }
 }
