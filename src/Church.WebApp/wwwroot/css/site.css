@@ -338,3 +338,55 @@ hr.fancy-line {
         color: #000 !important;
         background-color: #fff !important;
     }
+
+.my-dropdown {
+    top: 33%;
+    left: calc(50vw - 265px);
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    width: 530px;
+    padding: .5rem 0;
+    margin: auto;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+
+@media only screen and (max-width: 1920px) {
+    .my-dropdown {
+
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .my-dropdown {
+       
+    }
+}
+
+@media only screen and (max-width: 995px) {
+    .my-dropdown {
+        width: 550px;
+        left: calc(50vw - 275px);
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .my-dropdown {
+        width: 88%;
+        left: calc(50vw - 44%);
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .my-dropdown {
+        width: 88%;
+        left: calc(50vw - 44%);
+    }
+}

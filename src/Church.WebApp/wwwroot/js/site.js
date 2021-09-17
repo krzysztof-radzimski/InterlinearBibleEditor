@@ -102,4 +102,26 @@ function copyNav() {
     var num = parseInt($nav.prop("id").match(/\d+/g), 10) + 1;
     var $cloned = $nav.clone().prop('id', 'chapterNav' + num);
     $("#divDownload").prepend($cloned);
+
+
+    //$(document).on("click", function (event) {
+    //    var $trigger = $("span[id^='verseMenuText_']");
+    //    if ($trigger !== event.target && !$trigger.has(event.target).length) {
+    //        $("ul[id^='verseDropDownMenu_']").hide();
+    //    }
+    //});
+}
+
+function showDopdownMenu(e, dropDownId) {
+    $("ul[id^='verseDropDownMenu_']").each(function (index, element) {
+        if (element.id != dropDownId) {
+            $(element).hide();
+        } else {
+            $(element).toggle("show");
+        }
+    });
+}
+function hideDopdownMenu(dropDownId) {
+    var $menu = $('#' + dropDownId);
+    $menu.toggle('show');
 }
