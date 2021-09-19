@@ -35,8 +35,5 @@
         public string BreathingDiaeresisCircumflex => "";
         public string BreathingMacronDash => "";
         public string BreathingBreveDash => "";
-        public string ReplaceWhen(string previous) {
-            return default;
-        }
     }
 }

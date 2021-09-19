@@ -39,7 +39,5 @@
 
         string BreathingMacronDash { get; }
         string BreathingBreveDash { get; }
-
-        string ReplaceWhen(string previous);
     }
 }

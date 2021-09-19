@@ -1,7 +1,8 @@
 ﻿namespace IBE.Data.Import.Greek.Alphabet {
-    class Psi {
+    public class Psi : IAlphabet {
         public string Polish => "ps";
         public string Small => "ψ";
+        public string SmallAtTheEnd => "";
         public string Large => Small.ToUpper();
 
         public string BreathingDashDash => "";

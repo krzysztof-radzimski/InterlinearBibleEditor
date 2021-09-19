@@ -39,9 +39,5 @@
 
         public string BreathingMacronDash => "ῑ";
         public string BreathingBreveDash => "ῐ";
-
-        public string ReplaceWhen(string previous) {
-            return default;
-        }
     }
 }
