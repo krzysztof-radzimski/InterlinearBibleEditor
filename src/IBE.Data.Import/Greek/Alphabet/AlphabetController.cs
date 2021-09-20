@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace IBE.Data.Import.Greek.Alphabet {
     public class AlphabetController {
@@ -29,6 +27,11 @@ namespace IBE.Data.Import.Greek.Alphabet {
         public Psi Psi { get; }
         public Omega Omega { get; }
 
+        public Marks.Colon Colon { get; }
+        public Marks.Comma Comma { get; }
+        public Marks.Dot Dot { get; }
+        public Marks.Question Question { get; }
+
         public AlphabetController() {
             Alfa = new Alfa();
             Beta = new Beta();
@@ -54,6 +57,30 @@ namespace IBE.Data.Import.Greek.Alphabet {
             Theta = new Theta();
             Ypsilon = new Ypsilon();
             Zeta = new Zeta();
+
+            Colon = new Marks.Colon();
+            Comma = new Marks.Comma();
+            Dot = new Marks.Dot();
+            Question = new Marks.Question();
+        }
+
+        public GreekLetter GetLetter(char e) { return GetLetter(e.ToString()); }
+        public GreekLetter GetLetter(string e) {
+            var properties = this.GetType().GetProperties();
+            foreach (var item in properties) {
+                var letter = item.GetValue(this) as GreekLetter;
+                if (letter.IsLetter(e, out var isUpper)) {
+                    var result =  Activator.CreateInstance(item.PropertyType) as GreekLetter;
+                    result.IsUpper = isUpper;
+                    result.CurrentGreek = e;
+
+                    if (e.Equals(result.BreathingRoughAcute) || e.Equals(result.BreathingRoughAcuteSubscript) || e.Equals(result.BreathingRoughCircumflex) || e.Equals(result.BreathingRoughCircumflexSubscript) || e.Equals(result.BreathingRoughDash) || e.Equals(result.BreathingRoughDashSubscript) || e.Equals(result.BreathingRoughGrave) || e.Equals(result.BreathingRoughGraveSubscript)) {
+                        result.IsStrongBreath = true;
+                    }
+                    return result;
+                }
+            }
+            return default;
         }
     }
 }

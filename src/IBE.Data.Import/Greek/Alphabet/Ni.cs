@@ -1,69 +1,68 @@
 ﻿namespace IBE.Data.Import.Greek.Alphabet {
-    public class Ni : IAlphabet {
-        public string Polish => "n";
-        public string Small => "ν";
-        public string SmallAtTheEnd => "";
-        public string Large => Small.ToUpper();
+    public class Ni : GreekLetter {
+        public override string DefaultRoman => "n";
+        public override string Small => "ν";
+        public override string SmallAtTheEnd => "";
 
-        public string BreathingDashDash => "";
+        public override string BreathingDashDash => "";
 
-        public string BreathingDashDashSubscript => "";
+        public override string BreathingDashDashSubscript => "";
 
-        public string BreathingDashAcute => "";
+        public override string BreathingDashAcute => "";
 
-        public string BreathingDashAcuteSubscript => "";
+        public override string BreathingDashAcuteSubscript => "";
 
-        public string BreathingDashGrave => "";
+        public override string BreathingDashGrave => "";
 
-        public string BreathingDashGraveSubscript => "";
+        public override string BreathingDashGraveSubscript => "";
 
-        public string BreathingDashCircumflex => "";
+        public override string BreathingDashCircumflex => "";
 
-        public string BreathingDashCircumflexSubscript => "";
+        public override string BreathingDashCircumflexSubscript => "";
 
-        public string BreathingSmoothDash => "";
+        public override string BreathingSmoothDash => "";
 
-        public string BreathingSmoothDashSubscript => "";
+        public override string BreathingSmoothDashSubscript => "";
 
-        public string BreathingSmoothAcute => "";
+        public override string BreathingSmoothAcute => "";
 
-        public string BreathingSmoothAcuteSubscript => "";
+        public override string BreathingSmoothAcuteSubscript => "";
 
-        public string BreathingSmoothGrave => "";
+        public override string BreathingSmoothGrave => "";
 
-        public string BreathingSmoothGraveSubscript => "";
+        public override string BreathingSmoothGraveSubscript => "";
 
-        public string BreathingSmoothCircumflex => "";
+        public override string BreathingSmoothCircumflex => "";
 
-        public string BreathingSmoothCircumflexSubscript => "";
+        public override string BreathingSmoothCircumflexSubscript => "";
 
-        public string BreathingRoughDash => "";
+        public override string BreathingRoughDash => "";
 
-        public string BreathingRoughDashSubscript => "";
+        public override string BreathingRoughDashSubscript => "";
 
-        public string BreathingRoughAcute => "";
+        public override string BreathingRoughAcute => "";
 
-        public string BreathingRoughAcuteSubscript => "";
+        public override string BreathingRoughAcuteSubscript => "";
 
-        public string BreathingRoughGrave => "";
+        public override string BreathingRoughGrave => "";
 
-        public string BreathingRoughGraveSubscript => "";
+        public override string BreathingRoughGraveSubscript => "";
 
-        public string BreathingRoughCircumflex => "";
+        public override string BreathingRoughCircumflex => "";
 
-        public string BreathingRoughCircumflexSubscript => "";
+        public override string BreathingRoughCircumflexSubscript => "";
 
-        public string BreathingDiaeresisDash => "";
+        public override string BreathingDiaeresisDash => "";
 
-        public string BreathingDiaeresisAcute => "";
+        public override string BreathingDiaeresisAcute => "";
 
-        public string BreathingDiaeresisGrave => "";
+        public override string BreathingDiaeresisGrave => "";
 
-        public string BreathingDiaeresisCircumflex => "";
+        public override string BreathingDiaeresisCircumflex => "";
 
-        public string BreathingMacronDash => "";
+        public override string BreathingMacronDash => "";
 
-        public string BreathingBreveDash => "";
+        public override string BreathingBreveDash => "";
 
     }
 }

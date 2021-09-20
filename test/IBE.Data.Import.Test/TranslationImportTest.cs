@@ -1,6 +1,7 @@
 ﻿using DevExpress.Xpo;
 using HtmlAgilityPack;
 using IBE.Common.Extensions;
+using IBE.Data.Import.Greek;
 using IBE.Data.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -212,6 +213,25 @@ namespace IBE.Data.Import.Test {
         }
 
         [TestMethod]
+        public void UpdateTransliteration() {
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+          
+            var controller = new GreekTransliterationController();
+            var sentence = string.Empty;
+            var trans = new XPQuery<Translation>(uow).Where(x => x.Name == "NPI+").FirstOrDefault();
+            var words = trans.Books.First().Chapters.First().Verses.First().VerseWords;
+            foreach (var word in words) {
+                var s = controller.TransliterateWord(word.SourceWord);
+                if (s.IsNotNullOrEmpty()) {
+                    sentence += s + " ";
+                }
+            }
+
+            Assert.IsTrue(sentence.Trim() == "En arche epoiesen ho theos ton uranon kai ten gen.");
+        }
+
+        [TestMethod]
         public void UpdateTransliterit() {
             var count = 0;
             ConnectionHelper.Connect();
@@ -243,8 +263,8 @@ namespace IBE.Data.Import.Test {
             var uow = new UnitOfWork();
             var trans = new XPQuery<Translation>(uow).Where(x => x.Name == /*"NPI+"*/"NPI+").FirstOrDefault();
             var info = trans.GetTranslatedInfo();
-            if (info.IsNotNullOrEmpty()) { 
-            
+            if (info.IsNotNullOrEmpty()) {
+
             }
         }
 

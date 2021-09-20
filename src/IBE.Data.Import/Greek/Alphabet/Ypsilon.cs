@@ -1,43 +1,43 @@
 ﻿namespace IBE.Data.Import.Greek.Alphabet {
-    public class Ypsilon : IAlphabet {
-        public string Polish => "y";
-        public string Small => "υ";
-        public string SmallAtTheEnd => "";
-        public string Large => Small.ToUpper();
+    public class Ypsilon : GreekLetter {
+        public override string DefaultRoman => "u";
+        public override string AdditionalRoman => "y";
+        public override string Small => "υ";
+        public override string SmallAtTheEnd => "";
 
-        public string BreathingDashDash => "υ";
-        public string BreathingDashDashSubscript => "";
-        public string BreathingDashAcute => "ύ";
-        public string BreathingDashAcuteSubscript => "";
-        public string BreathingDashGrave => "ὺ";
-        public string BreathingDashGraveSubscript => "";
-        public string BreathingDashCircumflex => "ῦ";
-        public string BreathingDashCircumflexSubscript => "";
+        public override string BreathingDashDash => "υ";
+        public override string BreathingDashDashSubscript => "";
+        public override string BreathingDashAcute => "ύ";
+        public override string BreathingDashAcuteSubscript => "";
+        public override string BreathingDashGrave => "ὺ";
+        public override string BreathingDashGraveSubscript => "";
+        public override string BreathingDashCircumflex => "ῦ";
+        public override string BreathingDashCircumflexSubscript => "";
 
-        public string BreathingSmoothDash => "ὐ";
-        public string BreathingSmoothDashSubscript => "";
-        public string BreathingSmoothAcute => "ὔ";
-        public string BreathingSmoothAcuteSubscript => "";
-        public string BreathingSmoothGrave => "ὒ";
-        public string BreathingSmoothGraveSubscript => "";
-        public string BreathingSmoothCircumflex => "ὖ";
-        public string BreathingSmoothCircumflexSubscript => "";
+        public override string BreathingSmoothDash => "ὐ";
+        public override string BreathingSmoothDashSubscript => "";
+        public override string BreathingSmoothAcute => "ὔ";
+        public override string BreathingSmoothAcuteSubscript => "";
+        public override string BreathingSmoothGrave => "ὒ";
+        public override string BreathingSmoothGraveSubscript => "";
+        public override string BreathingSmoothCircumflex => "ὖ";
+        public override string BreathingSmoothCircumflexSubscript => "";
 
-        public string BreathingRoughDash => "ὑ";
-        public string BreathingRoughDashSubscript => "";
-        public string BreathingRoughAcute => "ὕ";
-        public string BreathingRoughAcuteSubscript => "";
-        public string BreathingRoughGrave => "ὓ";
-        public string BreathingRoughGraveSubscript => "";
-        public string BreathingRoughCircumflex => "ὗ";
-        public string BreathingRoughCircumflexSubscript => "";
+        public override string BreathingRoughDash => "ὑ";
+        public override string BreathingRoughDashSubscript => "";
+        public override string BreathingRoughAcute => "ὕ";
+        public override string BreathingRoughAcuteSubscript => "";
+        public override string BreathingRoughGrave => "ὓ";
+        public override string BreathingRoughGraveSubscript => "";
+        public override string BreathingRoughCircumflex => "ὗ";
+        public override string BreathingRoughCircumflexSubscript => "";
 
-        public string BreathingDiaeresisDash => "ϋ";
-        public string BreathingDiaeresisAcute => "ΰ";
-        public string BreathingDiaeresisGrave => "ῢ";
-        public string BreathingDiaeresisCircumflex => "ῧ";
+        public override string BreathingDiaeresisDash => "ϋ";
+        public override string BreathingDiaeresisAcute => "ΰ";
+        public override string BreathingDiaeresisGrave => "ῢ";
+        public override string BreathingDiaeresisCircumflex => "ῧ";
 
-        public string BreathingMacronDash => "ῡ";
-        public string BreathingBreveDash => "ῠ";
+        public override string BreathingMacronDash => "ῡ";
+        public override string BreathingBreveDash => "ῠ";
     }
 }

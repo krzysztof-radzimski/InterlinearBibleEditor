@@ -1,43 +1,42 @@
 ﻿namespace IBE.Data.Import.Greek.Alphabet {
-    public class Alfa : IAlphabet {
-        public string Polish => "a";
-        public string Small => "α";
-        public string SmallAtTheEnd => "";
-        public string Large => Small.ToUpper();
+    public class Alfa : GreekLetter {
+        public override string DefaultRoman => "a";
+        public override string Small => "α";
+        public override string SmallAtTheEnd => "";
        
-        public string BreathingDashDash => "α";
-        public string BreathingDashDashSubscript => "ᾳ";
-        public string BreathingDashAcute => "ά";
-        public string BreathingDashAcuteSubscript => "ᾴ";
-        public string BreathingDashGrave => "ὰ";
-        public string BreathingDashGraveSubscript => "ᾲ";
-        public string BreathingDashCircumflex => "ᾶ";
-        public string BreathingDashCircumflexSubscript => "ᾷ";
+        public override string BreathingDashDash => "α";
+        public override string BreathingDashDashSubscript => "ᾳ";
+        public override string BreathingDashAcute => "ά";
+        public override string BreathingDashAcuteSubscript => "ᾴ";
+        public override string BreathingDashGrave => "ὰ";
+        public override string BreathingDashGraveSubscript => "ᾲ";
+        public override string BreathingDashCircumflex => "ᾶ";
+        public override string BreathingDashCircumflexSubscript => "ᾷ";
 
-        public string BreathingSmoothDash => "ἀ";
-        public string BreathingSmoothDashSubscript => "ᾀ";
-        public string BreathingSmoothAcute => "ἄ";
-        public string BreathingSmoothAcuteSubscript => "ᾄ";
-        public string BreathingSmoothGrave => "ἂ";
-        public string BreathingSmoothGraveSubscript => "ᾂ";
-        public string BreathingSmoothCircumflex => "ἆ";
-        public string BreathingSmoothCircumflexSubscript => "ᾆ";
+        public override string BreathingSmoothDash => "ἀ";
+        public override string BreathingSmoothDashSubscript => "ᾀ";
+        public override string BreathingSmoothAcute => "ἄ";
+        public override string BreathingSmoothAcuteSubscript => "ᾄ";
+        public override string BreathingSmoothGrave => "ἂ";
+        public override string BreathingSmoothGraveSubscript => "ᾂ";
+        public override string BreathingSmoothCircumflex => "ἆ";
+        public override string BreathingSmoothCircumflexSubscript => "ᾆ";
 
-        public string BreathingRoughDash => "ἁ";
-        public string BreathingRoughDashSubscript => "ᾁ";
-        public string BreathingRoughAcute => "ἅ";
-        public string BreathingRoughAcuteSubscript => "ᾅ";
-        public string BreathingRoughGrave => "ἃ";
-        public string BreathingRoughGraveSubscript => "ᾃ";
-        public string BreathingRoughCircumflex => "ἇ";
-        public string BreathingRoughCircumflexSubscript => "ᾇ";
+        public override string BreathingRoughDash => "ἁ";
+        public override string BreathingRoughDashSubscript => "ᾁ";
+        public override string BreathingRoughAcute => "ἅ";
+        public override string BreathingRoughAcuteSubscript => "ᾅ";
+        public override string BreathingRoughGrave => "ἃ";
+        public override string BreathingRoughGraveSubscript => "ᾃ";
+        public override string BreathingRoughCircumflex => "ἇ";
+        public override string BreathingRoughCircumflexSubscript => "ᾇ";
 
-        public string BreathingDiaeresisDash => "";
-        public string BreathingDiaeresisAcute => "";
-        public string BreathingDiaeresisGrave => "";
-        public string BreathingDiaeresisCircumflex => "";
+        public override string BreathingDiaeresisDash => "";
+        public override string BreathingDiaeresisAcute => "";
+        public override string BreathingDiaeresisGrave => "";
+        public override string BreathingDiaeresisCircumflex => "";
 
-        public string BreathingMacronDash => "ᾱ";
-        public string BreathingBreveDash => "ᾰ";
+        public override string BreathingMacronDash => "ᾱ";
+        public override string BreathingBreveDash => "ᾰ";
     }
 }

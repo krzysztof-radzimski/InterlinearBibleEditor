@@ -1,43 +1,42 @@
 ﻿namespace IBE.Data.Import.Greek.Alphabet {
-    public class Epsilon : IAlphabet {
-        public string Polish => "e";
-        public string Small => "ε";
-        public string SmallAtTheEnd => "";
-        public string Large => Small.ToUpper();
+    public class Epsilon : GreekLetter {
+        public override string DefaultRoman => "e";
+        public override string Small => "ε";
+        public override string SmallAtTheEnd => "";
 
-        public string BreathingDashDash => "ε";
-        public string BreathingDashDashSubscript => "";
-        public string BreathingDashAcute => "έ";
-        public string BreathingDashAcuteSubscript => "";
-        public string BreathingDashGrave => "ὲ";
-        public string BreathingDashGraveSubscript => "";
-        public string BreathingDashCircumflex => "";
-        public string BreathingDashCircumflexSubscript => "";
+        public override string BreathingDashDash => "ε";
+        public override string BreathingDashDashSubscript => "";
+        public override string BreathingDashAcute => "έ";
+        public override string BreathingDashAcuteSubscript => "";
+        public override string BreathingDashGrave => "ὲ";
+        public override string BreathingDashGraveSubscript => "";
+        public override string BreathingDashCircumflex => "";
+        public override string BreathingDashCircumflexSubscript => "";
 
-        public string BreathingSmoothDash => "ἐ";
-        public string BreathingSmoothDashSubscript => "";
-        public string BreathingSmoothAcute => "ἔ";
-        public string BreathingSmoothAcuteSubscript => "";
-        public string BreathingSmoothGrave => "ἒ";
-        public string BreathingSmoothGraveSubscript => "";
-        public string BreathingSmoothCircumflex => "";
-        public string BreathingSmoothCircumflexSubscript => "";
+        public override string BreathingSmoothDash => "ἐ";
+        public override string BreathingSmoothDashSubscript => "";
+        public override string BreathingSmoothAcute => "ἔ";
+        public override string BreathingSmoothAcuteSubscript => "";
+        public override string BreathingSmoothGrave => "ἒ";
+        public override string BreathingSmoothGraveSubscript => "";
+        public override string BreathingSmoothCircumflex => "";
+        public override string BreathingSmoothCircumflexSubscript => "";
 
-        public string BreathingRoughDash => "ἑ";
-        public string BreathingRoughDashSubscript => "";
-        public string BreathingRoughAcute => "ἕ";
-        public string BreathingRoughAcuteSubscript => "";
-        public string BreathingRoughGrave => "ἓ";
-        public string BreathingRoughGraveSubscript => "";
-        public string BreathingRoughCircumflex => "";
-        public string BreathingRoughCircumflexSubscript => "";
+        public override string BreathingRoughDash => "ἑ";
+        public override string BreathingRoughDashSubscript => "";
+        public override string BreathingRoughAcute => "ἕ";
+        public override string BreathingRoughAcuteSubscript => "";
+        public override string BreathingRoughGrave => "ἓ";
+        public override string BreathingRoughGraveSubscript => "";
+        public override string BreathingRoughCircumflex => "";
+        public override string BreathingRoughCircumflexSubscript => "";
 
-        public string BreathingDiaeresisDash => "";
-        public string BreathingDiaeresisAcute => "";
-        public string BreathingDiaeresisGrave => "";
-        public string BreathingDiaeresisCircumflex => "";
+        public override string BreathingDiaeresisDash => "";
+        public override string BreathingDiaeresisAcute => "";
+        public override string BreathingDiaeresisGrave => "";
+        public override string BreathingDiaeresisCircumflex => "";
 
-        public string BreathingMacronDash => "";
-        public string BreathingBreveDash => "";
+        public override string BreathingMacronDash => "";
+        public override string BreathingBreveDash => "";
     }
 }

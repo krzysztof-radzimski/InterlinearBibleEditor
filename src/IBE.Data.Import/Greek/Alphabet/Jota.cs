@@ -1,43 +1,43 @@
 ﻿namespace IBE.Data.Import.Greek.Alphabet {
-    public class Jota : IAlphabet {
-        public string Polish => "j";
-        public string Small => "ι";
-        public string SmallAtTheEnd => "";
-        public string Large => Small.ToUpper();
+    public class Jota : GreekLetter {
+        public override string DefaultRoman => "i";
+        public override string AdditionalRoman => "i";
+        public override string Small => "ι";
+        public override string SmallAtTheEnd => "";
 
-        public string BreathingDashDash => "ι";
-        public string BreathingDashDashSubscript => "";
-        public string BreathingDashAcute => "ί";
-        public string BreathingDashAcuteSubscript => "";
-        public string BreathingDashGrave => "ὶ";
-        public string BreathingDashGraveSubscript => "";
-        public string BreathingDashCircumflex => "ῖ";
-        public string BreathingDashCircumflexSubscript => "";
+        public override string BreathingDashDash => "ι";
+        public override string BreathingDashDashSubscript => "";
+        public override string BreathingDashAcute => "ί";
+        public override string BreathingDashAcuteSubscript => "ί";
+        public override string BreathingDashGrave => "ὶ";
+        public override string BreathingDashGraveSubscript => "";
+        public override string BreathingDashCircumflex => "ῖ";
+        public override string BreathingDashCircumflexSubscript => "";
 
-        public string BreathingSmoothDash => "ἰ";
-        public string BreathingSmoothDashSubscript => "";
-        public string BreathingSmoothAcute => "ἴ";
-        public string BreathingSmoothAcuteSubscript => "";
-        public string BreathingSmoothGrave => "ἲ";
-        public string BreathingSmoothGraveSubscript => "";
-        public string BreathingSmoothCircumflex => "ἶ";
-        public string BreathingSmoothCircumflexSubscript => "";
+        public override string BreathingSmoothDash => "ἰ";
+        public override string BreathingSmoothDashSubscript => "";
+        public override string BreathingSmoothAcute => "ἴ";
+        public override string BreathingSmoothAcuteSubscript => "";
+        public override string BreathingSmoothGrave => "ἲ";
+        public override string BreathingSmoothGraveSubscript => "";
+        public override string BreathingSmoothCircumflex => "ἶ";
+        public override string BreathingSmoothCircumflexSubscript => "";
 
-        public string BreathingRoughDash => "ἱ";
-        public string BreathingRoughDashSubscript => "";
-        public string BreathingRoughAcute => "ἵ";
-        public string BreathingRoughAcuteSubscript => "";
-        public string BreathingRoughGrave => "ἳ";
-        public string BreathingRoughGraveSubscript => "";
-        public string BreathingRoughCircumflex => "ἷ";
-        public string BreathingRoughCircumflexSubscript => "";
+        public override string BreathingRoughDash => "ἱ";
+        public override string BreathingRoughDashSubscript => "";
+        public override string BreathingRoughAcute => "ἵ";
+        public override string BreathingRoughAcuteSubscript => "";
+        public override string BreathingRoughGrave => "ἳ";
+        public override string BreathingRoughGraveSubscript => "";
+        public override string BreathingRoughCircumflex => "ἷ";
+        public override string BreathingRoughCircumflexSubscript => "";
 
-        public string BreathingDiaeresisDash => "ϊ";
-        public string BreathingDiaeresisAcute => "ΐ";
-        public string BreathingDiaeresisGrave => "ῒ";
-        public string BreathingDiaeresisCircumflex => "ῗ";
+        public override string BreathingDiaeresisDash => "ϊ";
+        public override string BreathingDiaeresisAcute => "ΐ";
+        public override string BreathingDiaeresisGrave => "ῒ";
+        public override string BreathingDiaeresisCircumflex => "ῗ";
 
-        public string BreathingMacronDash => "ῑ";
-        public string BreathingBreveDash => "ῐ";
+        public override string BreathingMacronDash => "ῑ";
+        public override string BreathingBreveDash => "ῐ";
     }
 }

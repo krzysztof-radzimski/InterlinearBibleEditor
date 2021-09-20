@@ -1,68 +1,69 @@
 ﻿namespace IBE.Data.Import.Greek.Alphabet {
-    public class Sigma : IAlphabet {
-        public string Polish => "s";
-        public string Small => "σ";
-        public string SmallAtTheEnd => "ς";
-        public string Large => Small.ToUpper();
+    public class Sigma : GreekLetter {
+        public override string DefaultRoman => "s";
+        public override string AdditionalRoman => "z";
+        public override string Small => "σ";
+        public override string SmallAtTheEnd => "ς";
 
-        public string BreathingDashDash => "";
 
-        public string BreathingDashDashSubscript => "";
+        public override string BreathingDashDash => "";
 
-        public string BreathingDashAcute => "";
+        public override string BreathingDashDashSubscript => "";
 
-        public string BreathingDashAcuteSubscript => "";
+        public override string BreathingDashAcute => "";
 
-        public string BreathingDashGrave => "";
+        public override string BreathingDashAcuteSubscript => "";
 
-        public string BreathingDashGraveSubscript => "";
+        public override string BreathingDashGrave => "";
 
-        public string BreathingDashCircumflex => "";
+        public override string BreathingDashGraveSubscript => "";
 
-        public string BreathingDashCircumflexSubscript => "";
+        public override string BreathingDashCircumflex => "";
 
-        public string BreathingSmoothDash => "";
+        public override string BreathingDashCircumflexSubscript => "";
 
-        public string BreathingSmoothDashSubscript => "";
+        public override string BreathingSmoothDash => "";
 
-        public string BreathingSmoothAcute => "";
+        public override string BreathingSmoothDashSubscript => "";
 
-        public string BreathingSmoothAcuteSubscript => "";
+        public override string BreathingSmoothAcute => "";
 
-        public string BreathingSmoothGrave => "";
+        public override string BreathingSmoothAcuteSubscript => "";
 
-        public string BreathingSmoothGraveSubscript => "";
+        public override string BreathingSmoothGrave => "";
 
-        public string BreathingSmoothCircumflex => "";
+        public override string BreathingSmoothGraveSubscript => "";
 
-        public string BreathingSmoothCircumflexSubscript => "";
+        public override string BreathingSmoothCircumflex => "";
 
-        public string BreathingRoughDash => "";
+        public override string BreathingSmoothCircumflexSubscript => "";
 
-        public string BreathingRoughDashSubscript => "";
+        public override string BreathingRoughDash => "";
 
-        public string BreathingRoughAcute => "";
+        public override string BreathingRoughDashSubscript => "";
 
-        public string BreathingRoughAcuteSubscript => "";
+        public override string BreathingRoughAcute => "";
 
-        public string BreathingRoughGrave => "";
+        public override string BreathingRoughAcuteSubscript => "";
 
-        public string BreathingRoughGraveSubscript => "";
+        public override string BreathingRoughGrave => "";
 
-        public string BreathingRoughCircumflex => "";
+        public override string BreathingRoughGraveSubscript => "";
 
-        public string BreathingRoughCircumflexSubscript => "";
+        public override string BreathingRoughCircumflex => "";
 
-        public string BreathingDiaeresisDash => "";
+        public override string BreathingRoughCircumflexSubscript => "";
 
-        public string BreathingDiaeresisAcute => "";
+        public override string BreathingDiaeresisDash => "";
 
-        public string BreathingDiaeresisGrave => "";
+        public override string BreathingDiaeresisAcute => "";
 
-        public string BreathingDiaeresisCircumflex => "";
+        public override string BreathingDiaeresisGrave => "";
 
-        public string BreathingMacronDash => "";
+        public override string BreathingDiaeresisCircumflex => "";
 
-        public string BreathingBreveDash => "";
+        public override string BreathingMacronDash => "";
+
+        public override string BreathingBreveDash => "";
     }
 }

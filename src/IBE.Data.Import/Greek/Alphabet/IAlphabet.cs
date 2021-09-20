@@ -1,6 +1,7 @@
 ﻿namespace IBE.Data.Import.Greek.Alphabet {
     public interface IAlphabet {
-        string Polish { get; }
+        string DefaultRoman { get; }
+        string AdditionalRoman { get; }
         string Small { get; }
         string SmallAtTheEnd { get; }
         string Large { get; }

@@ -1,43 +1,42 @@
 ﻿namespace IBE.Data.Import.Greek.Alphabet {
-    public class Eta : IAlphabet {
-        public string Polish => "e";
-        public string Small => "η";
-        public string SmallAtTheEnd => "";
-        public string Large => Small.ToUpper();
+    public class Eta : GreekLetter {
+        public override string DefaultRoman => "e";
+        public override string Small => "η";
+        public override string SmallAtTheEnd => "";
 
-        public string BreathingDashDash => "η";
-        public string BreathingDashDashSubscript => "ῃ";
-        public string BreathingDashAcute => "ή";
-        public string BreathingDashAcuteSubscript => "ῄ";
-        public string BreathingDashGrave => "ὴ";
-        public string BreathingDashGraveSubscript => "ῂ";
-        public string BreathingDashCircumflex => "ῆ";
-        public string BreathingDashCircumflexSubscript => "ῇ";
+        public override string BreathingDashDash => "η";
+        public override string BreathingDashDashSubscript => "ῃ";
+        public override string BreathingDashAcute => "ή";
+        public override string BreathingDashAcuteSubscript => "ῄ";
+        public override string BreathingDashGrave => "ὴ";
+        public override string BreathingDashGraveSubscript => "ῂ";
+        public override string BreathingDashCircumflex => "ῆ";
+        public override string BreathingDashCircumflexSubscript => "ῇ";
 
-        public string BreathingSmoothDash => "ἠ";
-        public string BreathingSmoothDashSubscript => "ᾐ";
-        public string BreathingSmoothAcute => "ἤ";
-        public string BreathingSmoothAcuteSubscript => "ᾔ";
-        public string BreathingSmoothGrave => "ἢ";
-        public string BreathingSmoothGraveSubscript => "ᾒ";
-        public string BreathingSmoothCircumflex => "ἦ";
-        public string BreathingSmoothCircumflexSubscript => "ᾖ";
+        public override string BreathingSmoothDash => "ἠ";
+        public override string BreathingSmoothDashSubscript => "ᾐ";
+        public override string BreathingSmoothAcute => "ἤ";
+        public override string BreathingSmoothAcuteSubscript => "ᾔ";
+        public override string BreathingSmoothGrave => "ἢ";
+        public override string BreathingSmoothGraveSubscript => "ᾒ";
+        public override string BreathingSmoothCircumflex => "ἦ";
+        public override string BreathingSmoothCircumflexSubscript => "ᾖ";
 
-        public string BreathingRoughDash => "ἡ";
-        public string BreathingRoughDashSubscript => "ᾑ";
-        public string BreathingRoughAcute => "ἥ";
-        public string BreathingRoughAcuteSubscript => "ᾕ";
-        public string BreathingRoughGrave => "ἣ";
-        public string BreathingRoughGraveSubscript => "ᾓ";
-        public string BreathingRoughCircumflex => "ἧ";
-        public string BreathingRoughCircumflexSubscript => "ᾗ";
+        public override string BreathingRoughDash => "ἡ";
+        public override string BreathingRoughDashSubscript => "ᾑ";
+        public override string BreathingRoughAcute => "ἥ";
+        public override string BreathingRoughAcuteSubscript => "ᾕ";
+        public override string BreathingRoughGrave => "ἣ";
+        public override string BreathingRoughGraveSubscript => "ᾓ";
+        public override string BreathingRoughCircumflex => "ἧ";
+        public override string BreathingRoughCircumflexSubscript => "ᾗ";
 
-        public string BreathingDiaeresisDash => "";
-        public string BreathingDiaeresisAcute => "";
-        public string BreathingDiaeresisGrave => "";
-        public string BreathingDiaeresisCircumflex => "";
+        public override string BreathingDiaeresisDash => "";
+        public override string BreathingDiaeresisAcute => "";
+        public override string BreathingDiaeresisGrave => "";
+        public override string BreathingDiaeresisCircumflex => "";
 
-        public string BreathingMacronDash => "";
-        public string BreathingBreveDash => "";
+        public override string BreathingMacronDash => "";
+        public override string BreathingBreveDash => "";
     }
 }
