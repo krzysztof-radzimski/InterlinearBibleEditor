@@ -243,7 +243,7 @@ hr.fancy-line {
 
 .quote {
     margin-left: 2em;
-    font-size: 100% !important;
+    font-size: 110% !important;
     position: relative;
 }
 
@@ -413,7 +413,7 @@ hr.fancy-line {
 
     .verse-interlinear-btn:hover {
         background-color: darkgreen !important;
-        color:white;
+        color: white;
         border: 2px solid darkgreen;
         border-radius: 2px;
     }
@@ -429,28 +429,41 @@ hr.fancy-line {
         top: 56px;
     }
 }
+
 @media only screen and (max-width: 995px) {
     .verse-interlinear-div {
         top: 47px;
     }
 }
+
 @media only screen and (max-width: 800px) {
     .verse-interlinear-div {
         top: 56px;
     }
 }
+
 @media only screen and (max-width: 768px) {
     .verse-interlinear-div {
         top: 56px;
     }
 }
+
 @media only screen and (max-width: 550px) {
     .verse-interlinear-div {
         top: 47px;
     }
 }
+
 @media only screen and (max-width: 400px) {
     .verse-interlinear-div {
         top: 47px;
     }
+}
+
+.bg-bible li {
+    font-size: 120%;
+}
+
+img {
+    max-width: 100%;
 }

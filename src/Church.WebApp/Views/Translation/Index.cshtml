@@ -21,16 +21,16 @@ else if (String.IsNullOrEmpty(Model.Book)) {
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         @if (Model.Translation.Type == IBE.Data.Model.TranslationType.Dynamic) {
-            <abbr type="button" class="btn btn-outline-danger" title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Przekład dynamiczny</abbr>
+            <abbr type="button" class="btn btn-outline-danger" title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Dynamiczny</abbr>
         }
         else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Literal) {
-            <abbr type="button" class="btn btn-outline-success" title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Przekład dosłowny</abbr>
+            <abbr type="button" class="btn btn-outline-success" title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Dosłowny</abbr>
         }
         else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
-            <abbr type="button" class="btn btn-outline-primary" title="Przekład interlinearny - transliteracja tekstu z języka oryginalnego">Przekład interlinearny</abbr>
+            <abbr type="button" class="btn btn-outline-primary" title="Przekład interlinearny - transliteracja tekstu z języka oryginalnego">Interlinia</abbr>
         }
         else {
-            <abbr type="button" class="btn btn-outline-info" title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Przekład literacki</abbr>
+            <abbr type="button" class="btn btn-outline-info" title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Literacki</abbr>
         }
     </div>
 
@@ -104,199 +104,198 @@ else {
     if (book.IsNotNull()) {
         ViewData["Title"] = Model.Translation.Description + " - " + book.BaseBook.BookTitle;
 
-<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 
-    @if (Model.Translation.Type == IBE.Data.Model.TranslationType.Dynamic) {
-        <abbr type="button" class="btn btn-outline-danger" title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Przekład dynamiczny</abbr>
-    }
-    else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Literal) {
-        <abbr type="button" class="btn btn-outline-success" title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Przekład dosłowny</abbr>
-    }
-    else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
-        <abbr type="button" class="btn btn-outline-primary" title="Przekład interlinearny - transliteracja tekstu z języka oryginalnego">Przekład interlinearny</abbr>
-    }
-    else {
-        <abbr type="button" class="btn btn-outline-info" title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Przekład literacki</abbr>
-    }
-
-    @if (Model.Translation.Catolic) {
-        <abbr type="button" class="btn btn-outline-dark" title="Przekład katolicki">Katolicki</abbr>
-    }
-
-    @if (Model.Translation.Recommended) {
-        <abbr type="button" class="btn btn-outline-success" title="Polecamy ten przekład">Polecamy</abbr>
-    }
-
-    @if (book.BaseBook.StatusBookType == IBE.Data.Model.TheBookType.ChurchFathersLetter) {
-        <abbr type="button" class="btn btn-outline-secondary" title="Pisma chrześcijańskie okresu Ojców Kościoła (wczesny kościół od II-Iv w.n.e.)">Patrologia</abbr>
-    }
-
-
-    @if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
-        <abbr type="button" class="btn btn-outline-danger" title="Uwaga! @book.BaseBook.BookTitle jest księgą wtórnie-kanoniczną">Wtórnie-kanoniczna</abbr>
-    }
-    else if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.Apocrypha) {
-        <abbr type="button" class="btn btn-outline-danger" title="Uwaga! @book.BaseBook.BookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej">Apokryf</abbr>
-    }
-
-    @if (Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) {
-        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButtonTranslations" data-bs-toggle="dropdown" aria-expanded="false">
-            Inny przekład
-        </button>
-        <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations">
-            @{
-                var _allTranslations = Model.Translations.OrderBy(x => x.TranslationType).GroupBy(x => x.TranslationType);
-                var __first = true;
+            @if (Model.Translation.Type == IBE.Data.Model.TranslationType.Dynamic) {
+                <abbr type="button" class="btn btn-outline-danger" title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Dynamiczny</abbr>
             }
-            @foreach (var _trans in _allTranslations) {
+            else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Literal) {
+                <abbr type="button" class="btn btn-outline-success" title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Dosłowny</abbr>
+            }
+            else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
+                <abbr type="button" class="btn btn-outline-primary" title="Przekład interlinearny - transliteracja tekstu z języka oryginalnego">Interlinia</abbr>
+            }
+            else {
+                <abbr type="button" class="btn btn-outline-info" title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Literacki</abbr>
+            }
 
-                if (__first) {
-                    __first = false;
-                }
-                else {
-                    <li><hr class="dropdown-divider"></li>
-                }
+            @if (Model.Translation.Catolic) {                
+                <abbr type="button" class="btn btn-outline-dark" title="Przekład katolicki">Katolicki</abbr>
+            }
 
-                <li><h6 class="dropdown-header disabled">@_trans.Key</h6></li>
+            @if (Model.Translation.Recommended) {
+                <abbr type="button" class="btn btn-outline-success" title="Polecamy ten przekład">Polecamy</abbr>
+            }
 
-                foreach (var item in _trans) {
-                    var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" title=""Przekład katolicki"">katolicki</abbr>" : "";
-                    var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
-                    var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
-                    var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+            @if (book.BaseBook.StatusBookType == IBE.Data.Model.TheBookType.ChurchFathersLetter) {
+                <abbr type="button" class="btn btn-outline-secondary" title="Pisma chrześcijańskie okresu Ojców Kościoła (wczesny kościół od II-Iv w.n.e.)">Patrologia</abbr>
+            }
+
+
+            @if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
+                <abbr type="button" class="btn btn-outline-danger" title="Uwaga! @book.BaseBook.BookTitle jest księgą wtórnie-kanoniczną">Wtórnie-kanoniczna</abbr>
+            }
+            else if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.Apocrypha) {
+                <abbr type="button" class="btn btn-outline-danger" title="Uwaga! @book.BaseBook.BookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej">Apokryf</abbr>
+            }
+
+            @if (Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) {
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButtonTranslations" data-bs-toggle="dropdown" aria-expanded="false">
+                    Inny przekład
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations">
+                    @{
+                        var _allTranslations = Model.Translations.OrderBy(x => x.TranslationType).GroupBy(x => x.TranslationType);
+                        var __first = true;
+                    }
+                    @foreach (var _trans in _allTranslations) {
+
+                        if (__first) {
+                            __first = false;
+                        }
+                        else {
+                            <li><hr class="dropdown-divider"></li>
+                        }
+
+                        <li><h6 class="dropdown-header disabled">@_trans.Key</h6></li>
+
+                        foreach (var item in _trans) {
+                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" title=""Przekład katolicki"">katolicki</abbr>" : "";
+                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                            var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
+                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+                            var _active = String.Empty;
+                            if (item.Name == Model.Translation.Name) {
+                                _active = " active";
+                            }
+
+                            <li>
+                                @if (Model.Verse.IsNotNullOrEmpty()) {
+                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
+                                }
+                                else {
+                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
+                                }
+                            </li>
+                        }
+
+                        if (_trans.Key == IBE.Data.Model.TranslationType.Interlinear.GetDescription() && Model.Book.ToInt() > 460) {
+                            var _model_chapter = Model.Chapter.ToInt() == 0 ? 1 : Model.Chapter.ToInt();
+                            var _model_verse = Model.Verse.ToInt() == 0 ? 1 : Model.Verse.ToInt();
+                            var url_oblubienica = $"https://biblia.oblubienica.eu/interlinearny/index/book/{Model.NTBookNumber}/chapter/{_model_chapter}/verse/{_model_verse}";
+                            <li>
+                                <a class="dropdown-item" href="@url_oblubienica" target="_blank">Ewangeliczny Przekład Interlinearny Biblii - Oblubienica.eu</a>
+                            </li>
+                        }
+
+                        if (_trans.Key == IBE.Data.Model.TranslationType.Interlinear.GetDescription()) {
+                            var _model_chapter = Model.Chapter.ToInt() == 0 ? 1 : Model.Chapter.ToInt();
+                            var _model_verse = Model.Verse.ToInt() == 0 ? 1 : Model.Verse.ToInt();
+                            var url_logo = $"https://app.logos.com/books/LLS%3ALEB/references/bible%2Bleb2.{Model.LogosBookNumber}.{_model_chapter}.{_model_verse}";
+                            <li>
+                                <a class="dropdown-item" href="@url_logo" target="_blank">Logos - The Lexham English Bible</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            }
+            else if (Model.Translation.BookType == IBE.Data.Model.TheBookType.ChurchFathersLetter) {
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButtonTranslations" data-bs-toggle="dropdown" aria-expanded="false">
+                    Inny przekład
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations">
+                    @{
+                        var _allTranslations = Model.Translations.OrderBy(x => x.TranslationType).GroupBy(x => x.TranslationType);
+                    }
+                    @foreach (var _trans in _allTranslations) {
+                        foreach (var item in _trans) {
+                            //var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
+                            //var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
+                            //var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
+                            //var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
+                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" title=""Przekład katolicki"">katolicki</abbr>" : "";
+                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                            var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
+                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+
+                            var _active = String.Empty;
+                            if (item.Name == Model.Translation.Name) {
+                                _active = " active";
+                            }
+                            <li>
+                                @if (Model.Verse.IsNotNullOrEmpty()) {
+                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
+                                }
+                                else {
+                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
+                                }
+                            </li>
+                        }
+                    }
+
+                    @if (Model.Book.ToInt() == 2100) {
+                        var _model_chapter = Model.Chapter.ToInt() == 0 ? 1 : Model.Chapter.ToInt();
+                        var _model_verse = Model.Verse.ToInt() == 0 ? 1 : Model.Verse.ToInt();
+                        var url_oblubienica = $"https://biblia.oblubienica.eu/interlinearny/index/book/{Model.NTBookNumber}/chapter/{_model_chapter}/verse/{_model_verse}";
+                        <li>
+                            <a class="dropdown-item" href="@url_oblubienica" target="_blank">Ewangeliczny Przekład Interlinearny Biblii - Oblubienica.eu</a>
+                        </li>
+
+                        var url_logo = $"https://app.logos.com/books/LLS%3AAPFTHTEXT/references/af.11.{_model_chapter}.{_model_verse}";
+                        <li>
+                            <a class="dropdown-item" href="@url_logo" target="_blank">Logos - The Apostolic Fathers in English</a>
+                        </li>
+                    }
+                </ul>
+            }
+
+            <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButtonBooks" data-bs-toggle="dropdown" aria-expanded="false">
+                Wybór księgi
+            </button>
+            <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonBooks">
+                @foreach (var _book in Model.Translation.Books) {
+                    if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !_book.IsTranslated) { continue; }
+
                     var _active = String.Empty;
-                    if (item.Name == Model.Translation.Name) {
+                    if (_book.NumberOfBook == book.NumberOfBook) {
                         _active = " active";
                     }
 
-                    <li>
-                        @if (Model.Verse.IsNotNullOrEmpty()) {
-                            <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
-                        }
-                        else {
-                            <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
-                        }
-                    </li>
+                    var _secondCanon = String.Empty;
+                    if (_book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
+                        _secondCanon = " text-warning bg-dark";
+                    }
+
+                    <li><a class="dropdown-item@_active@_secondCanon" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@_book.NumberOfBook" asp-route-chapter="1">@_book.BaseBook.BookTitle</a></li>
+                }
+            </ul>
+
+            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButtonChapters" data-bs-toggle="dropdown" aria-expanded="false">
+                Wybór rozdziału
+            </button>
+            <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonChapters">
+
+                @{
+                    var __chapterNumbers = book.Chapters.Select(x => x.NumberOfChapter).OrderBy(x => x);
                 }
 
-                if (_trans.Key == IBE.Data.Model.TranslationType.Interlinear.GetDescription() && Model.Book.ToInt() > 460) {
-                    var _model_chapter = Model.Chapter.ToInt() == 0 ? 1 : Model.Chapter.ToInt();
-                    var _model_verse = Model.Verse.ToInt() == 0 ? 1 : Model.Verse.ToInt();
-                    var url_oblubienica = $"https://biblia.oblubienica.eu/interlinearny/index/book/{Model.NTBookNumber}/chapter/{_model_chapter}/verse/{_model_verse}";
-                    <li>
-                        <a class="dropdown-item" href="@url_oblubienica" target="_blank">Ewangeliczny Przekład Interlinearny Biblii - Oblubienica.eu</a>
-                    </li>
-                }
+                @foreach (var i in __chapterNumbers) {
+                    if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear /*&& Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible*/ && !book.Chapters.Where(x => x.NumberOfChapter == i).First().IsTranslated) { continue; }
 
-                if (_trans.Key == IBE.Data.Model.TranslationType.Interlinear.GetDescription()) {
-                    var _model_chapter = Model.Chapter.ToInt() == 0 ? 1 : Model.Chapter.ToInt();
-                    var _model_verse = Model.Verse.ToInt() == 0 ? 1 : Model.Verse.ToInt();
-                    var url_logo = $"https://app.logos.com/books/LLS%3ALEB/references/bible%2Bleb2.{Model.LogosBookNumber}.{_model_chapter}.{_model_verse}";
-                    <li>
-                        <a class="dropdown-item" href="@url_logo" target="_blank">Logos - The Lexham English Bible</a>
-                    </li>
-                }
-            }
-        </ul>
-    }
-    else if (Model.Translation.BookType == IBE.Data.Model.TheBookType.ChurchFathersLetter) {
-        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButtonTranslations" data-bs-toggle="dropdown" aria-expanded="false">
-            Inny przekład
-        </button>
-        <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations">
-            @{
-                var _allTranslations = Model.Translations.OrderBy(x => x.TranslationType).GroupBy(x => x.TranslationType);
-            }
-            @foreach (var _trans in _allTranslations) {
-                foreach (var item in _trans) {
-                    //var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
-                    //var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
-                    //var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
-                    //var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
-                    var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" title=""Przekład katolicki"">katolicki</abbr>" : "";
-                    var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
-                    var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
-                    var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
-
+                    var __chapterNumberString = i.ToString();
+                    if (Model.Translation.ChapterRomanNumbering) {
+                        __chapterNumberString = i.ArabicToRoman();
+                    }
+                    if (i == 0) { __chapterNumberString = "Prolog"; }
                     var _active = String.Empty;
-                    if (item.Name == Model.Translation.Name) {
+                    if (i == Convert.ToInt32(Model.Chapter)) {
                         _active = " active";
                     }
-                    <li>
-                        @if (Model.Verse.IsNotNullOrEmpty()) {
-                            <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
-                        }
-                        else {
-                            <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
-                        }
-                    </li>
+
+                    <li><a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i">@__chapterNumberString</a></li>
                 }
-            }
-
-            @if (Model.Book.ToInt() == 2100) {
-                var _model_chapter = Model.Chapter.ToInt() == 0 ? 1 : Model.Chapter.ToInt();
-                var _model_verse = Model.Verse.ToInt() == 0 ? 1 : Model.Verse.ToInt();
-                var url_oblubienica = $"https://biblia.oblubienica.eu/interlinearny/index/book/{Model.NTBookNumber}/chapter/{_model_chapter}/verse/{_model_verse}";
-                <li>
-                    <a class="dropdown-item" href="@url_oblubienica" target="_blank">Ewangeliczny Przekład Interlinearny Biblii - Oblubienica.eu</a>
-                </li>
-
-                var url_logo = $"https://app.logos.com/books/LLS%3AAPFTHTEXT/references/af.11.{_model_chapter}.{_model_verse}";
-                <li>
-                    <a class="dropdown-item" href="@url_logo" target="_blank">Logos - The Apostolic Fathers in English</a>
-                </li>
-            }
-        </ul>
-    }
-
-    <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButtonBooks" data-bs-toggle="dropdown" aria-expanded="false">
-        Wybór księgi
-    </button>
-    <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonBooks">
-        @foreach (var _book in Model.Translation.Books) {
-            if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !_book.IsTranslated) { continue; }
-
-            var _active = String.Empty;
-            if (_book.NumberOfBook == book.NumberOfBook) {
-                _active = " active";
-            }
-
-            var _secondCanon = String.Empty;
-            if (_book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
-                _secondCanon = " text-warning bg-dark";
-            }
-
-            <li><a class="dropdown-item@_active@_secondCanon" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@_book.NumberOfBook" asp-route-chapter="1">@_book.BaseBook.BookTitle</a></li>
-        }
-    </ul>
-
-
-    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButtonChapters" data-bs-toggle="dropdown" aria-expanded="false">
-        Wybór rozdziału
-    </button>
-    <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonChapters">
-
-        @{
-            var __chapterNumbers = book.Chapters.Select(x => x.NumberOfChapter).OrderBy(x => x);
-        }
-
-        @foreach (var i in __chapterNumbers) {
-            if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear /*&& Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible*/ && !book.Chapters.Where(x => x.NumberOfChapter == i).First().IsTranslated) { continue; }
-
-            var __chapterNumberString = i.ToString();
-            if (Model.Translation.ChapterRomanNumbering) {
-                __chapterNumberString = i.ArabicToRoman();
-            }
-            if (i == 0) { __chapterNumberString = "Prolog"; }
-            var _active = String.Empty;
-            if (i == Convert.ToInt32(Model.Chapter)) {
-                _active = " active";
-            }
-
-            <li><a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i">@__chapterNumberString</a></li>
-        }
-    </ul>
-</div>
+            </ul>
+        </div>
 
         <h2 class="text-center p-2 max-width-800"><a class="text-decoration-none text-dark" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@null">@Model.Translation.Description</a></h2>
         <h2 class="text-center p-2 max-width-800 capital">@book.BaseBook.BookTitle</h2>
@@ -457,6 +456,7 @@ else {
                 }
 
                 <div class="dropdown d-grid gap-2 d-md-flex justify-content-center" style="width: auto;" id="divDownload">
+                    <span> </span>
                     <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
                         Pobierz księgę
                     </button>
@@ -468,7 +468,7 @@ else {
                         <li><a class="dropdown-item" href="/api/DownloadInterlinearTranslationDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz tłumaczenie księgi w formacie Microsoft Word</a></li>
 
                     </ul>
-
+                    <span> </span>
                     <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadInterlinear" data-bs-toggle="dropdown" aria-expanded="false">
                         Pobierz / kopiuj rozdział
                     </button>
@@ -483,6 +483,7 @@ else {
                         <li><a class="dropdown-item" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#copyVersesModal"><i class="far fa-check-square" style="width:18px;"></i>&nbsp;Kopiuj wybrane wersety</a></li>
                     </ul>
                 </div>
+                <br />
 
                 @foreach (var verse in chapter.Verses) {
 
