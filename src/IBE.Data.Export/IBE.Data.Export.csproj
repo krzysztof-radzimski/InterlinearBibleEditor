@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="Aspose.Words" Version="21.9.0" />
-    <PackageReference Include="LinqKit" Version="1.1.24" />   
+    <PackageReference Include="LinqKit" Version="1.1.26" />   
   </ItemGroup>
 
   <ItemGroup>

@@ -213,22 +213,42 @@ namespace IBE.Data.Import.Test {
         }
 
         [TestMethod]
+        public void UpdateTransliterationChapter() {
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            uow.BeginTransaction();
+            var controller = new GreekTransliterationController();
+            var verses = new XPQuery<Verse>(uow).Where(x => x.Index.StartsWith("NPI.10.1"));
+            foreach (var verse in verses) {
+                var words = verse.VerseWords;
+                foreach (var word in words) {
+                    controller.TransliterateWord(word);
+                }
+            }
+            uow.CommitChanges();
+        }
+
+        [TestMethod]
         public void UpdateTransliteration() {
             ConnectionHelper.Connect();
             var uow = new UnitOfWork();
-          
+            uow.BeginTransaction();
             var controller = new GreekTransliterationController();
-            var sentence = string.Empty;
-            var trans = new XPQuery<Translation>(uow).Where(x => x.Name == "NPI+").FirstOrDefault();
-            var words = trans.Books.First().Chapters.First().Verses.First().VerseWords;
+            var words = new XPQuery<VerseWord>(uow);
             foreach (var word in words) {
-                var s = controller.TransliterateWord(word.SourceWord);
-                if (s.IsNotNullOrEmpty()) {
-                    sentence += s + " ";
-                }
+                controller.TransliterateWord(word);
             }
+            uow.CommitChanges();
+        }
 
-            Assert.IsTrue(sentence.Trim() == "En arche epoiesen ho theos ton uranon kai ten gen.");
+        [TestMethod]
+        public void TransliterationTest() {
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            var controller = new GreekTransliterationController();
+            var sentence = controller.GetTransliterateSentence(new VerseIndex("NPI.10.1.2"), uow);
+
+            Assert.IsTrue(sentence.TransliteritSentence != null);
         }
 
         [TestMethod]

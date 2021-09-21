@@ -7,7 +7,7 @@
         public override string BreathingDashDash => "ε";
         public override string BreathingDashDashSubscript => "";
         public override string BreathingDashAcute => "έ";
-        public override string BreathingDashAcuteSubscript => "";
+        public override string BreathingDashAcuteSubscript => "έ";
         public override string BreathingDashGrave => "ὲ";
         public override string BreathingDashGraveSubscript => "";
         public override string BreathingDashCircumflex => "";

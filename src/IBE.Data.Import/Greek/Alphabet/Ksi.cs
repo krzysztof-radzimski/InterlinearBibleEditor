@@ -1,6 +1,6 @@
 ﻿namespace IBE.Data.Import.Greek.Alphabet {
     public class Ksi : GreekLetter {
-        public override string DefaultRoman => "k";
+        public override string DefaultRoman => "ks";
         public override string Small => "ξ";
         public override string SmallAtTheEnd => "";
 

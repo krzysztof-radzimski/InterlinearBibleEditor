@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace IBE.WindowsClient.Controls {
     public partial class VerseWordEditorControl : XtraUserControl {
         private bool changed = false;
-
+        private GreekTransliterationController TransliterationController;
         public bool Modified { get { return changed; } }
         public VerseWord Word { get; }
         public event EventHandler<StrongCode> StrongClick;
@@ -50,6 +50,8 @@ namespace IBE.WindowsClient.Controls {
 
             AddStrongToolTip(word.StrongCode);
             AddGrammarToolTip(word.GrammarCode);
+
+            TransliterationController = new GreekTransliterationController();
         }
 
         private void AddGrammarToolTip(GrammarCode code) {
@@ -177,7 +179,7 @@ namespace IBE.WindowsClient.Controls {
             var sourceWord = XtraInputBox.Show("Insert source word:", "Source Word", Word.SourceWord);
             if (sourceWord.IsNotNullOrEmpty()) {
                 Word.SourceWord = sourceWord;
-                Word.Transliteration = sourceWord.TransliterateAncientGreek();
+                Word.Transliteration = TransliterationController.TransliterateWord(sourceWord);
             }
         }
 

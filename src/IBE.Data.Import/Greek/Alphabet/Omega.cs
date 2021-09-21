@@ -32,7 +32,7 @@
         public override string BreathingRoughCircumflexSubscript => "ᾧ";
 
         public override string BreathingDiaeresisDash => "";
-        public override string BreathingDiaeresisAcute => "";
+        public override string BreathingDiaeresisAcute => "ώ";
         public override string BreathingDiaeresisGrave => "";
         public override string BreathingDiaeresisCircumflex => "";
 

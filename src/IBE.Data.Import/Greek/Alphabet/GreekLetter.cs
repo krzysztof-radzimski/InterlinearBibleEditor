@@ -43,36 +43,97 @@ namespace IBE.Data.Import.Greek.Alphabet {
         public virtual string BreathingMacronDash { get; }
         public virtual string BreathingBreveDash { get; }
 
-        public string Transliteration { get; set; }
-        public string CurrentGreek { get; set; }
-        public bool IsUpper { get; set; }
-        public bool IsStrongBreath { get; set; }
+        public virtual string Transliteration { get; set; }
+        public virtual string CurrentGreek { get; set; }
+        public virtual bool IsUpper { get; set; }
+        public virtual bool IsStrongBreath { get; set; }
+        public virtual LetterType Type { get; set; }
+        public virtual bool IsFirst { get; set; }
 
         public GreekLetter() { Transliteration = DefaultRoman; }
 
-        public bool IsLetter(char e, out bool isUpper) { return IsLetter(e.ToString(), out isUpper); }
-        public bool IsLetter(string e, out bool isUpper) {
-            isUpper = false;
+        public LetterResult IsLetter(char e) { return IsLetter(e.ToString()); }
+        public LetterResult IsLetter(string e) {
             if (e.IsNotNullOrWhiteSpace()) {
                 var properties = this.GetType().GetProperties();
                 foreach (var item in properties) {
-                    if (item.Name == "Large" || item.Name == "DefaultRoman" || item.Name == "AdditionalRoman" || item.Name == "Transliteration" || item.Name == "CurrentGreek" || item.Name == "IsUpper" || item.Name == "IsStrongBreath") { continue; }
+                    var canWrite = item.CanWrite && item.SetMethod.IsNotNull() && item.SetMethod.IsPublic;
+                    if (item.Name == "Large" || item.Name == "DefaultRoman" || item.Name == "AdditionalRoman" || canWrite) { continue; }
                     if (item.PropertyType == typeof(string)) {
                         var o = item.GetValue(this);
                         if (o.IsNotNull()) {
                             var val = o.ToString();
                             if (val.IsNullOrEmpty()) { continue; }
-                            if (e.Equals(val)) { 
-                                return true; 
+                            if (e.Equals(val.Trim())) {
+                                var type = item.Name == "Small" ? LetterType.Default : item.Name.GetEnumByName<LetterType>();
+                                return new LetterResult(true, type: type);
                             }
-                            if (e.Equals(val.ToUpper())) { 
-                                isUpper = true; return true; 
+                            if (e.Equals(val.Trim().ToUpper())) {
+                                var type = item.Name == "Small" ? LetterType.Default : item.Name.GetEnumByName<LetterType>();
+                                return new LetterResult(true, true, type);
                             }
                         }
                     }
                 }
             }
-            return default;
+            return new LetterResult();
         }
+
+        public override string ToString() {
+            return Small;
+        }
+    }
+
+    public class LetterResult {
+        public LetterType Type { get; }
+        public bool IsLetter { get; }
+        public bool IsUpper { get; }
+        private LetterResult() { }
+        public LetterResult(bool isLetter = false, bool isUpper = false, LetterType type = LetterType.Default) {
+            IsLetter = isLetter;
+            IsUpper = isUpper;
+            Type = type;
+        }
+    }
+
+    public enum LetterType {
+        Default,
+
+        SmallAtTheEnd,
+
+        BreathingDashDash,
+        BreathingDashDashSubscript,
+        BreathingDashAcute,
+        BreathingDashAcuteSubscript,
+        BreathingDashGrave,
+        BreathingDashGraveSubscript,
+        BreathingDashCircumflex,
+        BreathingDashCircumflexSubscript,
+
+        BreathingSmoothDash,
+        BreathingSmoothDashSubscript,
+        BreathingSmoothAcute,
+        BreathingSmoothAcuteSubscript,
+        BreathingSmoothGrave,
+        BreathingSmoothGraveSubscript,
+        BreathingSmoothCircumflex,
+        BreathingSmoothCircumflexSubscript,
+
+        BreathingRoughDash,
+        BreathingRoughDashSubscript,
+        BreathingRoughAcute,
+        BreathingRoughAcuteSubscript,
+        BreathingRoughGrave,
+        BreathingRoughGraveSubscript,
+        BreathingRoughCircumflex,
+        BreathingRoughCircumflexSubscript,
+
+        BreathingDiaeresisDash,
+        BreathingDiaeresisAcute,
+        BreathingDiaeresisGrave,
+        BreathingDiaeresisCircumflex,
+
+        BreathingMacronDash,
+        BreathingBreveDash
     }
 }

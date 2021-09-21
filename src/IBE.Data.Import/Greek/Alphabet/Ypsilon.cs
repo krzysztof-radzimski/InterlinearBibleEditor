@@ -1,14 +1,14 @@
 ﻿namespace IBE.Data.Import.Greek.Alphabet {
     public class Ypsilon : GreekLetter {
-        public override string DefaultRoman => "u";
-        public override string AdditionalRoman => "y";
+        public override string DefaultRoman => "y";
+        public override string AdditionalRoman => "u";
         public override string Small => "υ";
         public override string SmallAtTheEnd => "";
 
         public override string BreathingDashDash => "υ";
         public override string BreathingDashDashSubscript => "";
         public override string BreathingDashAcute => "ύ";
-        public override string BreathingDashAcuteSubscript => "";
+        public override string BreathingDashAcuteSubscript => "ύ";
         public override string BreathingDashGrave => "ὺ";
         public override string BreathingDashGraveSubscript => "";
         public override string BreathingDashCircumflex => "ῦ";

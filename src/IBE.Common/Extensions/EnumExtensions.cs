@@ -98,5 +98,13 @@ namespace IBE.Common.Extensions {
             }
             return default(T);
         }
+
+        public static T GetEnumByName<T>(this string name) {
+            if (!typeof(T).IsEnum) {
+                throw new InvalidEnumArgumentException("The specified type is not an enum");
+            }
+
+            return (T)Enum.Parse(typeof(T), name);
+        }
     }
 }

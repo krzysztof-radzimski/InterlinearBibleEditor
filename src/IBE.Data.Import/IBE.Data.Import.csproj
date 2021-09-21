@@ -33,6 +33,7 @@
     <Compile Remove="Greek\ByzVerseInfo.cs" />
     <Compile Remove="Greek\GreekDictionaryBuilder.cs" />
     <Compile Remove="Greek\GreekInterlinearImporter.cs" />
+    <Compile Remove="Greek\GreekTransliteration.cs" />
     <Compile Remove="Greek\NestleVerseInfo.cs" />
     <Compile Remove="Greek\PbpwVerseInfo.cs" />
     <Compile Remove="Greek\TroVerseInfo.cs" />
@@ -51,7 +52,6 @@
     <PackageReference Include="DotNetZip" Version="1.15.0" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.5" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="5.0.5" />
-    <PackageReference Include="Unidecode.NET" Version="2.1.0" />
     <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>

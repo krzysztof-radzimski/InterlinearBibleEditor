@@ -31,6 +31,8 @@ namespace IBE.Data.Import.Greek.Alphabet {
         public Marks.Comma Comma { get; }
         public Marks.Dot Dot { get; }
         public Marks.Question Question { get; }
+        public Marks.Semicolon Semicolon { get; }
+        public Marks.Apostrophe Apostrophe { get; }
 
         public AlphabetController() {
             Alfa = new Alfa();
@@ -62,6 +64,8 @@ namespace IBE.Data.Import.Greek.Alphabet {
             Comma = new Marks.Comma();
             Dot = new Marks.Dot();
             Question = new Marks.Question();
+            Semicolon = new Marks.Semicolon();
+            Apostrophe = new Marks.Apostrophe();
         }
 
         public GreekLetter GetLetter(char e) { return GetLetter(e.ToString()); }
@@ -69,12 +73,21 @@ namespace IBE.Data.Import.Greek.Alphabet {
             var properties = this.GetType().GetProperties();
             foreach (var item in properties) {
                 var letter = item.GetValue(this) as GreekLetter;
-                if (letter.IsLetter(e, out var isUpper)) {
+                var isLetter = letter.IsLetter(e);
+                if (isLetter.IsLetter) {
                     var result =  Activator.CreateInstance(item.PropertyType) as GreekLetter;
-                    result.IsUpper = isUpper;
+                    result.IsUpper = isLetter.IsUpper;
+                    result.Type = isLetter.Type;
                     result.CurrentGreek = e;
 
-                    if (e.Equals(result.BreathingRoughAcute) || e.Equals(result.BreathingRoughAcuteSubscript) || e.Equals(result.BreathingRoughCircumflex) || e.Equals(result.BreathingRoughCircumflexSubscript) || e.Equals(result.BreathingRoughDash) || e.Equals(result.BreathingRoughDashSubscript) || e.Equals(result.BreathingRoughGrave) || e.Equals(result.BreathingRoughGraveSubscript)) {
+                    if (isLetter.Type == LetterType.BreathingRoughAcute ||
+                        isLetter.Type == LetterType.BreathingRoughAcuteSubscript ||
+                        isLetter.Type == LetterType.BreathingRoughCircumflex ||
+                        isLetter.Type == LetterType.BreathingRoughCircumflexSubscript||
+                        isLetter.Type == LetterType.BreathingRoughDash||
+                        isLetter.Type == LetterType.BreathingRoughDashSubscript||
+                        isLetter.Type == LetterType.BreathingRoughGrave||
+                        isLetter.Type == LetterType.BreathingRoughGraveSubscript) {
                         result.IsStrongBreath = true;
                     }
                     return result;

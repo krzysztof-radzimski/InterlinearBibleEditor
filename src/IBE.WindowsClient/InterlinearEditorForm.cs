@@ -15,10 +15,11 @@ using System.Windows.Forms;
 
 namespace IBE.WindowsClient {
     public partial class InterlinearEditorForm : RibbonForm {
-        string NAME = "NPI+";
-        UnitOfWork Uow = null;
-        Translation Translation = null;
-       public VerseEditorControl VerseControl { get; private set; }
+        private string NAME = "NPI+";
+        private UnitOfWork Uow = null;
+        private Translation Translation = null;
+        private GreekTransliterationController TransliterationController;
+        public VerseEditorControl VerseControl { get; private set; }
         public InterlinearEditorForm() {
             InitializeComponent();
             this.Text = "Interlinear Bible Editor";
@@ -42,8 +43,10 @@ namespace IBE.WindowsClient {
 
             editBook.DataSource = list;
 
-            VerseControl = new VerseEditorControl() { Dock = DockStyle.Fill};
+            VerseControl = new VerseEditorControl() { Dock = DockStyle.Fill };
             this.Controls.Add(VerseControl);
+
+            TransliterationController = new GreekTransliterationController();
         }
 
         public InterlinearEditorForm(Verse verse) {
@@ -89,6 +92,8 @@ namespace IBE.WindowsClient {
                 editVerse_EditValueChanged(this, new DevExpress.XtraEditors.Controls.ChangingEventArgs(null, index.NumberOfVerse));
                 Application.DoEvents();
             });
+
+            TransliterationController = new GreekTransliterationController();
         }
 
         private void btnSaveVerse_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
@@ -198,7 +203,7 @@ namespace IBE.WindowsClient {
                     VerseControl.LoadData(verse, Translation.BookType == TheBookType.Bible);
 
                     btnExportChapterToPDF.Enabled = btnExportChapterToWord.Enabled = btnExportBookToDocx.Enabled = btnExportBookToPdf.Enabled = btnNextVerse.Enabled = true;
-                   
+
                     var allVerses = editVerse.DataSource as List<int>;
                     if (allVerses.IsNotNull() && allVerses.Count > 0 && verseNumber == allVerses.Last()) {
                         btnNextVerse.Enabled = false;
@@ -286,7 +291,7 @@ namespace IBE.WindowsClient {
                             var word = new VerseWord(Uow) {
                                 ParentVerse = currentControl.Verse,
                                 Translation = String.Empty,
-                                Transliteration = _word.TransliterateAncientGreek(),
+                                Transliteration = TransliterationController.TransliterateWord(_word),
                                 Citation = false,
                                 StrongCode = null,
                                 FootnoteText = String.Empty,
@@ -374,7 +379,7 @@ namespace IBE.WindowsClient {
         private void ExportBook(ExportSaveFormat format) {
             var currentControl = VerseControl;//this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
             if (currentControl.IsNotNull()) {
-              var book = currentControl.Verse.ParentChapter.ParentBook;
+                var book = currentControl.Verse.ParentChapter.ParentBook;
                 if (book.IsNotNull()) {
                     var licPath = System.Configuration.ConfigurationManager.AppSettings["AsposeLic"];
                     var licInfo = new System.IO.FileInfo(licPath);

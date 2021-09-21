@@ -13,6 +13,7 @@ using System.Xml.Linq;
 namespace IBE.Data.Import {
     public class PrepareInterlinearGreekNewTestamentImporter : BaseImporter<Translation> {
         const string NAME = "NPI+";
+        GreekTransliterationController TransliterationController = new GreekTransliterationController();
         public Translation Import(string nestleZipFilePath, string ajZipFilePath, UnitOfWork uow) {
             if (File.Exists(nestleZipFilePath) && File.Exists(ajZipFilePath)) {
                 var nestleFileName = ExtractAndGetFirstArchiveItemFilePath(nestleZipFilePath);
@@ -125,7 +126,7 @@ namespace IBE.Data.Import {
                 command.CommandText = $"select verse, text from verses where book_number = {chapter.ParentBook.NumberOfBook} AND chapter = {chapter.NumberOfChapter}";
 
                 using (var reader = command.ExecuteReader()) {
-                    while (reader.Read()) {                        
+                    while (reader.Read()) {
                         var number = reader.GetInt32(0);
                         var text = reader.IsDBNull(1) ? String.Empty : reader.GetString(1);
 
@@ -178,7 +179,7 @@ namespace IBE.Data.Import {
                     // <t> - wcięcie akapitu 
                     // <e> - cytowanie
                     var xml = XElement.Parse($"<v>{item.Text.Replace("<t>", "").Replace("</t>", "")}</v>");
-                    words = RecognizeVerseText(word, words, xml);                  
+                    words = RecognizeVerseText(word, words, xml);
                 }
                 catch (Exception ex) {
                     if (ex.IsNotNull()) { }
@@ -192,7 +193,7 @@ namespace IBE.Data.Import {
                         SourceWord = word.Text,
                         ParentVerse = verse,
                         Citation = word.Citation,
-                        Transliteration = word.Text.TransliterateAncientGreek(),
+                        Transliteration = TransliterationController.TransliterateWord(word.Text),
                         NumberOfVerseWord = index
                     };
                     verseWord.Save();
