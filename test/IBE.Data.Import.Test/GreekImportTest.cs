@@ -2,6 +2,7 @@
 using IBE.Common.Extensions;
 using IBE.Data.Import.Greek;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -45,35 +46,22 @@ namespace IBE.Data.Import.Test {
             var path = @"..\..\..\..\db\import\TRO.SQLite3";
             ConnectionHelper.Connect();
             var uow = new UnitOfWork();
-            new DictionaryBuilder().BuildFromTRO(path, uow);  
-        }
+            new DictionaryBuilder().Build(uow, path);
 
-        [TestMethod]
-        public void AddExistingWordsToDictionary() {
-            ConnectionHelper.Connect();
-            var uow = new UnitOfWork();
+            //var button = new AngularHorizontalButton() {
+            //    Image = Image.FromFile("..."),
+            //    Label = "Wyślij uśmiech",
+            //    Title = "Coś mi się podoba",
+            //    DescriptionAttribute = "Chcielibyśmy wiedzieć, czy wprowadziliśmy pozytywne zmiany"
+            //};
+            //button.Click += new EventHandler(delegate (object sender, EventArgs e) { 
+            // // ...
+            //});
 
-            uow.BeginTransaction();
-            var c = new GreekTransliterationController();
-            var parent = new XPQuery<Model.AncientDictionary>(uow).FirstOrDefault();
-            var dic = new XPQuery<Model.AncientDictionaryItem>(uow).ToList();
-            var words = new XPQuery<Model.VerseWord>(uow).Where(x => x.Translation != null && x.Translation != "").ToList();
-            foreach (var item in words) {
-                var w = c.GetSourceWordWithoutBreathAndAccent(item.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\""), out var isUpper).ToLower();
-                if (!dic.Where(x => x.Word == w).Any()) {
-                    var dicItem = new Model.AncientDictionaryItem(uow) {
-                        Dictionary = parent,
-                        Word = w,
-                        Translation = item.Translation.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\""),
-                        Transliteration = item.Transliteration.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\""),
-                        StrongCode = item.StrongCode,
-                        GrammarCode = item.GrammarCode
-                    };
-                    dicItem.Save();
-                    dic.Add(dicItem);
-                }
-            }
-            uow.CommitChanges();
+            //var box = new AngulatContentBox() {
+            //    Title = "Kontakt i pomoc techniczna",
+            //    Content = "<b>shdghsdghs</b> shdghsdgshgdhs <a href=\"http://www.....\">link</a>"
+            //};
         }
 
 
@@ -82,7 +70,7 @@ namespace IBE.Data.Import.Test {
 
             ConnectionHelper.Connect();
             var uow = new UnitOfWork();
-            var verses = new XPQuery<Model.Verse>(uow).Where(x => x.Index.StartsWith("NPI.480.1"));
+            var verses = new XPQuery<Model.Verse>(uow).Where(x => x.Index.StartsWith("NPI.500.2"));
             var dic = new XPQuery<Model.AncientDictionaryItem>(uow).ToList();
 
             uow.BeginTransaction();
@@ -92,11 +80,11 @@ namespace IBE.Data.Import.Test {
             foreach (var verse in verses) {
                 foreach (var verseWord in verse.VerseWords) {
                     if (verseWord.Translation.IsNullOrEmpty()) {
-                        var w = c.GetSourceWordWithoutBreathAndAccent(verseWord.SourceWord, out var isUpper);
+                        var w = c.GetSourceWordWithoutBreathAndAccent(verseWord.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\""), out var isUpper);
                         var item = dic.Where(x => x.Word == w.ToLower()).FirstOrDefault();
                         if (item.IsNotNull()) {
                             verseWord.Translation = item.Translation;
-                            if (isUpper && verseWord.Translation .IsNotNullOrEmpty() && verseWord.Translation .Length>1) {
+                            if (isUpper && verseWord.Translation.IsNotNullOrEmpty() && verseWord.Translation.Length > 1) {
                                 verseWord.Translation = verseWord.Translation.Substring(0, 1).ToUpper() + verseWord.Translation.Substring(1);
                             }
                             verseWord.Save();

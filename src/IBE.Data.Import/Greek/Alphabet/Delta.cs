@@ -1,7 +1,7 @@
 ﻿namespace IBE.Data.Import.Greek.Alphabet {
     public class Delta : GreekLetter {
         public override string DefaultRoman => "d";
-        public override string Small => "δ ";
+        public override string Small => "δ";
         public override string SmallAtTheEnd => "";
 
         public override string BreathingDashDash => "";

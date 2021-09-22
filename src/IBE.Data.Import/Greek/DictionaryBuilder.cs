@@ -9,7 +9,52 @@ using System.Xml.Linq;
 
 namespace IBE.Data.Import.Greek {
     public class DictionaryBuilder {
-        public void BuildFromTRO(string path, UnitOfWork uow) {
+        public void Build(UnitOfWork uow, string troPath) {
+            BuildFromExisting(uow);
+            BuildFromTRO(troPath, uow);
+        }
+        private void BuildFromExisting(UnitOfWork uow) {
+            uow.BeginTransaction();
+            AncientDictionary dic = null;
+            if (!new XPQuery<AncientDictionary>(uow).Any()) {
+                dic = new AncientDictionary(uow) {
+                    Language = Language.Greek
+                };
+                dic.Save();
+            }
+            else {
+                dic = new XPQuery<AncientDictionary>(uow).FirstOrDefault();
+            }
+
+            var c = new GreekTransliterationController();
+
+            var exsistingWords = new List<TroVerseWord>();
+            var exsistingItems = new XPQuery<AncientDictionaryItem>(uow);
+            foreach (var item in exsistingItems) {
+                exsistingWords.Add(new TroVerseWord() {
+                    SourceWord = item.Word
+                });
+            }
+
+            var words = new XPQuery<VerseWord>(uow).Where(x => x.Translation != null && x.Translation != "").ToList();
+            foreach (var word in words) {
+                var w = c.GetSourceWordWithoutBreathAndAccent(word.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\""), out var isUpper).ToLower();
+                if (!exsistingWords.Where(x => x.SourceWord == w).Any()) {
+                    var item = new AncientDictionaryItem(uow) {
+                        Dictionary = dic,
+                        Word = w,
+                        Translation = word.Translation.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\""/*, "<n>", "</n>"*/),
+                        Transliteration = word.Transliteration.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\""),
+                        StrongCode = word.StrongCode,
+                        GrammarCode = word.GrammarCode
+                    };
+                    item.Save();
+                    exsistingWords.Add(new TroVerseWord() { SourceWord = w });
+                }
+            }
+            uow.CommitChanges();
+        }
+        private void BuildFromTRO(string path, UnitOfWork uow) {
             var conn = GetConnection(path);
             var words = GetTroVerseInfos(conn);
             var c = new GreekTransliterationController();
@@ -17,24 +62,41 @@ namespace IBE.Data.Import.Greek {
             uow.BeginTransaction();
             var strongs = new XPQuery<StrongCode>(uow).ToList();
             var grammarCodes = new XPQuery<GrammarCode>(uow).ToList();
-            var dic = new AncientDictionary(uow) {
-                Language = Language.Greek
-            };
-            dic.Save();
+            AncientDictionary dic = null;
+            if (!new XPQuery<AncientDictionary>(uow).Any()) {
+                dic = new AncientDictionary(uow) {
+                    Language = Language.Greek
+                };
+                dic.Save();
+            }
+            else {
+                dic = new XPQuery<AncientDictionary>(uow).FirstOrDefault();
+            }
+
+            var exsistingWords = new List<TroVerseWord>();
+            var exsistingItems = new XPQuery<AncientDictionaryItem>(uow);
+            foreach (var item in exsistingItems) {
+                exsistingWords.Add(new TroVerseWord() {
+                    SourceWord = item.Word
+                });
+            }
 
             foreach (var word in words) {
-                var item = new AncientDictionaryItem(uow) {
-                    Dictionary = dic,
-                    Word = word.SourceWord,
-                    Translation = word.Translation,
-                    Transliteration = c.TransliterateWord(word.SourceWord),
-                    StrongCode = strongs.Where(x => x.Lang == Language.Greek && x.Code == word.StrongCode).FirstOrDefault(),
-                    GrammarCode = grammarCodes.Where(x => x.GrammarCodeVariant1 == word.GrammarCode || x.GrammarCodeVariant2 == word.GrammarCode || x.GrammarCodeVariant3 == word.GrammarCode).FirstOrDefault()
-                };
-                item.Save();
+                if (!exsistingWords.Where(x => x.SourceWord == word.SourceWord).Any()) {
+                    var item = new AncientDictionaryItem(uow) {
+                        Dictionary = dic,
+                        Word = word.SourceWord,
+                        Translation = word.Translation,
+                        Transliteration = c.TransliterateWord(word.SourceWord),
+                        StrongCode = strongs.Where(x => x.Lang == Language.Greek && x.Code == word.StrongCode).FirstOrDefault(),
+                        GrammarCode = grammarCodes.Where(x => x.GrammarCodeVariant1 == word.GrammarCode || x.GrammarCodeVariant2 == word.GrammarCode || x.GrammarCodeVariant3 == word.GrammarCode).FirstOrDefault()
+                    };
+                    item.Save();
+                    exsistingWords.Add(new TroVerseWord() { SourceWord = word.SourceWord });
+                }
             }
-            uow.CommitChanges();
 
+            uow.CommitChanges();
         }
         private SqliteConnection GetConnection(string filePath) {
             var conn = new SqliteConnection($"DataSource=\"{filePath}\"");

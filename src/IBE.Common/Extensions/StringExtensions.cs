@@ -169,6 +169,14 @@ namespace IBE.Common.Extensions {
             }
             return text;
         }
+
+        public static string RemoveAnySpace(this string text) {
+            if (text.IsNotNull()) {
+                text = System.Text.RegularExpressions.Regex.Replace(text, @"\s+", "");
+            }
+            return text;
+        }
+
         public static string ReplaceAnyWith(this string text, string replaceWith, params string[] e) {
             if (text.IsNotNull() && e.IsNotNull() && e.Length > 0) {
                 foreach (var c in e) {
