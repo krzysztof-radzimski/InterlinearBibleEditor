@@ -1,7 +1,9 @@
 ﻿using DevExpress.Xpo;
+using IBE.Common.Extensions;
 using IBE.Data.Import.Greek;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using System.Linq;
 
 namespace IBE.Data.Import.Test {
     [TestClass]
@@ -35,6 +37,74 @@ namespace IBE.Data.Import.Test {
             var uow = new UnitOfWork();
             uow.BeginTransaction();
             new GrammarCodesImporter().Import(@"..\..\..\..\db\import\Packard.dictionary.zip", uow);
+            uow.CommitChanges();
+        }
+
+        [TestMethod]
+        public void BuildGreekDictionary() {
+            var path = @"..\..\..\..\db\import\TRO.SQLite3";
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            new DictionaryBuilder().BuildFromTRO(path, uow);  
+        }
+
+        [TestMethod]
+        public void AddExistingWordsToDictionary() {
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+
+            uow.BeginTransaction();
+            var c = new GreekTransliterationController();
+            var parent = new XPQuery<Model.AncientDictionary>(uow).FirstOrDefault();
+            var dic = new XPQuery<Model.AncientDictionaryItem>(uow).ToList();
+            var words = new XPQuery<Model.VerseWord>(uow).Where(x => x.Translation != null && x.Translation != "").ToList();
+            foreach (var item in words) {
+                var w = c.GetSourceWordWithoutBreathAndAccent(item.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\""), out var isUpper).ToLower();
+                if (!dic.Where(x => x.Word == w).Any()) {
+                    var dicItem = new Model.AncientDictionaryItem(uow) {
+                        Dictionary = parent,
+                        Word = w,
+                        Translation = item.Translation.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\""),
+                        Transliteration = item.Transliteration.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\""),
+                        StrongCode = item.StrongCode,
+                        GrammarCode = item.GrammarCode
+                    };
+                    dicItem.Save();
+                    dic.Add(dicItem);
+                }
+            }
+            uow.CommitChanges();
+        }
+
+
+        [TestMethod]
+        public void TranslateInterlinearChapter() {
+
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            var verses = new XPQuery<Model.Verse>(uow).Where(x => x.Index.StartsWith("NPI.480.1"));
+            var dic = new XPQuery<Model.AncientDictionaryItem>(uow).ToList();
+
+            uow.BeginTransaction();
+
+            var c = new GreekTransliterationController();
+
+            foreach (var verse in verses) {
+                foreach (var verseWord in verse.VerseWords) {
+                    if (verseWord.Translation.IsNullOrEmpty()) {
+                        var w = c.GetSourceWordWithoutBreathAndAccent(verseWord.SourceWord, out var isUpper);
+                        var item = dic.Where(x => x.Word == w.ToLower()).FirstOrDefault();
+                        if (item.IsNotNull()) {
+                            verseWord.Translation = item.Translation;
+                            if (isUpper && verseWord.Translation .IsNotNullOrEmpty() && verseWord.Translation .Length>1) {
+                                verseWord.Translation = verseWord.Translation.Substring(0, 1).ToUpper() + verseWord.Translation.Substring(1);
+                            }
+                            verseWord.Save();
+                        }
+                    }
+                }
+            }
+
             uow.CommitChanges();
         }
 

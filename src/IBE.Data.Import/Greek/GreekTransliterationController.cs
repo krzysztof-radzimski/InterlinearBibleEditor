@@ -14,6 +14,27 @@ namespace IBE.Data.Import.Greek {
             Alphabet = new AlphabetController();
         }
 
+        public string GetSourceWordWithoutBreathAndAccent(string sourceWord, out bool isUpper) {
+            isUpper = false;
+            var isFirst = true;
+            var letters = new List<GreekLetter>();
+            foreach (var item in sourceWord) {
+                var letter = Alphabet.GetLetter(item);
+                if (letter.IsNotNull()) {
+                    if (letter.IsMark) { continue; }
+                    if (isFirst && letter.IsUpper) { isUpper = true; }
+                    letters.Add(letter);
+                }
+                isFirst = false;
+            }
+
+            var result = string.Empty;
+            foreach (var item in letters) {
+                result += item.Small;
+            }
+            return result;
+        }
+
         public TransliterateSentence GetTransliterateSentence(Model.VerseIndex index, DevExpress.Xpo.UnitOfWork uow) {
             if (index.IsNotNull()) {
                 var verse = new DevExpress.Xpo.XPQuery<Model.Verse>(uow).Where(x => x.Index == index.Index).FirstOrDefault();

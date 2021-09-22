@@ -78,6 +78,7 @@ namespace IBE.Data.Import.Greek.Alphabet {
                     var result =  Activator.CreateInstance(item.PropertyType) as GreekLetter;
                     result.IsUpper = isLetter.IsUpper;
                     result.Type = isLetter.Type;
+                    result.IsMark = isLetter.IsMark;
                     result.CurrentGreek = e;
 
                     if (isLetter.Type == LetterType.BreathingRoughAcute ||

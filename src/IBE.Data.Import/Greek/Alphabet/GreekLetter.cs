@@ -49,6 +49,7 @@ namespace IBE.Data.Import.Greek.Alphabet {
         public virtual bool IsStrongBreath { get; set; }
         public virtual LetterType Type { get; set; }
         public virtual bool IsFirst { get; set; }
+        public virtual bool IsMark { get; set; }
 
         public GreekLetter() { Transliteration = DefaultRoman; }
 
@@ -88,11 +89,13 @@ namespace IBE.Data.Import.Greek.Alphabet {
         public LetterType Type { get; }
         public bool IsLetter { get; }
         public bool IsUpper { get; }
+        public bool IsMark { get;  }
         private LetterResult() { }
-        public LetterResult(bool isLetter = false, bool isUpper = false, LetterType type = LetterType.Default) {
+        public LetterResult(bool isLetter = false, bool isUpper = false, LetterType type = LetterType.Default, bool isMark = false) {
             IsLetter = isLetter;
             IsUpper = isUpper;
             Type = type;
+            IsMark = false;
         }
     }
 
