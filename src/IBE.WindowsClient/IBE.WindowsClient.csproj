@@ -73,6 +73,7 @@
     <Reference Include="DevExpress.XtraRichEdit.v21.1, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraSpellChecker.v21.1, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraTreeList.v21.1, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraVerticalGrid.v21.1, Version=21.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.902.49, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.WebView2.1.0.902.49\lib\net45\Microsoft.Web.WebView2.Core.dll</HintPath>
     </Reference>
@@ -136,6 +137,12 @@
     <Compile Include="Controls\VerseEditorControl.Designer.cs">
       <DependentUpon>VerseEditorControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\VerseGridControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\VerseGridControl.Designer.cs">
+      <DependentUpon>VerseGridControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\VerseWordEditorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -194,6 +201,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\VerseEditorControl.resx">
       <DependentUpon>VerseEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\VerseGridControl.resx">
+      <DependentUpon>VerseGridControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\VerseWordEditorControl.resx">
       <DependentUpon>VerseWordEditorControl.cs</DependentUpon>

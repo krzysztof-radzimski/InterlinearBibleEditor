@@ -377,6 +377,7 @@ hr.fancy-line {
     .my-dropdown {
         width: 550px;
         left: calc(50vw - 275px);
+        top: 10%;
     }
 }
 
@@ -384,6 +385,7 @@ hr.fancy-line {
     .my-dropdown {
         width: 88%;
         left: calc(50vw - 44%);
+        top: 10%;
     }
 }
 
@@ -391,6 +393,7 @@ hr.fancy-line {
     .my-dropdown {
         width: 88%;
         left: calc(50vw - 44%);
+        top: 10%;
     }
 }
 
