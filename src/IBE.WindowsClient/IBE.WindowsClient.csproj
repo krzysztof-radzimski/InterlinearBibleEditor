@@ -105,6 +105,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AncientDictionaryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AncientDictionaryForm.Designer.cs">
+      <DependentUpon>AncientDictionaryForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ArticleEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,35 +137,17 @@
     </Compile>
     <Compile Include="Controllers\HTMLSyntaxHighlightService.cs" />
     <Compile Include="Controllers\XHtmlDocumentExporter.cs" />
-    <Compile Include="Controls\VerseEditorControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\VerseEditorControl.Designer.cs">
-      <DependentUpon>VerseEditorControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\VerseGridControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\VerseGridControl.Designer.cs">
       <DependentUpon>VerseGridControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\VerseWordEditorControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\VerseWordEditorControl.Designer.cs">
-      <DependentUpon>VerseWordEditorControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="GrammarCodeFindDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GrammarCodeFindDialog.Designer.cs">
       <DependentUpon>GrammarCodeFindDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="InterlinearEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="InterlinearEditorForm.Designer.cs">
-      <DependentUpon>InterlinearEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -187,6 +175,15 @@
     <Compile Include="TranslationsForm.Designer.cs">
       <DependentUpon>TranslationsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="VerseGridForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VerseGridForm.Designer.cs">
+      <DependentUpon>VerseGridForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="AncientDictionaryForm.resx">
+      <DependentUpon>AncientDictionaryForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ArticleEditorForm.resx">
       <DependentUpon>ArticleEditorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -199,20 +196,11 @@
     <EmbeddedResource Include="BaseBooksForm.resx">
       <DependentUpon>BaseBooksForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\VerseEditorControl.resx">
-      <DependentUpon>VerseEditorControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\VerseGridControl.resx">
       <DependentUpon>VerseGridControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\VerseWordEditorControl.resx">
-      <DependentUpon>VerseWordEditorControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GrammarCodeFindDialog.resx">
       <DependentUpon>GrammarCodeFindDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InterlinearEditorForm.resx">
-      <DependentUpon>InterlinearEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -236,6 +224,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TranslationsForm.resx">
       <DependentUpon>TranslationsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VerseGridForm.resx">
+      <DependentUpon>VerseGridForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

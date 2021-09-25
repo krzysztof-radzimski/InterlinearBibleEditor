@@ -587,7 +587,8 @@ namespace IBE.WindowsClient {
 
                 if (Object.Type == TranslationType.Interlinear && !e.IsNew) {
                     var v = new XPQuery<Verse>(Object.Session).Where(x => x.Oid == e.Tag.ToInt()).FirstOrDefault();
-                    var frm = new InterlinearEditorForm(v);
+                    //var frm = new InterlinearEditorForm(v);
+                    var frm = new VerseGridForm(v);
                     frm.MdiParent = this.MdiParent;
                     frm.Show();
                 }

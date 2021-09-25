@@ -38,6 +38,7 @@ namespace IBE.WindowsClient {
             this.ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(this.components);
             this.spellChecker1 = new DevExpress.XtraSpellChecker.SpellChecker(this.components);
+            this.btnAncientDictionary = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).BeginInit();
             this.SuspendLayout();
@@ -55,9 +56,10 @@ namespace IBE.WindowsClient {
             this.btnArticles,
             this.btnBaseBooks,
             this.btnCopyDatabaseToWebFolder,
-            this.btnStrongsCodes});
+            this.btnStrongsCodes,
+            this.btnAncientDictionary});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 11;
+            this.ribbonControl1.MaxItemId = 13;
             this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
@@ -131,8 +133,9 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnInterlinearEditor);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnBaseBooks);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnStrongsCodes);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnAncientDictionary);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnArticles);
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnCopyDatabaseToWebFolder);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnCopyDatabaseToWebFolder, true);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
@@ -155,6 +158,14 @@ namespace IBE.WindowsClient {
             this.spellChecker1.Culture = new System.Globalization.CultureInfo("pl-PL");
             this.spellChecker1.ParentContainer = this;
             this.spellChecker1.SpellCheckMode = DevExpress.XtraSpellChecker.SpellCheckMode.AsYouType;
+            // 
+            // btnAncientDictionary
+            // 
+            this.btnAncientDictionary.Caption = "Dictionary";
+            this.btnAncientDictionary.Id = 12;
+            this.btnAncientDictionary.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
+            this.btnAncientDictionary.Name = "btnAncientDictionary";
+            this.btnAncientDictionary.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAncientDictionary_ItemClick);
             // 
             // MainForm
             // 
@@ -191,6 +202,7 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnCopyDatabaseToWebFolder;
         private DevExpress.XtraSpellChecker.SpellChecker spellChecker1;
         private DevExpress.XtraBars.BarButtonItem btnStrongsCodes;
+        private DevExpress.XtraBars.BarButtonItem btnAncientDictionary;
     }
 }
 

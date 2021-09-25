@@ -1,8 +1,12 @@
-﻿using DevExpress.XtraBars.Ribbon;
+﻿using DevExpress.Xpo;
+using DevExpress.XtraBars.Ribbon;
+using DevExpress.XtraEditors;
 using DevExpress.XtraSpellChecker;
 using IBE.Data;
+using IBE.Data.Model;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace IBE.WindowsClient {
@@ -29,7 +33,7 @@ namespace IBE.WindowsClient {
             if (!File.Exists(dicPath)) { File.WriteAllBytes(dicPath, Properties.Resources.pl_dic); }
             if (!File.Exists(affPath)) { File.WriteAllBytes(affPath, Properties.Resources.pl_aff); }
             if (!File.Exists(alfPath)) { File.WriteAllBytes(alfPath, Properties.Resources.PolishAlphabet); }
-          
+
             this.SpellChecker.Dictionaries.Add(new HunspellDictionary(dicPath, affPath, CultureInfo.CurrentCulture));
             this.SpellChecker.Dictionaries.Add(new SpellCheckerCustomDictionary() {
                 AlphabetPath = alfPath,
@@ -37,7 +41,7 @@ namespace IBE.WindowsClient {
                 Culture = CultureInfo.CurrentCulture,
                 DictionaryPath = cusPath,
                 Encoding = Encoding.UTF8
-            });            
+            });
         }
 
         private void btnTranslations_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
@@ -48,7 +52,8 @@ namespace IBE.WindowsClient {
         }
 
         private void btnInterlinearEditor_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var frm = new InterlinearEditorForm();
+            //var frm = new InterlinearEditorForm();
+            var frm = new VerseGridForm();
             frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
             frm.MdiParent = this;
             frm.Show();
@@ -76,6 +81,13 @@ namespace IBE.WindowsClient {
 
         private void btnStrongsCodes_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             var frm = new StrongsCodesForm();
+            frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
+            frm.MdiParent = this;
+            frm.Show();
+        }
+
+        private void btnAncientDictionary_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var frm = new AncientDictionaryForm();
             frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
             frm.MdiParent = this;
             frm.Show();

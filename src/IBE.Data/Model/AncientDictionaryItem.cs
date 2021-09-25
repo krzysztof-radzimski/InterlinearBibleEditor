@@ -22,6 +22,7 @@ namespace IBE.Data.Model {
         private GrammarCode grammarCode;
         private string word;
 
+        [System.ComponentModel.Browsable(false)]
         [Association("DictionaryItems")]
         public AncientDictionary Dictionary {
             get { return dictionary; }
@@ -43,18 +44,21 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(Translation), ref translation, value); }
         }
 
+        [System.ComponentModel.Browsable(false)]
         [Association("StrongsDictionaryItems")]
         public StrongCode StrongCode {
             get { return strongCode; }
             set { SetPropertyValue(nameof(StrongCode), ref strongCode, value); }
         }
 
+        [System.ComponentModel.Browsable(false)]
         [Association("GrammarCodesDictionaryItems")]
         public GrammarCode GrammarCode {
             get { return grammarCode; }
             set { SetPropertyValue(nameof(GrammarCode), ref grammarCode, value); }
         }
 
+        [System.ComponentModel.Browsable(false)]
         [Association("DictionaryItemsVerses", UseAssociationNameAsIntermediateTableName =true)]
         public XPCollection<VerseInfo> VersesReferences {
             get { return GetCollection<VerseInfo>(nameof(VersesReferences)); }

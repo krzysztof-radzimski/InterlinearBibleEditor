@@ -9,9 +9,11 @@ using System.Xml.Linq;
 
 namespace IBE.Data.Import.Greek {
     public class DictionaryBuilder {
-        public void Build(UnitOfWork uow, string troPath) {
+        public void Build(UnitOfWork uow, string troPath = null) {
             BuildFromExisting(uow);
-            BuildFromTRO(troPath, uow);
+            if (troPath.IsNotNullOrEmpty()) {
+                BuildFromTRO(troPath, uow);
+            }
         }
         private void BuildFromExisting(UnitOfWork uow) {
             uow.BeginTransaction();

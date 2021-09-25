@@ -130,6 +130,7 @@ namespace IBE.WindowsClient {
             this.navigationNotesItem1 = new DevExpress.XtraRichEdit.UI.NavigationNotesItem();
             this.showNotesItem1 = new DevExpress.XtraRichEdit.UI.ShowNotesItem();
             this.btnSave = new DevExpress.XtraBars.BarButtonItem();
+            this.btnQuote = new DevExpress.XtraBars.BarButtonItem();
             this.homeRibbonPage1 = new DevExpress.XtraRichEdit.UI.HomeRibbonPage();
             this.clipboardRibbonPageGroup1 = new DevExpress.XtraRichEdit.UI.ClipboardRibbonPageGroup();
             this.fontRibbonPageGroup1 = new DevExpress.XtraRichEdit.UI.FontRibbonPageGroup();
@@ -157,7 +158,6 @@ namespace IBE.WindowsClient {
             this.txtSubject = new DevExpress.XtraEditors.TextEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.sidePanel2 = new DevExpress.XtraEditors.SidePanel();
-            this.btnQuote = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemFontEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemRichEditFontSizeEdit1)).BeginInit();
@@ -359,7 +359,6 @@ namespace IBE.WindowsClient {
             this.editor.MenuManager = this.ribbonControl1;
             this.editor.Name = "editor";
             this.editor.Options.Behavior.CreateNew = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
-            this.editor.Options.Behavior.Open = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.Behavior.Save = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.Behavior.SaveAs = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.DocumentCapabilities.ActiveX = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
@@ -918,6 +917,14 @@ namespace IBE.WindowsClient {
             this.btnSave.Name = "btnSave";
             this.btnSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnSave_ItemClick);
             // 
+            // btnQuote
+            // 
+            this.btnQuote.Caption = "Quote";
+            this.btnQuote.Id = 96;
+            this.btnQuote.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnQuote.ImageOptions.SvgImage")));
+            this.btnQuote.Name = "btnQuote";
+            this.btnQuote.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnQuote_ItemClick);
+            // 
             // homeRibbonPage1
             // 
             this.homeRibbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -937,7 +944,8 @@ namespace IBE.WindowsClient {
             // clipboardRibbonPageGroup1
             // 
             this.clipboardRibbonPageGroup1.CaptionButtonVisible = DevExpress.Utils.DefaultBoolean.False;
-            this.clipboardRibbonPageGroup1.ItemLinks.Add(this.pasteItem1, "V");
+            this.clipboardRibbonPageGroup1.ItemLinks.Add(this.btnSave);
+            this.clipboardRibbonPageGroup1.ItemLinks.Add(this.pasteItem1, true, "V");
             this.clipboardRibbonPageGroup1.ItemLinks.Add(this.cutItem1, "X");
             this.clipboardRibbonPageGroup1.ItemLinks.Add(this.copyItem1, "C");
             this.clipboardRibbonPageGroup1.ItemLinks.Add(this.pasteSpecialItem1);
@@ -973,7 +981,6 @@ namespace IBE.WindowsClient {
             // editingRibbonPageGroup1
             // 
             this.editingRibbonPageGroup1.CaptionButtonVisible = DevExpress.Utils.DefaultBoolean.False;
-            this.editingRibbonPageGroup1.ItemLinks.Add(this.btnSave);
             this.editingRibbonPageGroup1.ItemLinks.Add(this.findItem1, "FD");
             this.editingRibbonPageGroup1.ItemLinks.Add(this.replaceItem1, "R");
             this.editingRibbonPageGroup1.Name = "editingRibbonPageGroup1";
@@ -1310,14 +1317,6 @@ namespace IBE.WindowsClient {
             this.sidePanel2.Size = new System.Drawing.Size(986, 711);
             this.sidePanel2.TabIndex = 4;
             this.sidePanel2.Text = "sidePanel2";
-            // 
-            // btnQuote
-            // 
-            this.btnQuote.Caption = "Quote";
-            this.btnQuote.Id = 96;
-            this.btnQuote.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnQuote.ImageOptions.SvgImage")));
-            this.btnQuote.Name = "btnQuote";
-            this.btnQuote.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnQuote_ItemClick);
             // 
             // ArticleEditorForm
             // 

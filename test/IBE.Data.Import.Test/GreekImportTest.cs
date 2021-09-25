@@ -47,21 +47,6 @@ namespace IBE.Data.Import.Test {
             ConnectionHelper.Connect();
             var uow = new UnitOfWork();
             new DictionaryBuilder().Build(uow, path);
-
-            //var button = new AngularHorizontalButton() {
-            //    Image = Image.FromFile("..."),
-            //    Label = "Wyślij uśmiech",
-            //    Title = "Coś mi się podoba",
-            //    DescriptionAttribute = "Chcielibyśmy wiedzieć, czy wprowadziliśmy pozytywne zmiany"
-            //};
-            //button.Click += new EventHandler(delegate (object sender, EventArgs e) { 
-            // // ...
-            //});
-
-            //var box = new AngulatContentBox() {
-            //    Title = "Kontakt i pomoc techniczna",
-            //    Content = "<b>shdghsdghs</b> shdghsdgshgdhs <a href=\"http://www.....\">link</a>"
-            //};
         }
 
 
