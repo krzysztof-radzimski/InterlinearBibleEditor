@@ -383,6 +383,15 @@ namespace IBE.WindowsClient.Controls {
                             word.Transliteration = result;
                         }
                     }
+                    //
+                    // SourceWord
+                    //
+                    else if (hi.Column.FieldName == "SourceWord") {
+                        var result = XtraInputBox.Show("SourceWord", "SourceWord", word.SourceWord);
+                        if (result != word.SourceWord && result.IsNotNullOrEmpty()) {
+                            word.SourceWord = result;
+                        }
+                    }
                 }
             }
         }

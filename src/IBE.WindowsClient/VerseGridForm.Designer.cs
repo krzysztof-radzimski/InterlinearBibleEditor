@@ -46,6 +46,7 @@ namespace IBE.WindowsClient {
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.pnlTop = new DevExpress.XtraEditors.PanelControl();
+            this.lblVerseCount = new DevExpress.XtraEditors.LabelControl();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
@@ -55,7 +56,6 @@ namespace IBE.WindowsClient {
             this.txtChapter = new DevExpress.XtraEditors.LookUpEdit();
             this.txtVerse = new DevExpress.XtraEditors.LookUpEdit();
             this.pnlContent = new DevExpress.XtraEditors.PanelControl();
-            this.lblVerseCount = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlTop)).BeginInit();
             this.pnlTop.SuspendLayout();
@@ -228,7 +228,6 @@ namespace IBE.WindowsClient {
             // btnUpdateDictionary
             // 
             this.btnUpdateDictionary.Caption = "Update dictionary";
-            this.btnUpdateDictionary.Enabled = false;
             this.btnUpdateDictionary.Id = 20;
             this.btnUpdateDictionary.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnUpdateDictionary.ImageOptions.SvgImage")));
             this.btnUpdateDictionary.Name = "btnUpdateDictionary";
@@ -288,6 +287,14 @@ namespace IBE.WindowsClient {
             this.pnlTop.Name = "pnlTop";
             this.pnlTop.Size = new System.Drawing.Size(1163, 33);
             this.pnlTop.TabIndex = 1;
+            // 
+            // lblVerseCount
+            // 
+            this.lblVerseCount.Location = new System.Drawing.Point(552, 10);
+            this.lblVerseCount.Name = "lblVerseCount";
+            this.lblVerseCount.Size = new System.Drawing.Size(9, 13);
+            this.lblVerseCount.TabIndex = 8;
+            this.lblVerseCount.Text = "...";
             // 
             // labelControl4
             // 
@@ -377,14 +384,6 @@ namespace IBE.WindowsClient {
             this.pnlContent.Name = "pnlContent";
             this.pnlContent.Size = new System.Drawing.Size(1163, 482);
             this.pnlContent.TabIndex = 3;
-            // 
-            // lblVerseCount
-            // 
-            this.lblVerseCount.Location = new System.Drawing.Point(552, 10);
-            this.lblVerseCount.Name = "lblVerseCount";
-            this.lblVerseCount.Size = new System.Drawing.Size(9, 13);
-            this.lblVerseCount.TabIndex = 8;
-            this.lblVerseCount.Text = "...";
             // 
             // VerseGridForm
             // 
