@@ -470,3 +470,20 @@ hr.fancy-line {
 img {
     max-width: 100%;
 }
+
+
+._2p3a {
+    width: 100% !important;
+}
+
+#FacebookFrame {
+    width: 100% !important;
+}
+
+    #FacebookFrame iframe {
+        width: 100% !important;
+    }
+
+    #FacebookFrame span:first-of-type {
+        width: 100% !important;
+    }
