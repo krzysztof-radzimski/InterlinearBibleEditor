@@ -2,3 +2,7 @@ Dodaæ moje prace z WBST
 http://kosciol-jezusa.pl/SNP18/30/23/41 poprawiæ œródtytu³y z cytowanymi fragmentami
 Dodaæ 2 rozdzia³ 1 Jana jako przet³umaczone
 Rodzaju 4:8 Sta³o siê
+
+Eksport interlinearki: same numery wersetów bez rozdzia³u, kszta³t z ustawiony wype³nieniem: brak. 
+Dzieki temu nie bêdzie efektu przykrywania przypisów.
+Numery przypisów, bez dodawania nawiasu, tylko stosowanie custom mark.

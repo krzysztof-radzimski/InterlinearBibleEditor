@@ -15,6 +15,7 @@ using DevExpress.Xpo;
 using Microsoft.Data.Sqlite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using System.Linq;
 
 namespace IBE.Data.Import.Test {
     [TestClass]
@@ -62,10 +63,11 @@ namespace IBE.Data.Import.Test {
             var uow = new UnitOfWork();
             uow.BeginTransaction();
 
-            var verses = new XPQuery<Model.Verse>(uow);
+            var verses = new XPQuery<Model.Verse>(uow).Where(x=>x.Index == null).ToList();
             foreach (var item in verses) {
                 var translationName = item.ParentTranslation.Name.Replace("+", "").Replace("'", "");
-                item.Index = $"{translationName}.{item.ParentChapter.ParentBook.NumberOfBook}.{item.ParentChapter.NumberOfChapter}.{item.NumberOfVerse}";
+                var index = $"{translationName}.{item.ParentChapter.ParentBook.NumberOfBook}.{item.ParentChapter.NumberOfChapter}.{item.NumberOfVerse}";
+                item.Index = index;
                 item.Save();
             }
 

@@ -77,22 +77,24 @@ namespace Church.WebApp.Controllers {
 
             var model = new SearchResultsModel(words);
             foreach (ViewRecord record in view) {
+                var _index = record["Index"];
+                if (_index.IsNotNull()) {
+                    var index = new VerseIndex(_index.ToString());
+                    var baseBookShortcut = bookShortcuts.Where(x => x.Key == index.NumberOfBook).Select(x => x.Value).FirstOrDefault();
+                    var translation = translationNames.Where(x => x.Key == index.TranslationName).FirstOrDefault();
+                    if (translation.IsNull() || translation.Key.IsNull()) { continue; }
+                    var translationDesc = translation.Value;
 
-                var index = new VerseIndex(record["Index"].ToString());
-                var baseBookShortcut = bookShortcuts.Where(x => x.Key == index.NumberOfBook).Select(x => x.Value).FirstOrDefault();
-                var translation = translationNames.Where(x => x.Key == index.TranslationName).FirstOrDefault();
-                if (translation.IsNull() || translation.Key.IsNull()) { continue; }
-                var translationDesc = translation.Value;
-
-                model.Add(new SearchItemModel() {
-                    Book = index.NumberOfBook,//record["NumberOfBook"].ToInt(),
-                    BookShortcut = baseBookShortcut,//record["BookShortcut"].ToString(),
-                    Chapter = index.NumberOfChapter,//record["NumberOfChapter"].ToInt(),
-                    Verse = record["NumberOfVerse"].ToInt(),
-                    TranslationName = translationDesc,//record["TranslationName"].ToString(),
-                    Translation = index.TranslationName,//record["Translation"].ToString().Replace("'", "").Replace("+", ""),
-                    VerseText = record["VerseText"].ToString()
-                });
+                    model.Add(new SearchItemModel() {
+                        Book = index.NumberOfBook,//record["NumberOfBook"].ToInt(),
+                        BookShortcut = baseBookShortcut,//record["BookShortcut"].ToString(),
+                        Chapter = index.NumberOfChapter,//record["NumberOfChapter"].ToInt(),
+                        Verse = record["NumberOfVerse"].ToInt(),
+                        TranslationName = translationDesc,//record["TranslationName"].ToString(),
+                        Translation = index.TranslationName,//record["Translation"].ToString().Replace("'", "").Replace("+", ""),
+                        VerseText = record["VerseText"].ToString()
+                    });
+                }
             }
 
             return View(model);
