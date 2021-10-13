@@ -133,7 +133,15 @@ namespace IBE.WindowsClient.Controls {
                     subtitle.Delete();
                 }
             }
+
             Words.ForEach(x => { x.Save(); });
+
+            var text = String.Empty;
+            foreach (var verseWord in Verse.VerseWords.OrderBy(x => x.NumberOfVerseWord)) {
+                text += $"{verseWord.Translation} ";
+            }
+
+            Verse.Text = text.Trim();
 
             var uow = Verse.Session as UnitOfWork;
             if (uow.IsNotNull()) {

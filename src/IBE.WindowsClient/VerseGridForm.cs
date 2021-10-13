@@ -63,7 +63,7 @@ namespace IBE.WindowsClient {
 
             Translation = verse.ParentTranslation;
             NAME = Translation.Name;
-            txtIndex.EditValue = $"{Name.Replace("'", "").Replace("+", "")}.";
+           // $"{NAME.Replace("'", "").Replace("+", "")}.";
 
             LoadBooks();
 
@@ -105,6 +105,9 @@ namespace IBE.WindowsClient {
             //});
 
             TransliterationController = new GreekTransliterationController();
+
+            txtIndex.EditValue = verse.Index;
+            txtIndex_KeyUp(txtIndex, new KeyEventArgs(Keys.Enter));
         }
 
         private void LoadBooks() {

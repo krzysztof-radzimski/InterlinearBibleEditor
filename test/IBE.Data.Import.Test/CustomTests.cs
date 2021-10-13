@@ -14,6 +14,7 @@
 using DevExpress.Xpo;
 using Microsoft.Data.Sqlite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -74,6 +75,28 @@ namespace IBE.Data.Import.Test {
             uow.CommitChanges();
         }
 
+
+        [TestMethod]
+        public void UpdateInterlinearVerseText() {
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            uow.BeginTransaction();
+            
+            var verses = new XPQuery<Model.Verse>(uow).Where(x => x.Index.Contains("NPI") && (x.Text == null || x.Text == "")).ToList();
+            foreach (var item in verses) {
+                if (item.ParentChapter.IsTranslated) {
+                    var text = String.Empty;
+                    foreach (var verseWord in item.VerseWords.OrderBy(x => x.NumberOfVerseWord)) {
+                        text += $"{verseWord.Translation} ";
+                    }
+
+                    item.Text = text.Trim();
+                    item.Save();
+                }
+            }
+
+            uow.CommitChanges();
+        }
 
     }
 }

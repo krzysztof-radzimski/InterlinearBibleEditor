@@ -155,10 +155,10 @@ namespace IBE.WindowsClient {
 
                         foreach (var __item in _item.Verses.OrderBy(x => x.NumberOfVerse)) {
 #if DEBUG
-                            if (item.NumberOfBook == 470 && _item.NumberOfChapter == 1 && __item.NumberOfVerse == 18) 
-                                { 
+                            //if (item.NumberOfBook == 470 && _item.NumberOfChapter == 1 && __item.NumberOfVerse == 18) 
+                            //    { 
                             
-                            }
+                            //}
 #endif
 
                             var subtitles = _item.Subtitles.ToList();
@@ -588,8 +588,9 @@ namespace IBE.WindowsClient {
                 if (Object.Type == TranslationType.Interlinear && !e.IsNew) {
                     var v = new XPQuery<Verse>(Object.Session).Where(x => x.Oid == e.Tag.ToInt()).FirstOrDefault();
                     //var frm = new InterlinearEditorForm(v);
-                    var frm = new VerseGridForm(v);
-                    frm.MdiParent = this.MdiParent;
+                    var frm = new VerseGridForm(v) {
+                        MdiParent = this.MdiParent
+                    };
                     frm.Show();
                 }
                 else {
