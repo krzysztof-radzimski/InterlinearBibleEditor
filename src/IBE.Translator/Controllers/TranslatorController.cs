@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 namespace IBE.Translator.Controllers {
     public class TranslatorController {
         public TranslatorSettingsController SettingsController { get; }
-        public TranslatorController() {
+        public TranslatorController(string settingsFilePath = null) {
             this.SettingsController = new TranslatorSettingsController();
-            this.SettingsController.GetSettings();
+            this.SettingsController.GetSettings(settingsFilePath);
         }
 
-        public async Task<TranslationsResult[]> Translate(string textToTranslate, string langFrom = "en", string langTo = "pl") {
-            string route = $"/translate?api-version=3.0&from={langFrom}&to={langTo}";
+        public async Task<TranslationsResult[]> Translate(string textToTranslate, TypeText type = TypeText.html, string langFrom = "en", string langTo = "pl") {
+            string route = $"/translate?api-version=3.0&from={langFrom}&to={langTo}&textType={type}";
             object[] body = new object[] { new { Text = textToTranslate } };
             var requestBody = JsonConvert.SerializeObject(body);
 

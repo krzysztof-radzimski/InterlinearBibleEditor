@@ -66,7 +66,7 @@ namespace IBE.Data.Import.Test {
             var uow = new UnitOfWork();
             uow.BeginTransaction();
 
-            var verses = new XPQuery<Model.Verse>(uow).Where(x=>x.Index == null).ToList();
+            var verses = new XPQuery<Model.Verse>(uow).Where(x => x.Index == null).ToList();
             foreach (var item in verses) {
                 var translationName = item.ParentTranslation.Name.Replace("+", "").Replace("'", "");
                 var index = $"{translationName}.{item.ParentChapter.ParentBook.NumberOfBook}.{item.ParentChapter.NumberOfChapter}.{item.NumberOfVerse}";
@@ -83,7 +83,7 @@ namespace IBE.Data.Import.Test {
             ConnectionHelper.Connect();
             var uow = new UnitOfWork();
             uow.BeginTransaction();
-            
+
             var verses = new XPQuery<Model.Verse>(uow).Where(x => x.Index.Contains("NPI") && (x.Text == null || x.Text == "")).ToList();
             foreach (var item in verses) {
                 if (item.ParentChapter.IsTranslated) {
@@ -107,10 +107,32 @@ namespace IBE.Data.Import.Test {
 
             var controller = new TranslatorController();
             var result = await controller.Translate(textToTranslate);
-            if (result != null) { 
+            if (result != null) {
+
+            }
+        }
+
+        System.Net.WebClient wc = null;
+
+        [TestMethod]
+        public void TranslateStrongPage() {
+            if (wc == null) {
+                wc = new System.Net.WebClient();
+                //wc.DownloadStringCompleted += OnDownloadStringCompleted;
+            }
+            var url = @"https://biblehub.com/greek/266.htm";
+            //https://www.blueletterbible.org/lexicon/g266/nasb20/tr/0-1/
+            //wc.DownloadStringAsync(new Uri(url));
+            var html = wc.DownloadString(url);
+            if (html != null) { 
             
             }
         }
 
+        //private void OnDownloadStringCompleted(object sender, System.Net.DownloadStringCompletedEventArgs e) {
+        //    if (e.Result != null) {
+
+        //    }
+        //}
     }
 }
