@@ -12,11 +12,13 @@
   ===================================================================================*/
 
 using DevExpress.Xpo;
+using IBE.Translator.Controllers;
 using Microsoft.Data.Sqlite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace IBE.Data.Import.Test {
     [TestClass]
@@ -96,6 +98,18 @@ namespace IBE.Data.Import.Test {
             }
 
             uow.CommitChanges();
+        }
+
+
+        [TestMethod]
+        public async Task TranslateText() {
+            var textToTranslate = @"ἁμαρτία, (ας, ἡ (from 2 aorist ἁμαρτεῖν, as ἀποτυχία from ἀποτύχειν), a failing to hit the mark (see ἁμαρτάνω. In Greek writings (from Aeschylus and Thucydides down). 1st, an error of the understanding (cf. Ackermann, Das Christl. im Plato, p. 59 Anm. 3 (English translation (S. R. Asbury, 1861), p. 57 n. 99)). 2nd, a bad action, evil deed. In the N. T. always in an ethical sense, and";
+
+            var controller = new TranslatorController();
+            var result = await controller.Translate(textToTranslate);
+            if (result != null) { 
+            
+            }
         }
 
     }

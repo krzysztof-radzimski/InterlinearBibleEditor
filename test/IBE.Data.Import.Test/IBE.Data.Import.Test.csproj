@@ -120,6 +120,10 @@
       <Project>{e0f97b67-f1a2-45f3-a662-055fe1fedb91}</Project>
       <Name>IBE.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\IBE.Translator\IBE.Translator.csproj">
+      <Project>{E0D4FE88-073C-4902-83C1-9164E22CE806}</Project>
+      <Name>IBE.Translator</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
