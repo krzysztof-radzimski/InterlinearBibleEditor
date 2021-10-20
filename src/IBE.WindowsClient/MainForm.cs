@@ -74,9 +74,15 @@ namespace IBE.WindowsClient {
         }
 
         private void btnCopyDatabaseToWebFolder_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var path = "../../../../db/IBE.SQLite3";
+            var path =  "../../../../db/IBE.SQLite3";
             var path2 = "../../../Church.WebApp/Data/IBE.SQLite3";
-            File.Copy(path, path2, true);
+            var info = new FileInfo(path);
+            if (info.Exists) {
+                var info2 = new FileInfo(path2);
+                if (!info2.Directory.Exists) { info2.Directory.Create(); }
+                info.CopyTo(path2, true);
+            }
+            //File.Copy(path, path2, true);
         }
 
         private void btnStrongsCodes_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {

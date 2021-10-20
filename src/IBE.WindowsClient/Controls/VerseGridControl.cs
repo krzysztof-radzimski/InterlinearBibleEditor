@@ -142,6 +142,7 @@ namespace IBE.WindowsClient.Controls {
             }
 
             Verse.Text = text.Trim();
+            Verse.Save();
 
             var uow = Verse.Session as UnitOfWork;
             if (uow.IsNotNull()) {
