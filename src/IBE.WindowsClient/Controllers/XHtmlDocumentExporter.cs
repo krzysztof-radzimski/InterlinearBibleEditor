@@ -107,7 +107,7 @@ namespace IBE.WindowsClient.Controllers {
                 if (run.ForeColorIndex != DevExpress.Office.Model.ColorModelInfoCache.EmptyColorIndex)
                     span += $"color: #{ColorTranslator.ToHtml(DocumentModel.GetColor(run.ForeColorIndex))}; ";
                 if (run.DoubleFontSize != DocumentModel.DefaultCharacterProperties.DoubleFontSize)
-                    span += $"font-size: {Math.Min(run.DoubleFontSize, 39)}; ";
+                    span += $"font-size: {Math.Min(run.DoubleFontSize, 39)}px; ";
 
                 span += $"\">{text}</span>";
                 DocumentContentWriter.Write(span);
@@ -199,7 +199,7 @@ namespace IBE.WindowsClient.Controllers {
             try {
                 number = GetNumberingListText(paragraph);
                 if (number.IsNotNull()) {
-                    isFirstNumber = number.Trim().StartsWith("1");
+                    isFirstNumber = number.Trim().StartsWith("1.");
                 }
             }
             catch { }
