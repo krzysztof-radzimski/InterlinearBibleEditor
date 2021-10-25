@@ -59,6 +59,7 @@
   <ItemGroup>
     <ProjectReference Include="..\IBE.Common\IBE.Common.csproj" />
     <ProjectReference Include="..\IBE.Data\IBE.Data.csproj" />
+    <ProjectReference Include="..\IBE.Translator\IBE.Translator.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">

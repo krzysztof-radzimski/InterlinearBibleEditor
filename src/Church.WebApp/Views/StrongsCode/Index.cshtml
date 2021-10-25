@@ -7,27 +7,49 @@
 @using IBE.Data.Model;
 
 @model IBE.Data.Model.StrongCode
+@{
+    var prev = Model.Code - 1;
+    var next = Model.Code + 1;
+    var definition = Model.Definition.Replace(@"href='S:G", @"href='StrongsCode?id=G").Replace(@"href='S:H", @"href='StrongsCode?id=H");
+    var pattern = @"href\=\'B\:(?<book>[0-9]+)\s(?<chapter>[0-9]+)\:(?<verse>[0-9]+)\'";
+    definition = System.Text.RegularExpressions.Regex.Replace(definition, pattern, delegate (System.Text.RegularExpressions.Match m) {
+        var numberOfBook = m.Groups["book"].Value.ToInt();
+        var numberOfChapter = m.Groups["chapter"].Value.ToInt();
+        var verse = m.Groups["verse"].Value.ToInt();
 
+        return @$"href='/UBG18/{numberOfBook}/{numberOfChapter}/{verse}'";
+    });
+
+}
 @if (Model != null) {
 
     ViewData["Title"] = $"{@Model.Lang.GetCategory()}{@Model.Code}";
-    var link = $"https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs=G{@Model.Code}&t=MGNT";
+    var link = $"https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs={Model.Lang.GetCategory()}{@Model.Code}&t=MGNT";
 
     <div class="clearfix max-width-1000" style="min-height: 80vh;">
         <div class="row p-4">
             <h1><i class="fas fa-bible"></i> Słownik Stronga</h1>
-          
+
             <p class="fs-5 text-center shadow p-3 mb-3 rounded">
                 <img src="~/img/biblelink.jpg" style="width: 100%; max-height: 300px; " class="shadow-lg" />
             </p>
             <div class="col d-flex flex-column position-static">
                 <div>
+                    @if (Model.Code - 1 > 0) {
+                        <strong class="d-inline-block mb-2 text-success pill-white" style="width:auto;"><a href="/StrongsCode?id=@Model.Lang.GetCategory()@prev" class="text-decoration-none" title="Poprzednie hasło"><i class="far fa-arrow-alt-circle-left"></i></a></strong>
+                    }
                     <strong class="d-inline-block mb-2 text-success pill-white">@Model.Lang.GetCategory()@Model.Code</strong>
+                    @if ((Model.Lang == Language.Greek && Model.Code < 5624) || (Model.Lang == Language.Hebrew && Model.Code < 8674)) {
+                        <strong class="d-inline-block mb-2 text-success pill-white" style="width:auto;"><a href="/StrongsCode?id=@Model.Lang.GetCategory()@next" class="text-decoration-none" title="Następne hasło"><i class="far fa-arrow-alt-circle-right"></i></a></strong>
+                    }
                 </div>
                 <h3 class="mb-0">@Model.SourceWord</h3>
-                <p class="mb-auto fst-italic">@Model.Pronunciation</p>
-                <p class="mb-auto">@Model.ShortDefinition</p>
-                <div class="mb-1">@Html.Raw(Model.Definition.Replace("\r\n", "<br/>"))</div>
+                <p class="mb-auto">Język: <span class="fst-italic">@(Model.Lang == Language.Greek ? "grecki" : "hebrajski")</span></p>
+                <p class="mb-auto">Transliteracja: <span class="fst-italic">@Model.Transliteration</span></p>
+                <p class="mb-auto">Wymowa:  <span class="fst-italic">@Model.Pronunciation</span></p>
+                <p class="mb-auto">Definicja:  <span class="fst-italic">@Model.ShortDefinition</span></p>
+
+                <div class="mb-1">@Html.Raw(definition)</div>
 
                 <p><a href="@link" target="_blank">Więcej...</a></p>
             </div>

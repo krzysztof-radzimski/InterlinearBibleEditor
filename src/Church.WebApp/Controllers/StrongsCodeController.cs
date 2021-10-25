@@ -23,8 +23,17 @@ namespace Church.WebApp.Controllers {
                 if (value.Contains("&")) {
                     value = value.Substring(0, value.IndexOf("&"));
                 }
-                var id = value.ToLower().Replace("?id=", "").Trim().ToInt();
-                var strongCode = new XPQuery<StrongCode>(new UnitOfWork()).Where(x => x.Code == id && x.Lang == Language.Greek).FirstOrDefault();
+                var lang = Language.Greek;
+                var _id = value.ToLower().Replace("?id=", "").Trim();
+                if (_id.StartsWith("g", StringComparison.CurrentCultureIgnoreCase)) {
+                    _id = _id.Substring(1);
+                }
+                if (_id.StartsWith("h", StringComparison.CurrentCultureIgnoreCase)) {
+                    _id = _id.Substring(1);
+                    lang = Language.Hebrew;
+                }
+                var id = _id.ToInt();
+                var strongCode = new XPQuery<StrongCode>(new UnitOfWork()).Where(x => x.Code == id && x.Lang == lang).FirstOrDefault();
                 if (strongCode.IsNotNull()) {
                     return View(strongCode);
                 }

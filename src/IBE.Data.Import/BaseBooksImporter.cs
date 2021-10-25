@@ -15,7 +15,6 @@ using DevExpress.Xpo;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
 using Microsoft.Data.Sqlite;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 

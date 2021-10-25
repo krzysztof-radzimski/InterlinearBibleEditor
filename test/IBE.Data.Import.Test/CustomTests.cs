@@ -112,22 +112,34 @@ namespace IBE.Data.Import.Test {
             }
         }
 
-        System.Net.WebClient wc = null;
-
         [TestMethod]
-        public void TranslateStrongPage() {
-            if (wc == null) {
-                wc = new System.Net.WebClient();
-                //wc.DownloadStringCompleted += OnDownloadStringCompleted;
-            }
-            var url = @"https://biblehub.com/greek/266.htm";
-            //https://www.blueletterbible.org/lexicon/g266/nasb20/tr/0-1/
-            //wc.DownloadStringAsync(new Uri(url));
-            var html = wc.DownloadString(url);
-            if (html != null) { 
+        public void ImportStrongsDictionary() {
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            uow.BeginTransaction();
             
-            }
+            var thayersGreekDefinitionsPath = @"..\..\..\..\db\dic\BDB-T.dictionary.zip";
+            new StrongsDictionaryImporter().Import(thayersGreekDefinitionsPath, uow);
+
+            uow.CommitChanges();
         }
+
+        //System.Net.WebClient wc = null;
+
+        //[TestMethod]
+        //public void TranslateStrongPage() {
+        //    if (wc == null) {
+        //        wc = new System.Net.WebClient();
+        //        //wc.DownloadStringCompleted += OnDownloadStringCompleted;
+        //    }
+        //    var url = @"https://biblehub.com/greek/266.htm";
+        //    //https://www.blueletterbible.org/lexicon/g266/nasb20/tr/0-1/
+        //    //wc.DownloadStringAsync(new Uri(url));
+        //    var html = wc.DownloadString(url);
+        //    if (html != null) { 
+            
+        //    }
+        //}
 
         //private void OnDownloadStringCompleted(object sender, System.Net.DownloadStringCompletedEventArgs e) {
         //    if (e.Result != null) {
