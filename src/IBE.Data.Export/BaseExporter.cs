@@ -1,9 +1,12 @@
 ﻿using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Loading;
 using Aspose.Words.Saving;
 using IBE.Common.Extensions;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 
 namespace IBE.Data.Export {
     public abstract class BaseExporter {
@@ -14,11 +17,14 @@ namespace IBE.Data.Export {
         protected System.Drawing.Font font9;
         protected System.Drawing.Font font8;
 
+        protected string Host { get; }
+
         protected BaseExporter() { }
-        public BaseExporter(byte[] asposeLicense) : this() {
+        public BaseExporter(byte[] asposeLicense, string host) : this() {
             if (asposeLicense.IsNotNull()) {
                 new License().SetLicense(new MemoryStream(asposeLicense));
             }
+            Host = host;
             var img = new Bitmap(1, 1);
             g = System.Drawing.Graphics.FromImage(img);
             font8 = new System.Drawing.Font("Times New Roman", 8F, FontStyle.Regular);
@@ -89,6 +95,8 @@ namespace IBE.Data.Export {
         }
 
         protected byte[] SaveBuilder(ExportSaveFormat saveFormat, DocumentBuilder builder) {
+            ResizeShapes(builder);
+
             var ms = new MemoryStream();
             if (saveFormat == ExportSaveFormat.Docx) {
                 builder.Document.Save(ms, SaveFormat.Docx);
@@ -110,6 +118,8 @@ namespace IBE.Data.Export {
             return ms.GetBuffer();
         }
         protected void SaveBuilder(ExportSaveFormat saveFormat, string outputPath, DocumentBuilder builder) {
+            ResizeShapes(builder);
+
             if (saveFormat == ExportSaveFormat.Docx) {
                 builder.Document.Save(outputPath, SaveFormat.Docx);
             }
@@ -128,5 +138,50 @@ namespace IBE.Data.Export {
                 });
             }
         }
-    }   
+
+        private void ResizeShapes(DocumentBuilder builder) {
+            var _shapes = builder.Document.GetChildNodes(NodeType.Shape, true);
+            if (_shapes.Count > 0) {
+                IEnumerable<Shape> shapes = _shapes.OfType<Shape>().Where(s => s.HasImage);
+                foreach (Shape shape in shapes) {
+                    double targetHeight = 0;
+                    double targetWidth = 0;
+                    CalculateImageSize(builder, shape, out targetHeight, out targetWidth);
+                    if (targetWidth > 0 && targetHeight > 0) {
+                        shape.Width = targetWidth;
+                        shape.Height = targetHeight;
+                    }
+                }
+            }
+        }
+        private void CalculateImageSize(DocumentBuilder builder, Shape shape, out double targetHeight, out double targetWidth) {
+
+            //Calculate width and height of the page
+            PageSetup ps = builder.CurrentSection.PageSetup;
+            targetHeight = ps.PageHeight - ps.TopMargin - ps.BottomMargin;
+            targetWidth = ps.PageWidth - ps.LeftMargin - ps.RightMargin;
+
+
+            //Get size of an image
+            double imgHeight = ConvertUtil.PixelToPoint(shape.Height);
+            double imgWidth = ConvertUtil.PixelToPoint(shape.Width);
+
+            if (targetHeight > imgHeight && targetWidth > imgWidth) { return; }
+
+            if (imgHeight < targetHeight && imgWidth < targetWidth) {
+                targetHeight = imgHeight;
+                targetWidth = imgWidth;
+            }
+            else {
+                //Calculate size of an image in the document
+                double ratioWidth = imgWidth / targetWidth;
+                double ratioHeight = imgHeight / targetHeight;
+
+                if (ratioWidth > ratioHeight)
+                    targetHeight = (targetHeight * (ratioHeight / ratioWidth));
+                else
+                    targetHeight = (targetWidth * (ratioWidth / ratioHeight));
+            }
+        }
+    }
 }

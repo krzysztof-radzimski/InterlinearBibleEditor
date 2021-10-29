@@ -9,11 +9,11 @@ namespace IBE.Data.Export {
     public class DefaultExporter : BaseDefaultExporter {
         private int footNoteIndex = 1;
         private DefaultExporter() : base() { }
-        public DefaultExporter(byte[] asposeLicense) : base(asposeLicense) { }
-             
+        public DefaultExporter(byte[] asposeLicense, string host) : base(asposeLicense, host) { }
+
         protected override void ExportVerse(Verse verse, ref Paragraph par, DocumentBuilder builder) {
             var footNotes = new Dictionary<int, string>();
-           
+
             var book = verse.ParentChapter.ParentBook;
             if (verse.ParentChapter.Subtitles.Count > 0) {
                 var subtitles = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).OrderBy(x => x.Level);

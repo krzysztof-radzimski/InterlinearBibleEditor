@@ -11,7 +11,7 @@ namespace IBE.Data.Export {
     public class CompareVersesExporter : BaseExporter {
         private int footNoteIndex = 1;
         private CompareVersesExporter() : base() { }
-        public CompareVersesExporter(byte[] asposeLicense) : base(asposeLicense) { }
+        public CompareVersesExporter(byte[] asposeLicense, string host) : base(asposeLicense, host) { }
 
         public byte[] Export(CompareVerseModel model, ExportSaveFormat saveFormat) {
             if (model.IsNull()) { throw new ArgumentNullException("model"); }
@@ -66,7 +66,7 @@ namespace IBE.Data.Export {
                 builder.InsertCell();
                 builder.Writeln(translationDesc);
                 builder.InsertCell();
-                                
+
                 builder.InsertHtml($"{itemHtml}");
                 if (footNotes.IsNotNull() && footNotes.Count > 0) {
                     foreach (var footNote in footNotes) {

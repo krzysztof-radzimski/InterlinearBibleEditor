@@ -64,7 +64,8 @@ namespace Church.WebApp.Controllers {
                 chapter = book.Chapters.Where(x => x.NumberOfChapter == chapterNumber).FirstOrDefault();
 
                 byte[] licData = await GetLicData();
-                var result = new DefaultExporter(licData).Export(chapter, Format);
+                var host = (this.Request.IsHttps ? "https://" : "http://") + this.Request.Host;
+                var result = new DefaultExporter(licData, host).Export(chapter, Format);
 
                 return new MemoryStream(result);
             }
@@ -87,7 +88,8 @@ namespace Church.WebApp.Controllers {
                 book = trans.Books.Where(x => x.NumberOfBook == bookNumber).FirstOrDefault();
 
                 byte[] licData = await GetLicData();
-                var result = new DefaultExporter(licData).Export(book, Format);
+                var host = (this.Request.IsHttps ? "https://" : "http://") + this.Request.Host;
+                var result = new DefaultExporter(licData, host).Export(book, Format);
 
                 return new MemoryStream(result);
             }

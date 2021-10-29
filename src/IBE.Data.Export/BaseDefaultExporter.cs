@@ -7,7 +7,7 @@ using System.Linq;
 namespace IBE.Data.Export {
     public abstract class BaseDefaultExporter : BaseExporter {
         protected BaseDefaultExporter() : base() { }
-        public BaseDefaultExporter(byte[] asposeLicense) : base(asposeLicense) { }
+        public BaseDefaultExporter(byte[] asposeLicense, string host) : base(asposeLicense, host) { }
 
         public virtual void Export(Translation translation, ExportSaveFormat saveFormat, string outputPath, bool addFooter = true) {
             if (translation.IsNull()) { throw new ArgumentNullException("translation"); }

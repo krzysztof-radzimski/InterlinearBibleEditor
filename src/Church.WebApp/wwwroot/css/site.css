@@ -471,6 +471,21 @@ img {
     max-width: 100%;
 }
 
+.interlinear-img {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    max-width: 90%;
+}
+
+#translation-introduction {
+    text-align: justify;
+    font-size: 1.1rem !important;
+}
+
+    #translation-introduction li {
+        font-size: 1.1rem !important;
+    }
+
 
 ._2p3a {
     width: 100% !important;

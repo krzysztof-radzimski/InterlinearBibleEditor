@@ -59,7 +59,8 @@ namespace Church.WebApp.Controllers {
                 book = trans.Books.Where(x => x.NumberOfBook == bookNumber).FirstOrDefault();
 
                 byte[] licData = await GetLicData();
-                var result = new InterlinearExporter(licData).ExportBookTranslation(book, Format);
+                var host = (this.Request.IsHttps ? "https://" : "http://") + this.Request.Host;
+                var result = new InterlinearExporter(licData, host).ExportBookTranslation(book, Format);
 
                 return new MemoryStream(result);
             }

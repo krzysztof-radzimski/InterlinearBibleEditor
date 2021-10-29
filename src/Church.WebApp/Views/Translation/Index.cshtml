@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Biblia";
     var selectedVerses = new List<int>();
+    var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
+    var __path = this.Context.Request.Path;
 }
 
 @model Church.WebApp.Models.TranslationControllerModel
@@ -12,7 +14,22 @@
 else if (Model.Translation.IsNull() || Model.Translation.Hidden) {
     <h1>Wskazany przekład nie jest dostępny</h1>
 }
-else if (String.IsNullOrEmpty(Model.Book)) {
+else if (Model.Book.IsNullOrEmpty()) {
+
+    @section HeaderScripts {
+        @{
+            var __title = Model.Translation.Description;
+            __title += " - Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim";
+        }
+        <!-- social sharing metadata -->
+        <meta property="og:title" content="@__title" />
+        <meta property="og:description" content="@Model.Translation.Description" />
+        <meta property="og:image" content="@__host/img/biblelink.jpg" />
+        <meta property="og:url" content="@__host@__path" />
+        <meta property="og:type" content="article" />
+        <meta property="og:locale" content="pl_PL" />
+    }
+
     //
     // Wyświetlanie listy ksiąg dla wskazanego przekładu
     //
@@ -60,8 +77,7 @@ else if (String.IsNullOrEmpty(Model.Book)) {
     </div>
 
     @if (Model.Translation.Introduction.IsNotNullOrEmpty()) {
-        <div class="lh-lg fs-6 max-width-800" style="text-align: justify;">
-
+        <div id="translation-introduction" class="lh-lg fs-6 max-width-800">
             <br />
             <h4 class="text-center">Wprowadzenie</h4>
             @{var textIntroduction = System.Text.RegularExpressions.Regex.Replace(Model.Translation.Introduction, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
@@ -119,7 +135,7 @@ else {
                 <abbr type="button" class="btn btn-outline-info" title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Literacki</abbr>
             }
 
-            @if (Model.Translation.Catolic) {                
+            @if (Model.Translation.Catolic) {
                 <abbr type="button" class="btn btn-outline-dark" title="Przekład katolicki">Katolicki</abbr>
             }
 
@@ -391,7 +407,8 @@ else {
         var chapter = book.Chapters.Where(x => x.NumberOfChapter == chapterNumber).FirstOrDefault();
         var footNoteIndex = 1;
         var footNoteRefIndex = 0;
-        var footNotes = new List<string>();
+        var footNotes = new List<string>
+    ();
 
         string[] modelVerses = null;
         if (!String.IsNullOrEmpty(Model.Verse)) {
@@ -872,7 +889,8 @@ else {
         //
         var _disabledStart = String.Empty;
         var _disabledEnd = String.Empty;
-        var tableOfNumber = new List<int>();
+        var tableOfNumber = new List<int>
+            ();
 
         if (chapter.IsNotNull()) {
             _disabledStart = chapter.NumberOfChapter == 1 ? " disabled" : "";
@@ -948,16 +966,21 @@ else {
 
 
         @section HeaderScripts {
-            @if (Model.IsNotNull() && Model.Translation.IsNotNull() && book.IsNotNull()) {
-                var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
-                var __path = this.Context.Request.Path;
-                var __title = book.BaseBook.BookTitle;
-                if (Model.Chapter.IsNotNullOrEmpty() && chapterNumber != 0) {
-                    __title += $" {chapterNumber}";
+            @if (Model.IsNotNull() && Model.Translation.IsNotNull()) {
+                //var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
+                //var __path = this.Context.Request.Path;
+                var __title = Model.Translation.Description;
+
+                @if (book.IsNotNull()) {
+                    __title = book.BaseBook.BookTitle;
+                    if (Model.Chapter.IsNotNullOrEmpty() && chapterNumber != 0) {
+                        __title += $" {chapterNumber}";
+                    }
+                    if (Model.Verse.IsNotNullOrEmpty()) {
+                        __title += $":{Model.Verse}";
+                    }
                 }
-                if (Model.Verse.IsNotNullOrEmpty()) {
-                    __title += $":{Model.Verse}";
-                }
+
                 __title += " - Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim";
 
                 <!-- social sharing metadata -->

@@ -38,8 +38,8 @@ namespace Church.WebApp.Controllers {
 
         private async Task<Stream> CreateStream(CompareVerseModel model) {
             var licData = await GetLicData();
-
-            var result = new CompareVersesExporter(licData).Export(model, Format);
+            var host = (this.Request.IsHttps ? "https://" : "http://") + this.Request.Host;
+            var result = new CompareVersesExporter(licData, host).Export(model, Format);
             if (result.IsNotNull() && result.Length > 0) {
                 return new MemoryStream(result);
             }

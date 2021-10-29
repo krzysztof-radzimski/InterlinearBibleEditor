@@ -82,7 +82,7 @@ namespace IBE.Data.Import.Test {
             var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".pdf");
             var licPath = @"..\..\..\..\..\..\Aspose.Total.lic";
 
-            new Export.InterlinearExporter(File.ReadAllBytes(licPath)).Export(chapter, Export.ExportSaveFormat.Pdf, path);
+            new Export.InterlinearExporter(File.ReadAllBytes(licPath),"").Export(chapter, Export.ExportSaveFormat.Pdf, path);
 
             if (File.Exists(path)) {
                 System.Diagnostics.Process.Start(path);
@@ -100,7 +100,7 @@ namespace IBE.Data.Import.Test {
             var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".pdf");
             var licPath = @"..\..\..\..\..\..\Aspose.Total.lic";
 
-            new Export.InterlinearExporter(File.ReadAllBytes(licPath)).Export(book, Export.ExportSaveFormat.Pdf, path);
+            new Export.InterlinearExporter(File.ReadAllBytes(licPath),"").Export(book, Export.ExportSaveFormat.Pdf, path);
 
             if (File.Exists(path)) {
                 System.Diagnostics.Process.Start(path);
@@ -118,7 +118,7 @@ namespace IBE.Data.Import.Test {
             var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".docx");
             var licPath = @"..\..\..\..\..\..\Aspose.Total.lic";
 
-            new Export.InterlinearExporter(File.ReadAllBytes(licPath)).Export(book, Export.ExportSaveFormat.Docx, path);
+            new Export.InterlinearExporter(File.ReadAllBytes(licPath),"").Export(book, Export.ExportSaveFormat.Docx, path);
 
             if (File.Exists(path)) {
                 System.Diagnostics.Process.Start(path);

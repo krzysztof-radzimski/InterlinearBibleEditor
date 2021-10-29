@@ -419,10 +419,12 @@ namespace IBE.WindowsClient {
                         if (verseWord.Translation.IsNullOrEmpty()) {
                             var w = c.GetSourceWordWithoutBreathAndAccent(verseWord.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\""), out var isUpper);
                             var item = dic.Where(x => x.Word == w.ToLower()).FirstOrDefault();
-                            if (item.IsNotNull()) {
-                                verseWord.Translation = item.Translation;
-                                if (isUpper && verseWord.Translation.IsNotNullOrEmpty() && verseWord.Translation.Length > 1) {
-                                    verseWord.Translation = verseWord.Translation.Substring(0, 1).ToUpper() + verseWord.Translation.Substring(1);
+                            if (item.IsNotNull()) {                              
+                                if (isUpper && item.Translation.IsNotNullOrEmpty() && item.Translation.Length > 1) {
+                                    verseWord.Translation = item.Translation.Substring(0, 1).ToUpper() + item.Translation.Substring(1).ToLower();
+                                }
+                                else {
+                                    verseWord.Translation = item.Translation.ToLower();
                                 }
                                 verseWord.Save();
                             }

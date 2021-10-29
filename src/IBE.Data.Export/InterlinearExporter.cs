@@ -12,27 +12,10 @@ using System.Linq;
 
 namespace IBE.Data.Export {
     public class InterlinearExporter : BaseExporter {
-        //private System.Drawing.Graphics g;
-        //private System.Drawing.Font font11;
-        //private System.Drawing.Font font11bold;
-        //private System.Drawing.Font font10;
-        //private System.Drawing.Font font9;
-        //private System.Drawing.Font font8;
         private int footNoteIndex = 1;
 
-        private InterlinearExporter() :base(){ }
-        public InterlinearExporter(byte[] asposeLicense) : base(asposeLicense) {
-            //if (asposeLicense.IsNotNull()) {
-            //    new License().SetLicense(new MemoryStream(asposeLicense));
-            //}
-            //var img = new Bitmap(1, 1);
-            //g = System.Drawing.Graphics.FromImage(img);
-            //font8 = new System.Drawing.Font("Times New Roman", 8F, FontStyle.Regular);
-            //font9 = new System.Drawing.Font("Times New Roman", 9F, FontStyle.Regular);
-            //font10 = new System.Drawing.Font("Times New Roman", 10F, FontStyle.Regular);
-            //font11 = new System.Drawing.Font("Times New Roman", 11F, FontStyle.Regular);
-            //font11bold = new System.Drawing.Font("Times New Roman", 11F, FontStyle.Bold);
-        }
+        private InterlinearExporter() : base() { }
+        public InterlinearExporter(byte[] asposeLicense, string host) : base(asposeLicense, host) { }
 
         public void ExportBookTranslation(Book book, ExportSaveFormat saveFormat, string outputPath, bool addFooter = true, bool addBookAndHeader = true) {
             if (book.IsNull()) { throw new ArgumentNullException("book"); }
@@ -80,7 +63,7 @@ namespace IBE.Data.Export {
         }
         public byte[] ExportBookTranslation(Book book, ExportSaveFormat saveFormat, bool addFooter = true, bool addBookAndHeader = true) {
             if (book.IsNull()) { throw new ArgumentNullException("book"); }
-         
+
             if (book.ParentTranslation.Type != TranslationType.Interlinear) { throw new Exception("Wrong translation type!"); }
 
             footNoteIndex = 1;
@@ -400,7 +383,7 @@ namespace IBE.Data.Export {
             builder.CurrentParagraph.ParagraphFormat.LineSpacing = 18;
             builder.CurrentParagraph.ParagraphFormat.KeepWithNext = false;
 
-           builder.InsertHtml($"<b>{verse.NumberOfVerse}</b>.&nbsp;");
+            builder.InsertHtml($"<b>{verse.NumberOfVerse}</b>.&nbsp;");
 
             builder.InsertHtml($"{text}");
             if (footNotes.Count > 0) {
@@ -614,6 +597,7 @@ namespace IBE.Data.Export {
                     footnoteText = GetInternalVerseText(footnoteText, translation);
                     footnoteText = GetExternalVerseRangeText(footnoteText, word);
                     footnoteText = GetExternalVerseText(footnoteText, word);
+                    footnoteText = RepairImagesPath(footnoteText);
 
                     builder.MoveTo(par);
 
@@ -627,6 +611,11 @@ namespace IBE.Data.Export {
                     builder.MoveTo(par);
                 }
             }
+        }
+
+        private string RepairImagesPath(string input) {           
+            input = System.Text.RegularExpressions.Regex.Replace(input, @"\<img src\=\""\/", $@"<img src=""{Host}/");
+            return input;
         }
 
         private string GetInternalVerseRangeText(string input, Translation translation) {
