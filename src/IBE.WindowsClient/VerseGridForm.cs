@@ -367,7 +367,7 @@ namespace IBE.WindowsClient {
                         licData = System.IO.File.ReadAllBytes(licPath);
                     }
                     var outputPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + (format == ExportSaveFormat.Docx ? ".docx" : ".pdf"));
-                    new InterlinearExporter(licData).Export(chapter, format, outputPath);
+                    new InterlinearExporter(licData, "").Export(chapter, format, outputPath);
                     if (File.Exists(outputPath)) { System.Diagnostics.Process.Start(outputPath); }
                 }
             }
@@ -384,7 +384,7 @@ namespace IBE.WindowsClient {
                         licData = System.IO.File.ReadAllBytes(licPath);
                     }
                     var outputPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + (format == ExportSaveFormat.Docx ? ".docx" : ".pdf"));
-                    new InterlinearExporter(licData).ExportBookTranslation(book, format, outputPath);
+                    new InterlinearExporter(licData, "").ExportBookTranslation(book, format, outputPath);
                     if (File.Exists(outputPath)) { System.Diagnostics.Process.Start(outputPath); }
                 }
             }
@@ -417,7 +417,7 @@ namespace IBE.WindowsClient {
                 foreach (var verse in verses) {
                     foreach (var verseWord in verse.VerseWords) {
                         if (verseWord.Translation.IsNullOrEmpty()) {
-                            var w = c.GetSourceWordWithoutBreathAndAccent(verseWord.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\""), out var isUpper);
+                            var w = c.GetSourceWordWithoutBreathAndAccent(verseWord.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\"", "?"), out var isUpper);
                             var item = dic.Where(x => x.Word == w.ToLower()).FirstOrDefault();
                             if (item.IsNotNull()) {                              
                                 if (isUpper && item.Translation.IsNotNullOrEmpty() && item.Translation.Length > 1) {
