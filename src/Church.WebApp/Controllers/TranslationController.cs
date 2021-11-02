@@ -220,6 +220,9 @@ namespace Church.WebApp.Controllers {
         }
 
         public static string GetVerseTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart, int verseEnd = 0, string translationName = "NPI") {
+            return String.Empty;
+            /*
+             // Too long
             if (verseEnd == 0) {
                 var index = $"{translationName}.{numberOfBook}.{numberOfChapter}.{verseStart}";
                 var verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
@@ -294,6 +297,7 @@ namespace Church.WebApp.Controllers {
                 return versesText.Trim();
             }
             return String.Empty;
+            */
         }
 
         private static string GetOtherVerseTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart) {
