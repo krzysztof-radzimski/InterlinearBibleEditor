@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using DevExpress.XtraBars.Docking;
-using DevExpress.XtraBars.Docking.Helpers;
+﻿using DevExpress.XtraBars.Docking;
 
 namespace BooksMaker.WindowsClient.Controls {
     public class CustomDockPanel : DockPanel {
