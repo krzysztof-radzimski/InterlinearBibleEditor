@@ -479,10 +479,10 @@ else {
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook">
                         <li><a class="dropdown-item" href="/api/DownloadInterlinearPdf?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Pobierz księgę w formacie PDF</a></li>
-                        <li><a class="dropdown-item" href="/api/DownloadInterlinearDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz księgę w formacie Microsoft Word</a></li>
+                        <li><a class="dropdown-item" href="/api/DownloadInterlinearDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz księgę w formacie DOCX</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="/api/DownloadInterlinearTranslationPdf?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Pobierz tłumaczenie księgi w formacie PDF</a></li>
-                        <li><a class="dropdown-item" href="/api/DownloadInterlinearTranslationDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz tłumaczenie księgi w formacie Microsoft Word</a></li>
+                        <li><a class="dropdown-item" href="/api/DownloadInterlinearTranslationDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz tłumaczenie księgi w formacie DOCX</a></li>
 
                     </ul>
                     <span> </span>
@@ -491,7 +491,7 @@ else {
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadInterlinear">
                         <li><a class="dropdown-item" href="/api/DownloadInterlinearPdf?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Pobierz rozdział w formacie PDF</a></li>
-                        <li><a class="dropdown-item" href="/api/DownloadInterlinearDocx?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz rozdział w formacie Microsoft Word</a></li>
+                        <li><a class="dropdown-item" href="/api/DownloadInterlinearDocx?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz rozdział w formacie DOCX</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@sourceChapterText')"><i class="fas fa-copy" style="width:18px;"></i>&nbsp;Kopiuj tekst grecki rozdziału</a></li>
                         <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@transliteratedChapterText')"><i class="far fa-file-alt" style="width:18px;"></i>&nbsp;Kopiuj transliterację tekstu greckiego rozdziału</a></li>
@@ -579,7 +579,7 @@ else {
                                     var chapterNumberString = Model.Translation.ChapterRomanNumbering ? chapter.NumberOfChapter.ArabicToRoman() : chapter.NumberOfChapter.ToString();
                                     <div class="position-absolute verse-interlinear-div" style="left: -20px; font-weight: bold;">
                                         <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
-                                        <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold verse-interlinear-btn" role="button" data-bs-toggle="dropdown" aria-expanded="false">@verse.NumberOfVerse.</a>
+                                        <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold verse-interlinear-btn" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 120%;">@verse.NumberOfVerse.</a>
                                         <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse" style="width: 600px; max-width: 70vw;">
                                             <li><span class="dropdown-header fs-5 disabled">@book.BaseBook.BookShortcut @chapterNumberString:@verse.NumberOfVerse</span></li>
                                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
@@ -587,9 +587,9 @@ else {
 
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie PDF</a></li>
-                                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie Microsoft Word</a></li>
+                                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie DOCX</a></li>
                                             <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index&literal=true"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie PDF</a></li>
-                                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index&literal=true"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie Microsoft Word</a></li>
+                                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index&literal=true"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie DOCX</a></li>
 
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @verse.GetSourceText()')" style="cursor: pointer;"><i class="fas fa-copy" style="width:18px;"></i>&nbsp;Kopiuj tekst grecki</a></li>
@@ -606,7 +606,7 @@ else {
                                     //
                                 }
                                 @if (Model.Translation.WithGrammarCodes || Model.Translation.WithStrongs) {
-                                    <div class="row" style="font-size: 50%; padding-left: 0 !important;">
+                                    <div class="row fs-90per" style="padding-left: 0 !important;">
                                         <div class="col">
                                             @if (Model.Translation.WithStrongs) {
                                                 if (sc.IsNullOrEmpty()) {
@@ -628,9 +628,9 @@ else {
                                         </div>
                                     </div>
                                 }
-                                <div class="row"><div class="col text-success fs-90per">@word.SourceWord</div></div>
-                                <div class="row" style="color: #003A60;"><div class="col fs-80per">@word.Transliteration</div></div>
-                                <div class="row @translationFontColor" style="@translationFontWeight position: relative; min-width: 70px;"><div class="col">@Html.Raw(translation)</div></div>
+                                <div class="row"><div class="col text-success">@word.SourceWord</div></div>
+                                <div class="row" style="color: #003A60;"><div class="col">@word.Transliteration</div></div>
+                                <div class="row @translationFontColor" style="@translationFontWeight position: relative; min-width: 70px; font-size: 120%;"><div class="col">@Html.Raw(translation)</div></div>
                             </div>
                         </div>
                     }
@@ -667,14 +667,14 @@ else {
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook">
                         <li><a class="dropdown-item" href="/api/DownloadDefaultPdf?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-pdf"></i>&nbsp;Pobierz księgę w formacie PDF</a></li>
-                        <li><a class="dropdown-item" href="/api/DownloadDefaultDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word"></i>&nbsp;Pobierz księgę w formacie Microsoft Word</a></li>
+                        <li><a class="dropdown-item" href="/api/DownloadDefaultDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word"></i>&nbsp;Pobierz księgę w formacie DOCX</a></li>
                     </ul>
                     <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadDefault" data-bs-toggle="dropdown" aria-expanded="false">
                         Pobierz / kopiuj rozdział
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadDefault">
                         <li><a class="dropdown-item" href="/api/DownloadDefaultPdf?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-pdf"></i>&nbsp;Pobierz rozdział w formacie PDF</a></li>
-                        <li><a class="dropdown-item" href="/api/DownloadDefaultDocx?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-word"></i>&nbsp;Pobierz rozdział w formacie Microsoft Word</a></li>
+                        <li><a class="dropdown-item" href="/api/DownloadDefaultDocx?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-word"></i>&nbsp;Pobierz rozdział w formacie DOCX</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@chapterText')"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść rozdziału</a></li>
                         <li><hr class="dropdown-divider"></li>
@@ -856,9 +856,9 @@ else {
 
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie PDF</a></li>
-                                <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie Microsoft Word</a></li>
+                                <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie DOCX</a></li>
                                 <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index&literal=true" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie PDF</a></li>
-                                <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index&literal=true" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie Microsoft Word</a></li>
+                                <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index&literal=true" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie DOCX</a></li>
 
 
                                 <li><hr class="dropdown-divider"></li>
