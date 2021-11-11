@@ -506,10 +506,8 @@ namespace IBE.WindowsClient.Controls {
             // txtDefinition
             // 
             this.txtDefinition.ActiveViewType = DevExpress.XtraRichEdit.RichEditViewType.Simple;
-            this.txtDefinition.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tblStrong.SetColumn(this.txtDefinition, 1);
+            this.txtDefinition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtDefinition.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             this.txtDefinition.Location = new System.Drawing.Point(103, 56);
             this.txtDefinition.Name = "txtDefinition";
@@ -525,6 +523,7 @@ namespace IBE.WindowsClient.Controls {
             this.tblStrong.SetColumn(this.vwStrongLocal, 2);
             this.vwStrongLocal.CreationProperties = null;
             this.vwStrongLocal.DefaultBackgroundColor = System.Drawing.Color.Transparent;
+            this.vwStrongLocal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vwStrongLocal.Location = new System.Drawing.Point(493, 3);
             this.vwStrongLocal.Name = "vwStrongLocal";
             this.tblStrong.SetRow(this.vwStrongLocal, 0);
