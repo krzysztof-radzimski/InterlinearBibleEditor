@@ -45,9 +45,9 @@ namespace BooksMaker.WindowsClient {
 
         
 
-        private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var tab = AddEditor("Test of topic");
-            tabPane.SelectedPage = tab;
+        private void btnOpenProject_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            //var tab = AddEditor("Test of topic");
+            //tabPane.SelectedPage = tab;
         }
     }
 }

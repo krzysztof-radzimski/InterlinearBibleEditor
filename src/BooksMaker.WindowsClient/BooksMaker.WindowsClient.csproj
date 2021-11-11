@@ -89,6 +89,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\PastePlainTextCommand.cs" />
     <Compile Include="Controls\CustomDockLayout.cs" />
     <Compile Include="Controls\CustomDockManager.cs">
       <SubType>Component</SubType>

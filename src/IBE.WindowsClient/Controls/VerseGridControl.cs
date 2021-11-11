@@ -16,8 +16,11 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Layout;
 using DevExpress.XtraGrid.Views.Layout.ViewInfo;
+using DevExpress.XtraRichEdit.Services;
 using IBE.Common.Extensions;
+using IBE.Data.Import.Greek;
 using IBE.Data.Model;
+using IBE.WindowsClient.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,11 +29,14 @@ using System.Windows.Forms;
 
 namespace IBE.WindowsClient.Controls {
     public partial class VerseGridControl : XtraUserControl {
+        private GreekTransliterationController TransliterationController { get; } 
         private List<VerseWordInfo> Words { get; set; }
         public Verse Verse { get; private set; }
 
         public VerseGridControl() {
             InitializeComponent();
+            TransliterationController = new GreekTransliterationController();
+            txtDefinition.ReplaceService<ISyntaxHighlightService>(new HTMLSyntaxHighlightService(txtDefinition));
         }
         public VerseGridControl(Verse verse, bool loadOtherTranslations = true) : this() {
             LoadData(verse, loadOtherTranslations);
@@ -333,6 +339,23 @@ namespace IBE.WindowsClient.Controls {
                         txtShortDefinition.Text = word.Word.StrongCode.ShortDefinition;
                         btnSaveStrongDefinition.Tag = word.Word.StrongCode;
 
+                        var htmlString = $@"
+                                <!DOCTYPE html>
+
+                                <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
+                                <head>
+                                    <meta charset=""utf-8"" />
+                                    <title>Strongs code</title>                                    
+                                </head>
+                                <body style=""color: White;"">
+                                <h2>G{word.StrongsCode}</h2>
+                                <h3>{word.Word.StrongCode.ShortDefinition}</h3>
+                                <div>{word.Word.StrongCode.Definition}</div>
+                                </body>
+                                </html>
+                                ";
+                        vwStrongLocal.NavigateToString(htmlString);
+
                         wvStrong.Source = new Uri($"https://biblehub.com/greek/{word.StrongsCode}.htm");
                     }
                     else if (hi.Column.FieldName == "StrongsCode" && !word.StrongsCode.HasValue) {
@@ -390,6 +413,7 @@ namespace IBE.WindowsClient.Controls {
                         var result = XtraInputBox.Show("Transliteration", "Transliteration", word.Transliteration);
                         if (result != word.Transliteration && result.IsNotNullOrEmpty()) {
                             word.Transliteration = result;
+                            layoutView1.RefreshData();
                         }
                     }
                     //
@@ -399,6 +423,8 @@ namespace IBE.WindowsClient.Controls {
                         var result = XtraInputBox.Show("SourceWord", "SourceWord", word.SourceWord);
                         if (result != word.SourceWord && result.IsNotNullOrEmpty()) {
                             word.SourceWord = result;
+                            word.Transliteration = TransliterationController.TransliterateSentence(result);
+                            layoutView1.RefreshData();
                         }
                     }
                 }
@@ -428,11 +454,18 @@ for(var i = 0; i < 3; i++){
                 sc.Definition = txtDefinition.Text;
                 sc.ShortDefinition = txtShortDefinition.Text;
                 sc.Save();
+
+                var uow = sc.Session as UnitOfWork;
+                if (uow.IsNotNull()) {
+                    uow.CommitChanges();
+                    uow.ReloadChangedObjects();
+                }
             }
         }
 
         private void VerseGridControl_Load(object sender, EventArgs e) {
             wbGrammarCodes.EnsureCoreWebView2Async();
+            vwStrongLocal.EnsureCoreWebView2Async();
         }
     }
 }

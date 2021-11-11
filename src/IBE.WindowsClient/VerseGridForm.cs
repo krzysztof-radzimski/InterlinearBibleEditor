@@ -63,7 +63,7 @@ namespace IBE.WindowsClient {
 
             Translation = verse.ParentTranslation;
             NAME = Translation.Name;
-           // $"{NAME.Replace("'", "").Replace("+", "")}.";
+            // $"{NAME.Replace("'", "").Replace("+", "")}.";
 
             LoadBooks();
 
@@ -85,7 +85,7 @@ namespace IBE.WindowsClient {
             var index = verse.GetVerseIndex();
             btnOblubienicaEu.Visibility = index.NumberOfBook >= 470 ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
             btnLogosSeptuagint.Visibility = index.NumberOfBook < 470 ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
-           
+
 
             VerseControl = new VerseGridControl() { Dock = DockStyle.Fill };
             pnlContent.Controls.Add(VerseControl);
@@ -374,7 +374,7 @@ namespace IBE.WindowsClient {
         }
 
         private void ExportBook(ExportSaveFormat format) {
-           if (VerseControl.IsNotNull()) {
+            if (VerseControl.IsNotNull()) {
                 var book = VerseControl.Verse.ParentChapter.ParentBook;
                 if (book.IsNotNull()) {
                     var licPath = System.Configuration.ConfigurationManager.AppSettings["AsposeLic"];
@@ -407,7 +407,7 @@ namespace IBE.WindowsClient {
         private void btnTranslateChapter_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             if (XtraMessageBox.Show("Do you want to translate this chapter?", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
 
-                var verses = VerseControl.Verse.ParentChapter.Verses.OrderBy(x=>x.NumberOfVerse).ToList();
+                var verses = VerseControl.Verse.ParentChapter.Verses.OrderBy(x => x.NumberOfVerse).ToList();
                 var dic = new XPQuery<AncientDictionaryItem>(Uow).ToList();
 
                 Uow.BeginTransaction();
@@ -419,18 +419,38 @@ namespace IBE.WindowsClient {
                         if (verseWord.Translation.IsNullOrEmpty()) {
                             var w = c.GetSourceWordWithoutBreathAndAccent(verseWord.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\"", "?"), out var isUpper);
                             var item = dic.Where(x => x.Word == w.ToLower()).FirstOrDefault();
-                            if (item.IsNotNull()) {                              
+                            if (item.IsNotNull()) {
+                                var translation = String.Empty;
                                 if (isUpper && item.Translation.IsNotNullOrEmpty() && item.Translation.Length > 1) {
-                                    verseWord.Translation = item.Translation.Substring(0, 1).ToUpper() + item.Translation.Substring(1).ToLower();
+                                    translation = item.Translation.Substring(0, 1).ToUpper() + item.Translation.Substring(1).ToLower();
                                 }
                                 else {
-                                    verseWord.Translation = item.Translation.ToLower();
+                                    translation = item.Translation.ToLower();
                                 }
-                                verseWord.Save();
+                                if (translation.IsNotNullOrEmpty()) {
+                                    translation = translation.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\"", "?");
+                                    if (verseWord.SourceWord.EndsWith(",")) {
+                                        translation += ",";
+                                    }
+                                    if (verseWord.SourceWord.EndsWith(";")) {
+                                        translation += ";";
+                                    }
+                                    if (verseWord.SourceWord.EndsWith("·")) {
+                                        translation += ":";
+                                    }
+                                    if (verseWord.SourceWord.EndsWith(".")) {
+                                        translation += ".";
+                                    }
+
+                                    verseWord.Translation = translation;
+                                    verseWord.Save();
+                                }
                             }
                         }
                     }
                 }
+
+                VerseControl.Verse.ParentChapter.IsTranslated = true;
 
                 Uow.CommitChanges();
 
@@ -475,7 +495,7 @@ namespace IBE.WindowsClient {
 
                     var bookInfo = (txtBooks.Properties.DataSource as List<BookBaseInfo>).Where(x => x.NumberOfBook == book.NumberOfBook).FirstOrDefault();
                     txtBooks.EditValue = bookInfo;
-                    
+
                     Application.DoEvents();
                     editBook_EditValueChanged(this, new DevExpress.XtraEditors.Controls.ChangingEventArgs(null, bookInfo));
 
@@ -484,10 +504,10 @@ namespace IBE.WindowsClient {
 
                     Application.DoEvents();
                     editChapter_EditValueChanged(this, new DevExpress.XtraEditors.Controls.ChangingEventArgs(null, verse.ParentChapter.NumberOfChapter));
-                    
+
                     Application.DoEvents();
                     txtVerse.EditValue = verse.NumberOfVerse;
-              
+
                 }
             }
         }
