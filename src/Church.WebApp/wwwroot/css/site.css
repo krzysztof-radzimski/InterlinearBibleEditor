@@ -1,9 +1,11 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
 
 .bible-content {
-    background-image: url(../img/reading-bible-2021.jpg?ID=1);
+    background-image: url(../img/reading-bible-2021.jpg?ID=2);
     background-repeat: no-repeat;
     background-position: center top;
+    background-size: contain;
+    min-height: 2025px;
 }
 
 .list-group-item {
@@ -130,6 +132,7 @@ html, body {
     font-family: Alegreya;
     font-size: 110%;
 }
+
 html {
     position: relative;
     min-height: 100%;
@@ -138,7 +141,8 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
-    background: url('../img/background-2021.jpg?ID=1') no-repeat center center fixed;
+    background-color: #eef6ff;
+    background: url('../img/background-2021.jpg?ID=1') no-repeat top center fixed;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -274,6 +278,10 @@ hr.fancy-line {
     }
 
 @media only screen and (max-width: 995px) {
+    #banner {
+        display: none;
+    }
+
     #main-hr-line {
         display: none;
     }
