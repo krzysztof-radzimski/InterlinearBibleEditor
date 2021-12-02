@@ -2,12 +2,16 @@
 using DevExpress.XtraBars;
 using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraBars.Ribbon;
+using DevExpress.XtraEditors;
 using DevExpress.XtraRichEdit;
 using System;
 using System.Windows.Forms;
 
 namespace BooksMaker.WindowsClient {
     public partial class MainForm : RibbonForm {
+
+        public Model.Document ThisDocument { get; set; }
+
         public MainForm() {
             InitializeComponent();
         }
@@ -43,11 +47,38 @@ namespace BooksMaker.WindowsClient {
             return tab;
         }
 
-        
 
-        private void btnOpenProject_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+
+        private void btnOpenProject_ItemClick(object sender, ItemClickEventArgs e) {
+            if (ThisDocument != null && ThisDocument.FileName != null) { 
+            // save previous file
+
+            }
+
+            using (var dlg = new XtraOpenFileDialog() {
+                Filter = Model.Document.FILTER
+            }) {
+                if (dlg.ShowDialog() == DialogResult.OK) {
+                    ThisDocument = new Model.Document();
+                    ThisDocument.LoadDocument(dlg.FileName);
+                    // ... add tabs , create tree
+                }
+            }
+
             //var tab = AddEditor("Test of topic");
             //tabPane.SelectedPage = tab;
+        }
+
+        private void btnNewProject_ItemClick(object sender, ItemClickEventArgs e) {
+            if (ThisDocument != null && ThisDocument.FileName != null) {
+                // save previous file
+
+            }
+
+            ThisDocument = new Model.Document();
+            ThisDocument.InitNewFile();
+
+            // ... add tabs , create tree
         }
     }
 }

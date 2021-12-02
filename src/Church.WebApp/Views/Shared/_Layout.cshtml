@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var callingUrl = this.Context.Request.Headers["Host"].ToString();
+    var isLocal = callingUrl.Contains("localhost");
+    var isDefault = callingUrl.Contains("jezusa.pl");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,12 +12,14 @@
     <title>@ViewData["Title"] - Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="icon" type="image/svg+xml" href="~/img/baptysci-logo.svg" />
 
     @RenderSection("HeaderScripts", required: false)
 </head>
-<body><div id="fb-root"></div><script async defer crossorigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v9.0" nonce="TGe91ewv"></script>
+<body>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v9.0" nonce="TGe91ewv"></script>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mb-5 shadow" id="top-nav">
             <div class="container-fluid">
@@ -193,6 +201,9 @@
                                 }
                                 else {
                                     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Secured" title="Zaloguj"><i class="fas fa-sign-in-alt"></i></a>
+                                }
+                                @if (isLocal || isDefault) {
+                                    <a class="nav-link" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sch=http&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=pl&_x_tr_pto=nui" title="English"><i class="fas fa-globe"></i></a>
                                 }
                             </div>
                         </li>

@@ -170,6 +170,7 @@ namespace BooksMaker.WindowsClient {
             this.dockPanel2_Container = new DevExpress.XtraBars.Docking.ControlContainer();
             this.tabPane = new DevExpress.XtraBars.Navigation.TabPane();
             this.richEditBarController = new DevExpress.XtraRichEdit.UI.RichEditBarController(this.components);
+            this.btnNewProject = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemFontEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemRichEditFontSizeEdit1)).BeginInit();
@@ -295,9 +296,10 @@ namespace BooksMaker.WindowsClient {
             this.insertFootnoteItem1,
             this.insertEndnoteItem1,
             this.navigationNotesItem1,
-            this.showNotesItem1});
+            this.showNotesItem1,
+            this.btnNewProject});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 108;
+            this.ribbonControl1.MaxItemId = 109;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpFile,
@@ -316,7 +318,7 @@ namespace BooksMaker.WindowsClient {
             // 
             this.btnOpenProject.Caption = "Open project";
             this.btnOpenProject.Id = 1;
-            this.btnOpenProject.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnOpen.ImageOptions.SvgImage")));
+            this.btnOpenProject.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnOpenProject.ImageOptions.SvgImage")));
             this.btnOpenProject.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O));
             this.btnOpenProject.Name = "btnOpenProject";
             this.btnOpenProject.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnOpenProject_ItemClick);
@@ -380,10 +382,12 @@ namespace BooksMaker.WindowsClient {
             // 
             // richEditControl1
             // 
-            this.richEditControl1.Location = new System.Drawing.Point(35, 264);
+            this.richEditControl1.Enabled = false;
+            this.richEditControl1.Location = new System.Drawing.Point(9, 217);
             this.richEditControl1.MenuManager = this.ribbonControl1;
             this.richEditControl1.Name = "richEditControl1";
-            this.richEditControl1.Size = new System.Drawing.Size(235, 314);
+            this.richEditControl1.ReadOnly = true;
+            this.richEditControl1.Size = new System.Drawing.Size(209, 200);
             this.richEditControl1.TabIndex = 0;
             this.richEditControl1.Visible = false;
             // 
@@ -991,6 +995,7 @@ namespace BooksMaker.WindowsClient {
             // 
             // rpgFile
             // 
+            this.rpgFile.ItemLinks.Add(this.btnNewProject);
             this.rpgFile.ItemLinks.Add(this.btnOpenProject);
             this.rpgFile.Name = "rpgFile";
             this.rpgFile.Text = "File";
@@ -1190,9 +1195,9 @@ namespace BooksMaker.WindowsClient {
             // 
             this.dockPanel1_Container.Controls.Add(this.richEditControl1);
             this.dockPanel1_Container.Controls.Add(this.treeList);
-            this.dockPanel1_Container.Location = new System.Drawing.Point(3, 46);
+            this.dockPanel1_Container.Location = new System.Drawing.Point(3, 26);
             this.dockPanel1_Container.Name = "dockPanel1_Container";
-            this.dockPanel1_Container.Size = new System.Drawing.Size(293, 731);
+            this.dockPanel1_Container.Size = new System.Drawing.Size(293, 751);
             this.dockPanel1_Container.TabIndex = 0;
             // 
             // treeList
@@ -1203,7 +1208,7 @@ namespace BooksMaker.WindowsClient {
             this.treeList.Location = new System.Drawing.Point(0, 0);
             this.treeList.MenuManager = this.ribbonControl1;
             this.treeList.Name = "treeList";
-            this.treeList.Size = new System.Drawing.Size(293, 731);
+            this.treeList.Size = new System.Drawing.Size(293, 751);
             this.treeList.TabIndex = 0;
             // 
             // dockPanelContent
@@ -1346,6 +1351,15 @@ namespace BooksMaker.WindowsClient {
             this.richEditBarController.BarItems.Add(this.showNotesItem1);
             this.richEditBarController.Control = this.richEditControl1;
             // 
+            // btnNewProject
+            // 
+            this.btnNewProject.Caption = "New project";
+            this.btnNewProject.Id = 108;
+            this.btnNewProject.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnNewProject.ImageOptions.SvgImage")));
+            this.btnNewProject.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
+            this.btnNewProject.Name = "btnNewProject";
+            this.btnNewProject.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnNewProject_ItemClick);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1397,7 +1411,6 @@ namespace BooksMaker.WindowsClient {
         private DevExpress.XtraEditors.Repository.RepositoryItemFontEdit repositoryItemFontEdit1;
         private DevExpress.XtraRichEdit.UI.ChangeFontSizeItem changeFontSizeItem1;
         private DevExpress.XtraRichEdit.Design.RepositoryItemRichEditFontSizeEdit repositoryItemRichEditFontSizeEdit1;
-        private DevExpress.XtraRichEdit.RichEditControl richEditControl1;
         private DevExpress.XtraRichEdit.UI.FontSizeIncreaseItem fontSizeIncreaseItem1;
         private DevExpress.XtraRichEdit.UI.FontSizeDecreaseItem fontSizeDecreaseItem1;
         private DevExpress.XtraBars.BarButtonGroup barButtonGroup2;
@@ -1516,6 +1529,8 @@ namespace BooksMaker.WindowsClient {
         private DevExpress.XtraRichEdit.UI.TableOfContentsRibbonPageGroup tableOfContentsRibbonPageGroup1;
         private DevExpress.XtraRichEdit.UI.CaptionsRibbonPageGroup captionsRibbonPageGroup1;
         private DevExpress.XtraRichEdit.UI.NotesRibbonPageGroup notesRibbonPageGroup1;
+        private DevExpress.XtraRichEdit.RichEditControl richEditControl1;
+        private DevExpress.XtraBars.BarButtonItem btnNewProject;
     }
 }
 

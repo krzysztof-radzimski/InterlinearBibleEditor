@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30523.141
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root", "Root", "{7B0B3254-AB07-4311-AE6A-6370AC142B4F}"
 	ProjectSection(SolutionItems) = preProject
@@ -41,9 +41,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SvgToIconConverter", "Utils
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Book Maker", "Book Maker", "{6F14F372-DE0D-4BB0-B7C5-0571B091B375}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksMaker.WindowsClient", "BooksMaker.WindowsClient\BooksMaker.WindowsClient.csproj", "{474B5B9E-0DEB-41EE-8BB1-453E8276A3BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BooksMaker.WindowsClient", "BooksMaker.WindowsClient\BooksMaker.WindowsClient.csproj", "{474B5B9E-0DEB-41EE-8BB1-453E8276A3BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBE.Translator", "IBE.Translator\IBE.Translator.csproj", "{E0D4FE88-073C-4902-83C1-9164E22CE806}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IBE.Translator", "IBE.Translator\IBE.Translator.csproj", "{E0D4FE88-073C-4902-83C1-9164E22CE806}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EIB.SNPPD.Importer", "EIB.SNPPD.Importer\EIB.SNPPD.Importer.csproj", "{E883C9B4-44E3-42DC-AD0E-4AB87203EDBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBE.ePubConverter", "IBE.ePubConverter\IBE.ePubConverter.csproj", "{0CE8E036-B920-4F83-95B6-27D8925EA472}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,6 +145,22 @@ Global
 		{E0D4FE88-073C-4902-83C1-9164E22CE806}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E0D4FE88-073C-4902-83C1-9164E22CE806}.Release|x86.ActiveCfg = Release|Any CPU
 		{E0D4FE88-073C-4902-83C1-9164E22CE806}.Release|x86.Build.0 = Release|Any CPU
+		{E883C9B4-44E3-42DC-AD0E-4AB87203EDBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E883C9B4-44E3-42DC-AD0E-4AB87203EDBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E883C9B4-44E3-42DC-AD0E-4AB87203EDBC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E883C9B4-44E3-42DC-AD0E-4AB87203EDBC}.Debug|x86.Build.0 = Debug|Any CPU
+		{E883C9B4-44E3-42DC-AD0E-4AB87203EDBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E883C9B4-44E3-42DC-AD0E-4AB87203EDBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E883C9B4-44E3-42DC-AD0E-4AB87203EDBC}.Release|x86.ActiveCfg = Release|Any CPU
+		{E883C9B4-44E3-42DC-AD0E-4AB87203EDBC}.Release|x86.Build.0 = Release|Any CPU
+		{0CE8E036-B920-4F83-95B6-27D8925EA472}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CE8E036-B920-4F83-95B6-27D8925EA472}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CE8E036-B920-4F83-95B6-27D8925EA472}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0CE8E036-B920-4F83-95B6-27D8925EA472}.Debug|x86.Build.0 = Debug|Any CPU
+		{0CE8E036-B920-4F83-95B6-27D8925EA472}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CE8E036-B920-4F83-95B6-27D8925EA472}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CE8E036-B920-4F83-95B6-27D8925EA472}.Release|x86.ActiveCfg = Release|Any CPU
+		{0CE8E036-B920-4F83-95B6-27D8925EA472}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -162,6 +182,8 @@ Global
 		{6F14F372-DE0D-4BB0-B7C5-0571B091B375} = {17B5A392-4993-4F4B-A3C6-420B69A9BC52}
 		{474B5B9E-0DEB-41EE-8BB1-453E8276A3BD} = {6F14F372-DE0D-4BB0-B7C5-0571B091B375}
 		{E0D4FE88-073C-4902-83C1-9164E22CE806} = {19B39127-F252-4653-B89B-4590B211FD77}
+		{E883C9B4-44E3-42DC-AD0E-4AB87203EDBC} = {20936FDE-4AE6-4667-8BF5-3E3F80F3FEE1}
+		{0CE8E036-B920-4F83-95B6-27D8925EA472} = {0488FEC5-C522-4AC4-9038-6A6A5D5D1D36}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7716740D-07D5-48A5-89AC-F9BC8E61E5DC}

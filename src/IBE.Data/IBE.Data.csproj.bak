@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net48;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net48</TargetFrameworks>
+    <!--<TargetFramework>netstandard2.1</TargetFramework>-->
     <Authors>Krzysztof Radzimski</Authors>
     <Company>ITORG Krzysztof Radzimski</Company>
     <Description>IBE data access classes.</Description>
@@ -42,7 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DevExpress.Xpo" Version="21.1.3" />
+    <PackageReference Include="DevExpress.Xpo" Version="21.1.6" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
   </ItemGroup>
 

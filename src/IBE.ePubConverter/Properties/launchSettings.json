@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "IBE.ePubConverter": {
+      "commandName": "Project",
+      "commandLineArgs": "-word \"C:\\Projekty\\GitHub\\InterlinearBibleEditor\\db\\convert\\Heller M., Pabjan T. - Stworzenie i początek wszechświata. Jak pogodzić wiarę w stworzenie świata przez Boga z wiedzą naukową.epub\""
+    }
+  }
+}
