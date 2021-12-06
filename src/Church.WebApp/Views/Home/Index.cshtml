@@ -6,15 +6,15 @@
 @model List<Church.WebApp.Controllers.ArticleInfo>
 
 @section HeaderScripts {
-    <!-- social sharing metadata -->
-    <meta property="og:title" content="Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim" />
-    <meta property="og:description" content="Jesteśmy grupą chrześcijan, którzy pragną być kościołem Jezusa Chrystusa w Nowym Dworze Mazowieckim. Znikome znaczenie ma budynek kościelny czy przyjęty porządek nabożeństwa. Najważniejszy jest Bóg Ojciec, Syn i Duch Święty, Któremu należy się wszelka cześć, chwała i szacunek, którego czcimy i wielbimy. Ważny jest również człowiek, za którego nasz Pan oddał swoje życie i przelał bezcenną krew na krzyżu." />
-    <meta property="og:image" content="http://@host/img/brama.jpg" />
-    <meta property="og:url" content="http://@host" />"
-    <meta property="og:type" content="page" />
-    <meta property="og:locale" content="pl_PL" />
+<!-- social sharing metadata -->
+<meta property="og:title" content="Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim" />
+<meta property="og:description" content="Jesteśmy grupą chrześcijan, którzy pragną być kościołem Jezusa Chrystusa w Nowym Dworze Mazowieckim. Znikome znaczenie ma budynek kościelny czy przyjęty porządek nabożeństwa. Najważniejszy jest Bóg Ojciec, Syn i Duch Święty, Któremu należy się wszelka cześć, chwała i szacunek, którego czcimy i wielbimy. Ważny jest również człowiek, za którego nasz Pan oddał swoje życie i przelał bezcenną krew na krzyżu." />
+<meta property="og:image" content="http://@host/img/brama.jpg" />
+<meta property="og:url" content="http://@host" />"
+<meta property="og:type" content="page" />
+<meta property="og:locale" content="pl_PL" />
 }
-<div style="padding-top: 20px;" class="max-width-1000">    
+<div style="padding-top: 20px;" class="max-width-1000">
     <p id="banner" class="fs-5 text-center shadow p-3 mb-3 rounded">
         <img src="~/img/Ban_500x90_Bapt_Photo.jpg?ID=2" style="width: 100%;" alt="Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim" />
     </p>
@@ -23,7 +23,7 @@
         foreach (var item in Model) {
             var lead = item.Lead;
 
-            <a href="../Article?id=@item.Id" class="list-group-item list-group-item-action m-0 border-0" aria-current="true">
+            <a href="../Article?id=@item.Id" class="list-group-item list-group-item-action m-0 border-0" aria-current="true" style="padding-left: 0; padding-right: 0;">
                 <div class="card bg-transparent m-0 p-0 shadow-lg">
                     <div class="row g-0 m-0">
                         <div class="col-md-4 col-auto d-none d-lg-block">
@@ -42,9 +42,18 @@
             </a>
         }
         <div class="d-flex flex-row-reverse mt-3">
-            <a href="../Articles" class="btn btn-secondary">Więcej...</a>
+            <a href="../Articles" class="btn btn-secondary">Więcej...</a>            
         </div>
+
+        <br/>
     }
+
+
+    <div class="embed-responsive embed-responsive-16by9 shadow-lg">
+        <iframe id="YouTubeFrame" width="560" height="600" src="https://www.youtube.com/embed/videoseries?list=PLUYRCCWSMh69waBP7LPvu_aAm8pkKL6Gh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+     <br/>
+    <h2>Słowo powitania</h2>
 
     <p class="fs-5 mt-3">
         Cieszymy się, że trafiłeś na tę stronę. Pragniemy przekazać Ci, dobrą nowinę o&#160;Królestwie naszego Pana i&#160;Zbawiciela Jezusa Chrystusa:
