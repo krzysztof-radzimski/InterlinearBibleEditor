@@ -2,7 +2,7 @@
   "profiles": {
     "IBE.ePubConverter": {
       "commandName": "Project",
-      "commandLineArgs": "\"D:\\OneDrive\\WBST\\Praca dyplomowa\\Źródła\\Inteligentny Projekt\\Behe M. - Granica Ewolucji - w poszukiwaniu ograniczen darwinizmu.epub\""
+      "commandLineArgs": "\"D:\\OneDrive\\WBST\\Praca dyplomowa\\Źródła\\Inteligentny Projekt\\Behe M. - Czarna skrzynka Darwina. Biochemiczne wyzwanie dla ewolucjonizmu.epub\""
     }
   }
 }

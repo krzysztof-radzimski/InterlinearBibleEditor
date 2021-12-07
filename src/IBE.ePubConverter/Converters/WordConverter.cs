@@ -19,7 +19,7 @@ namespace IBE.ePubConverter.Converters {
         public Aspose.Words.Document GetDocument(string fileName) {
             new Aspose.Words.License().SetLicense("../../../../../db/Aspose.Total.lic");
             Aspose.Words.Document document = null;
-            var dir = Path.Combine(Path.GetTempPath(), Path.GetFileName(fileName));
+            var dir = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(fileName));
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
             using var zip = new ZipFile(fileName);
             zip.ExtractAll(dir, ExtractExistingFileAction.OverwriteSilently);
@@ -39,84 +39,11 @@ namespace IBE.ePubConverter.Converters {
                         var baseDirectory = "";
                         var first = true;
                         foreach (var point in ncx.Map.Points.OrderBy(x => x.Order)) {
-                            var pointFileName = point.Content.Uri;
-                            if (pointFileName.Contains("#")) {
-                                pointFileName = pointFileName.Substring(0, pointFileName.IndexOf("#"));
-                            }
-                            var pointFilePath = Path.Combine(ncxInfo.DirectoryName, pointFileName);
-                            if (File.Exists(pointFilePath)) {
-                                if (!first) {
-                                    xhtml.Add(XElement.Parse(@"<p style=""page-break-after: always;""> </p>"));
-                                }
-                                first = false;
-
-                                if (baseDirectory == "") {
-                                    baseDirectory = Path.GetDirectoryName(pointFilePath);
-                                }
-
-                                var pointHtmlText = File.ReadAllText(pointFilePath);
-                                var pointHtml = XElement.Parse(pointHtmlText);
-                                var pointBody = pointHtml.Elements().Where(x => x.Name.LocalName == "body").FirstOrDefault();
-                                body.Add(pointBody.Nodes());
-
-                                var pointHead = pointHtml.Elements().Where(x => x.Name.LocalName == "head").FirstOrDefault();
-
-                                foreach (var item in pointHead.Elements()) {
-                                    if (item.Name.LocalName == "link" && item.HasAttributes && item.Attribute("rel").Value == "stylesheet") {
-                                        var linkHref = item.Attribute("href").Value;
-                                        if (!head.Elements().Where(x => x.Name.LocalName == "link" && x.HasAttributes && x.Attribute("href").Value == linkHref).Any()) {
-                                            head.Add(item);
-                                        }
-                                    }
-                                    else if (item.Name.LocalName == "style") {
-                                        style.Add(item.Nodes());
-                                    }
-                                }
-                            }
+                            PopulatePoints(ncxInfo, xhtml, body, head, style, ref baseDirectory, ref first, point);
                         }
 
                         // renumerate footnotes
-                        try {
-                            var footnoteRefs = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && Regex.IsMatch(x.Value, @"\[[0-9\*]+\]") && x.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").First().Elements().First() != x);
-                            var index = 1;
-                            foreach (var item in footnoteRefs) {
-                                item.Value = $"[{index}]";
-                                var idAttr = item.Attribute("href").Value;
-                                var id = idAttr.Substring(idAttr.LastIndexOf("#") + 1);
-                                var val = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.Attribute("id") != null && x.Attribute("id").Value == id).FirstOrDefault();
-                                if (val != null) {
-                                    val.Value = $"[{index}]";
-                                    var valParent = val.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").FirstOrDefault();
-                                    if (valParent != null) {
-                                        var nextElements = valParent.ElementsAfterSelf().Take(3);
-                                        var elementsToRemove = new List<XElement>();
-                                        foreach (var nextElement in nextElements) {
-                                            if (Regex.IsMatch(nextElement.Value, @"^Rozdział\s+[0-9\*]+") ||
-                                                Regex.IsMatch(nextElement.Value, @"^Dodatek\s+[a-zA-Z0-9\*]+")) {
-                                                break;
-                                            }
-                                            if (!nextElement.Elements().Where(x => x.Name.LocalName == "a" && Regex.IsMatch(x.Value, @"\[[0-9\*]+\]")).Any()) {
-                                                valParent.Add(new XElement(XName.Get("br", valParent.Name.NamespaceName)));
-                                                valParent.Add(nextElement.Nodes());
-                                                elementsToRemove.Add(nextElement);
-                                                continue;
-                                            }
-
-                                            break;
-                                        }
-
-                                        if (elementsToRemove.Count > 0) {
-                                            var len = elementsToRemove.Count;
-                                            for (int i = len-1; i >=0; i--) {
-                                                elementsToRemove[i].Remove();
-                                            }
-                                        }
-                                    }
-                                }
-                                index++;
-                            }
-                        }
-                        catch { }
+                        xhtml = RenumerateFootnotes(xhtml);
 
                         var xhtmlPath = Path.Combine(ncxInfo.DirectoryName, "TempFile.html");
                         xhtml.Save(xhtmlPath);
@@ -178,6 +105,100 @@ namespace IBE.ePubConverter.Converters {
             Directory.Delete(dir, true);
 
             return document;
+        }
+
+        private XElement RenumerateFootnotes(XElement xhtml) {
+            try {
+                var footnoteRefs = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && Regex.IsMatch(x.Value, @"\[[0-9\*]+\]") && x.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").First().Elements().First() != x).ToList();
+                //var footnoteRefs = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.Value.StartsWith("[") && x.Value.EndsWith("]") && x.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").First().Elements().First() != x).ToList();
+                var index = 1;
+                foreach (var item in footnoteRefs) {
+                    item.Value = $"[{index}]";
+                    var idAttr = item.Attribute("href").Value;
+                    var id = idAttr.Substring(idAttr.LastIndexOf("#") + 1);
+                    var val = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.Attribute("id") != null && x.Attribute("id").Value == id).FirstOrDefault();
+                    if (val != null) {
+                        val.Value = $"[{index}]";
+                        var valParent = val.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").FirstOrDefault();
+                        if (valParent != null) {
+                            var nextElements = valParent.ElementsAfterSelf().Take(3);
+                            var elementsToRemove = new List<XElement>();
+                            foreach (var nextElement in nextElements) {
+                                if (Regex.IsMatch(nextElement.Value, @"^Rozdział\s+[0-9\*]+") ||
+                                    Regex.IsMatch(nextElement.Value, @"^Dodatek\s+[a-zA-Z0-9\*]+")) {
+                                    break;
+                                }
+                                if (!nextElement.Elements().Where(x => x.Name.LocalName == "a" && Regex.IsMatch(x.Value, @"\[[0-9\*]+\]")).Any()) {
+                                    valParent.Add(new XElement(XName.Get("br", valParent.Name.NamespaceName)));
+                                    valParent.Add(nextElement.Nodes());
+                                    elementsToRemove.Add(nextElement);
+                                    continue;
+                                }
+
+                                break;
+                            }
+
+                            if (elementsToRemove.Count > 0) {
+                                var len = elementsToRemove.Count;
+                                for (int i = len - 1; i >= 0; i--) {
+                                    elementsToRemove[i].Remove();
+                                }
+                            }
+                        }
+                    }
+                    else {
+                    }
+                    index++;
+                }
+            }
+            catch { }
+
+            return xhtml;
+        }
+
+        private XElement PopulatePoints(FileInfo ncxInfo, XElement xhtml, XElement body, XElement head, XElement style, ref string baseDirectory, ref bool first, NcxNavPoint point) {
+            var pointFileName = point.Content.Uri;
+            if (pointFileName.Contains("#")) {
+                pointFileName = pointFileName.Substring(0, pointFileName.IndexOf("#"));
+            }
+            var pointFilePath = Path.Combine(ncxInfo.DirectoryName, pointFileName);
+            if (File.Exists(pointFilePath)) {
+                if (!first) {
+                    xhtml.Add(XElement.Parse(@"<p style=""page-break-after: always;""> </p>"));
+                }
+                first = false;
+
+                if (baseDirectory == "") {
+                    baseDirectory = Path.GetDirectoryName(pointFilePath);
+                }
+
+                var pointHtmlText = File.ReadAllText(pointFilePath);
+                var pointHtml = XElement.Parse(pointHtmlText);
+                var pointBody = pointHtml.Elements().Where(x => x.Name.LocalName == "body").FirstOrDefault();
+                body.Add(pointBody.Nodes());
+
+                var pointHead = pointHtml.Elements().Where(x => x.Name.LocalName == "head").FirstOrDefault();
+
+                foreach (var item in pointHead.Elements()) {
+                    if (item.Name.LocalName == "link" && item.HasAttributes && item.Attribute("rel").Value == "stylesheet") {
+                        var linkHref = item.Attribute("href").Value;
+                        if (!head.Elements().Where(x => x.Name.LocalName == "link" && x.HasAttributes && x.Attribute("href").Value == linkHref).Any()) {
+                            head.Add(item);
+                        }
+                    }
+                    else if (item.Name.LocalName == "style") {
+                        style.Add(item.Nodes());
+                    }
+                }
+            }
+
+            if (point.Points != null && point.Points.Count > 0) {
+                foreach (var item in point.Points) {
+                    xhtml = PopulatePoints(ncxInfo, xhtml, body, head, style, ref baseDirectory, ref first, item);
+                }
+            }
+
+            return xhtml;
         }
     }
 }

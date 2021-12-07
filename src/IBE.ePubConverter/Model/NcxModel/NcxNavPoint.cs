@@ -6,7 +6,7 @@ namespace IBE.ePubConverter.Model.NcxModel {
         [XmlAttribute("playOrder")] public int Order { get; set; }
         [XmlElement("navLabel")] public NcxNavLabel Label { get; set; }
         [XmlElement("content")] public NcxNavContent Content { get; set; }
-
+        [XmlElement("navPoint")] public List<NcxNavPoint> Points { get; set; }
         public bool IsFootnotesPoint() => (Id != null && Id.Contains("footnotes")) || (Content != null && Content.Uri.Contains("footnotes"));
 
     }
