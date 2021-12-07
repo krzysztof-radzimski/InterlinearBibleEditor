@@ -17,3 +17,12 @@ if (args.Length > 1) {
         throw new FileNotFoundException($"Nie znaleziono pliku '{fileName}'!");
     }
 }
+else if (args.Length == 1) {
+    var fileName = args[0];
+    if (File.Exists(fileName)) {
+        new WordConverter().Execute(fileName);
+    }
+    else {
+        throw new FileNotFoundException($"Nie znaleziono pliku '{fileName}'!");
+    }
+}

@@ -9,7 +9,8 @@ namespace IBE.ePubConverter.Converters {
         public void Execute(string fileName) {
             var doc = GetDocument(fileName);
             if (doc != null) {
-                doc.Save(fileName.Replace(".epub", ".docx"), new Aspose.Words.Saving.OoxmlSaveOptions(Aspose.Words.SaveFormat.Docx) {
+                doc.Save(fileName.Replace(".epub", ".docx"), new Aspose.Words.Saving.OoxmlSaveOptions(Aspose.Words.SaveFormat.Docx)
+                {
                     UseHighQualityRendering = true
                 });
             }
@@ -74,10 +75,54 @@ namespace IBE.ePubConverter.Converters {
                             }
                         }
 
+                        // renumerate footnotes
+                        try {
+                            var footnoteRefs = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && Regex.IsMatch(x.Value, @"\[[0-9\*]+\]") && x.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").First().Elements().First() != x);
+                            var index = 1;
+                            foreach (var item in footnoteRefs) {
+                                item.Value = $"[{index}]";
+                                var idAttr = item.Attribute("href").Value;
+                                var id = idAttr.Substring(idAttr.LastIndexOf("#") + 1);
+                                var val = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.Attribute("id") != null && x.Attribute("id").Value == id).FirstOrDefault();
+                                if (val != null) {
+                                    val.Value = $"[{index}]";
+                                    var valParent = val.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").FirstOrDefault();
+                                    if (valParent != null) {
+                                        var nextElements = valParent.ElementsAfterSelf().Take(3);
+                                        var elementsToRemove = new List<XElement>();
+                                        foreach (var nextElement in nextElements) {
+                                            if (Regex.IsMatch(nextElement.Value, @"^Rozdział\s+[0-9\*]+") ||
+                                                Regex.IsMatch(nextElement.Value, @"^Dodatek\s+[a-zA-Z0-9\*]+")) {
+                                                break;
+                                            }
+                                            if (!nextElement.Elements().Where(x => x.Name.LocalName == "a" && Regex.IsMatch(x.Value, @"\[[0-9\*]+\]")).Any()) {
+                                                valParent.Add(new XElement(XName.Get("br", valParent.Name.NamespaceName)));
+                                                valParent.Add(nextElement.Nodes());
+                                                elementsToRemove.Add(nextElement);
+                                                continue;
+                                            }
+
+                                            break;
+                                        }
+
+                                        if (elementsToRemove.Count > 0) {
+                                            var len = elementsToRemove.Count;
+                                            for (int i = len-1; i >=0; i--) {
+                                                elementsToRemove[i].Remove();
+                                            }
+                                        }
+                                    }
+                                }
+                                index++;
+                            }
+                        }
+                        catch { }
+
                         var xhtmlPath = Path.Combine(ncxInfo.DirectoryName, "TempFile.html");
                         xhtml.Save(xhtmlPath);
 
-                        var options = new Aspose.Words.Loading.LoadOptions {
+                        var options = new Aspose.Words.Loading.LoadOptions
+                        {
                             LoadFormat = Aspose.Words.LoadFormat.Html,
                             BaseUri = baseDirectory
                         };
@@ -93,7 +138,7 @@ namespace IBE.ePubConverter.Converters {
                             if (field.Type == Aspose.Words.Fields.FieldType.FieldHyperlink) {
                                 var link = field as Aspose.Words.Fields.FieldHyperlink;
                                 if (Regex.IsMatch(link.Result, @"\[[0-9]+\]")) {
-                                    var footnotePar = document.LastSection.Body.Paragraphs.Where(x => x.ToString(Aspose.Words.SaveFormat.Text).StartsWith(link.Result)).FirstOrDefault();
+                                    var footnotePar = document.LastSection.Body.Paragraphs.Where(x => x.ToString(Aspose.Words.SaveFormat.Text).Trim().StartsWith(link.Result)).LastOrDefault();
                                     if (footnotePar != null) {
                                         list2.Add(footnotePar);
                                         var footnoteText = footnotePar.ToString(Aspose.Words.SaveFormat.Text).Replace(link.Result, "");
