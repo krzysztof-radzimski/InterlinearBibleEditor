@@ -2,7 +2,7 @@
   "profiles": {
     "IBE.ePubConverter": {
       "commandName": "Project",
-      "commandLineArgs": "\"D:\\OneDrive\\WBST\\Praca dyplomowa\\Źródła\\Inteligentny Projekt\\Behe M. - Czarna skrzynka Darwina. Biochemiczne wyzwanie dla ewolucjonizmu.epub\""
+      "commandLineArgs": "\"D:\\OneDrive\\WBST\\Praca dyplomowa\\Źródła\\Inteligentny Projekt\\Dembski William - Nic za darmo dlaczego przyczyną wyspecyfikowanej złożoności musi być inteligencja.epub\""
     }
   }
 }

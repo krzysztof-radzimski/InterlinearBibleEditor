@@ -33,13 +33,11 @@ namespace IBE.ePubConverter.Converters {
                     if (ncx != null && ncx.Map != null && ncx.Map.Points != null && ncx.Map.Points.Count > 0) {
                         var html = @"<?xml version=""1.0"" encoding=""utf-8""?><html xmlns=""http://www.w3.org/1999/xhtml""><head><title>Tekst</title><style></style></head><body></body></html>";
                         var xhtml = XElement.Parse(html);
-                        var body = xhtml.Elements().Where(x => x.Name.LocalName == "body").FirstOrDefault();
-                        var head = xhtml.Elements().Where(x => x.Name.LocalName == "head").FirstOrDefault();
-                        var style = head.Elements().Where(x => x.Name.LocalName == "style").FirstOrDefault();
+
                         var baseDirectory = "";
                         var first = true;
                         foreach (var point in ncx.Map.Points.OrderBy(x => x.Order)) {
-                            PopulatePoints(ncxInfo, xhtml, body, head, style, ref baseDirectory, ref first, point);
+                            PopulatePoints(ncxInfo, xhtml, ref baseDirectory, ref first, point);
                         }
 
                         // renumerate footnotes
@@ -64,7 +62,7 @@ namespace IBE.ePubConverter.Converters {
                         foreach (var field in document.Range.Fields) {
                             if (field.Type == Aspose.Words.Fields.FieldType.FieldHyperlink) {
                                 var link = field as Aspose.Words.Fields.FieldHyperlink;
-                                if (Regex.IsMatch(link.Result, @"\[[0-9]+\]")) {
+                                if (Regex.IsMatch(link.Result, @"^\[[0-9]+\]")) {
                                     var footnotePar = document.LastSection.Body.Paragraphs.Where(x => x.ToString(Aspose.Words.SaveFormat.Text).Trim().StartsWith(link.Result)).LastOrDefault();
                                     if (footnotePar != null) {
                                         list2.Add(footnotePar);
@@ -109,13 +107,13 @@ namespace IBE.ePubConverter.Converters {
 
         private XElement RenumerateFootnotes(XElement xhtml) {
             try {
-                var footnoteRefs = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && Regex.IsMatch(x.Value, @"\[[0-9\*]+\]") && x.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").First().Elements().First() != x).ToList();
+                var footnoteRefs = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.HasAttributes && x.Attribute("href") != null && Regex.IsMatch(x.Value, @"^\[[0-9\*]+\]") && x.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").First().Elements().First() != x).ToList();
                 //var footnoteRefs = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.Value.StartsWith("[") && x.Value.EndsWith("]") && x.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").First().Elements().First() != x).ToList();
                 var index = 1;
                 foreach (var item in footnoteRefs) {
                     item.Value = $"[{index}]";
                     var idAttr = item.Attribute("href").Value;
-                    var id = idAttr.Substring(idAttr.LastIndexOf("#") + 1);
+                    var id = idAttr.IndexOf("#") > -1 ? idAttr.Substring(idAttr.LastIndexOf("#") + 1) : idAttr;
                     var val = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.Attribute("id") != null && x.Attribute("id").Value == id).FirstOrDefault();
                     if (val != null) {
                         val.Value = $"[{index}]";
@@ -153,10 +151,40 @@ namespace IBE.ePubConverter.Converters {
             }
             catch { }
 
+
+            try {
+                var links = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.HasAttributes && x.Attribute("href") != null);
+                foreach (var link in links) {
+                    var href = link.Attribute("href").Value;
+                    if (href.IndexOf("#") > -1) {
+                        href = href.Substring(href.LastIndexOf("#"));
+                    }
+                    if (!String.IsNullOrEmpty(href)) {
+                        link.Attribute("href").Value = href;
+                    }
+                }
+
+                var images = xhtml.Descendants().Where(x => x.Name.LocalName == "img" && x.HasAttributes && x.Attribute("src") != null);
+                foreach (var image in images) {
+                    if (image.Attribute("style") == null) {
+                        image.Add(new XAttribute("style", ""));
+                    }
+                    if (!string.IsNullOrWhiteSpace(image.Attribute("style").Value) && !image.Attribute("style").Value.Trim().EndsWith(";")) {
+                        image.Attribute("style").Value += ";";
+                    }
+                    image.Attribute("style").Value += " max-width: 100%;";
+                }
+            }
+            catch { }
+
             return xhtml;
         }
 
-        private XElement PopulatePoints(FileInfo ncxInfo, XElement xhtml, XElement body, XElement head, XElement style, ref string baseDirectory, ref bool first, NcxNavPoint point) {
+        private XElement PopulatePoints(FileInfo ncxInfo, XElement xhtml, ref string baseDirectory, ref bool first, NcxNavPoint point) {
+            var body = xhtml.Elements().Where(x => x.Name.LocalName == "body").FirstOrDefault();
+            var head = xhtml.Elements().Where(x => x.Name.LocalName == "head").FirstOrDefault();
+            var style = head.Elements().Where(x => x.Name.LocalName == "style").FirstOrDefault();
+
             var pointFileName = point.Content.Uri;
             if (pointFileName.Contains("#")) {
                 pointFileName = pointFileName.Substring(0, pointFileName.IndexOf("#"));
@@ -164,7 +192,7 @@ namespace IBE.ePubConverter.Converters {
             var pointFilePath = Path.Combine(ncxInfo.DirectoryName, pointFileName);
             if (File.Exists(pointFilePath)) {
                 if (!first) {
-                    xhtml.Add(XElement.Parse(@"<p style=""page-break-after: always;""> </p>"));
+                    body.Add(XElement.Parse(@"<p style=""page-break-after: always;""> </p>"));
                 }
                 first = false;
 
@@ -193,8 +221,15 @@ namespace IBE.ePubConverter.Converters {
             }
 
             if (point.Points != null && point.Points.Count > 0) {
-                foreach (var item in point.Points) {
-                    xhtml = PopulatePoints(ncxInfo, xhtml, body, head, style, ref baseDirectory, ref first, item);
+                foreach (var item in point.Points.OrderBy(x => x.Order)) {
+                    var itemFileName = item.Content.Uri;
+                    if (itemFileName.Contains("#")) {
+                        itemFileName = itemFileName.Substring(0, itemFileName.IndexOf("#"));
+                    }
+
+                    if (itemFileName == pointFileName) { continue; }
+
+                    xhtml = PopulatePoints(ncxInfo, xhtml, ref baseDirectory, ref first, item);
                 }
             }
 
