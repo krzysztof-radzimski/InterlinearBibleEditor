@@ -40,8 +40,10 @@ namespace IBE.ePubConverter.Converters {
                             PopulatePoints(ncxInfo, xhtml, ref baseDirectory, ref first, point);
                         }
 
-                        // renumerate footnotes
                         xhtml = RenumerateFootnotes(xhtml);
+                        xhtml = RepairLinks(xhtml);
+                        xhtml = RepairImages(xhtml);
+                        xhtml = RepairChapters(xhtml);
 
                         var xhtmlPath = Path.Combine(ncxInfo.DirectoryName, "TempFile.html");
                         xhtml.Save(xhtmlPath);
@@ -96,6 +98,20 @@ namespace IBE.ePubConverter.Converters {
                                 catch { }
                             }
                         }
+
+                        // headings
+                        var chapterTitleStyle = document.Styles.Where(x => x.Name == "chapter_title").FirstOrDefault();
+                        if (chapterTitleStyle != null) {
+                            chapterTitleStyle.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading1].Name;
+                        }
+                        var subTitleStyle = document.Styles.Where(x => x.Name == "subtitle1" || x.Name == "subtitle").FirstOrDefault();
+                        if (subTitleStyle != null) {
+                            subTitleStyle.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading2].Name;
+                        }
+                        var subTitle2Style = document.Styles.Where(x => x.Name == "subtitle2").FirstOrDefault();
+                        if (subTitle2Style != null) {
+                            subTitle2Style.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading3].Name;
+                        }
                     }
                 }
             }
@@ -108,7 +124,6 @@ namespace IBE.ePubConverter.Converters {
         private XElement RenumerateFootnotes(XElement xhtml) {
             try {
                 var footnoteRefs = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.HasAttributes && x.Attribute("href") != null && Regex.IsMatch(x.Value, @"^\[[0-9\*]+\]") && x.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").First().Elements().First() != x).ToList();
-                //var footnoteRefs = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.Value.StartsWith("[") && x.Value.EndsWith("]") && x.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").First().Elements().First() != x).ToList();
                 var index = 1;
                 foreach (var item in footnoteRefs) {
                     item.Value = $"[{index}]";
@@ -151,7 +166,25 @@ namespace IBE.ePubConverter.Converters {
             }
             catch { }
 
-
+            return xhtml;
+        }
+        private XElement RepairImages(XElement xhtml) {
+            try {
+                var images = xhtml.Descendants().Where(x => x.Name.LocalName == "img" && x.HasAttributes && x.Attribute("src") != null);
+                foreach (var image in images) {
+                    if (image.Attribute("style") == null) {
+                        image.Add(new XAttribute("style", ""));
+                    }
+                    if (!string.IsNullOrWhiteSpace(image.Attribute("style").Value) && !image.Attribute("style").Value.Trim().EndsWith(";")) {
+                        image.Attribute("style").Value += ";";
+                    }
+                    image.Attribute("style").Value += " max-width: 100%;";
+                }
+            }
+            catch { }
+            return xhtml;
+        }
+        private XElement RepairLinks(XElement xhtml) {
             try {
                 var links = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.HasAttributes && x.Attribute("href") != null);
                 foreach (var link in links) {
@@ -163,17 +196,54 @@ namespace IBE.ePubConverter.Converters {
                         link.Attribute("href").Value = href;
                     }
                 }
+            }
+            catch { }
 
-                var images = xhtml.Descendants().Where(x => x.Name.LocalName == "img" && x.HasAttributes && x.Attribute("src") != null);
-                foreach (var image in images) {
-                    if (image.Attribute("style") == null) {
-                        image.Add(new XAttribute("style", ""));
+            return xhtml;
+        }
+        private XElement RepairChapters(XElement xhtml) {
+            try {
+                var chapterNumbers = xhtml.Descendants().Where(x => x.HasAttributes && x.Attribute("class") != null && x.Attribute("class").Value == "chapter_number").ToList();
+                if (chapterNumbers.Count > 0) {
+                    var elementsToRemove = new List<XElement>();
+                    foreach (var chapterNumber in chapterNumbers) {
+                        var titleEl = chapterNumber.ElementsAfterSelf().FirstOrDefault();
+                        if (titleEl != null && titleEl.HasAttributes && titleEl.Attribute("class") != null && titleEl.Attribute("class").Value == "chapter_title") {
+                            var h1 = new XElement(XName.Get("h1", titleEl.Name.NamespaceName), titleEl.Attribute("class"));
+                            h1.Add(chapterNumber.Nodes(), new XElement(XName.Get("br", titleEl.Name.NamespaceName)), titleEl.Nodes());
+
+                            chapterNumber.AddBeforeSelf(h1);
+
+                            elementsToRemove.Add(chapterNumber);
+                            elementsToRemove.Add(titleEl);
+                        }
                     }
-                    if (!string.IsNullOrWhiteSpace(image.Attribute("style").Value) && !image.Attribute("style").Value.Trim().EndsWith(";")) {
-                        image.Attribute("style").Value += ";";
+
+
+                    if (elementsToRemove.Count > 0) {
+                        var len = elementsToRemove.Count;
+                        for (int i = len - 1; i >= 0; i--) {
+                            elementsToRemove[i].Remove();
+                        }
                     }
-                    image.Attribute("style").Value += " max-width: 100%;";
                 }
+                //else {
+                //    var chapter_titles = xhtml.Descendants().Where(x => x.HasAttributes && x.Attribute("class") != null && x.Attribute("class").Value == "chapter_title").ToList();
+                //    foreach (var item in chapter_titles) {
+                //        item.Name = XName.Get("h1", item.Name.NamespaceName);
+                //    }
+                //}
+
+                //var subtitle1Elements = xhtml.Descendants().Where(x => x.HasAttributes && x.Attribute("class") != null && x.Attribute("class").Value == "subtitle1");
+                //foreach (var subtitle1Element in subtitle1Elements) {
+                //    subtitle1Element.Name = XName.Get("h2", subtitle1Element.Name.NamespaceName);
+                //}
+
+                //var subtitle2Elements = xhtml.Descendants().Where(x => x.HasAttributes && x.Attribute("class") != null && x.Attribute("class").Value == "subtitle2");
+                //foreach (var subtitle2Element in subtitle2Elements) {
+                //    subtitle2Element.Name = XName.Get("h3", subtitle2Element.Name.NamespaceName);
+                //}
+
             }
             catch { }
 
@@ -201,7 +271,16 @@ namespace IBE.ePubConverter.Converters {
                 }
 
                 var pointHtmlText = File.ReadAllText(pointFilePath);
-                var pointHtml = XElement.Parse(pointHtmlText);
+
+                pointHtmlText = pointHtmlText.Replace("&shy;", "&#173;");
+                pointHtmlText = pointHtmlText.Replace("&nbsp;", "&#160;");
+
+                XElement pointHtml; try {
+                    pointHtml = XElement.Parse(pointHtmlText);
+                }
+                catch (Exception ex) {
+                    throw new Exception($"Błąd podczas ładowania pliku {pointFileName}!", ex);
+                }
                 var pointBody = pointHtml.Elements().Where(x => x.Name.LocalName == "body").FirstOrDefault();
                 body.Add(pointBody.Nodes());
 
