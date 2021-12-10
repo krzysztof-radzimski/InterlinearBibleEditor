@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "W co wierzymy?";
 }
+@inject IConfiguration Configuration 
 <style>
     .list-group-item {
         display: list-item;
@@ -9,7 +10,7 @@
 <div class="max-width-1000" style="padding-top: 20px;">
     <h1><i class="fas fa-praying-hands"></i> @ViewData["Title"]</h1>
     <p id="banner" class="fs-5 text-center shadow p-3 mb-3 rounded">
-        <img src="~/img/Ban_500x90_Bapt_Photo.jpg?ID=2" style="width: 100%;" alt="Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim" />
+        <img src="~/img/Ban_500x90_Bapt_Photo.jpg?ID=2" style="width: 100%;" alt="@Configuration["PageTitle"]" />
     </p>
     @*<p id="WhatWeBelieveIcon"><img src="~/img/baptysci-logo-2.svg" style="max-width: 20%; margin-left: 10px; float: right;" /></p>*@
     <p class="fs-5">

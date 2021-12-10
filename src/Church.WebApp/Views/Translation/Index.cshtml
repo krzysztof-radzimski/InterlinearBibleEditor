@@ -4,7 +4,7 @@
     var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
     var __path = this.Context.Request.Path;
 }
-
+@inject IConfiguration Configuration 
 @model Church.WebApp.Models.TranslationControllerModel
 @using IBE.Common.Extensions
 
@@ -16,13 +16,9 @@ else if (Model.Translation.IsNull() || Model.Translation.Hidden) {
 }
 else if (Model.Book.IsNullOrEmpty()) {
 
-    @section HeaderScripts {
-        @{
-            var __title = Model.Translation.Description;
-            __title += " - Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim";
-        }
+    @section HeaderScripts {  
         <!-- social sharing metadata -->
-        <meta property="og:title" content="@__title" />
+        <meta property="og:title" content="@Model.Translation.Description - @Configuration["PageTitle"]" />
         <meta property="og:description" content="@Model.Translation.Description" />
         <meta property="og:image" content="@__host/img/biblelink.jpg" />
         <meta property="og:url" content="@__host@__path" />
@@ -407,8 +403,7 @@ else {
         var chapter = book.Chapters.Where(x => x.NumberOfChapter == chapterNumber).FirstOrDefault();
         var footNoteIndex = 1;
         var footNoteRefIndex = 0;
-        var footNotes = new List<string>
-    ();
+        var footNotes = new List<string>();
 
         string[] modelVerses = null;
         if (!String.IsNullOrEmpty(Model.Verse)) {
@@ -425,7 +420,7 @@ else {
 
             @{
                 var __translationName = $"({Model.Translation.Name.Replace('\'', ' ')})";
-                var __chapterNumber = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}";
+                var __chapterNumber = $"{book.BaseBook.BookShortcut} {chapter.NumberOfChapter}";
             }
 
             <!-- Modal -->
@@ -561,8 +556,8 @@ else {
 
 
                         if (footnoteText.IsNotNullOrEmpty()) {
-                            translation += $@"<a style=""position: absolute; top: -6px; font-size: 80%;"" class=""text-decoration-none"" href=""#footNote{footNoteRefIndex}"" title=""{footnoteTextTitle}"">{footNoteRefIndex}</a>";
-                            footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteRefIndex}"" />{footNoteRefIndex})&nbsp;{footnoteText}</p>");
+                            translation += $@"<a style=""position: absolute; top: -6px; font-size: 80%;"" class=""text-decoration-none"" href=""#footNote{footNoteRefIndex}"" title=""{footnoteTextTitle}"" id=""ref{footNoteRefIndex}"">{footNoteRefIndex}</a>";
+                            footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteRefIndex}"" /><span style=""cursor: pointer;"" onclick=""scrollToFootnoteRef('ref{footNoteRefIndex}')"">{footNoteRefIndex}</a>)&nbsp;{footnoteText}</p>");
                             footNoteRefIndex++;
                         }
 
@@ -841,7 +836,7 @@ else {
 
                     var __verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
                     __verseText = System.Text.RegularExpressions.Regex.Replace(__verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
-                    var clipboardText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}:{verse.NumberOfVerse} „{__verseText}” ({Model.Translation.Name.Replace('\'', ' ')})";
+                    var clipboardText = $"{book.BaseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse} „{__verseText}” ({Model.Translation.Name.Replace('\'', ' ')})";
                     var clipboardShortText = $"{__verseText}";
 
                     <span id="span-verse-@verse.NumberOfVerse" class="lh-lg fs-5" style="margin-inline-end: 15px; margin-inline-start: 15px; @activeVerse">
@@ -967,8 +962,6 @@ else {
 
         @section HeaderScripts {
             @if (Model.IsNotNull() && Model.Translation.IsNotNull()) {
-                //var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
-                //var __path = this.Context.Request.Path;
                 var __title = Model.Translation.Description;
 
                 @if (book.IsNotNull()) {
@@ -981,7 +974,7 @@ else {
                     }
                 }
 
-                __title += " - Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim";
+                __title += $" - {Configuration["PageTitle"]}";
 
                 <!-- social sharing metadata -->
                 <meta property="og:title" content="@__title" />
@@ -1003,7 +996,7 @@ else {
                             const topNav = document.getElementById(topNavId);
 
                             const id = 'Verse_@selectedVerses.First()';
-                            const yOffset = -(topNav.offsetHeight); //-55;
+                            const yOffset = -((topNav.offsetHeight)+65); //-55;
                             const element = document.getElementById(id);
                             const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 

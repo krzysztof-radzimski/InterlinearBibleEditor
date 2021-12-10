@@ -15,18 +15,17 @@ using Church.WebApp.Models;
 using DevExpress.Xpo;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
-using LinqKit;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Church.WebApp.Controllers {
     public class TranslationController : Controller {
-        private readonly ILogger<TranslationController> _logger;
-        public TranslationController(ILogger<TranslationController> logger) {
-            _logger = logger;
+        protected readonly IConfiguration Configuration;
+
+        public TranslationController(IConfiguration configuration) {
+            Configuration = configuration;
         }
 
         // "{translationName}/{book?}/{chapter?}/{verse?}"

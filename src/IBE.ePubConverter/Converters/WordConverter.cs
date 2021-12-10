@@ -1,5 +1,6 @@
 ﻿using IBE.ePubConverter.Model.NcxModel;
 using Ionic.Zip;
+using Microsoft.Extensions.Configuration;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -7,17 +8,20 @@ using System.Xml.Serialization;
 namespace IBE.ePubConverter.Converters {
     internal class WordConverter : IConverter {
         public void Execute(string fileName) {
+            if (String.IsNullOrWhiteSpace(fileName)) { throw new ArgumentNullException("fileName"); }
+            if (!File.Exists(fileName)) { throw new FileNotFoundException(); }
+            if (!Path.GetExtension(fileName).ToLower().Contains("epub")) { throw new Exception("Przekazany plik nie jest plikiem .epub!"); }
+
             var doc = GetDocument(fileName);
             if (doc != null) {
-                doc.Save(fileName.Replace(".epub", ".docx"), new Aspose.Words.Saving.OoxmlSaveOptions(Aspose.Words.SaveFormat.Docx)
-                {
+                doc.Save(fileName.Replace(".epub", ".docx"), new Aspose.Words.Saving.OoxmlSaveOptions(Aspose.Words.SaveFormat.Docx) {
                     UseHighQualityRendering = true
                 });
             }
         }
-
+        
         public Aspose.Words.Document GetDocument(string fileName) {
-            new Aspose.Words.License().SetLicense("../../../../../db/Aspose.Total.lic");
+            new Aspose.Words.License().SetLicense(GetLicenseKeyFilePath());
             Aspose.Words.Document document = null;
             var dir = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(fileName));
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
@@ -48,8 +52,7 @@ namespace IBE.ePubConverter.Converters {
                         var xhtmlPath = Path.Combine(ncxInfo.DirectoryName, "TempFile.html");
                         xhtml.Save(xhtmlPath);
 
-                        var options = new Aspose.Words.Loading.LoadOptions
-                        {
+                        var options = new Aspose.Words.Loading.LoadOptions {
                             LoadFormat = Aspose.Words.LoadFormat.Html,
                             BaseUri = baseDirectory
                         };
@@ -227,23 +230,6 @@ namespace IBE.ePubConverter.Converters {
                         }
                     }
                 }
-                //else {
-                //    var chapter_titles = xhtml.Descendants().Where(x => x.HasAttributes && x.Attribute("class") != null && x.Attribute("class").Value == "chapter_title").ToList();
-                //    foreach (var item in chapter_titles) {
-                //        item.Name = XName.Get("h1", item.Name.NamespaceName);
-                //    }
-                //}
-
-                //var subtitle1Elements = xhtml.Descendants().Where(x => x.HasAttributes && x.Attribute("class") != null && x.Attribute("class").Value == "subtitle1");
-                //foreach (var subtitle1Element in subtitle1Elements) {
-                //    subtitle1Element.Name = XName.Get("h2", subtitle1Element.Name.NamespaceName);
-                //}
-
-                //var subtitle2Elements = xhtml.Descendants().Where(x => x.HasAttributes && x.Attribute("class") != null && x.Attribute("class").Value == "subtitle2");
-                //foreach (var subtitle2Element in subtitle2Elements) {
-                //    subtitle2Element.Name = XName.Get("h3", subtitle2Element.Name.NamespaceName);
-                //}
-
             }
             catch { }
 
@@ -314,5 +300,22 @@ namespace IBE.ePubConverter.Converters {
 
             return xhtml;
         }
+
+        private string GetLicenseKeyFilePath() {
+            var builder = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json", optional: false);
+
+            IConfiguration config = builder.Build();
+            var settings = config.GetSection("Settings").Get<Settings>();
+            if (settings != null) {
+                return settings.AsposeLicenseFilePath;
+            }
+            return "../../../../../db/Aspose.Total.lic";
+        }
+    }
+
+    public class Settings {
+        public string AsposeLicenseFilePath { get; set; }
     }
 }

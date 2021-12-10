@@ -102,14 +102,6 @@ function copyNav() {
     var num = parseInt($nav.prop("id").match(/\d+/g), 10) + 1;
     var $cloned = $nav.clone().prop('id', 'chapterNav' + num);
     $("#divDownload").prepend($cloned);
-
-
-    //$(document).on("click", function (event) {
-    //    var $trigger = $("span[id^='verseMenuText_']");
-    //    if ($trigger !== event.target && !$trigger.has(event.target).length) {
-    //        $("ul[id^='verseDropDownMenu_']").hide();
-    //    }
-    //});
 }
 
 function showDopdownMenu(e, dropDownId) {
@@ -124,4 +116,10 @@ function showDopdownMenu(e, dropDownId) {
 function hideDopdownMenu(dropDownId) {
     var $menu = $('#' + dropDownId);
     $menu.toggle('show');
+}
+function scrollToFootnoteRef(id) {
+    var $e = $('#' + id);
+    if ($e != undefined) {
+        $e.get(0).scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+    }
 }

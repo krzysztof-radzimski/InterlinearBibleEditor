@@ -5,20 +5,22 @@
     var __path = this.Context.Request.Path;
 
 }
+@using Church.WebApp.Models
 @using IBE.Common.Extensions
 @using DevExpress.Xpo;
 @using System.Linq;
 @using IBE.Data.Model;
+@inject IConfiguration Configuration 
 
-@model IBE.Data.Model.Article
+@model ArticleControllerModel
 
 @section HeaderScripts {
     @if (Model.IsNotNull()) {
         <!-- social sharing metadata -->
-        <meta property="og:title" content="@Model.Subject  - Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim" />
-        <meta property="og:description" content="@Model.Lead" />
-        <meta property="og:image" content="@__host/api/ArticleImage?id=@Model.Oid" />
-        <meta property="og:url" content="@__host/Article?id=@Model.Oid" />
+        <meta property="og:title" content="@Model.Article.Subject - @Configuration["PageTitle"]" />
+        <meta property="og:description" content="@Model.Article.Lead" />
+        <meta property="og:image" content="@__host/api/ArticleImage?id=@Model.Article.Oid" />
+        <meta property="og:url" content="@__host/Article?id=@Model.Article.Oid" />
         <meta property="og:type" content="article" />
         <meta property="og:locale" content="pl_PL" />
     }
@@ -26,27 +28,27 @@
 
 @if (Model != null) {
 
-    ViewData["Title"] = @Model.Subject;
+    ViewData["Title"] = @Model.Article.Subject;
 
     <div class="row shadow-lg" style="max-width: 1040px; margin: auto;">
         <div class="col p-4 d-flex flex-column position-static">
             <div>
                 <strong class="d-inline-block mb-2 text-success pill-white" style="width:auto;"><a href="/articles" class="text-decoration-none" title="Więcej artykułów"><i class="far fa-arrow-alt-circle-left"></i></a></strong>
-                <strong class="d-inline-block mb-2 text-success pill-white">@Model.Type.GetDescription()</strong>
+                <strong class="d-inline-block mb-2 text-success pill-white">@Model.Article.Type.GetDescription()</strong>
             </div>
-            <h3 class="mb-0">@Model.Subject</h3>
-            <p class="mb-auto fst-italic">@Model.AuthorName</p>
-            <p class="mb-auto">@Model.Lead</p>
-            <div class="mb-1 text-muted">@Model.Date.GetDatePl()</div>
+            <h3 class="mb-0">@Model.Article.Subject</h3>
+            <p class="mb-auto fst-italic">@Model.Article.AuthorName</p>
+            <p class="mb-auto">@Model.Article.Lead</p>
+            <div class="mb-1 text-muted">@Model.Article.Date.GetDatePl()</div>
         </div>
 
-        @if (Model.AuthorPicture.IsNotNull()) {
-            <div class="col-auto d-none d-lg-block" style="background-image: url('data:image/png;base64, @Convert.ToBase64String(Model.AuthorPicture)'); background-position: center center; background-repeat: no-repeat; background-size: cover; max-width: 350px; width: 40%;"></div>
+        @if (Model.Article.AuthorPicture.IsNotNull()) {
+            <div class="col-auto d-none d-lg-block" style="background-image: url('data:image/png;base64, @Convert.ToBase64String(Model.Article.AuthorPicture)'); background-position: center center; background-repeat: no-repeat; background-size: cover; max-width: 350px; width: 40%;"></div>
         }
     </div>
     <div style="text-align: justify; max-width: 900px; margin: auto;">
         @{
-            var text = Model.Text;
+            var text = Model.Article.Text;
             
             // usuwam sierotki
             text = System.Text.RegularExpressions.Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {

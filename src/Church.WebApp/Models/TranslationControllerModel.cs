@@ -11,15 +11,10 @@
 
   ===================================================================================*/
 
-using DevExpress.Xpo;
-using IBE.Data.Model;
 using IBE.Common.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using IBE.Data.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using LinqKit;
 
 
 namespace Church.WebApp.Models {

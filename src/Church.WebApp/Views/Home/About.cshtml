@@ -1,10 +1,12 @@
 ﻿@{
     ViewData["Title"] = "O nas, Kim jesteśmy?";
 }
+@inject IConfiguration Configuration 
+
 <div class="clearfix max-width-1000" style="padding-top: 20px;">
     <h1><i class="fas fa-place-of-worship"></i> @ViewData["Title"]</h1>
     <p id="banner" class="fs-5 text-center shadow p-3 mb-3 rounded">
-        <img src="~/img/Ban_500x90_Bapt_Photo.jpg?ID=2" style="width: 100%;" alt="Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim" />
+        <img src="~/img/Ban_500x90_Bapt_Photo.jpg?ID=2" style="width: 100%;" alt="@Configuration["PageTitle"]" />
     </p>
     <p class="fs-5">Jesteśmy placówką <a href="https://baptysci.waw.pl/formularz-kontaktowy/placowki-zboru/" class="link-success" target="_blank">zboru w&#160;Warszawie</a> i&#160;działamy na podstawie <a href="http://isap.sejm.gov.pl/DetailsServlet?id=WDU19950970480" class="link-dark" target="_blank">ustawy o stosunku państwa do kościoła chrześcijan baptystów w&#160;Rzeczypospolitej Polskiej</a>.</p>
 

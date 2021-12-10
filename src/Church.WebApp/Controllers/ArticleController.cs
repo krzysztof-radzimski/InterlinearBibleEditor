@@ -11,6 +11,7 @@
 
   ===================================================================================*/
 
+using Church.WebApp.Models;
 using DevExpress.Xpo;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
@@ -24,10 +25,9 @@ using System.Threading.Tasks;
 
 namespace Church.WebApp.Controllers {
     public class ArticleController : Controller {
-        private readonly ILogger<ArticleController> _logger;
-
-        public ArticleController(ILogger<ArticleController> logger) {
-            _logger = logger;
+        protected readonly IConfiguration Configuration;
+        public ArticleController(IConfiguration configuration) {
+            Configuration = configuration;
         }
 
         public IActionResult Index() {
@@ -40,7 +40,7 @@ namespace Church.WebApp.Controllers {
                 var id = value.ToLower().Replace("?id=", "").Trim().ToInt();
                 var article = new XPQuery<Article>(new UnitOfWork()).Where(x => x.Oid == id).FirstOrDefault();
                 if (article.IsNotNull()) {
-                    return View(article);
+                    return View(new ArticleControllerModel() { Article = article });
                 }
             }
             return View();

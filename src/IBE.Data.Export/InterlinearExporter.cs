@@ -388,7 +388,9 @@ namespace IBE.Data.Export {
             builder.InsertHtml($"{text}");
             if (footNotes.Count > 0) {
                 foreach (var item in footNotes) {
-                    builder.InsertFootnote(FootnoteType.Footnote, item.Value, $"{item.Key})");
+                    var fn = builder.InsertFootnote(FootnoteType.Footnote, item.Value, $"{item.Key})");
+                    fn.Font.Bold = true;
+                    fn.Font.Color = Color.Black;
                 }
             }
             builder.Write(" ");
@@ -495,7 +497,7 @@ namespace IBE.Data.Export {
         }
         private void ExportVerseNumber(Verse verse, Paragraph par, DocumentBuilder builder) {
             var chapterNumber = verse.ParentTranslation.ChapterRomanNumbering ? verse.ParentChapter.NumberOfChapter.ArabicToRoman() : verse.ParentChapter.NumberOfChapter.ToString();
-            var text = $"{chapterNumber},{verse.NumberOfVerse}";
+            var text = $"{chapterNumber}:{verse.NumberOfVerse}";
             var shape = new Shape(par.Document, ShapeType.TextBox) {
                 Width = 30,
                 Height = 80,
@@ -527,7 +529,8 @@ namespace IBE.Data.Export {
                 Height = 80,
                 BehindText = false,
                 Stroked = false,
-                WrapType = WrapType.Inline
+                WrapType = WrapType.Inline, 
+                FillColor = Color.Transparent
             };
             shape.TextBox.FitShapeToText = true;
             shape.TextBox.TextBoxWrapMode = TextBoxWrapMode.Square;
@@ -602,9 +605,9 @@ namespace IBE.Data.Export {
                     builder.MoveTo(par);
 
                     var footnote = builder.InsertFootnote(FootnoteType.Footnote, "");
-                    footnote.Font.Position = 11;
-                    footnote.Font.Color = Color.Blue;
-                    footnote.Font.Bold = false;
+                    footnote.Font.Position = 12;
+                    footnote.Font.Color = Color.Black;
+                    footnote.Font.Bold = true;
 
                     builder.MoveTo(footnote.LastParagraph);
                     builder.InsertHtml($"<sup style=\"font-size: 8pt;\">)</sup>&nbsp;<span style=\"font-size: 10pt;\">{footnoteText}</span>");
@@ -613,7 +616,7 @@ namespace IBE.Data.Export {
             }
         }
 
-        private string RepairImagesPath(string input) {           
+        private string RepairImagesPath(string input) {
             input = System.Text.RegularExpressions.Regex.Replace(input, @"\<img src\=\""\/", $@"<img src=""{Host}/");
             return input;
         }

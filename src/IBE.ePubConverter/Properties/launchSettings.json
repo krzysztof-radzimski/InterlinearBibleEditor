@@ -2,7 +2,7 @@
   "profiles": {
     "IBE.ePubConverter": {
       "commandName": "Project",
-      "commandLineArgs": "\"D:\\OneDrive\\WBST\\Praca dyplomowa\\Źródła\\Inteligentny Projekt\\Dembski William - Nic za darmo dlaczego przyczyną wyspecyfikowanej złożoności musi być inteligencja.epub\""
+      "commandLineArgs": "\"C:\\Projekty\\GITHUB\\abcpro-pl\\InterlinearBibleEditor\\db\\import\\Dembski William - Wnioskowanie o projekcie - wykluczenie przypadku metoda malych prawdopodobienstw.epub\""
     }
   }
 }

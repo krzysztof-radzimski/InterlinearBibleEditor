@@ -3,13 +3,14 @@
     var isLocal = callingUrl.Contains("localhost");
     var isDefault = callingUrl.Contains("jezusa.pl");
 }
+@inject IConfiguration Configuration 
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim</title>
+    <title>@ViewData["Title"] - @Configuration["PageTitle"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -232,7 +233,7 @@
 
     <footer class="footer text-muted bg-dark text-center">
         <div class="container" style="line-height: 1.4em; padding-top: 5px; padding-bottom: 5px; white-space: normal;">
-            &copy; @DateTime.Now.Year - <span title="Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim">KChB NDM</span> | <a class="link-secondary text-decoration-none" href="https://github.com/krzysztof-radzimski/InterlinearBibleEditor" title="Otwarty kod źródłowy niniejszej strony znajduje się w repozytorium GitHub"><i class="fab fa-github-square"></i> Open Source Project</a> | <a class="link-secondary text-decoration-none" href="~/home/privacy"><i class="fas fa-user-shield"></i> Polityka prywatności</a>
+            &copy; @DateTime.Now.Year - <span title="@Configuration["PageTitle"]">KChB NDM</span> | <a class="link-secondary text-decoration-none" href="https://github.com/krzysztof-radzimski/InterlinearBibleEditor" title="Otwarty kod źródłowy niniejszej strony znajduje się w repozytorium GitHub"><i class="fab fa-github-square"></i> Open Source Project</a> | <a class="link-secondary text-decoration-none" href="~/home/privacy"><i class="fas fa-user-shield"></i> Polityka prywatności</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
