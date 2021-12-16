@@ -163,7 +163,6 @@ else {
                         _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, Church.WebApp.Models.TranslationInfo>(IBE.Data.Model.TranslationType.Literal.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Literal)));
                         _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, Church.WebApp.Models.TranslationInfo>(IBE.Data.Model.TranslationType.Default.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Default)));
                         _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, Church.WebApp.Models.TranslationInfo>(IBE.Data.Model.TranslationType.Dynamic.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Dynamic)));
-                        //var _allTranslations = Model.Translations.OrderBy(x => x.TranslationType).GroupBy(x => x.TranslationType);
                         var __first = true;
                     }
                     @foreach (var _trans in _allTranslations) {

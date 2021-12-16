@@ -3,7 +3,8 @@
     var isLocal = callingUrl.Contains("localhost");
     var isDefault = callingUrl.Contains("jezusa.pl");
 }
-@inject IConfiguration Configuration 
+@inject IConfiguration Configuration
+@inject ITranslationInfoController TranslationsController
 
 <!DOCTYPE html>
 <html lang="en">
@@ -57,87 +58,45 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div style="display: inline-block; width: 25px;"><i class="fas fa-bible"></i></div> Biblia
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="navbarDropdown" style="max-height: 50vh;">
+                            <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="navbarDropdown" style="max-height: 67vh;">
                                 <li>
                                     <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="AboutBible"><div style="display: inline-block; width: 25px;"><i class="fas fa-bible"></i></div> O Biblii, czyli Piśmie Świętym Starego i Nowego Przymierza</a>
                                 </li>
 
-
-                                @using DevExpress.Xpo
-                                @using IBE.Data.Model
-                                @using IBE.Common.Extensions
-                                @using System.Linq;
-                                @using Church.WebApp.Models
                                 @{
-
-                                    var view = new XPView(new UnitOfWork(), typeof(Translation));
-                                    view.CriteriaString = "[BookType] = 1 AND [Hidden] = 0";
-                                    view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
-                                    view.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
-                                    view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
-                                    view.Properties.Add(new ViewProperty("Catolic", SortDirection.None, "[Catolic]", false, true));
-                                    view.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
-                                    view.Properties.Add(new ViewProperty("OpenAccess", SortDirection.None, "[OpenAccess]", false, true));
-
-                                    var list = new List<TranslationInfo>();
-                                    foreach (ViewRecord item in view) {
-                                        list.Add(new TranslationInfo() {
-                                            Type = (TranslationType)item["Type"],
-                                            Name = item["Name"].ToString().Replace("'", ""),
-                                            Description = item["Description"].ToString(),
-                                            Catholic = (bool)item["Catolic"],
-                                            Recommended = (bool)item["Recommended"],
-                                            PasswordRequired = !((bool)item["OpenAccess"])
-                                        });
-                                    }
                                     var first = true;
-
-                                    var types = Enum.GetValues(typeof(TranslationType)).OfType<TranslationType>().ToList().OrderBy(x => x.GetDescription());
                                 }
 
-                                @foreach (TranslationType type in types) {
-                                    if (list.Where(x => x.Type == type).Any()) {
+                                @foreach (var groupName in TranslationsController.GetBibleTranslations()) {
+                                    if (groupName.Count == 0) { continue; }
+                                    if (first) {
+                                        first = false;
+                                    }
+                                    else {
+                                        <li><hr class="dropdown-divider"></li>
+                                    }
 
-                                        if (first) {
-                                            first = false;
-                                        }
-                                        else {
-                                            <li><hr class="dropdown-divider"></li>
-                                        }
+                                    <li><h6 class="dropdown-header disabled">@groupName.Key</h6></li>
 
-                                        <li><h6 class="dropdown-header disabled">@type.GetDescription()</h6></li>
+                                    foreach (var item in groupName) {
+                                        var _name = item.Name.Replace("'", "").Replace("+", "");
+                                        var _description = item.Description;
+                                        var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm abbr-small"" title=""Przekład katolicki"">katolicki</abbr>" : "";
+                                        var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                                        var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm abbr-small"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
+                                        var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
 
-                                        foreach (var item in list.Where(x => x.Type == type)) {
-                                            var _name = item.Name.Replace("'", "").Replace("+", "");
-                                            var _description = item.Description;
-                                            //var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
-                                            //var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
-                                            //var _notrecommendedBadge = type == TranslationType.Dynamic ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
-                                            //var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
-                                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm abbr-small"" title=""Przekład katolicki"">katolicki</abbr>" : "";
-                                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
-                                            var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm abbr-small"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
-                                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a></li>
+                                    }
 
-                                            <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a></li>
-
-                                        }
-
-                                        if (type == TranslationType.Interlinear) {
-                                            <li><a class="dropdown-item" href="https://biblia.oblubienica.eu/">Oblubienica.eu - Ewangeliczny Przekład Interlinearny Biblii</a></li>
-                                            <li><a class="dropdown-item" href="https://biblehub.com/interlinear/matthew/1.htm">BibleHub.com - Greek Interlinear Bible</a></li>
-                                            <li><a class="dropdown-item" href="https://biblehub.com/interlinear/genesis/1.htm">BibleHub.com - Hebrew Interlinear Bible</a></li>
-                                        }
+                                    if (groupName.Key == IBE.Data.Model.TranslationType.Interlinear.GetDescription()) {
+                                        <li><a class="dropdown-item" href="https://biblia.oblubienica.eu/">Oblubienica.eu - Ewangeliczny Przekład Interlinearny Biblii</a></li>
+                                        <li><a class="dropdown-item" href="https://biblehub.com/interlinear/matthew/1.htm">BibleHub.com - Greek Interlinear Bible</a></li>
+                                        <li><a class="dropdown-item" href="https://biblehub.com/interlinear/genesis/1.htm">BibleHub.com - Hebrew Interlinear Bible</a></li>
                                     }
                                 }
                             </ul>
                         </li>
-
-                        @*@{
-                                var callingUrl = Context.Request.Headers["Host"].ToString();
-                                var isLocal = callingUrl.Contains("localhost");
-                            }*@
-
 
 
                         <li class="nav-item dropdown">
@@ -146,47 +105,32 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown2">
                                 @{
-
-                                    var view2 = new XPView(new UnitOfWork(), typeof(Translation));
-                                    view2.CriteriaString = "[BookType] = 2 AND [Hidden] = 0";
-                                    view2.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
-                                    view2.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
-                                    view2.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
-                                    view2.Properties.Add(new ViewProperty("Catolic", SortDirection.None, "[Catolic]", false, true));
-                                    view2.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
-                                    view2.Properties.Add(new ViewProperty("OpenAccess", SortDirection.None, "[OpenAccess]", false, true));
-
-                                    var list2 = new List<TranslationInfo>();
-                                    foreach (ViewRecord item in view2) {
-                                        list2.Add(new TranslationInfo() {
-                                            Type = (TranslationType)item["Type"],
-                                            Name = item["Name"].ToString().Replace("'", ""),
-                                            Description = item["Description"].ToString(),
-                                            Catholic = (bool)item["Catolic"],
-                                            Recommended = (bool)item["Recommended"],
-                                            PasswordRequired = !((bool)item["OpenAccess"])
-                                        }); ;
-                                    }
+                                    var firstP = true;
                                 }
 
-                                @if (list2.Any()) {
+                                @foreach (var groupName in TranslationsController.GetPatrologyTranslations()) {
+                                    if (groupName.Count == 0) { continue; }
+                                    if (firstP) {
+                                        firstP = false;
+                                    }
+                                    else {
+                                        <li><hr class="dropdown-divider"></li>
+                                    }
 
-                                    foreach (var item in list2) {
+                                    <li><h6 class="dropdown-header disabled">@groupName.Key</h6></li>
+
+                                    foreach (var item in groupName) {
                                         var _name = item.Name.Replace("'", "").Replace("+", "");
                                         var _description = item.Description;
-                                        //var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
-                                        //var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
-                                        //var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
-
-                                        var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" title=""Przekład katolicki"">katolicki</abbr>" : "";
-                                        var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
-                                        var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+                                        var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm abbr-small"" title=""Przekład katolicki"">katolicki</abbr>" : "";
+                                        var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                                        var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
 
 
                                         <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_loginRequired)</a></li>
+
                                     }
                                 }
-
                             </ul>
                         </li>
 

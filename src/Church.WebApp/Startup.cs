@@ -1,3 +1,4 @@
+using Church.WebApp.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,7 @@ namespace IBE.WebApp {
                     config.ExpireTimeSpan = System.TimeSpan.FromDays(1);
                 });
             services.AddControllersWithViews();
+            services.AddScoped<ITranslationInfoController, TranslationInfoController>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
