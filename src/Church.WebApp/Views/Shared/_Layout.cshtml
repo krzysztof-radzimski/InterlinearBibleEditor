@@ -57,7 +57,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div style="display: inline-block; width: 25px;"><i class="fas fa-bible"></i></div> Biblia
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                            <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="navbarDropdown" style="max-height: 50vh;">
                                 <li>
                                     <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="AboutBible"><div style="display: inline-block; width: 25px;"><i class="fas fa-bible"></i></div> O Biblii, czyli Piśmie Świętym Starego i Nowego Przymierza</a>
                                 </li>
@@ -114,10 +114,10 @@
                                             //var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
                                             //var _notrecommendedBadge = type == TranslationType.Dynamic ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
                                             //var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
-                                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" title=""Przekład katolicki"">katolicki</abbr>" : "";
-                                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
-                                            var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
-                                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+                                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm abbr-small"" title=""Przekład katolicki"">katolicki</abbr>" : "";
+                                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                                            var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm abbr-small"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
+                                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
 
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a></li>
 

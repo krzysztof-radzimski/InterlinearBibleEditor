@@ -4,7 +4,7 @@
     var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
     var __path = this.Context.Request.Path;
 }
-@inject IConfiguration Configuration 
+@inject IConfiguration Configuration
 @model Church.WebApp.Models.TranslationControllerModel
 @using IBE.Common.Extensions
 
@@ -16,14 +16,14 @@ else if (Model.Translation.IsNull() || Model.Translation.Hidden) {
 }
 else if (Model.Book.IsNullOrEmpty()) {
 
-    @section HeaderScripts {  
-        <!-- social sharing metadata -->
-        <meta property="og:title" content="@Model.Translation.Description - @Configuration["PageTitle"]" />
-        <meta property="og:description" content="@Model.Translation.Description" />
-        <meta property="og:image" content="@__host/img/biblelink.jpg" />
-        <meta property="og:url" content="@__host@__path" />
-        <meta property="og:type" content="article" />
-        <meta property="og:locale" content="pl_PL" />
+    @section HeaderScripts {
+<!-- social sharing metadata -->
+<meta property="og:title" content="@Model.Translation.Description - @Configuration["PageTitle"]" />
+<meta property="og:description" content="@Model.Translation.Description" />
+<meta property="og-ms-perspective-origin-y@__host /img/biblelink.jpg" />
+<meta property="og:url" content="@__host@__path" />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="pl_PL" />
     }
 
     //
@@ -76,7 +76,8 @@ else if (Model.Book.IsNullOrEmpty()) {
         <div id="translation-introduction" class="lh-lg fs-6 max-width-800">
             <br />
             <h4 class="text-center">Wprowadzenie</h4>
-            @{var textIntroduction = System.Text.RegularExpressions.Regex.Replace(Model.Translation.Introduction, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+            @{
+                var textIntroduction = System.Text.RegularExpressions.Regex.Replace(Model.Translation.Introduction, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
                     return " " + m.Value.Trim() + "&nbsp;";
                 }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
             }
@@ -155,12 +156,18 @@ else {
                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButtonTranslations" data-bs-toggle="dropdown" aria-expanded="false">
                     Inny przekład
                 </button>
-                <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations">
+                <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations" style="max-height: 50vh;">
                     @{
-                        var _allTranslations = Model.Translations.OrderBy(x => x.TranslationType).GroupBy(x => x.TranslationType);
+                        var _allTranslations = new List<Church.WebApp.Utils.Grouping<string, Church.WebApp.Models.TranslationInfo>>();
+                        _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, Church.WebApp.Models.TranslationInfo>(IBE.Data.Model.TranslationType.Interlinear.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Interlinear)));
+                        _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, Church.WebApp.Models.TranslationInfo>(IBE.Data.Model.TranslationType.Literal.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Literal)));
+                        _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, Church.WebApp.Models.TranslationInfo>(IBE.Data.Model.TranslationType.Default.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Default)));
+                        _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, Church.WebApp.Models.TranslationInfo>(IBE.Data.Model.TranslationType.Dynamic.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Dynamic)));
+                        //var _allTranslations = Model.Translations.OrderBy(x => x.TranslationType).GroupBy(x => x.TranslationType);
                         var __first = true;
                     }
                     @foreach (var _trans in _allTranslations) {
+                        if (_trans.Count == 0) { continue; }
 
                         if (__first) {
                             __first = false;
@@ -172,10 +179,10 @@ else {
                         <li><h6 class="dropdown-header disabled">@_trans.Key</h6></li>
 
                         foreach (var item in _trans) {
-                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" title=""Przekład katolicki"">katolicki</abbr>" : "";
-                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
-                            var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
-                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-secondary btn-sm abbr-small"" title=""Przekład katolicki"">katolicki</abbr>" : "";
+                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                            var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm abbr-small"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
+                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-danger btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
                             var _active = String.Empty;
                             if (item.Name == Model.Translation.Name) {
                                 _active = " active";
@@ -264,49 +271,55 @@ else {
             <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButtonBooks" data-bs-toggle="dropdown" aria-expanded="false">
                 Wybór księgi
             </button>
-            <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonBooks">
-                @foreach (var _book in Model.Translation.Books) {
-                    if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !_book.IsTranslated) { continue; }
+            <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonBooks">
+                <div class="row" style="max-width: 350px; padding-left: 10px;">
+                    @foreach (var _book in Model.Translation.Books) {
+                        if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !_book.IsTranslated) { continue; }
+                        var color = System.Drawing.ColorTranslator.FromHtml(_book.Color);
+                        var _active = $"background-color: rgba({color.R}, {color.G}, {color.B}, 0.3); color: #000;";
+                        if (_book.NumberOfBook == book.NumberOfBook) {
+                            //_active = " active";
+                            _active = "background-color: #0d6efd; color: #fff;";
+                        }
 
-                    var _active = String.Empty;
-                    if (_book.NumberOfBook == book.NumberOfBook) {
-                        _active = " active";
+                        var _secondCanon = String.Empty;
+                        if (_book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
+                            _secondCanon = " text-warning bg-dark";
+                        }
+                        <a class="col-auto chapter-shortcut dropdown-item@_secondCanon" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@_book.NumberOfBook" asp-route-chapter="1" title="@_book.BaseBook.BookTitle" style="@_active">@_book.BaseBook.BookShortcut</a>
+                        @*<li><a class="dropdown-item@_active@_secondCanon" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@_book.NumberOfBook" asp-route-chapter="1">@_book.BaseBook.BookTitle</a></li>*@
                     }
-
-                    var _secondCanon = String.Empty;
-                    if (_book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
-                        _secondCanon = " text-warning bg-dark";
-                    }
-
-                    <li><a class="dropdown-item@_active@_secondCanon" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@_book.NumberOfBook" asp-route-chapter="1">@_book.BaseBook.BookTitle</a></li>
-                }
-            </ul>
+                </div>
+            </div>
 
             <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButtonChapters" data-bs-toggle="dropdown" aria-expanded="false">
                 Wybór rozdziału
             </button>
-            <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonChapters">
-
-                @{
-                    var __chapterNumbers = book.Chapters.Select(x => x.NumberOfChapter).OrderBy(x => x);
-                }
-
-                @foreach (var i in __chapterNumbers) {
-                    if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear /*&& Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible*/ && !book.Chapters.Where(x => x.NumberOfChapter == i).First().IsTranslated) { continue; }
-
-                    var __chapterNumberString = i.ToString();
-                    if (Model.Translation.ChapterRomanNumbering) {
-                        __chapterNumberString = i.ArabicToRoman();
-                    }
-                    if (i == 0) { __chapterNumberString = "Prolog"; }
-                    var _active = String.Empty;
-                    if (i == Convert.ToInt32(Model.Chapter)) {
-                        _active = " active";
+            <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonChapters">
+                <div class="row" style="max-width: 200px; padding-left: 10px;">
+                    @{
+                        var __chapterNumbers = book.Chapters.Select(x => x.NumberOfChapter).OrderBy(x => x);
                     }
 
-                    <li><a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i">@__chapterNumberString</a></li>
-                }
-            </ul>
+                    @foreach (var i in __chapterNumbers) {
+                        if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear /*&& Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible*/ && !book.Chapters.Where(x => x.NumberOfChapter == i).First().IsTranslated) { continue; }
+
+                        var __chapterNumberString = i.ToString();
+                        if (Model.Translation.ChapterRomanNumbering) {
+                            __chapterNumberString = i.ArabicToRoman();
+                        }
+                        if (i == 0) { __chapterNumberString = "Prolog"; }
+                        var _active = String.Empty;
+                        if (i == Convert.ToInt32(Model.Chapter)) {
+                            _active = " active";
+                        }
+
+                        <a class="col-auto dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i" style="width: auto;">@__chapterNumberString</a>
+
+                        @*<li><a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i">@__chapterNumberString</a></li>*@
+                    }
+                </div>
+            </div>
         </div>
 
         <h2 class="text-center p-2 max-width-800"><a class="text-decoration-none text-dark" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@null">@Model.Translation.Description</a></h2>
@@ -424,7 +437,7 @@ else {
             }
 
             <!-- Modal -->
-            <div class="modal fade" id="copyVersesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="copyVersesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable" style="height: 90vh; width: 90vw; max-width:100%;">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -976,44 +989,44 @@ else {
 
                 __title += $" - {Configuration["PageTitle"]}";
 
-                <!-- social sharing metadata -->
-                <meta property="og:title" content="@__title" />
-                <meta property="og:description" content="@Model.Translation.Description" />
-                <meta property="og:image" content="@__host/img/biblelink.jpg" />
-                <meta property="og:url" content="@__host@__path" />
-                <meta property="og:type" content="article" />
-                <meta property="og:locale" content="pl_PL" />
+<!-- social sharing metadata -->
+<meta property="og:title" content="@__title" />
+<meta property="og:description" content="@Model.Translation.Description" />
+<meta property="og:image" content="@__host/img/biblelink.jpg" />
+<meta property="og:url" content="@__host@__path" />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="pl_PL" />
             }
         }
 
         @section Scripts  {
             @if (!String.IsNullOrEmpty(Model.Verse)) {
 
-                <script>
-                    docReady(function () {
-                        setTimeout(function () {
-                            const topNavId = 'top-nav';
-                            const topNav = document.getElementById(topNavId);
+<script>
+    docReady(function () {
+        setTimeout(function () {
+            const topNavId = 'top-nav';
+            const topNav = document.getElementById(topNavId);
 
-                            const id = 'Verse_@selectedVerses.First()';
-                            const yOffset = -((topNav.offsetHeight)+65); //-55;
-                            const element = document.getElementById(id);
-                            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            const id = 'Verse_@selectedVerses.First()';
+            const yOffset = -((topNav.offsetHeight)+65); //-55;
+            const element = document.getElementById(id);
+            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
-                            window.scrollTo({ top: y, behavior: 'smooth' });
-                        }, 1000);
-                    });
-                </script>
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }, 1000);
+    });
+</script>
 
             }
 
-            <script>
-                docReady(function () {
-                    setTimeout(function () {
-                        copyNav();
-                    });
-                });
-            </script>
+<script>
+    docReady(function () {
+        setTimeout(function () {
+            copyNav();
+        });
+    });
+</script>
         }
     }
 }
