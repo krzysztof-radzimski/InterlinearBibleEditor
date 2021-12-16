@@ -47,8 +47,9 @@ namespace Church.WebApp.Controllers {
                     if (translation != null) {
                         var result = new TranslationControllerModel(translation, book, chapter, verse, books);
 
-                        var view = new XPView(uow, typeof(Translation));
-                        view.CriteriaString = $"[Books][[NumberOfBook] = '{book}'] AND [Hidden] = 0";
+                        var view = new XPView(uow, typeof(Translation)) {
+                            CriteriaString = $"[Books][[NumberOfBook] = '{book}'] AND [Hidden] = 0"
+                        };
                         view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
                         view.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
                         view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));

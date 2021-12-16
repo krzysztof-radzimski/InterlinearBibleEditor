@@ -86,13 +86,13 @@
                                         var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm abbr-small"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
                                         var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
 
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name"><b>@item.Name</b>&nbsp;<span class="fs-80per">@_description</span>&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a></li>
                                     }
 
                                     if (groupName.Key == IBE.Data.Model.TranslationType.Interlinear.GetDescription()) {
-                                        <li><a class="dropdown-item" href="https://biblia.oblubienica.eu/">Oblubienica.eu - Ewangeliczny Przekład Interlinearny Biblii</a></li>
-                                        <li><a class="dropdown-item" href="https://biblehub.com/interlinear/matthew/1.htm">BibleHub.com - Greek Interlinear Bible</a></li>
-                                        <li><a class="dropdown-item" href="https://biblehub.com/interlinear/genesis/1.htm">BibleHub.com - Hebrew Interlinear Bible</a></li>
+                                        <li><a class="dropdown-item" href="https://biblia.oblubienica.eu/"><b>TRO+</b>&nbsp;<span class="fs-80per">Ewangeliczny Przekład Interlinearny Biblii-Oblubienica.eu</span></a></li>
+                                        <li><a class="dropdown-item" href="https://biblehub.com/interlinear/matthew/1.htm"><b>BHG+</b>&nbsp;<span class="fs-80per">BibleHub.com - Greek Interlinear Bible</span></a></li>
+                                        <li><a class="dropdown-item" href="https://biblehub.com/interlinear/genesis/1.htm"><b>BHH+</b>&nbsp;<span class="fs-80per">BibleHub.com - Hebrew Interlinear Bible</span></a></li>
                                     }
                                 }
                             </ul>
@@ -105,13 +105,13 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown2">
                                 @{
-                                    var firstP = true;
+                                     first = true;
                                 }
 
                                 @foreach (var groupName in TranslationsController.GetPatrologyTranslations()) {
                                     if (groupName.Count == 0) { continue; }
-                                    if (firstP) {
-                                        firstP = false;
+                                    if (first) {
+                                        first = false;
                                     }
                                     else {
                                         <li><hr class="dropdown-divider"></li>

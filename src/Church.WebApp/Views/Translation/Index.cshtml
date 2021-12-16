@@ -189,10 +189,10 @@ else {
 
                             <li>
                                 @if (Model.Verse.IsNotNullOrEmpty()) {
-                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
+                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter" asp-route-verse="@Model.Verse"><b>@item.Name</b>&nbsp;<span class="fs-80per">@item.Description</span>&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
                                 }
                                 else {
-                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter">@item.Description&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
+                                    <a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@item.Name.Replace("'", "").Replace("+", "")" asp-route-book="@Model.Book" asp-route-chapter="@Model.Chapter"><b>@item.Name</b>&nbsp;<span class="fs-80per">@item.Description</span>&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a>
                                 }
                             </li>
                         }
@@ -202,7 +202,7 @@ else {
                             var _model_verse = Model.Verse.ToInt() == 0 ? 1 : Model.Verse.ToInt();
                             var url_oblubienica = $"https://biblia.oblubienica.eu/interlinearny/index/book/{Model.NTBookNumber}/chapter/{_model_chapter}/verse/{_model_verse}";
                             <li>
-                                <a class="dropdown-item" href="@url_oblubienica" target="_blank">Ewangeliczny Przekład Interlinearny Biblii - Oblubienica.eu</a>
+                                <a class="dropdown-item" href="@url_oblubienica" target="_blank"><b>TRO+</b>&nbsp;<span class="fs-80per">Ewangeliczny Przekład Interlinearny Biblii - Oblubienica.eu</span></a>
                             </li>
                         }
 
@@ -211,7 +211,7 @@ else {
                             var _model_verse = Model.Verse.ToInt() == 0 ? 1 : Model.Verse.ToInt();
                             var url_logo = $"https://app.logos.com/books/LLS%3ALEB/references/bible%2Bleb2.{Model.LogosBookNumber}.{_model_chapter}.{_model_verse}";
                             <li>
-                                <a class="dropdown-item" href="@url_logo" target="_blank">Logos - The Lexham English Bible</a>
+                                <a class="dropdown-item" href="@url_logo" target="_blank"><b>LOG+</b>&nbsp;<span class="fs-80per">Logos - The Lexham English Bible</span></a>
                             </li>
                         }
                     }
