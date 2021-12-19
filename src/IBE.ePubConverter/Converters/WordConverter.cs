@@ -19,7 +19,7 @@ namespace IBE.ePubConverter.Converters {
                 });
             }
         }
-        
+
         public Aspose.Words.Document GetDocument(string fileName) {
             new Aspose.Words.License().SetLicense(GetLicenseKeyFilePath());
             Aspose.Words.Document document = null;
@@ -48,6 +48,8 @@ namespace IBE.ePubConverter.Converters {
                         xhtml = RepairLinks(xhtml);
                         xhtml = RepairImages(xhtml);
                         xhtml = RepairChapters(xhtml);
+                        xhtml = RepairChapters(xhtml, "numerrozdz", "nanieparzytsa");
+                        xhtml = RepairChapters(xhtml, "numerrozdz1", "nanieparzytsa");
 
                         var xhtmlPath = Path.Combine(ncxInfo.DirectoryName, "TempFile.html");
                         xhtml.Save(xhtmlPath);
@@ -68,7 +70,7 @@ namespace IBE.ePubConverter.Converters {
                             if (field.Type == Aspose.Words.Fields.FieldType.FieldHyperlink) {
                                 var link = field as Aspose.Words.Fields.FieldHyperlink;
                                 if (Regex.IsMatch(link.Result, @"^\[[0-9]+\]")) {
-                                    var footnotePar = document.LastSection.Body.Paragraphs.Where(x => x.ToString(Aspose.Words.SaveFormat.Text).Trim().StartsWith(link.Result)).LastOrDefault();
+                                    var footnotePar = FindParagraph(document, link.Result);
                                     if (footnotePar != null) {
                                         list2.Add(footnotePar);
                                         var footnoteText = footnotePar.ToString(Aspose.Words.SaveFormat.Text).Replace(link.Result, "");
@@ -124,9 +126,18 @@ namespace IBE.ePubConverter.Converters {
             return document;
         }
 
+        private Aspose.Words.Paragraph FindParagraph(Aspose.Words.Document document, string startsWith) {
+            foreach (Aspose.Words.Section section in document.Sections) {
+                var node = section.Body.Paragraphs.Where(x => x.ToString(Aspose.Words.SaveFormat.Text).Trim().StartsWith(startsWith)).LastOrDefault();
+                if (node != null) { return node as Aspose.Words.Paragraph; }
+            }
+            return default;
+        }
+
         private XElement RenumerateFootnotes(XElement xhtml) {
             try {
-                var footnoteRefs = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.HasAttributes && x.Attribute("href") != null && Regex.IsMatch(x.Value, @"^\[[0-9\*]+\]") && x.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").First().Elements().First() != x).ToList();
+                var _footnotesRefs = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.HasAttributes && x.Attribute("href") != null && Regex.IsMatch(x.Value, @"^\[[0-9\*]+\]") && x.PreviousNode != null);
+                var footnoteRefs = _footnotesRefs.ToList();
                 var index = 1;
                 foreach (var item in footnoteRefs) {
                     item.Value = $"[{index}]";
@@ -134,6 +145,19 @@ namespace IBE.ePubConverter.Converters {
                     var id = idAttr.IndexOf("#") > -1 ? idAttr.Substring(idAttr.LastIndexOf("#") + 1) : idAttr;
                     var val = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.Attribute("id") != null && x.Attribute("id").Value == id).FirstOrDefault();
                     if (val != null) {
+                        if (!val.Value.Contains("[")) {
+                            if (val.PreviousNode != null) {
+                                if (val.PreviousNode is XText && (val.PreviousNode as XText).Value == "[") { val.PreviousNode.Remove(); }
+                                else if (val.PreviousNode is XElement && (val.PreviousNode as XElement).Value == "[") { val.PreviousNode.Remove(); }
+                            }
+                        }
+                        if (!val.Value.Contains("]")) {
+                            if (val.NextNode != null) {
+                                if (val.NextNode is XText && (val.NextNode as XText).Value.StartsWith("]")) { (val.NextNode as XText).Value = (val.NextNode as XText).Value.Substring(1); }
+                                else if (val.NextNode is XElement && (val.NextNode as XElement).Value == "]") { val.NextNode.Remove(); }
+                            }
+                        }
+
                         val.Value = $"[{index}]";
                         var valParent = val.Ancestors().Where(y => y.Name.LocalName == "p" || y.Name.LocalName == "div").FirstOrDefault();
                         if (valParent != null) {
@@ -204,21 +228,27 @@ namespace IBE.ePubConverter.Converters {
 
             return xhtml;
         }
-        private XElement RepairChapters(XElement xhtml) {
+        private XElement RepairChapters(XElement xhtml, string chapterNumberClassName = "chapter_number", string chapterTitleClassName = "chapter_title") {
             try {
-                var chapterNumbers = xhtml.Descendants().Where(x => x.HasAttributes && x.Attribute("class") != null && x.Attribute("class").Value == "chapter_number").ToList();
+                var chapterNumbers = xhtml.Descendants().Where(x => x.HasAttributes && x.Attribute("class") != null && x.Attribute("class").Value == chapterNumberClassName).ToList();
                 if (chapterNumbers.Count > 0) {
                     var elementsToRemove = new List<XElement>();
                     foreach (var chapterNumber in chapterNumbers) {
                         var titleEl = chapterNumber.ElementsAfterSelf().FirstOrDefault();
-                        if (titleEl != null && titleEl.HasAttributes && titleEl.Attribute("class") != null && titleEl.Attribute("class").Value == "chapter_title") {
+                        if (titleEl != null && titleEl.HasAttributes && titleEl.Attribute("class") != null && titleEl.Attribute("class").Value == chapterTitleClassName) {
                             var h1 = new XElement(XName.Get("h1", titleEl.Name.NamespaceName), titleEl.Attribute("class"));
                             h1.Add(chapterNumber.Nodes(), new XElement(XName.Get("br", titleEl.Name.NamespaceName)), titleEl.Nodes());
 
-                            chapterNumber.AddBeforeSelf(h1);
+                            if (chapterNumber.Parent != null && chapterNumber.Parent.Name.LocalName == "h1") {
+                                chapterNumber.Parent.AddBeforeSelf(h1);
+                                elementsToRemove.Add(chapterNumber.Parent);
+                            }
+                            else {
+                                chapterNumber.AddBeforeSelf(h1);
 
-                            elementsToRemove.Add(chapterNumber);
-                            elementsToRemove.Add(titleEl);
+                                elementsToRemove.Add(chapterNumber);
+                                elementsToRemove.Add(titleEl);
+                            }
                         }
                     }
 
@@ -302,9 +332,10 @@ namespace IBE.ePubConverter.Converters {
         }
 
         private string GetLicenseKeyFilePath() {
+            var dir = AppDomain.CurrentDomain.BaseDirectory;
             var builder = new ConfigurationBuilder()
-               .SetBasePath(Directory.GetCurrentDirectory())
-               .AddJsonFile("appsettings.json", optional: false);
+                   .SetBasePath(Directory.GetCurrentDirectory())
+                   .AddJsonFile(Path.Combine(dir, "appsettings.json"), optional: false);
 
             IConfiguration config = builder.Build();
             var settings = config.GetSection("Settings").Get<Settings>();
