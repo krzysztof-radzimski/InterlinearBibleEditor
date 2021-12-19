@@ -39,7 +39,7 @@
             <h3 class="mb-0">@Model.Article.Subject</h3>
             <p class="mb-auto fst-italic">@Model.Article.AuthorName</p>
             <p class="mb-auto">@Model.Article.Lead</p>
-            <div class="mb-1 text-muted">@Model.Article.Date.GetDatePl()</div>
+            <div class="mb-1 text-muted">@Html.Raw(Model.Article.Date.GetDatePl())</div>
         </div>
 
         @if (Model.Article.AuthorPicture.IsNotNull()) {

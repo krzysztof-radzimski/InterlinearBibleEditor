@@ -297,9 +297,44 @@ namespace IBE.Common.Extensions {
 
     public static class DateTimeExtensions {
         public static string GetDatePl(this DateTime date) {
-            var dateText = $"{date.Day} {date.Month.GenitivePolishMonthName()} {date.Year}";
+            var dateText = $"{date.Day}&nbsp;{date.Month.GenitivePolishMonthName()}&nbsp;{date.Year}";
             
             return dateText;
+        }
+        public static string GetShortDatePl(this DateTime date) {
+            var dateText = $"{date.Day}&nbsp;{date.Month.GenitiveShortPolishMonthName()}&nbsp;{date.Year}";
+
+            return dateText;
+        }
+        static string GenitiveShortPolishMonthName(this int month) {
+            switch (month) {
+                case 1:
+                    return "sty";
+                case 2:
+                    return "lut";
+                case 3:
+                    return "mar";
+                case 4:
+                    return "kwi";
+                case 5:
+                    return "maj";
+                case 6:
+                    return "cze";
+                case 7:
+                    return "lip";
+                case 8:
+                    return "sie";
+                case 9:
+                    return "wrz";
+                case 10:
+                    return "paź";
+                case 11:
+                    return "lis";
+                case 12:
+                    return "gru";
+
+            }
+            return "";
         }
         static string GenitivePolishMonthName(this int month) {
             switch (month) {
