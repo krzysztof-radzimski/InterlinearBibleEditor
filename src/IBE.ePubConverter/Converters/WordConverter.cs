@@ -31,92 +31,89 @@ namespace IBE.ePubConverter.Converters {
             var info = new DirectoryInfo(dir);
             var ncxInfo = info.GetFiles("*.ncx", SearchOption.AllDirectories).FirstOrDefault();
             if (ncxInfo != null && ncxInfo.Exists) {
-                using (var stream = new FileStream(ncxInfo.FullName, FileMode.Open)) {
-                    var serializer = new XmlSerializer(typeof(NcxDocument));
-                    var ncx = serializer.Deserialize(stream) as NcxDocument;
-                    if (ncx != null && ncx.Map != null && ncx.Map.Points != null && ncx.Map.Points.Count > 0) {
-                        var html = @"<?xml version=""1.0"" encoding=""utf-8""?><html xmlns=""http://www.w3.org/1999/xhtml""><head><title>Tekst</title><style></style></head><body></body></html>";
-                        var xhtml = XElement.Parse(html);
+                var ncx = GetNcx(ncxInfo);
+                if (ncx != null && ncx.Map != null && ncx.Map.Points != null && ncx.Map.Points.Count > 0) {
+                    var html = @"<?xml version=""1.0"" encoding=""utf-8""?><html xmlns=""http://www.w3.org/1999/xhtml""><head><title>Tekst</title><style></style></head><body></body></html>";
+                    var xhtml = XElement.Parse(html);
 
-                        var baseDirectory = "";
-                        var first = true;
-                        foreach (var point in ncx.Map.Points.OrderBy(x => x.Order)) {
-                            PopulatePoints(ncxInfo, xhtml, ref baseDirectory, ref first, point);
-                        }
+                    var baseDirectory = "";
+                    var first = true;
+                    foreach (var point in ncx.Map.Points.OrderBy(x => x.Order)) {
+                        PopulatePoints(ncxInfo, xhtml, ref baseDirectory, ref first, point);
+                    }
 
-                        xhtml = RenumerateFootnotes(xhtml);
-                        xhtml = RepairLinks(xhtml);
-                        xhtml = RepairImages(xhtml);
-                        xhtml = RepairChapters(xhtml);
-                        xhtml = RepairChapters(xhtml, "numerrozdz", "nanieparzytsa");
-                        xhtml = RepairChapters(xhtml, "numerrozdz1", "nanieparzytsa");
+                    xhtml = RenumerateFootnotes(xhtml);
+                    xhtml = RepairLinks(xhtml);
+                    xhtml = RepairImages(xhtml);
+                    xhtml = RepairChapters(xhtml);
+                    xhtml = RepairChapters(xhtml, "numerrozdz", "nanieparzytsa");
+                    xhtml = RepairChapters(xhtml, "numerrozdz1", "nanieparzytsa");
 
-                        var xhtmlPath = Path.Combine(ncxInfo.DirectoryName, "TempFile.html");
-                        xhtml.Save(xhtmlPath);
+                    var xhtmlPath = Path.Combine(ncxInfo.DirectoryName, "TempFile.html");
+                    xhtml.Save(xhtmlPath);
 
-                        var options = new Aspose.Words.Loading.LoadOptions {
-                            LoadFormat = Aspose.Words.LoadFormat.Html,
-                            BaseUri = baseDirectory
-                        };
-                        document = new Aspose.Words.Document(xhtmlPath, options);
-                        document.Styles.DefaultFont.LocaleId = (int)Aspose.Words.Loading.EditingLanguage.Polish;
-                        document.Styles.DefaultFont.LocaleIdBi = (int)Aspose.Words.Loading.EditingLanguage.Polish;
+                    var options = new Aspose.Words.Loading.LoadOptions {
+                        LoadFormat = Aspose.Words.LoadFormat.Html,
+                        BaseUri = baseDirectory
+                    };
+                    document = new Aspose.Words.Document(xhtmlPath, options);
+                    document.Styles.DefaultFont.LocaleId = (int)Aspose.Words.Loading.EditingLanguage.Polish;
+                    document.Styles.DefaultFont.LocaleIdBi = (int)Aspose.Words.Loading.EditingLanguage.Polish;
 
-                        // footnotes
-                        var builder = new Aspose.Words.DocumentBuilder(document);
-                        var list = new List<Aspose.Words.Fields.Field>();
-                        var list2 = new List<Aspose.Words.Node>();
-                        foreach (var field in document.Range.Fields) {
-                            if (field.Type == Aspose.Words.Fields.FieldType.FieldHyperlink) {
-                                var link = field as Aspose.Words.Fields.FieldHyperlink;
-                                if (Regex.IsMatch(link.Result, @"^\[[0-9]+\]")) {
-                                    var footnotePar = FindParagraph(document, link.Result);
-                                    if (footnotePar != null) {
-                                        list2.Add(footnotePar);
-                                        var footnoteText = footnotePar.ToString(Aspose.Words.SaveFormat.Text).Replace(link.Result, "");
-                                        builder.MoveToField(field, true);
-                                        var f = builder.InsertFootnote(Aspose.Words.Notes.FootnoteType.Footnote, footnoteText.Trim());
-                                        f.Font.Size = 12;
-                                        f.Font.Color = System.Drawing.Color.Black;
-                                        f.Font.Bold = true;
-                                        f.Font.Underline = Aspose.Words.Underline.None;
-                                        list.Add(field);
-                                    }
+                    // footnotes
+                    var builder = new Aspose.Words.DocumentBuilder(document);
+                    var list = new List<Aspose.Words.Fields.Field>();
+                    var list2 = new List<Aspose.Words.Node>();
+                    foreach (var field in document.Range.Fields) {
+                        if (field.Type == Aspose.Words.Fields.FieldType.FieldHyperlink) {
+                            var link = field as Aspose.Words.Fields.FieldHyperlink;
+                            if (Regex.IsMatch(link.Result, @"^\[[0-9]+\]")) {
+                                var footnotePar = FindParagraph(document, link.Result);
+                                if (footnotePar != null) {
+                                    list2.Add(footnotePar);
+                                    var footnoteText = footnotePar.ToString(Aspose.Words.SaveFormat.Text).Replace(link.Result, "");
+                                    builder.MoveToField(field, true);
+                                    var f = builder.InsertFootnote(Aspose.Words.Notes.FootnoteType.Footnote, footnoteText.Trim());
+                                    f.Font.Size = 12;
+                                    f.Font.Color = System.Drawing.Color.Black;
+                                    f.Font.Bold = true;
+                                    f.Font.Underline = Aspose.Words.Underline.None;
+                                    list.Add(field);
                                 }
                             }
                         }
+                    }
 
-                        if (list.Count > 0) {
-                            var _list = list.ToArray();
-                            var length = _list.Length;
-                            for (int i = 0; i < length; i++) {
-                                _list[i].Remove();
-                            }
+                    if (list.Count > 0) {
+                        var _list = list.ToArray();
+                        var length = _list.Length;
+                        for (int i = 0; i < length; i++) {
+                            _list[i].Remove();
                         }
-                        if (list2.Count > 0) {
-                            var _list = list2.ToArray();
-                            var length = _list.Length;
-                            for (int i = 0; i < length; i++) {
-                                try {
-                                    (_list[i] as Aspose.Words.Paragraph).Remove();
-                                }
-                                catch { }
+                    }
+                    if (list2.Count > 0) {
+                        var _list = list2.ToArray();
+                        var length = _list.Length;
+                        for (int i = 0; i < length; i++) {
+                            try {
+                                (_list[i] as Aspose.Words.Paragraph).Remove();
                             }
+                            catch { }
                         }
+                    }
 
-                        // headings
-                        var chapterTitleStyle = document.Styles.Where(x => x.Name == "chapter_title").FirstOrDefault();
-                        if (chapterTitleStyle != null) {
-                            chapterTitleStyle.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading1].Name;
-                        }
-                        var subTitleStyle = document.Styles.Where(x => x.Name == "subtitle1" || x.Name == "subtitle").FirstOrDefault();
-                        if (subTitleStyle != null) {
-                            subTitleStyle.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading2].Name;
-                        }
-                        var subTitle2Style = document.Styles.Where(x => x.Name == "subtitle2").FirstOrDefault();
-                        if (subTitle2Style != null) {
-                            subTitle2Style.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading3].Name;
-                        }
+                    // headings
+                    var chapterTitleStyle = document.Styles.Where(x => x.Name == "chapter_title").FirstOrDefault();
+                    if (chapterTitleStyle != null) {
+                        chapterTitleStyle.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading1].Name;
+                    }
+                    var subTitleStyle = document.Styles.Where(x => x.Name == "subtitle1" || x.Name == "subtitle").FirstOrDefault();
+                    if (subTitleStyle != null) {
+                        subTitleStyle.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading2].Name;
+                    }
+                    var subTitle2Style = document.Styles.Where(x => x.Name == "subtitle2").FirstOrDefault();
+                    if (subTitle2Style != null) {
+                        subTitle2Style.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading3].Name;
                     }
                 }
             }
@@ -124,6 +121,19 @@ namespace IBE.ePubConverter.Converters {
             Directory.Delete(dir, true);
 
             return document;
+        }
+
+        private NcxDocument GetNcx(FileInfo ncxInfo) {
+            var serializer = new XmlSerializer(typeof(NcxDocument));
+            try {
+                using var stream = new FileStream(ncxInfo.FullName, FileMode.Open);
+                return serializer.Deserialize(stream) as NcxDocument;
+            }
+            catch {
+                var fileTextContent = File.ReadAllText(ncxInfo.FullName);
+                var xdoc = XDocument.Parse(fileTextContent.Trim());
+                return serializer.Deserialize(new StringReader(xdoc.Root.ToString())) as NcxDocument;
+            }
         }
 
         private Aspose.Words.Paragraph FindParagraph(Aspose.Words.Document document, string startsWith) {
@@ -136,15 +146,34 @@ namespace IBE.ePubConverter.Converters {
 
         private XElement RenumerateFootnotes(XElement xhtml) {
             try {
-                var _footnotesRefs = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.HasAttributes && x.Attribute("href") != null && Regex.IsMatch(x.Value, @"^\[[0-9\*]+\]") && x.PreviousNode != null);
-                var footnoteRefs = _footnotesRefs.ToList();
+                var footnoteRefs = new List<XElement>();
+                var allFootnoteReferences = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.HasAttributes && x.Attribute("href") != null && Regex.IsMatch(x.Value, @"^\[[0-9\*]+\]"));
+                foreach (var footnoteReference in allFootnoteReferences) {
+                    if (footnoteReference.PreviousNode != null) {
+                        footnoteRefs.Add(footnoteReference);
+                    }
+                    else {
+                        var parent = footnoteReference.Ancestors().Where(x => x.Name.LocalName == "p" || x.Name.LocalName == "div").FirstOrDefault();
+                        if (parent != null && parent.FirstNode != footnoteReference) {
+                            footnoteRefs.Add(footnoteReference);
+                        }
+                    }
+                }
+                //var _footnotesRefs = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.HasAttributes && x.Attribute("href") != null && Regex.IsMatch(x.Value, @"^\[[0-9\*]+\]") && x.PreviousNode != null);
+                //var footnoteRefs = _footnotesRefs.ToList();
                 var index = 1;
                 foreach (var item in footnoteRefs) {
                     item.Value = $"[{index}]";
                     var idAttr = item.Attribute("href").Value;
                     var id = idAttr.IndexOf("#") > -1 ? idAttr.Substring(idAttr.LastIndexOf("#") + 1) : idAttr;
-                    var val = xhtml.Descendants().Where(x => x.Name.LocalName == "a" && x.Attribute("id") != null && x.Attribute("id").Value == id).FirstOrDefault();
+                    var val = xhtml.Descendants().Where(x => /*x.Name.LocalName == "a" && */x.Attribute("id") != null && x.Attribute("id").Value == id).FirstOrDefault();
                     if (val != null) {
+                        if (val.Name.LocalName != "a") {
+                            val = val.Elements().Where(x => x.Name.LocalName == "a").FirstOrDefault();
+                            if (val == null) {
+                                continue;
+                            }
+                        }
                         if (!val.Value.Contains("[")) {
                             if (val.PreviousNode != null) {
                                 if (val.PreviousNode is XText && (val.PreviousNode as XText).Value == "[") { val.PreviousNode.Remove(); }
@@ -168,7 +197,7 @@ namespace IBE.ePubConverter.Converters {
                                     Regex.IsMatch(nextElement.Value, @"^Dodatek\s+[a-zA-Z0-9\*]+")) {
                                     break;
                                 }
-                                if (!nextElement.Elements().Where(x => x.Name.LocalName == "a" && Regex.IsMatch(x.Value, @"\[[0-9\*]+\]")).Any()) {
+                                if (!nextElement.Descendants().Where(x => x.Name.LocalName == "a" && (Regex.IsMatch(x.Value, @"^\[[0-9\*]+\]") || Regex.IsMatch(x.Value, @"^[0-9\*]+"))).Any()) {
                                     valParent.Add(new XElement(XName.Get("br", valParent.Name.NamespaceName)));
                                     valParent.Add(nextElement.Nodes());
                                     elementsToRemove.Add(nextElement);
