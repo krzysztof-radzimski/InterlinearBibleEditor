@@ -319,6 +319,8 @@ namespace IBE.ePubConverter.Converters {
 
                 pointHtmlText = pointHtmlText.Replace("&shy;", "&#173;");
                 pointHtmlText = pointHtmlText.Replace("&nbsp;", "&#160;");
+                pointHtmlText = pointHtmlText.Replace("&copy;", "&#169;");
+                pointHtmlText = pointHtmlText.Replace("&emsp;", "&#8195;");
 
                 XElement pointHtml; try {
                     pointHtml = XElement.Parse(pointHtmlText);
