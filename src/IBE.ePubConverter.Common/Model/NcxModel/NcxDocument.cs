@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace IBE.ePubConverter.Model.NcxModel {
+namespace IBE.ePubConverter.Common.Model.NcxModel {
     [XmlRoot(ElementName = "ncx", Namespace = "http://www.daisy.org/z3986/2005/ncx/")]
     public class NcxDocument {
         [XmlAttribute("version")] public string Version { get; set; }

@@ -1,5 +1,5 @@
-﻿namespace IBE.ePubConverter.Converters {
-    internal class PdfConverter : IConverter {
+﻿namespace IBE.ePubConverter.Common.Converters {
+    public class PdfConverter : IConverter {
         public void Execute(string fileName) {
             var converter = new WordConverter();
                  var doc = converter.GetDocument(fileName);

@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace IBE.ePubConverter.Model.NcxModel {
+namespace IBE.ePubConverter.Common.Model.NcxModel {
     public class NcxHead {
         [XmlElement("meta")]public List<NcxHeadMeta> Metas { get; set; }
     }

@@ -1,12 +1,12 @@
-﻿using IBE.ePubConverter.Model.NcxModel;
+﻿using IBE.ePubConverter.Common.Model.NcxModel;
 using Ionic.Zip;
 using Microsoft.Extensions.Configuration;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace IBE.ePubConverter.Converters {
-    internal class WordConverter : IConverter {
+namespace IBE.ePubConverter.Common.Converters {
+    public class WordConverter : IConverter {
         public void Execute(string fileName) {
             if (String.IsNullOrWhiteSpace(fileName)) { throw new ArgumentNullException("fileName"); }
             if (!File.Exists(fileName)) { throw new FileNotFoundException(); }
@@ -25,9 +25,9 @@ namespace IBE.ePubConverter.Converters {
             Aspose.Words.Document document = null;
             var dir = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(fileName));
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-            using var zip = new ZipFile(fileName);
-            zip.ExtractAll(dir, ExtractExistingFileAction.OverwriteSilently);
-
+            using (var zip = new ZipFile(fileName)) {
+                zip.ExtractAll(dir, ExtractExistingFileAction.OverwriteSilently);
+            }
             var info = new DirectoryInfo(dir);
             var ncxInfo = info.GetFiles("*.ncx", SearchOption.AllDirectories).FirstOrDefault();
             if (ncxInfo != null && ncxInfo.Exists) {
@@ -126,8 +126,9 @@ namespace IBE.ePubConverter.Converters {
         private NcxDocument GetNcx(FileInfo ncxInfo) {
             var serializer = new XmlSerializer(typeof(NcxDocument));
             try {
-                using var stream = new FileStream(ncxInfo.FullName, FileMode.Open);
-                return serializer.Deserialize(stream) as NcxDocument;
+                using (var stream = new FileStream(ncxInfo.FullName, FileMode.Open)) {
+                    return serializer.Deserialize(stream) as NcxDocument;
+                }
             }
             catch {
                 var fileTextContent = File.ReadAllText(ncxInfo.FullName);

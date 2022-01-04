@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace IBE.ePubConverter.Model.NcxModel {
+namespace IBE.ePubConverter.Common.Model.NcxModel {
     public class NcxNavPoint {
         [XmlAttribute("id")] public string Id { get; set; }
         [XmlAttribute("playOrder")] public int Order { get; set; }
