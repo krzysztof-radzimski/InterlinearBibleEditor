@@ -6,22 +6,26 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace IBE.ePubConverter.Common.Converters {
-    public class WordConverter : IConverter {
-        public void Execute(string fileName) {
+    public class WordConverter : IConverter<string> {
+        public string Execute(string fileName, bool loadLicenseKey = true) {
             if (String.IsNullOrWhiteSpace(fileName)) { throw new ArgumentNullException("fileName"); }
             if (!File.Exists(fileName)) { throw new FileNotFoundException(); }
             if (!Path.GetExtension(fileName).ToLower().Contains("epub")) { throw new Exception("Przekazany plik nie jest plikiem .epub!"); }
 
-            var doc = GetDocument(fileName);
+            var doc = GetDocument(fileName, loadLicenseKey);
             if (doc != null) {
-                doc.Save(fileName.Replace(".epub", ".docx"), new Aspose.Words.Saving.OoxmlSaveOptions(Aspose.Words.SaveFormat.Docx) {
+                var docxFilePath = Path.Combine(Path.GetDirectoryName(fileName), Path.GetFileNameWithoutExtension(fileName) + ".docx");
+                doc.Save(docxFilePath, new Aspose.Words.Saving.OoxmlSaveOptions(Aspose.Words.SaveFormat.Docx) {
                     UseHighQualityRendering = true
                 });
+
+                return docxFilePath;
             }
+            return null;
         }
 
-        public Aspose.Words.Document GetDocument(string fileName) {
-            new Aspose.Words.License().SetLicense(GetLicenseKeyFilePath());
+        public Aspose.Words.Document GetDocument(string fileName, bool loadLicenseKey = true) {
+            if (loadLicenseKey) { new Aspose.Words.License().SetLicense(GetLicenseKeyFilePath()); }
             Aspose.Words.Document document = null;
             var dir = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(fileName));
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);

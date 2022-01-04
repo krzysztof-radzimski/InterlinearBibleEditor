@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<customUI onLoad="Ribbon_Load" xmlns="http://schemas.microsoft.com/office/2009/07/customui">
+	<ribbon>
+		<tabs>
+			<tab idMso="TabAddIns">
+				<group id="WbstBibliographyGroup" label="WBST">
+					<toggleButton id="btnShowPane" imageMso="BibliographyStyle" getPressed="GetPressed" onAction="ToggleButtonOnAction" label="Pokaż listę" size="large"   />
+					<separator id="separator1" />
+					<button id="btnApplyFormatting" imageMso="ApplyStylesPane" onAction="OnAction" label="Zastosuj formatowanie" size="large" />
+				</group>
+			</tab>
+		</tabs>
+	</ribbon>
+	<backstage>
+		<tab idMso="TabRecent">
+			<firstColumn>
+				<taskFormGroup idMso="GroupOpenPlaces">
+					<category idMso="ButtonCategoryRecentDocuments">
+						<task id="TaskImportEPub" label="Importuj publikacje" imageMso="XmlImport">
+							<group id="grTaskImportEPub" label="Importuj plik EPUB" helperText="Importuje plik publikacji elektronicznej w formacie EPUB." style="normal">
+								<primaryItem>
+									<button id="btnImportEPub" label="Importuj EPUB" imageMso="XmlImport" onAction="OnAction"/>									
+								</primaryItem>
+							</group>
+							<group id="grTaskImportMobi" label="Importuj plik MOBI" helperText="Importuje plik publikacji elektronicznej w formacie MOBI." style="normal">
+								<primaryItem>
+									<button id="btnImportMobi" label="Importuj MOBI" imageMso="XmlImport" onAction="OnAction"/>
+								</primaryItem>
+							</group>
+						</task>
+					</category>
+				</taskFormGroup>
+			</firstColumn>
+		</tab>
+		<tab idMso="TabPublish">
+			<firstColumn>
+				<taskFormGroup idMso="PublishGroup">
+					<category idMso="FileTypes">
+						<task idMso="FileSaveAsPdfOrXps">
+							<group id="GroupCreateEPubDocument">
+								<primaryItem>
+									<button id="btnPublisAsEPub" imageMso="XmlExport" onAction="OnAction" label="Utwórz plik EPUB"/>
+								</primaryItem>
+							</group>
+						</task>
+					</category>
+				</taskFormGroup>
+			</firstColumn>
+		</tab>
+	</backstage>
+</customUI>

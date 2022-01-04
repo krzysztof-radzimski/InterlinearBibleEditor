@@ -1,5 +1,5 @@
 ﻿namespace IBE.ePubConverter.Common.Converters {
-    public interface IConverter {
-        void Execute(string fileName);
+    public interface IConverter<TResult> {
+        TResult Execute(string fileName, bool loadLicenseKey = true);
     }
 }
