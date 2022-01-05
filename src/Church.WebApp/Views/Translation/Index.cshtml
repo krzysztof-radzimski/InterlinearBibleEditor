@@ -224,10 +224,6 @@ else {
                     }
                     @foreach (var _trans in _allTranslations) {
                         foreach (var item in _trans) {
-                            //var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"">katolicki</span>" : "";
-                            //var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"">zalecany</span>" : "";
-                            //var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</span>" : "";
-                            //var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<span class=""badge bg-danger"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</span>" : "";
                             var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" title=""Przekład katolicki"">katolicki</abbr>" : "";
                             var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
                             var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
@@ -335,7 +331,7 @@ else {
                             __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
                             __text = BibleTagController.GetExternalVerseHtml(__text, Model);
                             __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
-                            __text = BibleTagController.GetMultiChapterRange(__text, Model);
+                            __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                             <div style="display: table-row">
                                 <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
@@ -352,7 +348,7 @@ else {
                             __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
                             __text = BibleTagController.GetExternalVerseHtml(__text, Model);
                             __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
-                            __text = BibleTagController.GetMultiChapterRange(__text, Model);
+                            __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                             <div style="display: table-row">
                                 <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
@@ -369,7 +365,7 @@ else {
                             __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
                             __text = BibleTagController.GetExternalVerseHtml(__text, Model);
                             __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
-                            __text = BibleTagController.GetMultiChapterRange(__text, Model);
+                            __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                             <div style="display: table-row">
                                 <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
@@ -386,7 +382,7 @@ else {
                             __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
                             __text = BibleTagController.GetExternalVerseHtml(__text, Model);
                             __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
-                            __text = BibleTagController.GetMultiChapterRange(__text, Model);
+                            __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                             <div style="display: table-row">
                                 <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
@@ -403,7 +399,7 @@ else {
                             __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
                             __text = BibleTagController.GetExternalVerseHtml(__text, Model);
                             __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
-                            __text = BibleTagController.GetMultiChapterRange(__text, Model);
+                            __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                             <div style="display: table-row">
                                 <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
@@ -582,12 +578,14 @@ else {
                             footnoteText = BibleTagController.GetExternalVerseRangeHtml(footnoteText, Model);
                             footnoteText = BibleTagController.GetExternalVerseHtml(footnoteText, Model);
                             footnoteText = BibleTagController.GetInternalVerseListHtml(footnoteText, Model);
-                            footnoteText = BibleTagController.GetMultiChapterRange(footnoteText, Model);
+                            footnoteText = BibleTagController.GetMultiChapterRangeHtml(footnoteText, Model);
 
                             footnoteTextTitle = BibleTagController.GetInternalVerseRangeText(footnoteTextTitle, Model);
                             footnoteTextTitle = BibleTagController.GetInternalVerseText(footnoteTextTitle, Model);
                             footnoteTextTitle = BibleTagController.GetExternalVerseRangeText(footnoteTextTitle, Model);
                             footnoteTextTitle = BibleTagController.GetExternalVerseText(footnoteTextTitle, Model);
+                            footnoteTextTitle = BibleTagController.GetInternalVerseListText(footnoteTextTitle, Model);
+                            footnoteTextTitle = BibleTagController.GetMultiChapterRangeText(footnoteTextTitle, Model);
                         }
 
 
@@ -730,7 +728,7 @@ else {
                                     storyText = BibleTagController.GetExternalVerseRangeHtml(storyText, Model);
                                     storyText = BibleTagController.GetExternalVerseHtml(storyText, Model);
                                     storyText = BibleTagController.GetInternalVerseListHtml(storyText, Model);
-                                    storyText = BibleTagController.GetMultiChapterRange(storyText, Model);
+                                    storyText = BibleTagController.GetMultiChapterRangeHtml(storyText, Model);
 
                                     @*var pattern = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+\-[0-9]+)\<\/x\>";
                                         var pattern2 = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+(\s)?\:(\s)?[0-9]+\-[0-9]+)\<\/x\>";
