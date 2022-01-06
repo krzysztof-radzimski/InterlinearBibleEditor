@@ -8,14 +8,36 @@
 @if (Model != null) {
 
     <p>
-        Szukane słowa:
         @if (Model.Words != null && Model.Words.Count() > 0) {
-            foreach (var word in Model.Words) {
-                if (word != Model.Words.Last()) {
-                    @Html.Raw($"{word}, ")
-                }
-                else {
-                    @Html.Raw($"{word}.")
+            <span>
+                Szukane słowa:
+                <b>
+                    @foreach (var word in Model.Words) {
+                        if (word != Model.Words.Last()) {
+                            @Html.Raw($"{word}, ")
+                        }
+                        else {
+                            @Html.Raw($"{word}")
+                        }
+                    }
+                </b>
+            </span>
+
+            if (Model.SearchType == Church.WebApp.Controllers.SearchRangeType.NewTestament) {
+                <span> w Nowym Przymierzu. </span>
+            }
+            else if (Model.SearchType == Church.WebApp.Controllers.SearchRangeType.OldTestament) {
+                <span> w Starym Przymierzu. </span>
+            }
+            else {
+                <span>. </span>
+            }
+            <br />
+            <span>Szukaj ponownie: </span>
+            foreach (var item in Model.Links) {
+                <a href="@item.Value">@item.Key</a>
+                if (item.Key != Model.Links.Last().Key) {
+                    <span> | </span>
                 }
             }
         }
@@ -59,18 +81,18 @@
 
         @section Scripts {
 
-            <script>
-                docReady(function () {
-                    setTimeout(function () {
-                        var firstTabEl = document.querySelector('#myTab li:first-child button');
-                        var firstTab = new bootstrap.Tab(firstTabEl);
+<script>
+    docReady(function () {
+        setTimeout(function () {
+            var firstTabEl = document.querySelector('#myTab li:first-child button');
+            var firstTab = new bootstrap.Tab(firstTabEl);
 
-                        firstTab.show();
+            firstTab.show();
 
 
-                    }, 1000);
-                });
-            </script>
+        }, 1000);
+    });
+</script>
 
         }
 

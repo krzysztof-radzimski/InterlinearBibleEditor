@@ -18,10 +18,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Church.WebApp.Controllers {
     public class SearchController : Controller {
+        private const string TYPE_QUERY = "&type=";
         private readonly ILogger<SearchController> _logger;
         public SearchController(ILogger<SearchController> logger) {
             _logger = logger;
@@ -30,10 +32,14 @@ namespace Church.WebApp.Controllers {
         public IActionResult Index() {
             var qs = Request.QueryString;
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 9) {
-                //?text=ala+ma+kota
                 var queryString = Uri.UnescapeDataString(qs.Value);
+                SearchRangeType type = SearchRangeType.All;
+                if (queryString.Contains(TYPE_QUERY)) {
+                    type = queryString.Contains(TYPE_QUERY + SearchRangeType.NewTestament.GetCategory()) ? SearchRangeType.NewTestament : SearchRangeType.OldTestament;
+                    queryString = queryString.Replace(TYPE_QUERY + SearchRangeType.NewTestament.GetCategory(), "").Replace(TYPE_QUERY + SearchRangeType.OldTestament.GetCategory(), "");
+                }
                 var words = queryString.Replace("?text=", "").Split('+', StringSplitOptions.RemoveEmptyEntries);
-                return _Search(words);
+                return _Search(words, type);
             }
             return View();
         }
@@ -42,16 +48,34 @@ namespace Church.WebApp.Controllers {
         public IActionResult Index(string text) {
             if (!String.IsNullOrEmpty(text) && text.Length > 3) {
                 var words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                return _Search(words);
+                return _Search(words, SearchRangeType.All);
             }
             return View();
         }
 
-        private IActionResult _Search(string[] words) {
+        private IActionResult _Search(string[] words, SearchRangeType type) {
             var session = new UnitOfWork();
             var view = new XPView(session, typeof(Verse));
             var bookShortcuts = new XPQuery<BookBase>(session).Select(x => new KeyValuePair<int, string>(x.NumberOfBook, x.BookShortcut)).ToList();
-            var translationNames = new XPQuery<Translation>(session).Where(x=>!x.Hidden).Select(x => new KeyValuePair<string, string>(x.Name.Replace("'", "").Replace("+", ""), x.Description)).ToList();
+            var translationNames = new XPQuery<Translation>(session).Where(x => !x.Hidden).Select(x => new KeyValuePair<string, string>(x.Name.Replace("'", "").Replace("+", ""), x.Description)).ToList();
+
+            var query = "Search?text=";
+            foreach (var word in words) {
+                query += word;
+                if (word != words.Last()) {
+                    query += "+";
+                }
+            }
+            var dic = new Dictionary<string, string>();
+            foreach (SearchRangeType item in Enum.GetValues(typeof(SearchRangeType))) {
+                if (item == type) { continue; }
+                if (item == SearchRangeType.All) {
+                    dic.Add(item.GetDescription(), query);
+                }
+                else {
+                    dic.Add(item.GetDescription(), query + TYPE_QUERY + item.GetCategory());
+                }
+            }
 
             var critera = String.Empty;
             foreach (var word in words) {
@@ -63,35 +87,34 @@ namespace Church.WebApp.Controllers {
                 }
             }
 
-            view.CriteriaString = critera;
+            view.CriteriaString = critera.Trim();
 
-
-            //view.Properties.Add(new ViewProperty("NumberOfBook", SortDirection.None, "[ParentChapter.ParentBook.NumberOfBook]", false, true));
-            //view.Properties.Add(new ViewProperty("BookShortcut", SortDirection.None, "[ParentChapter.ParentBook.BookShortcut]", false, true));
-            //view.Properties.Add(new ViewProperty("NumberOfChapter", SortDirection.None, "[ParentChapter.NumberOfChapter]", false, true));
             view.Properties.Add(new ViewProperty("NumberOfVerse", SortDirection.None, "[NumberOfVerse]", false, true));
             view.Properties.Add(new ViewProperty("VerseText", SortDirection.None, "[Text]", false, true));
-            //view.Properties.Add(new ViewProperty("TranslationName", SortDirection.None, "[ParentChapter.ParentBook.ParentTranslation.Description]", false, true));
-            //view.Properties.Add(new ViewProperty("Translation", SortDirection.None, "[ParentChapter.ParentBook.ParentTranslation.Name]", false, true));
             view.Properties.Add(new ViewProperty("Index", SortDirection.None, "[Index]", false, true));
 
-            var model = new SearchResultsModel(words);
+            var model = new SearchResultsModel(words) { SearchType = type, Links = dic };
+
             foreach (ViewRecord record in view) {
                 var _index = record["Index"];
                 if (_index.IsNotNull()) {
                     var index = new VerseIndex(_index.ToString());
+                    if (type != SearchRangeType.All) {
+                        if (type == SearchRangeType.NewTestament && (index.NumberOfBook < 470 || index.NumberOfBook > 730)) { continue; }
+                        if (type == SearchRangeType.OldTestament && index.NumberOfBook >= 470) { continue; }
+                    }
                     var baseBookShortcut = bookShortcuts.Where(x => x.Key == index.NumberOfBook).Select(x => x.Value).FirstOrDefault();
                     var translation = translationNames.Where(x => x.Key == index.TranslationName).FirstOrDefault();
                     if (translation.IsNull() || translation.Key.IsNull()) { continue; }
                     var translationDesc = translation.Value;
 
                     model.Add(new SearchItemModel() {
-                        Book = index.NumberOfBook,//record["NumberOfBook"].ToInt(),
-                        BookShortcut = baseBookShortcut,//record["BookShortcut"].ToString(),
-                        Chapter = index.NumberOfChapter,//record["NumberOfChapter"].ToInt(),
+                        Book = index.NumberOfBook,
+                        BookShortcut = baseBookShortcut,
+                        Chapter = index.NumberOfChapter,
                         Verse = record["NumberOfVerse"].ToInt(),
-                        TranslationName = translationDesc,//record["TranslationName"].ToString(),
-                        Translation = index.TranslationName,//record["Translation"].ToString().Replace("'", "").Replace("+", ""),
+                        TranslationName = translationDesc,
+                        Translation = index.TranslationName,
                         VerseText = record["VerseText"].ToString()
                     });
                 }
@@ -103,7 +126,10 @@ namespace Church.WebApp.Controllers {
 
     public class SearchResultsModel : List<SearchItemModel> {
         public IEnumerable<string> Words { get; }
-        public SearchResultsModel(params string[] words) {
+        public Dictionary<string, string> Links { get; set; }
+        public SearchRangeType SearchType { get; set; }
+        private SearchResultsModel() { }
+        public SearchResultsModel(params string[] words) : this() {
             Words = words;
         }
     }
@@ -116,5 +142,18 @@ namespace Church.WebApp.Controllers {
         public int Chapter { get; set; }
         public int Verse { get; set; }
         public string VerseText { get; set; }
+
+    }
+
+    public enum SearchRangeType {
+        [Description("Wszędzie")]
+        [Category("")]
+        All,
+        [Description("w Starym Przymierzu")]
+        [Category("SP")]
+        OldTestament,
+        [Description("w Nowym Przymierzu")]
+        [Category("NP")]
+        NewTestament
     }
 }

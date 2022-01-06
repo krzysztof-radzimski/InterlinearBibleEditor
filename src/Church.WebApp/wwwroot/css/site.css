@@ -3,6 +3,7 @@
 .card {
     background-color: transparent;
 }
+
 .interlinear-footnote-ref {
     position: absolute;
     top: -8px;
@@ -10,12 +11,9 @@
     color: red;
     padding: 2px;
 }
+
 .bible-content {
-    /*  background-image: url(../img/reading-bible-2021.jpg?ID=2);
-    background-repeat: no-repeat;
-    background-position: center top;
-    background-size: contain;*/
-    background-color: transparent;
+    background-color: rgba(255,255,255,0.7);
     min-height: 2024px;
 }
 
@@ -165,7 +163,7 @@ body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
     background-color: #eef6ff;
-    background: url('../img/background-2021.jpg?ID=1') no-repeat top center fixed;
+    background: url('../img/background-2021.jpg?ID=2') no-repeat top center fixed;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -339,6 +337,15 @@ hr.fancy-line {
 
 .embed-responsive-1by1 {
     padding-bottom: 100%;
+}
+
+#banner {
+    width: 100%;
+    background-image: url('/img/Ban_500x90_Bapt_Photo.png');
+    min-height: 260px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
 }
 
 

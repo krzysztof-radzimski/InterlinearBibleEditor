@@ -69,22 +69,6 @@ namespace IBE.Data.Model {
 
         public Verse(Session session) : base(session) { }
 
-        //public string GetLink() {
-        //    var result = string.Empty;
-        //    if (ParentChapter != null && parentChapter.ParentBook != null) {
-        //        result = $@"<a class=""verse-reference"" href=""B:{ParentChapter.ParentBook.NumberOfBook} {parentChapter.NumberOfChapter}:{NumberOfVerse}"">{GetShortcut()}</a>";
-        //    }
-        //    return result;
-        //}
-
-        //public string GetShortcut() {
-        //    var result = string.Empty;
-        //    if (ParentChapter != null && parentChapter.ParentBook != null) {
-        //        result = $"{parentChapter.ParentBook.BookShortcut} {parentChapter.NumberOfChapter}:{NumberOfVerse}";
-        //    }
-        //    return result;
-        //}
-
         public string GetBookName() => ParentChapter.ParentBook.BaseBook.BookName;
 
         public string GetSourceText() {

@@ -105,7 +105,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown2">
                                 @{
-                                     first = true;
+                                    first = true;
                                 }
 
                                 @foreach (var groupName in TranslationsController.GetPatrologyTranslations()) {
@@ -156,7 +156,16 @@
 
                     <form class="d-flex" id="search-form" method="get" enctype="multipart/form-data" asp-controller="Search" asp-action="Index">
                         <input id="search-input-text" name="text" class="form-control me-2" type="search" placeholder="Szukaj w Biblii" aria-label="Szukaj w Biblii" />
-                        <button id="search-button" class="btn btn-outline-success" type="submit">Szukaj</button>
+                        <div class="btn-group">
+                            <button id="search-button" class="btn btn-outline-success" type="submit">Szukaj</button>
+                            <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" >
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <button class="dropdown-item" type="submit" name="type" value="@Church.WebApp.Controllers.SearchRangeType.NewTestament.GetCategory()">Szukaj @Church.WebApp.Controllers.SearchRangeType.NewTestament.GetDescription() (Testamencie)</button>
+                                <button class="dropdown-item" type="submit" name="type" value="@Church.WebApp.Controllers.SearchRangeType.OldTestament.GetCategory()">Szukaj @Church.WebApp.Controllers.SearchRangeType.OldTestament.GetDescription() (Testamencie)</button>
+                            </ul>
+                        </div>
                     </form>
                 </div>
             </div>
