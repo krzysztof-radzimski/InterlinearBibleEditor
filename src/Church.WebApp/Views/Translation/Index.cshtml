@@ -6,7 +6,7 @@
 }
 @inject IConfiguration Configuration
 @inject IBibleTagController BibleTagController
-@model Church.WebApp.Models.TranslationControllerModel
+@model TranslationControllerModel
 @using IBE.Common.Extensions
 
 @if (Model == null) {
@@ -155,11 +155,11 @@ else {
                 </button>
                 <ul class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonTranslations" style="max-height: 50vh;">
                     @{
-                        var _allTranslations = new List<Church.WebApp.Utils.Grouping<string, Church.WebApp.Models.TranslationInfo>>();
-                        _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, Church.WebApp.Models.TranslationInfo>(IBE.Data.Model.TranslationType.Interlinear.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Interlinear)));
-                        _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, Church.WebApp.Models.TranslationInfo>(IBE.Data.Model.TranslationType.Literal.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Literal)));
-                        _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, Church.WebApp.Models.TranslationInfo>(IBE.Data.Model.TranslationType.Default.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Default)));
-                        _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, Church.WebApp.Models.TranslationInfo>(IBE.Data.Model.TranslationType.Dynamic.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Dynamic)));
+                        var _allTranslations = new List<Church.WebApp.Utils.Grouping<string, TranslationInfo>>();
+                        _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, TranslationInfo>(IBE.Data.Model.TranslationType.Interlinear.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Interlinear)));
+                        _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, TranslationInfo>(IBE.Data.Model.TranslationType.Literal.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Literal)));
+                        _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, TranslationInfo>(IBE.Data.Model.TranslationType.Default.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Default)));
+                        _allTranslations.Add(new Church.WebApp.Utils.Grouping<string, TranslationInfo>(IBE.Data.Model.TranslationType.Dynamic.GetDescription(), Model.Translations.Where(x => x.Type == IBE.Data.Model.TranslationType.Dynamic)));
                         var __first = true;
                     }
                     @foreach (var _trans in _allTranslations) {
@@ -540,8 +540,12 @@ else {
                                 var storyText = story.Text;
 
                                 <div class="col pb-3">&nbsp;</div>
-                                <div class="col w-100 fs-5 pb-3 p-2 fw-bold text-center story">@Html.Raw(storyText)</div>
-
+                                if (story.Level == 1) {
+                                    <div class="col w-100 fs-5 pb-3 p-2 fw-bold text-center story">@Html.Raw(storyText)</div>
+                                }
+                                else {
+                                    <div class="col w-100 fs-5 pb-3 p-2 fw-bold text-center story2">@Html.Raw(storyText)</div>
+                                }
                             }
                         }
                     }
@@ -587,8 +591,9 @@ else {
                             footnoteTextTitle = BibleTagController.GetInternalVerseListText(footnoteTextTitle, Model);
                             footnoteTextTitle = BibleTagController.GetMultiChapterRangeText(footnoteTextTitle, Model);
                         }
-
-
+                        if (footnoteTextTitle.IsNotNullOrEmpty()) {
+                            footnoteTextTitle = BibleTagController.CleanVerseText(footnoteTextTitle);
+                        }
                         if (footnoteText.IsNotNullOrEmpty()) {
                             translation += $@"<a class=""text-decoration-none fw-bold interlinear-footnote-ref"" href=""#footNote{footNoteRefIndex}"" title=""{footnoteTextTitle}"" id=""ref{footNoteRefIndex}"">{footNoteRefIndex}</a>";
                             footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteRefIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteRefIndex}')""/><span style=""cursor: pointer;"" >{footNoteRefIndex}</a>)&nbsp;{footnoteText}</p>");

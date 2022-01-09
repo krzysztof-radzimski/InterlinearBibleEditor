@@ -209,7 +209,7 @@ namespace IBE.WindowsClient {
 
                     VerseControl.LoadData(verse, Translation.BookType == TheBookType.Bible);
 
-                    btnExportChapterToPDF.Enabled = btnExportChapterToWord.Enabled = btnExportBookToDocx.Enabled = btnExportBookToPdf.Enabled = btnNextVerse.Enabled = btnTranslateChapter.Enabled = true;
+                    btnExportChapterToPDF.Enabled = btnExportChapterToWord.Enabled = btnExportBookToDocx.Enabled = btnExportBookToPdf.Enabled = btnNextVerse.Enabled = btnAutoTranslateChapter.Enabled = btnAutoTranslateVerse.Enabled = true;
 
                     var allVerses = txtVerse.Properties.DataSource as List<int>;
                     if (allVerses.IsNotNull() && allVerses.Count > 0 && verseNumber == allVerses.Last()) {
@@ -372,7 +372,6 @@ namespace IBE.WindowsClient {
                 }
             }
         }
-
         private void ExportBook(ExportSaveFormat format) {
             if (VerseControl.IsNotNull()) {
                 var book = VerseControl.Verse.ParentChapter.ParentBook;
@@ -403,9 +402,56 @@ namespace IBE.WindowsClient {
         private void btnExportBookToDocx_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             ExportBook(ExportSaveFormat.Docx);
         }
+        private void btnAutoTranslateVerse_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            if (XtraMessageBox.Show("Do you want to auto-translate this verse to Polish?", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
 
-        private void btnTranslateChapter_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            if (XtraMessageBox.Show("Do you want to translate this chapter?", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                var dic = new XPQuery<AncientDictionaryItem>(Uow).ToList();
+
+                Uow.BeginTransaction();
+
+                var c = new GreekTransliterationController();
+
+                foreach (var verseWord in VerseControl.Verse.VerseWords) {
+                    if (verseWord.Translation.IsNullOrEmpty()) {
+                        var w = c.GetSourceWordWithoutBreathAndAccent(verseWord.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\"", "?"), out var isUpper);
+                        var item = dic.Where(x => x.Word == w.ToLower()).FirstOrDefault();
+                        if (item.IsNotNull()) {
+                            var translation = String.Empty;
+                            if (isUpper && item.Translation.IsNotNullOrEmpty() && item.Translation.Length > 1) {
+                                translation = item.Translation.Substring(0, 1).ToUpper() + item.Translation.Substring(1).ToLower();
+                            }
+                            else {
+                                translation = item.Translation.ToLower();
+                            }
+                            if (translation.IsNotNullOrEmpty()) {
+                                translation = translation.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\"", "?");
+                                if (verseWord.SourceWord.EndsWith(",")) {
+                                    translation += ",";
+                                }
+                                if (verseWord.SourceWord.EndsWith(";")) {
+                                    translation += ";";
+                                }
+                                if (verseWord.SourceWord.EndsWith("·")) {
+                                    translation += ":";
+                                }
+                                if (verseWord.SourceWord.EndsWith(".")) {
+                                    translation += ".";
+                                }
+
+                                verseWord.Translation = translation;
+                                verseWord.Save();
+                            }
+                        }
+                    }
+                }
+
+                Uow.CommitChanges();
+
+                VerseControl.LoadData(VerseControl.Verse, true);
+            }
+        }
+        private void btnAutoTranslateChapter_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            if (XtraMessageBox.Show("Do you want to auto-translate this chapter to Polish?", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
 
                 var verses = VerseControl.Verse.ParentChapter.Verses.OrderBy(x => x.NumberOfVerse).ToList();
                 var dic = new XPQuery<AncientDictionaryItem>(Uow).ToList();
@@ -479,7 +525,7 @@ namespace IBE.WindowsClient {
 
                     VerseControl.LoadData(verse, Translation.BookType == TheBookType.Bible);
 
-                    btnExportChapterToPDF.Enabled = btnExportChapterToWord.Enabled = btnExportBookToDocx.Enabled = btnExportBookToPdf.Enabled = btnNextVerse.Enabled = btnTranslateChapter.Enabled = true;
+                    btnExportChapterToPDF.Enabled = btnExportChapterToWord.Enabled = btnExportBookToDocx.Enabled = btnExportBookToPdf.Enabled = btnNextVerse.Enabled = btnAutoTranslateChapter.Enabled = true;
 
                     var allVerses = txtVerse.Properties.DataSource as List<int>;
                     if (allVerses.IsNotNull() && allVerses.Count > 0 && verseNumber == allVerses.Last()) {
@@ -515,5 +561,7 @@ namespace IBE.WindowsClient {
         private void btnDeleteWord_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             //
         }
+
+
     }
 }

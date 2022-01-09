@@ -40,9 +40,10 @@ namespace IBE.WindowsClient {
             this.btnLogosSeptuagint = new DevExpress.XtraBars.BarButtonItem();
             this.btnExportBookToPdf = new DevExpress.XtraBars.BarButtonItem();
             this.btnExportBookToDocx = new DevExpress.XtraBars.BarButtonItem();
-            this.btnTranslateChapter = new DevExpress.XtraBars.BarButtonItem();
+            this.btnAutoTranslateChapter = new DevExpress.XtraBars.BarButtonItem();
             this.btnUpdateDictionary = new DevExpress.XtraBars.BarButtonItem();
             this.btnDeleteWord = new DevExpress.XtraBars.BarButtonItem();
+            this.btnAutoTranslateVerse = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.pnlTop = new DevExpress.XtraEditors.PanelControl();
@@ -86,11 +87,12 @@ namespace IBE.WindowsClient {
             this.btnLogosSeptuagint,
             this.btnExportBookToPdf,
             this.btnExportBookToDocx,
-            this.btnTranslateChapter,
+            this.btnAutoTranslateChapter,
             this.btnUpdateDictionary,
-            this.btnDeleteWord});
+            this.btnDeleteWord,
+            this.btnAutoTranslateVerse});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 23;
+            this.ribbonControl1.MaxItemId = 24;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
@@ -216,14 +218,14 @@ namespace IBE.WindowsClient {
             this.btnExportBookToDocx.Name = "btnExportBookToDocx";
             this.btnExportBookToDocx.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportBookToDocx_ItemClick);
             // 
-            // btnTranslateChapter
+            // btnAutoTranslateChapter
             // 
-            this.btnTranslateChapter.Caption = "Auto-Translate chapter";
-            this.btnTranslateChapter.Enabled = false;
-            this.btnTranslateChapter.Id = 19;
-            this.btnTranslateChapter.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnTranslateChapter.ImageOptions.SvgImage")));
-            this.btnTranslateChapter.Name = "btnTranslateChapter";
-            this.btnTranslateChapter.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnTranslateChapter_ItemClick);
+            this.btnAutoTranslateChapter.Caption = "Auto-Translate chapter";
+            this.btnAutoTranslateChapter.Enabled = false;
+            this.btnAutoTranslateChapter.Id = 19;
+            this.btnAutoTranslateChapter.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAutoTranslateChapter.ImageOptions.SvgImage")));
+            this.btnAutoTranslateChapter.Name = "btnAutoTranslateChapter";
+            this.btnAutoTranslateChapter.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAutoTranslateChapter_ItemClick);
             // 
             // btnUpdateDictionary
             // 
@@ -240,6 +242,15 @@ namespace IBE.WindowsClient {
             this.btnDeleteWord.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteWord.ImageOptions.SvgImage")));
             this.btnDeleteWord.Name = "btnDeleteWord";
             this.btnDeleteWord.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteWord_ItemClick);
+            // 
+            // btnAutoTranslateVerse
+            // 
+            this.btnAutoTranslateVerse.Caption = "Auto-Translate verse";
+            this.btnAutoTranslateVerse.Enabled = false;
+            this.btnAutoTranslateVerse.Id = 23;
+            this.btnAutoTranslateVerse.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAutoTranslateVerse.ImageOptions.SvgImage")));
+            this.btnAutoTranslateVerse.Name = "btnAutoTranslateVerse";
+            this.btnAutoTranslateVerse.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAutoTranslateVerse_ItemClick);
             // 
             // rpHome
             // 
@@ -265,7 +276,8 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnExportChapterToWord);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnExportBookToPdf, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnExportBookToDocx);
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnTranslateChapter);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnAutoTranslateChapter);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnAutoTranslateVerse);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnUpdateDictionary);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
@@ -429,7 +441,7 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnLogosSeptuagint;
         private DevExpress.XtraBars.BarButtonItem btnExportBookToPdf;
         private DevExpress.XtraBars.BarButtonItem btnExportBookToDocx;
-        private DevExpress.XtraBars.BarButtonItem btnTranslateChapter;
+        private DevExpress.XtraBars.BarButtonItem btnAutoTranslateChapter;
         private DevExpress.XtraBars.BarButtonItem btnUpdateDictionary;
         private DevExpress.XtraBars.BarButtonItem btnDeleteWord;
         private DevExpress.XtraEditors.PanelControl pnlTop;
@@ -443,5 +455,6 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraEditors.LookUpEdit txtVerse;
         private DevExpress.XtraEditors.PanelControl pnlContent;
         private DevExpress.XtraEditors.LabelControl lblVerseCount;
+        private DevExpress.XtraBars.BarButtonItem btnAutoTranslateVerse;
     }
 }

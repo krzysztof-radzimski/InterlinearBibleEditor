@@ -193,39 +193,6 @@ namespace IBE.Data.Model {
                 return translatedBooksText;
             }
             return default;
-
-
-
-            /*
-             
-            
-            @if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
-                var translatedBooksText = @"<h4 class=""text-center"">Status tłumaczenia</h4><p>Przekład zawiera tłumaczenie:<br/>";
-                foreach (var tBook in Model.Translation.Books) {
-                    if (tBook.IsTranslated) {
-                        var translatedChapters = tBook.Chapters.Where(x => x.IsTranslated);
-                        if (translatedChapters.Count() == tBook.Chapters.Count) {
-                            translatedBooksText += $" - <i>{tBook.BaseBook.BookTitle}</i> księga przetłumaczona w całości<br />";
-                        }
-                        else {
-                            var chapterFrom = translatedChapters.Select(x => x.NumberOfChapter).Min().ToString();
-                            if (chapterFrom == "0") { chapterFrom = "prologu"; }
-                            var chapterTo = translatedChapters.Select(x => x.NumberOfChapter).Max();
-                            if (chapterFrom.ToInt() == chapterTo) {
-                                translatedBooksText += $" - <i>{tBook.BaseBook.BookTitle}</i> rozdział {chapterTo}<br />";
-                            }
-                            else {
-                                translatedBooksText += $" - <i>{tBook.BaseBook.BookTitle}</i> rozdziały od {chapterFrom} do {chapterTo}<br />";
-                            }
-                        }
-                    }
-                }
-                translatedBooksText += "</p>";
-
-                @Html.Raw(translatedBooksText)
-            }
-             
-             */
         }
     }
 

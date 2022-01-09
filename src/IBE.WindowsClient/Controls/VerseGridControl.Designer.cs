@@ -67,11 +67,12 @@ namespace IBE.WindowsClient.Controls {
             this.wbGrammarCodes = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tabSettings = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
-            this.rgStoryLevel = new DevExpress.XtraEditors.RadioGroup();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
-            this.txtStoryText = new DevExpress.XtraEditors.TextEdit();
+            this.txtStoryTextLevel1 = new DevExpress.XtraEditors.TextEdit();
             this.cbStartFromNewLine = new DevExpress.XtraEditors.CheckEdit();
             this.splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
+            this.txtStoryTextLevel2 = new DevExpress.XtraEditors.TextEdit();
+            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1)).BeginInit();
@@ -103,9 +104,9 @@ namespace IBE.WindowsClient.Controls {
             this.tabSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.rgStoryLevel.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtStoryText.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel2.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // gridControl
@@ -509,13 +510,13 @@ namespace IBE.WindowsClient.Controls {
             this.tblStrong.SetColumn(this.txtDefinition, 1);
             this.txtDefinition.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtDefinition.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
-            this.txtDefinition.Location = new System.Drawing.Point(103, 56);
+            this.txtDefinition.Location = new System.Drawing.Point(103, 43);
             this.txtDefinition.Name = "txtDefinition";
             this.txtDefinition.Options.ClipboardFormats.AllowHtml = true;
             this.txtDefinition.Options.ClipboardFormats.Html = DevExpress.XtraRichEdit.RichEditClipboardMode.Enabled;
             this.txtDefinition.Options.CopyPaste.InsertOptions = DevExpress.XtraRichEdit.API.Native.InsertOptions.KeepTextOnly;
             this.tblStrong.SetRow(this.txtDefinition, 2);
-            this.txtDefinition.Size = new System.Drawing.Size(384, 196);
+            this.txtDefinition.Size = new System.Drawing.Size(384, 209);
             this.txtDefinition.TabIndex = 7;
             // 
             // vwStrongLocal
@@ -547,7 +548,7 @@ namespace IBE.WindowsClient.Controls {
             // txtShortDefinition
             // 
             this.tblStrong.SetColumn(this.txtShortDefinition, 1);
-            this.txtShortDefinition.Location = new System.Drawing.Point(103, 26);
+            this.txtShortDefinition.Location = new System.Drawing.Point(103, 23);
             this.txtShortDefinition.Name = "txtShortDefinition";
             this.txtShortDefinition.Properties.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.txtShortDefinition.Properties.Appearance.Options.UseFont = true;
@@ -563,7 +564,7 @@ namespace IBE.WindowsClient.Controls {
             this.lblStrongCode.Location = new System.Drawing.Point(103, 3);
             this.lblStrongCode.Name = "lblStrongCode";
             this.tblStrong.SetRow(this.lblStrongCode, 0);
-            this.lblStrongCode.Size = new System.Drawing.Size(9, 17);
+            this.lblStrongCode.Size = new System.Drawing.Size(9, 14);
             this.lblStrongCode.TabIndex = 3;
             this.lblStrongCode.Text = "...";
             // 
@@ -573,7 +574,7 @@ namespace IBE.WindowsClient.Controls {
             this.labelControl3.Appearance.Options.UseFont = true;
             this.tblStrong.SetColumn(this.labelControl3, 0);
             this.labelControl3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelControl3.Location = new System.Drawing.Point(3, 56);
+            this.labelControl3.Location = new System.Drawing.Point(3, 43);
             this.labelControl3.Name = "labelControl3";
             this.tblStrong.SetRow(this.labelControl3, 2);
             this.labelControl3.Size = new System.Drawing.Size(94, 17);
@@ -585,10 +586,10 @@ namespace IBE.WindowsClient.Controls {
             this.labelControl2.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.labelControl2.Appearance.Options.UseFont = true;
             this.tblStrong.SetColumn(this.labelControl2, 0);
-            this.labelControl2.Location = new System.Drawing.Point(3, 29);
+            this.labelControl2.Location = new System.Drawing.Point(3, 23);
             this.labelControl2.Name = "labelControl2";
             this.tblStrong.SetRow(this.labelControl2, 1);
-            this.labelControl2.Size = new System.Drawing.Size(89, 17);
+            this.labelControl2.Size = new System.Drawing.Size(89, 14);
             this.labelControl2.TabIndex = 1;
             this.labelControl2.Text = "Short definition";
             // 
@@ -600,7 +601,7 @@ namespace IBE.WindowsClient.Controls {
             this.labelControl1.Location = new System.Drawing.Point(3, 3);
             this.labelControl1.Name = "labelControl1";
             this.tblStrong.SetRow(this.labelControl1, 0);
-            this.labelControl1.Size = new System.Drawing.Size(31, 17);
+            this.labelControl1.Size = new System.Drawing.Size(31, 14);
             this.labelControl1.TabIndex = 0;
             this.labelControl1.Text = "Code";
             // 
@@ -627,16 +628,17 @@ namespace IBE.WindowsClient.Controls {
             this.tabSettings.Caption = "Settings";
             this.tabSettings.Controls.Add(this.tablePanel1);
             this.tabSettings.Name = "tabSettings";
-            this.tabSettings.Size = new System.Drawing.Size(1294, 375);
+            this.tabSettings.Size = new System.Drawing.Size(1294, 275);
             // 
             // tablePanel1
             // 
             this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 1F),
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 99F)});
-            this.tablePanel1.Controls.Add(this.rgStoryLevel);
+            this.tablePanel1.Controls.Add(this.labelControl5);
+            this.tablePanel1.Controls.Add(this.txtStoryTextLevel2);
             this.tablePanel1.Controls.Add(this.labelControl4);
-            this.tablePanel1.Controls.Add(this.txtStoryText);
+            this.tablePanel1.Controls.Add(this.txtStoryTextLevel1);
             this.tablePanel1.Controls.Add(this.cbStartFromNewLine);
             this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tablePanel1.Location = new System.Drawing.Point(0, 0);
@@ -652,41 +654,27 @@ namespace IBE.WindowsClient.Controls {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(1294, 375);
+            this.tablePanel1.Size = new System.Drawing.Size(1294, 275);
             this.tablePanel1.TabIndex = 3;
-            // 
-            // rgStoryLevel
-            // 
-            this.tablePanel1.SetColumn(this.rgStoryLevel, 2);
-            this.rgStoryLevel.EditValue = 1;
-            this.rgStoryLevel.Location = new System.Drawing.Point(16, 63);
-            this.rgStoryLevel.Name = "rgStoryLevel";
-            this.rgStoryLevel.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.rgStoryLevel.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
-            new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Level 1"),
-            new DevExpress.XtraEditors.Controls.RadioGroupItem(2, "Level 2")});
-            this.tablePanel1.SetRow(this.rgStoryLevel, 3);
-            this.rgStoryLevel.Size = new System.Drawing.Size(1275, 20);
-            this.rgStoryLevel.TabIndex = 3;
             // 
             // labelControl4
             // 
             this.tablePanel1.SetColumn(this.labelControl4, 1);
-            this.labelControl4.Location = new System.Drawing.Point(16, 23);
+            this.labelControl4.Location = new System.Drawing.Point(16, 27);
             this.labelControl4.Name = "labelControl4";
             this.tablePanel1.SetRow(this.labelControl4, 1);
-            this.labelControl4.Size = new System.Drawing.Size(49, 13);
+            this.labelControl4.Size = new System.Drawing.Size(91, 13);
             this.labelControl4.TabIndex = 2;
-            this.labelControl4.Text = "Story title";
+            this.labelControl4.Text = "Story title - level 1";
             // 
-            // txtStoryText
+            // txtStoryTextLevel1
             // 
-            this.tablePanel1.SetColumn(this.txtStoryText, 1);
-            this.txtStoryText.Location = new System.Drawing.Point(16, 43);
-            this.txtStoryText.Name = "txtStoryText";
-            this.tablePanel1.SetRow(this.txtStoryText, 2);
-            this.txtStoryText.Size = new System.Drawing.Size(1275, 20);
-            this.txtStoryText.TabIndex = 1;
+            this.tablePanel1.SetColumn(this.txtStoryTextLevel1, 1);
+            this.txtStoryTextLevel1.Location = new System.Drawing.Point(16, 46);
+            this.txtStoryTextLevel1.Name = "txtStoryTextLevel1";
+            this.tablePanel1.SetRow(this.txtStoryTextLevel1, 2);
+            this.txtStoryTextLevel1.Size = new System.Drawing.Size(1275, 20);
+            this.txtStoryTextLevel1.TabIndex = 1;
             // 
             // cbStartFromNewLine
             // 
@@ -706,6 +694,25 @@ namespace IBE.WindowsClient.Controls {
             this.splitterControl1.Size = new System.Drawing.Size(1294, 10);
             this.splitterControl1.TabIndex = 2;
             this.splitterControl1.TabStop = false;
+            // 
+            // txtStoryTextLevel2
+            // 
+            this.tablePanel1.SetColumn(this.txtStoryTextLevel2, 1);
+            this.txtStoryTextLevel2.Location = new System.Drawing.Point(16, 98);
+            this.txtStoryTextLevel2.Name = "txtStoryTextLevel2";
+            this.tablePanel1.SetRow(this.txtStoryTextLevel2, 4);
+            this.txtStoryTextLevel2.Size = new System.Drawing.Size(1275, 20);
+            this.txtStoryTextLevel2.TabIndex = 3;
+            // 
+            // labelControl5
+            // 
+            this.tablePanel1.SetColumn(this.labelControl5, 1);
+            this.labelControl5.Location = new System.Drawing.Point(16, 75);
+            this.labelControl5.Name = "labelControl5";
+            this.tablePanel1.SetRow(this.labelControl5, 3);
+            this.labelControl5.Size = new System.Drawing.Size(91, 13);
+            this.labelControl5.TabIndex = 3;
+            this.labelControl5.Text = "Story title - level 2";
             // 
             // VerseGridControl
             // 
@@ -750,9 +757,9 @@ namespace IBE.WindowsClient.Controls {
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
             this.tablePanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.rgStoryLevel.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtStoryText.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel2.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -801,11 +808,12 @@ namespace IBE.WindowsClient.Controls {
         private DevExpress.XtraGrid.Views.Layout.LayoutViewField layoutViewField_layoutViewColumn1_7;
         private Microsoft.Web.WebView2.WinForms.WebView2 wbGrammarCodes;
         private DevExpress.Utils.Layout.TablePanel tablePanel1;
-        private DevExpress.XtraEditors.RadioGroup rgStoryLevel;
         private DevExpress.XtraEditors.LabelControl labelControl4;
-        private DevExpress.XtraEditors.TextEdit txtStoryText;
+        private DevExpress.XtraEditors.TextEdit txtStoryTextLevel1;
         private DevExpress.XtraEditors.CheckEdit cbStartFromNewLine;
         private DevExpress.XtraRichEdit.RichEditControl txtDefinition;
         private Microsoft.Web.WebView2.WinForms.WebView2 vwStrongLocal;
+        private DevExpress.XtraEditors.LabelControl labelControl5;
+        private DevExpress.XtraEditors.TextEdit txtStoryTextLevel2;
     }
 }

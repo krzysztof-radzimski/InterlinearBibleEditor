@@ -36,11 +36,15 @@
     background-repeat: no-repeat;
     background-size: contain;
     text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
+    
+    text-transform: uppercase;
+    font-size: 180% !important;
 }
 
 .story2 {
     min-width: 90%;
     text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
+    font-size: 150% !important;
 }
 
 .white-shadow {

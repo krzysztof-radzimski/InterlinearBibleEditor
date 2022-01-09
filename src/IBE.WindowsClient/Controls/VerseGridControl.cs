@@ -29,7 +29,7 @@ using System.Windows.Forms;
 
 namespace IBE.WindowsClient.Controls {
     public partial class VerseGridControl : XtraUserControl {
-        private GreekTransliterationController TransliterationController { get; } 
+        private GreekTransliterationController TransliterationController { get; }
         private List<VerseWordInfo> Words { get; set; }
         public Verse Verse { get; private set; }
 
@@ -53,16 +53,20 @@ namespace IBE.WindowsClient.Controls {
             gridControl.DataSource = Words;
 
             cbStartFromNewLine.Checked = Verse.StartFromNewLine;
-            var subtitle = Verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == Verse.NumberOfVerse).FirstOrDefault();
-            if (subtitle.IsNotNull()) {
-                txtStoryText.Text = subtitle.Text;
-                rgStoryLevel.SelectedIndex = subtitle.Level - 1;
-            }
-            else {
-                txtStoryText.Text = String.Empty;
-                rgStoryLevel.SelectedIndex = -1;
-            }
 
+            txtStoryTextLevel1.Text = String.Empty;
+            txtStoryTextLevel2.Text = String.Empty;
+
+            var subtitles = Verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == Verse.NumberOfVerse);
+            foreach (var subtitle in subtitles) {
+                if (subtitle.Level == 1) {
+                    txtStoryTextLevel1.Text = subtitle.Text;
+                }
+                else if (subtitle.Level == 2) {
+                    txtStoryTextLevel2.Text = subtitle.Text;
+                }
+            }
+            
             if (loadOtherTranslations) {
                 var getTranslations = Task.Factory.StartNew(() => {
                     var index = new VerseIndex(Verse.Index);
@@ -114,27 +118,53 @@ namespace IBE.WindowsClient.Controls {
 
         public void Save() {
             Verse.StartFromNewLine = cbStartFromNewLine.Checked;
-            // save story 
-            if (txtStoryText.Text.IsNotNullOrEmpty()) {
-                var subtitle = Verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == Verse.NumberOfVerse).FirstOrDefault();
+            // save story level 1
+            if (txtStoryTextLevel1.Text.IsNotNullOrEmpty()) {
+                var subtitle = Verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == Verse.NumberOfVerse && x.Level == 1).FirstOrDefault();
                 if (subtitle.IsNull()) {
                     subtitle = new Subtitle(Verse.Session) {
                         BeforeVerseNumber = Verse.NumberOfVerse,
                         ParentChapter = Verse.ParentChapter,
-                        Level = rgStoryLevel.SelectedIndex + 1,
-                        Text = txtStoryText.Text
+                        Level = 1,
+                        Text = txtStoryTextLevel1.Text
                     };
                 }
                 else {
                     subtitle.BeforeVerseNumber = Verse.NumberOfVerse;
                     subtitle.ParentChapter = Verse.ParentChapter;
-                    subtitle.Level = rgStoryLevel.SelectedIndex + 1;
-                    subtitle.Text = txtStoryText.Text;
+                    subtitle.Level = 1;
+                    subtitle.Text = txtStoryTextLevel1.Text;
                 }
                 subtitle.Save();
             }
             else {
-                var subtitle = Verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == Verse.NumberOfVerse).FirstOrDefault();
+                var subtitle = Verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == Verse.NumberOfVerse && x.Level == 1).FirstOrDefault();
+                if (subtitle.IsNotNull()) {
+                    subtitle.Delete();
+                }
+            }
+
+            // save story level 2
+            if (txtStoryTextLevel2.Text.IsNotNullOrEmpty()) {
+                var subtitle = Verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == Verse.NumberOfVerse && x.Level == 2).FirstOrDefault();
+                if (subtitle.IsNull()) {
+                    subtitle = new Subtitle(Verse.Session) {
+                        BeforeVerseNumber = Verse.NumberOfVerse,
+                        ParentChapter = Verse.ParentChapter,
+                        Level = 2,
+                        Text = txtStoryTextLevel2.Text
+                    };
+                }
+                else {
+                    subtitle.BeforeVerseNumber = Verse.NumberOfVerse;
+                    subtitle.ParentChapter = Verse.ParentChapter;
+                    subtitle.Level = 2;
+                    subtitle.Text = txtStoryTextLevel2.Text;
+                }
+                subtitle.Save();
+            }
+            else {
+                var subtitle = Verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == Verse.NumberOfVerse && x.Level == 2).FirstOrDefault();
                 if (subtitle.IsNotNull()) {
                     subtitle.Delete();
                 }

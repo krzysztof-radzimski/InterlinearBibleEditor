@@ -4,6 +4,7 @@ using IBE.Common.Extensions;
 using DevExpress.Xpo;
 using IBE.Data.Model;
 using System.Linq;
+using IBE.Data.Export.Model;
 
 namespace Church.WebApp.Utils {
     public interface ITranslationInfoController {

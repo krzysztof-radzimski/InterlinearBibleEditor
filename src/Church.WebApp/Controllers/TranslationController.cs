@@ -11,9 +11,8 @@
 
   ===================================================================================*/
 
-using Church.WebApp.Models;
 using DevExpress.Xpo;
-using IBE.Common.Extensions;
+using IBE.Data.Export.Model;
 using IBE.Data.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
