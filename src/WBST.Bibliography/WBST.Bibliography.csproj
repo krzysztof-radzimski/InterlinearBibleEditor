@@ -184,12 +184,25 @@
       <DependentUpon>BibliographyPaneControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controllers\GetWordApplicationVersionController.cs" />
+    <Compile Include="Forms\SourceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SourceForm.Designer.cs">
+      <DependentUpon>SourceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Author.cs" />
+    <Compile Include="Model\Source.cs" />
+    <Compile Include="Model\Sources.cs" />
+    <Compile Include="Model\SourceTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utils\ObjectExtensions.cs" />
     <EmbeddedResource Include="Controls\BibliographyPaneControl.resx">
       <DependentUpon>BibliographyPaneControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SourceForm.resx">
+      <DependentUpon>SourceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -224,6 +237,7 @@
       <DependentUpon>ThisAddIn.Designer.xml</DependentUpon>
     </Compile>
     <AppDesigner Include="Properties\" />
+    <None Include="WBST.Bibliography_1_TemporaryKey.pfx" />
     <None Include="WBST.Bibliography_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -246,10 +260,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>WBST.Bibliography_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>WBST.Bibliography_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>196A6DF86D8139729B56A4C711F9AD47A2619D71</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>3C3A7AC1389CC5EF742CCF4C52AD8F7644A0C817</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

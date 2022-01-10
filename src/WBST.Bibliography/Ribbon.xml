@@ -4,7 +4,7 @@
 		<tabs>
 			<tab idMso="TabAddIns">
 				<group id="WbstBibliographyGroup" label="WBST">
-					<toggleButton id="btnShowPane" imageMso="BibliographyStyle" getPressed="GetPressed" onAction="ToggleButtonOnAction" label="Pokaż listę" size="large"   />
+					<toggleButton id="btnShowPane" imageMso="BibliographyStyle" getPressed="GetPressed" onAction="ToggleButtonOnAction" label="Pokaż bibliografię" size="large"   />
 					<separator id="separator1" />
 					<button id="btnApplyFormatting" imageMso="ApplyStylesPane" onAction="OnAction" label="Zastosuj formatowanie" size="large" />
 				</group>

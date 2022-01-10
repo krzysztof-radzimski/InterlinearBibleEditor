@@ -1,103 +1,76 @@
 ﻿using DevExpress.XtraEditors;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
+using System.IO;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml.Linq;
+using System.Text.RegularExpressions;
+using System.Xml.Serialization;
+using WBST.Bibliography.Forms;
 
 namespace WBST.Bibliography {
     public partial class BibliographyPaneControl : XtraUserControl {
-        public BibliographyPaneControl() {
+        public string Current { get; private set; }
+        public Microsoft.Office.Interop.Word.Document Document { get; }
+
+        public BibliographyPaneControl(Microsoft.Office.Interop.Word.Document document) {
+            this.Document = document;
             InitializeComponent();
             LoadBibliography();
         }
 
-        private void btnAdd_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+        private void btnAddFootnote_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
 
         }
 
-        private void LoadBibliography() {
-            var b = Globals.ThisAddIn.Application.ActiveDocument.Bibliography;
-            foreach (Microsoft.Office.Interop.Word.Source item in b.Sources) {
-                if (item != null && item.XML != null) {
-                    var xml = XElement.Parse(item.XML);
+        public void LoadBibliography() {
+            var list = new List<Model.BibliographySource>();
+            Microsoft.Office.Interop.Word.Bibliography b = null;
+            if (Document != null) {
+                b = Document.Bibliography;
+            }
+            if (b != null) {
+                foreach (Microsoft.Office.Interop.Word.Source item in b.Sources) {
+                    if (item != null) {
+                        var xml = item.XML;
+                        if (xml != null) {
+                            var serializer = new XmlSerializer(typeof(Model.BibliographySource));
+                            var o = serializer.Deserialize(new MemoryStream(Encoding.UTF8.GetBytes(xml)));
+                            if (o is Model.BibliographySource) {
+                                list.Add(o as Model.BibliographySource);
+                            }
+                        }
+                    }
+                }
+
+                grid.DataSource = list;
+
+                view.Columns["SourceType"].Group();
+                view.BestFitColumns();
+                view.ExpandAllGroups();
+            }
+        }
+
+        private void btnAddSource_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            using (var dlg = new SourceForm()) {
+                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                    if (dlg.Source != null) {
+                        var stream = new MemoryStream();
+                        var serializer = new XmlSerializer(typeof(Model.BibliographySource));
+                        serializer.Serialize(stream, dlg.Source);
+                        var xml = Encoding.UTF8.GetString(stream.GetBuffer());
+
+                        xml = xml.Replace(@"xmlns=""http://schemas.openxmlformats.org/officeDocument/2006/bibliography""", @"xmlns:b=""http://schemas.openxmlformats.org/officeDocument/2006/bibliography""");
+                        xml = xml.Replace("</", "</b:");
+                        xml = Regex.Replace(xml, @"\<(?<first>[A-Z])", delegate (Match m) {
+                            return "<b:" + m.Groups["first"].Value;
+                        });
+                        xml = xml.Replace(@"<?xml version=""1.0"" encoding=""UTF-8""?>", "");
+                        xml = xml.Replace(@"<?xml version=""1.0""?>", "");
+
+                        Document.Bibliography.Sources.Add(xml.Trim());
+                        LoadBibliography();
+                    }
                 }
             }
         }
-    }
-
-    public class BibliographySourceInfo {
-        public string Tag { get; set; }
-        public SourceType Type { get; set; }
-        public string Guid { get; set; }
-        public string Title { get; set; }
-        public int Year { get; set; }
-        public int Month { get; set; }
-        public int Day { get; set; }
-        public string City { get; set; }
-        public string Publisher { get; set; }
-        public AuthorInfo Author { get; set; }
-        public string ShortTitle { get; set; }
-        public int Pages { get; set; }
-        public string Edition { get; set; }
-        public int RefOrder { get; set; }
-        public string Url { get; set; }
-    }
-    public class AuthorInfo {
-        public NameListInfo Authors { get; }
-        public NameListInfo Translators { get; }
-        public NameListInfo Editors { get; }
-        public AuthorInfo() {
-            Authors = new NameListInfo();
-            Translators = new NameListInfo();
-            Editors = new NameListInfo();
-        }
-    }
-    public class NameListInfo : List<PersonInfo> { }
-    public class PersonInfo {
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; }
-        public string LastName { get; set; }
-    }
-    public enum SourceType {
-        [Description("Artykuł z magazynu")]
-        ArticleInAPeriodical,
-        [Description("Książka")]
-        Book,
-        [Description("Fragment książki")]
-        BookSection,
-        [Description("Artykuł z czasopisma")]
-        JournalArticle,
-        [Description("Materiały konferencyjne")]
-        ConferenceProceedings,
-        [Description("Raport")]
-        Report,
-        [Description("Książka")]
-        SoundRecording,
-        [Description("Przedstawienie")]
-        Performance,
-        [Description("Sztuka")]
-        Art,
-        [Description("Dokument z witryny sieci Web")]
-        DocumentFromInternetSite,
-        [Description("Witryna sieci Web")]
-        InternetSite,
-        [Description("Film")]
-        Film,
-        [Description("Wywiad")]
-        Interview,
-        [Description("Patent")]
-        Patent,
-        [Description("Książka")]
-        ElectronicSource,
-        [Description("Sprawa")]
-        Case,
-        [Description("Różne")]
-        Misc
     }
 }

@@ -99,8 +99,7 @@ namespace WBST.Bibliography {
             if (control != null && !String.IsNullOrEmpty(control.Id)) {
                 switch (control.Id) {
                     case "btnShowPane": {
-                            Globals.ThisAddIn.InitBibliographyPane();
-                            Globals.ThisAddIn.BibliographyPane.Visible = !Globals.ThisAddIn.BibliographyPane.Visible;
+                            Globals.ThisAddIn.InitBibliographyPane(Globals.ThisAddIn.Application.ActiveDocument);
                             break;
                         }
                 }
