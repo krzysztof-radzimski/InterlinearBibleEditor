@@ -29,6 +29,7 @@
             this.barManager = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.btnAddFootnote = new DevExpress.XtraBars.BarButtonItem();
+            this.btnAddSource = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -36,7 +37,6 @@
             this.grid = new DevExpress.XtraGrid.GridControl();
             this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.defaultLookAndFeel1 = new DevExpress.LookAndFeel.DefaultLookAndFeel(this.components);
-            this.btnAddSource = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.barManager)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
@@ -87,10 +87,19 @@
             // btnAddFootnote
             // 
             this.btnAddFootnote.Caption = "Dodaj przypis";
+            this.btnAddFootnote.Enabled = false;
             this.btnAddFootnote.Id = 0;
             this.btnAddFootnote.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAddFootnote.ImageOptions.SvgImage")));
             this.btnAddFootnote.Name = "btnAddFootnote";
             this.btnAddFootnote.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAddFootnote_ItemClick);
+            // 
+            // btnAddSource
+            // 
+            this.btnAddSource.Caption = "Dodaj źródło";
+            this.btnAddSource.Id = 1;
+            this.btnAddSource.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAddSource.ImageOptions.SvgImage")));
+            this.btnAddSource.Name = "btnAddSource";
+            this.btnAddSource.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAddSource_ItemClick);
             // 
             // barDockControlTop
             // 
@@ -147,18 +156,11 @@
             this.view.OptionsView.ColumnAutoWidth = false;
             this.view.OptionsView.ShowGroupPanel = false;
             this.view.OptionsView.ShowIndicator = false;
+            this.view.DoubleClick += new System.EventHandler(this.view_DoubleClick);
             // 
             // defaultLookAndFeel1
             // 
             this.defaultLookAndFeel1.LookAndFeel.SkinName = "Office 2019 Black";
-            // 
-            // btnAddSource
-            // 
-            this.btnAddSource.Caption = "Dodaj źródło";
-            this.btnAddSource.Id = 1;
-            this.btnAddSource.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAddSource.ImageOptions.SvgImage")));
-            this.btnAddSource.Name = "btnAddSource";
-            this.btnAddSource.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAddSource_ItemClick);
             // 
             // BibliographyPaneControl
             // 

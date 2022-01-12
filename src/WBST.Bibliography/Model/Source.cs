@@ -10,6 +10,7 @@ namespace WBST.Bibliography.Model {
         [Browsable(false)] [DisplayName("ID")] public string Guid { get; set; }
         [DisplayName("Tytuł")] public string Title { get; set; }
         [DisplayName("Rok")] public string Year { get; set; }
+        [DisplayName("Miesiąc")] public string Month { get; set; }
         [DisplayName("Autor")] public BibliographyAuthor Author { get; set; }
         [DisplayName("Miejscowość")] public string City { get; set; }
         [DisplayName("Wydawca")] public string Publisher { get; set; }
@@ -19,7 +20,7 @@ namespace WBST.Bibliography.Model {
         [DisplayName("Liczba tomów")] public string NumberVolumes { get; set; }
         [DisplayName("Krótki tytuł")] public string ShortTitle { get; set; }
         [Browsable(false)] [DisplayName("Typ numeru standardowego")] public string StandardNumber { get; set; }
-        [DisplayName("Ilość stron")] public string Pages { get; set; }
+        [DisplayName("Strony")] public string Pages { get; set; }
         [DisplayName("Wydanie")] public string Edition { get; set; }
         [DisplayName("Komentarze")] public string Comments { get; set; }
         [DisplayName("Nośnik")] public string Medium { get; set; }
@@ -31,5 +32,7 @@ namespace WBST.Bibliography.Model {
         [Browsable(false)] [DisplayName("Identyfikator cyfrowy DOI")] public string DOI { get; set; }
         [Browsable(false)] [DisplayName("Język")] public string LCID { get; set; }
         [Browsable(false)] [DisplayName("Kolejność")] public string RefOrder { get; set; }
+        [DisplayName("Nazwa magazynu")] public string JournalName { get; set; }
+        [DisplayName("Numer magazynu")] public string Issue { get; set; }
     }
 }

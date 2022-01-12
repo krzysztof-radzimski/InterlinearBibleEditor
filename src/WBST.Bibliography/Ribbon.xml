@@ -5,8 +5,13 @@
 			<tab idMso="TabAddIns">
 				<group id="WbstBibliographyGroup" label="WBST">
 					<toggleButton id="btnShowPane" imageMso="BibliographyStyle" getPressed="GetPressed" onAction="ToggleButtonOnAction" label="Pokaż bibliografię" size="large"   />
+					<button idMso="BibliographyManageSources" size="large"/>
+
 					<separator id="separator1" />
+
 					<button id="btnApplyFormatting" imageMso="ApplyStylesPane" onAction="OnAction" label="Zastosuj formatowanie" size="large" />
+					<button idMso="FootnoteInsert" size="large"/>
+					<button idMso="PasteTextOnly" size="large"/>
 				</group>
 			</tab>
 		</tabs>
@@ -19,7 +24,7 @@
 						<task id="TaskImportEPub" label="Importuj publikacje" imageMso="XmlImport">
 							<group id="grTaskImportEPub" label="Importuj plik EPUB" helperText="Importuje plik publikacji elektronicznej w formacie EPUB." style="normal">
 								<primaryItem>
-									<button id="btnImportEPub" label="Importuj EPUB" imageMso="XmlImport" onAction="OnAction"/>									
+									<button id="btnImportEPub" label="Importuj EPUB" imageMso="XmlImport" onAction="OnAction"/>
 								</primaryItem>
 							</group>
 							<group id="grTaskImportMobi" label="Importuj plik MOBI" helperText="Importuje plik publikacji elektronicznej w formacie MOBI." style="normal">

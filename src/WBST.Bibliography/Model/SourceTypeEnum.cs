@@ -17,7 +17,7 @@ namespace WBST.Bibliography.Model {
         [XmlEnum(Name = "Film")] [Description("Film")] Film,
         [XmlEnum(Name = "Interview")] [Description("Wywiad")] Interview,
         [XmlEnum(Name = "Patent")] [Description("Patent")] Patent,
-        [XmlEnum(Name = "ElectronicSource")] [Description("Książka")] ElectronicSource,
+        [XmlEnum(Name = "ElectronicSource")] [Description("Źródło elektroniczne")] ElectronicSource,
         [XmlEnum(Name = "Case")] [Description("Sprawa")] Case,
         [XmlEnum(Name = "Misc")] [Description("Różne")] Misc
     }

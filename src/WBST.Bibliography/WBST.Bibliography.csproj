@@ -173,6 +173,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Controllers\BibliographyFootnoteController.cs" />
     <Compile Include="Controllers\ExportAsEPubController.cs" />
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\ImportEPubController.cs" />
@@ -184,6 +185,12 @@
       <DependentUpon>BibliographyPaneControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controllers\GetWordApplicationVersionController.cs" />
+    <Compile Include="Forms\NameListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NameListForm.Designer.cs">
+      <DependentUpon>NameListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SourceForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -191,15 +198,20 @@
       <DependentUpon>SourceForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Author.cs" />
+    <Compile Include="Model\FootnoteTitleType.cs" />
     <Compile Include="Model\Source.cs" />
     <Compile Include="Model\Sources.cs" />
     <Compile Include="Model\SourceTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utils\ListExtensions.cs" />
     <Compile Include="Utils\ObjectExtensions.cs" />
     <EmbeddedResource Include="Controls\BibliographyPaneControl.resx">
       <DependentUpon>BibliographyPaneControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NameListForm.resx">
+      <DependentUpon>NameListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SourceForm.resx">
       <DependentUpon>SourceForm.cs</DependentUpon>
@@ -260,10 +272,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>WBST.Bibliography_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>WBST.Bibliography_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>3C3A7AC1389CC5EF742CCF4C52AD8F7644A0C817</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>196A6DF86D8139729B56A4C711F9AD47A2619D71</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

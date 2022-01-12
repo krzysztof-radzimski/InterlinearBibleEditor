@@ -1,28 +1,39 @@
 ﻿using DevExpress.XtraEditors;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using WBST.Bibliography.Forms;
+using WBST.Bibliography.Model;
 
 namespace WBST.Bibliography {
     public partial class BibliographyPaneControl : XtraUserControl {
         public string Current { get; private set; }
         public Microsoft.Office.Interop.Word.Document Document { get; }
-
-        public BibliographyPaneControl(Microsoft.Office.Interop.Word.Document document) {
+        public Controllers.IBibliographyFootnoteController FootnoteController { get; }
+        private BibliographyPaneControl() { InitializeComponent(); }
+        public BibliographyPaneControl(Microsoft.Office.Interop.Word.Document document) : this() {
             this.Document = document;
-            InitializeComponent();
+            FootnoteController = new Controllers.BibliographyFootnoteController(document);
             LoadBibliography();
         }
 
         private void btnAddFootnote_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            InsertFootNote();
+        }
 
+        private void view_DoubleClick(object sender, EventArgs e) {
+            InsertFootNote();
+        }
+        private void InsertFootNote() {
+            var item = view.GetFocusedRow() as BibliographySource;
+            FootnoteController.InsertFootNote(item);
         }
 
         public void LoadBibliography() {
-            var list = new List<Model.BibliographySource>();
+            var list = new List<BibliographySource>();
             Microsoft.Office.Interop.Word.Bibliography b = null;
             if (Document != null) {
                 b = Document.Bibliography;
@@ -42,6 +53,7 @@ namespace WBST.Bibliography {
                 }
 
                 grid.DataSource = list;
+                btnAddFootnote.Enabled = list.Count > 0;
 
                 view.Columns["SourceType"].Group();
                 view.BestFitColumns();
@@ -54,7 +66,7 @@ namespace WBST.Bibliography {
                 if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                     if (dlg.Source != null) {
                         var stream = new MemoryStream();
-                        var serializer = new XmlSerializer(typeof(Model.BibliographySource));
+                        var serializer = new XmlSerializer(typeof(BibliographySource));
                         serializer.Serialize(stream, dlg.Source);
                         var xml = Encoding.UTF8.GetString(stream.GetBuffer());
 
@@ -72,5 +84,7 @@ namespace WBST.Bibliography {
                 }
             }
         }
+
+
     }
 }

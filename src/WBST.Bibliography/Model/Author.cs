@@ -23,8 +23,8 @@ namespace WBST.Bibliography.Model {
         [XmlElement("Corporate", typeof(string))]
         public List<object> Objects { get; set; }
 
-        [XmlIgnore] [Browsable(false)] public List<BibliographyNameList> NamesList => Objects != null ? Objects.Where(x => x is BibliographyNameList).Cast<BibliographyNameList>().ToList() : new List<BibliographyNameList>();
-        [XmlIgnore] [Browsable(false)] public List<string> Corporates => Objects != null ? Objects.Where(x => x is string).Cast<string>().ToList() : new List<string>();
+        [XmlIgnore] [Browsable(false)] public BibliographyNameList NamesList => Objects != null ? Objects.Where(x => x is BibliographyNameList).FirstOrDefault() as BibliographyNameList : null;
+        [XmlIgnore] [Browsable(false)] public string Corporates => Objects != null ? Objects.Where(x => x is string).FirstOrDefault().ToString() : null;
 
         public override string ToString() {
             var str = "";
