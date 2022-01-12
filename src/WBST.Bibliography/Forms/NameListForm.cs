@@ -23,12 +23,14 @@ namespace WBST.Bibliography.Forms {
                 Middle = txtMiddle.Text,
                 Last = txtLast.Text
             });
+            grid.RefreshDataSource();
         }
 
         private void btnUp_Click(object sender, EventArgs e) {
             var item = view.GetFocusedRow() as BibliographyPerson;
             if (item != null) {
                 NameList.People.MoveUp(item);
+                grid.RefreshDataSource();
             }
         }
 
@@ -36,6 +38,7 @@ namespace WBST.Bibliography.Forms {
             var item = view.GetFocusedRow() as BibliographyPerson;
             if (item != null) {
                 NameList.People.MoveDown(item);
+                grid.RefreshDataSource();
             }
         }
 
@@ -43,6 +46,7 @@ namespace WBST.Bibliography.Forms {
             var item = view.GetFocusedRow() as BibliographyPerson;
             if (item != null) {
                 NameList.People.Remove(item);
+                grid.RefreshDataSource();
             }
         }
 

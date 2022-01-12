@@ -34,5 +34,32 @@ namespace WBST.Bibliography.Model {
         [Browsable(false)] [DisplayName("Kolejność")] public string RefOrder { get; set; }
         [DisplayName("Nazwa magazynu")] public string JournalName { get; set; }
         [DisplayName("Numer magazynu")] public string Issue { get; set; }
+
+
+        public bool ShouldSerializeTitle() { return !String.IsNullOrWhiteSpace(Title); }
+        //public bool ShouldSerialize() { return !String.IsNullOrWhiteSpace(); }
+        //public bool ShouldSerialize() { return !String.IsNullOrWhiteSpace(); }
+        //public bool ShouldSerialize() { return !String.IsNullOrWhiteSpace(); }
+        public bool ShouldSerializeYear() { return !String.IsNullOrWhiteSpace(Year); }
+        public bool ShouldSerializeMonth() { return !String.IsNullOrWhiteSpace(Month); }
+        public bool ShouldSerializeCity() { return !String.IsNullOrWhiteSpace(City); }
+        public bool ShouldSerializePublisher() { return !String.IsNullOrWhiteSpace(Publisher); }
+        public bool ShouldSerializeStateProvince() { return !String.IsNullOrWhiteSpace(StateProvince); }
+        public bool ShouldSerializeCountryRegion() { return !String.IsNullOrWhiteSpace(CountryRegion); }
+        public bool ShouldSerializeVolume() { return !String.IsNullOrWhiteSpace(Volume); }
+        public bool ShouldSerializeNumberVolumes() { return !String.IsNullOrWhiteSpace(NumberVolumes); }
+        public bool ShouldSerializeShortTitle() { return !String.IsNullOrWhiteSpace(ShortTitle); }
+        public bool ShouldSerializeStandardNumber() { return !String.IsNullOrWhiteSpace(StandardNumber); }
+        public bool ShouldSerializePages() { return !String.IsNullOrWhiteSpace(Pages); }
+        public bool ShouldSerializeEdition() { return !String.IsNullOrWhiteSpace(Edition); }
+        public bool ShouldSerializeComments() { return !String.IsNullOrWhiteSpace(Comments); }
+        public bool ShouldSerializeMedium() { return !String.IsNullOrWhiteSpace(Medium); }
+        public bool ShouldSerializeYearAccessed() { return !String.IsNullOrWhiteSpace(YearAccessed); }
+        public bool ShouldSerializeMonthAccessed() { return !String.IsNullOrWhiteSpace(MonthAccessed); }
+        public bool ShouldSerializeDayAccessed() { return !String.IsNullOrWhiteSpace(DayAccessed); }
+        public bool ShouldSerializeURL() { return !String.IsNullOrWhiteSpace(URL); }
+        public bool ShouldSerializeDOI() { return !String.IsNullOrWhiteSpace(DOI); }
+        public bool ShouldSerializeJournalName() { return !String.IsNullOrWhiteSpace(JournalName); }
+        public bool ShouldSerializeIssue() { return !String.IsNullOrWhiteSpace(Issue); }
     }
 }

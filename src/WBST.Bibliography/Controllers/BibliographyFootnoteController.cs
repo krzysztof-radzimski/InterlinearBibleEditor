@@ -16,7 +16,7 @@ namespace WBST.Bibliography.Controllers {
             Document = doc;
         }
         public void InsertFootNote(BibliographySource item) {
-            FootnoteTitleType type = FootnoteTitleType.Default;           
+            FootnoteTitleType type = FootnoteTitleType.Default;
             if (item != null) {
                 var footNote = Document.Footnotes.Add(Document.Range(Document.ActiveWindow.Selection.Start, Document.ActiveWindow.Selection.End), Text: "");
                 footNote.Range.Select();
@@ -195,16 +195,17 @@ namespace WBST.Bibliography.Controllers {
                         Document.ActiveWindow.Selection.TypeText($"{item.City}");
                     }
                     if (!String.IsNullOrEmpty(item.Year) && item.SourceType != SourceTypeEnum.JournalArticle && item.SourceType != SourceTypeEnum.ArticleInAPeriodical) {
+                        if (!String.IsNullOrEmpty(item.City)) { Document.ActiveWindow.Selection.TypeText(" "); }
                         Document.ActiveWindow.Selection.TypeText($"{item.Year}");
-                    }
-                    if (!String.IsNullOrEmpty(item.City) || (!String.IsNullOrEmpty(item.Year) && item.SourceType != SourceTypeEnum.JournalArticle && item.SourceType != SourceTypeEnum.ArticleInAPeriodical)) {
-                        Document.ActiveWindow.Selection.TypeText(", ");
                     }
                 }
 
                 if (item.SourceType != SourceTypeEnum.InternetSite) {
                     var s = XtraInputBox.Show("Podaj numery stron:", "Numery stron", "");
                     if (!String.IsNullOrEmpty(s)) {
+                        if (!String.IsNullOrEmpty(item.City) || (!String.IsNullOrEmpty(item.Year) && item.SourceType != SourceTypeEnum.JournalArticle && item.SourceType != SourceTypeEnum.ArticleInAPeriodical)) {
+                            Document.ActiveWindow.Selection.TypeText(", ");
+                        }
                         Document.ActiveWindow.Selection.TypeText($"s. {s}");
                     }
                 }

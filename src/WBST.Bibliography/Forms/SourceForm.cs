@@ -47,16 +47,17 @@ namespace WBST.Bibliography.Forms {
                 },
                 City = "",
                 CountryRegion = "Polska",
-                DayAccessed = DateTime.Now.Day.ToString().PadLeft(2, '0'),
-                MonthAccessed = DateTime.Now.Month.ToString().PadLeft(2, '0'),
-                YearAccessed = DateTime.Now.Year.ToString(),
+                //DayAccessed = DateTime.Now.Day.ToString().PadLeft(2, '0'),
+                //MonthAccessed = DateTime.Now.Month.ToString().PadLeft(2, '0'),
+                //YearAccessed = DateTime.Now.Year.ToString(),
                 Guid = guid,
                 Publisher = "",
                 SourceType = SourceTypeEnum.Book,
                 Tag = "W" + guid.Substring(0, 5).ToLower(),
                 Title = "",
                 Year = DateTime.Now.Year.ToString(),
-                Month = DateTime.Now.Month.ToString()
+                // Month = DateTime.Now.Month.ToString(),
+                ShortTitle = ""
             };
         }
         private void LoadData() {
@@ -88,9 +89,52 @@ namespace WBST.Bibliography.Forms {
                 }
             }
 
+            if (Source.DayAccessed.IsNotNullOrEmpty() && Source.MonthAccessed.IsNotNullOrEmpty() && Source.YearAccessed.IsNotNullOrEmpty()) {
+                txtAccess.DateTime = new DateTime(Source.YearAccessed.ToInt(), Source.MonthAccessed.ToInt(), Source.DayAccessed.ToInt());
+            }
+
+            txtCity.Text = Source.City;
+            txtEdition.Text = Source.Edition;
+            txtJournalName.Text = Source.JournalName;
+            txtJournalNumber.Text = Source.Issue;
+            txtPublisher.Text = Source.Publisher;
+            txtShortTitle.Text = Source.ShortTitle;
+            txtTitle.Text = Source.Title;
+            txtUrl.Text = Source.URL;
+            txtVolume.Text = Source.Volume;
+            txtVolumes.Text = Source.NumberVolumes;
+            txtYear.Text = Source.Year;
         }
         public BibliographySource Save() {
-            return default;
+            Source.City = txtCity.Text;
+            Source.Edition = txtEdition.Text;
+            Source.Issue = txtJournalNumber.Text;
+            Source.JournalName = txtJournalName.Text;
+            Source.NumberVolumes = txtVolumes.Text;
+            Source.Volume = txtVolume.Text;
+            Source.Year = txtYear.Text;
+            Source.Title = txtTitle.Text;
+            Source.ShortTitle = txtShortTitle.Text;
+            Source.Publisher = txtPublisher.Text;
+            Source.URL = txtUrl.Text;
+            switch (txtSourceType.SelectedIndex) {
+                case 0: { Source.SourceType = SourceTypeEnum.Book; break; }
+                case 1: { Source.SourceType = SourceTypeEnum.ArticleInAPeriodical; break; }
+                case 2: { Source.SourceType = SourceTypeEnum.InternetSite; break; }
+            }
+
+            if (txtAccess.DateTime != DateTime.MinValue) {
+                Source.DayAccessed = txtAccess.DateTime.Day.ToString().PadLeft(2, '0');
+                Source.MonthAccessed = txtAccess.DateTime.Month.ToString().PadLeft(2, '0');
+                Source.YearAccessed = txtAccess.DateTime.Year.ToString();
+            }
+            else {
+                Source.DayAccessed = "";
+                Source.MonthAccessed = "";
+                Source.YearAccessed = "";
+            }
+
+            return Source;
         }
 
         private void btnShortUrl_Click(object sender, EventArgs e) {

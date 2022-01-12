@@ -43,10 +43,10 @@ namespace WBST.Bibliography {
                     if (item != null) {
                         var xml = item.XML;
                         if (xml != null) {
-                            var serializer = new XmlSerializer(typeof(Model.BibliographySource));
+                            var serializer = new XmlSerializer(typeof(BibliographySource));
                             var o = serializer.Deserialize(new MemoryStream(Encoding.UTF8.GetBytes(xml)));
-                            if (o is Model.BibliographySource) {
-                                list.Add(o as Model.BibliographySource);
+                            if (o is BibliographySource) {
+                                list.Add(o as BibliographySource);
                             }
                         }
                     }
@@ -56,6 +56,7 @@ namespace WBST.Bibliography {
                 btnAddFootnote.Enabled = list.Count > 0;
 
                 view.Columns["SourceType"].Group();
+                view.Columns["Title"].SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
                 view.BestFitColumns();
                 view.ExpandAllGroups();
             }
@@ -65,18 +66,8 @@ namespace WBST.Bibliography {
             using (var dlg = new SourceForm()) {
                 if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                     if (dlg.Source != null) {
-                        var stream = new MemoryStream();
-                        var serializer = new XmlSerializer(typeof(BibliographySource));
-                        serializer.Serialize(stream, dlg.Source);
-                        var xml = Encoding.UTF8.GetString(stream.GetBuffer());
-
-                        xml = xml.Replace(@"xmlns=""http://schemas.openxmlformats.org/officeDocument/2006/bibliography""", @"xmlns:b=""http://schemas.openxmlformats.org/officeDocument/2006/bibliography""");
-                        xml = xml.Replace("</", "</b:");
-                        xml = Regex.Replace(xml, @"\<(?<first>[A-Z])", delegate (Match m) {
-                            return "<b:" + m.Groups["first"].Value;
-                        });
-                        xml = xml.Replace(@"<?xml version=""1.0"" encoding=""UTF-8""?>", "");
-                        xml = xml.Replace(@"<?xml version=""1.0""?>", "");
+                        dlg.Save();
+                        var xml = GetXml(dlg.Source);
 
                         Document.Bibliography.Sources.Add(xml.Trim());
                         LoadBibliography();
@@ -85,6 +76,69 @@ namespace WBST.Bibliography {
             }
         }
 
+        private string GetXml(BibliographySource source) {
+            var stream = new MemoryStream();
+            var serializer = new XmlSerializer(typeof(BibliographySource));
+            serializer.Serialize(stream, source);
+            var xml = Encoding.UTF8.GetString(stream.GetBuffer());
 
+            xml = xml.Replace(@"xmlns=""http://schemas.openxmlformats.org/officeDocument/2006/bibliography""", @"xmlns:b=""http://schemas.openxmlformats.org/officeDocument/2006/bibliography""");
+            xml = xml.Replace("</", "</b:");
+            xml = Regex.Replace(xml, @"\<(?<first>[A-Z])", delegate (Match m) {
+                return "<b:" + m.Groups["first"].Value;
+            });
+            xml = xml.Replace(@"<?xml version=""1.0"" encoding=""UTF-8""?>", "");
+            xml = xml.Replace(@"<?xml version=""1.0""?>", "");
+            return xml;
+        }
+
+        private void btnEditSource_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var item = view.GetFocusedRow() as BibliographySource;
+            if (item.IsNotNullOrMissing()) {
+                using (var dlg = new SourceForm(item)) {
+                    if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                        dlg.Save();
+
+                        Microsoft.Office.Interop.Word.Source src = null;
+                        foreach (Microsoft.Office.Interop.Word.Source source in Document.Bibliography.Sources) {
+                            if (source.Tag == dlg.Source.Tag) {
+                                src = source;
+                                break;
+                            }
+                        }
+                        if (src != null) {
+                            var xml = GetXml(dlg.Source);
+
+                            src.Delete();
+                            Document.Bibliography.Sources.Add(xml.Trim());
+                            LoadBibliography();
+                        }
+                    }
+                }
+            }
+        }
+
+        private void btnDeleteSource_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var item = view.GetFocusedRow() as BibliographySource;
+            if (item.IsNotNullOrMissing()) {
+                Microsoft.Office.Interop.Word.Source src = null;
+                foreach (Microsoft.Office.Interop.Word.Source source in Document.Bibliography.Sources) {
+                    if (source.Tag == item.Tag) {
+                        src = source;
+                        break;
+                    }
+                }
+                if (src != null) {
+                    if (XtraMessageBox.Show($"Czy usunąć źródło '{item.Title}'?", "WBST Bibliografia", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes) {
+                        src.Delete();
+                        LoadBibliography();
+                    }
+                }
+            }
+        }
+
+        private void btnAppendBibliography_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+
+        }
     }
 }
