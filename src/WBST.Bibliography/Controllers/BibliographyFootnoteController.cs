@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraEditors;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using WBST.Bibliography.Model;
 
@@ -7,8 +8,10 @@ namespace WBST.Bibliography.Controllers {
     public interface IBibliographyFootnoteController {
         Microsoft.Office.Interop.Word.Document Document { get; }
         void InsertFootNote(BibliographySource item);
+        void AppendBibliography(IEnumerable<BibliographySource> sources);
     }
     public class BibliographyFootnoteController : IBibliographyFootnoteController {
+        private object missing = System.Reflection.Missing.Value;
         public Microsoft.Office.Interop.Word.Document Document { get; }
 
         private BibliographyFootnoteController() { }
@@ -46,8 +49,8 @@ namespace WBST.Bibliography.Controllers {
                                 if ((author as BibliographyNameList).People != null) {
                                     foreach (var person in (author as BibliographyNameList).People) {
                                         var s = "";
-                                        if (!String.IsNullOrEmpty(person.Middle)) { s += $"{person.Middle.Substring(0, 1).ToUpper()}."; }
                                         if (!String.IsNullOrEmpty(person.First)) { s += $"{person.First.Substring(0, 1).ToUpper()}."; }
+                                        if (!String.IsNullOrEmpty(person.Middle)) { s += $"{person.Middle.Substring(0, 1).ToUpper()}."; }
 
                                         if (item.SourceType == SourceTypeEnum.ArticleInAPeriodical || item.SourceType == SourceTypeEnum.JournalArticle) {
                                             if (person == (author as BibliographyNameList).People.Last()) {
@@ -212,6 +215,191 @@ namespace WBST.Bibliography.Controllers {
 
                 Document.ActiveWindow.Selection.TypeText(".");
             }
+        }
+
+        public void AppendBibliography(IEnumerable<BibliographySource> sources) {
+            if (sources.IsNotNullOrMissing()) {
+                MoveToEnd();
+                AddHeader(1, "Bibliografia");
+
+                var groupByComments = sources.Where(x => x.Comments.IsNotNullOrEmpty()).Any();
+                if (groupByComments) {
+                    var groups = sources.GroupBy(x => x.Comments).OrderBy(x => x.Key);
+                    foreach (var group in groups) {
+                        AddHeader(2, group.Key);
+
+                        foreach (var item in group) {
+                            AddBibliographyItem(item);
+                        }
+                    }
+                }
+                else {
+                    foreach (var item in sources) {
+                        AddBibliographyItem(item);
+                    }
+                }
+            }
+        }
+
+        private void AddBibliographyItem(BibliographySource source) {
+            MoveToEnd();
+
+            // Autor
+            if (source.Author != null && source.Author.Author != null && source.Author.Author.Objects != null) {
+                foreach (var author in source.Author.Author.Objects) {
+                    if (author is BibliographyNameList) {
+                        if ((author as BibliographyNameList).People != null) {
+                            foreach (var person in (author as BibliographyNameList).People) {
+                                var s = "";
+                                if (!String.IsNullOrEmpty(person.First)) { s += $"{person.First}."; }
+                                if (!String.IsNullOrEmpty(person.Middle)) { s += $"{person.Middle}."; }
+
+                                if (source.SourceType == SourceTypeEnum.ArticleInAPeriodical || source.SourceType == SourceTypeEnum.JournalArticle) {
+                                    if (person == (author as BibliographyNameList).People.Last()) {
+                                        var ym = "";
+
+                                        if (!String.IsNullOrEmpty(source.Month)) {
+                                            ym += source.Month;
+                                        }
+                                        if (!String.IsNullOrEmpty(source.Year)) {
+                                            if (ym != "") { ym += "."; }
+                                            ym += source.Year;
+                                        }
+                                        s += $" {person.Last} ({ym}), ";
+                                    }
+                                    else {
+                                        s += $" {person.Last}, ";
+                                    }
+                                }
+                                else { s += $" {person.Last}, "; }
+                                Document.ActiveWindow.Selection.TypeText(s);
+                            }
+                        }
+                    }
+                    else {
+                        Document.ActiveWindow.Selection.TypeText($"{author}, ");
+                    }
+                }
+            }
+
+            // Tytuł       
+            Document.ActiveWindow.Selection.Font.Italic = 1;
+            Document.ActiveWindow.Selection.TypeText(source.Title);
+
+            Document.ActiveWindow.Selection.Font.Italic = 0;
+            Document.ActiveWindow.Selection.TypeText(", ");
+
+            // Nazwa magazynu
+            if (!String.IsNullOrEmpty(source.JournalName)) {
+                Document.ActiveWindow.Selection.TypeText("w: ");
+                Document.ActiveWindow.Selection.Font.Italic = 1;
+                Document.ActiveWindow.Selection.TypeText(source.JournalName);
+                Document.ActiveWindow.Selection.Font.Italic = 0;
+                Document.ActiveWindow.Selection.TypeText(", ");
+            }
+
+            // Numer magazynu
+            if (!String.IsNullOrEmpty(source.Issue)) {
+                Document.ActiveWindow.Selection.TypeText($"nr. {source.Issue}, ");
+            }
+
+            // strony w magazynie, artykule
+            if (!String.IsNullOrEmpty(source.Pages)) {
+                Document.ActiveWindow.Selection.TypeText($"str. {source.Pages}, ");
+            }
+
+            // Wydanie
+            if (!String.IsNullOrEmpty(source.Edition)) {
+                Document.ActiveWindow.Selection.TypeText($"wyd. {source.Edition}, ");
+            }
+
+            // Tom
+            if (!String.IsNullOrEmpty(source.Volume)) {
+                Document.ActiveWindow.Selection.TypeText($"t. {source.Volume}");
+                if (!String.IsNullOrEmpty(source.NumberVolumes)) {
+                    Document.ActiveWindow.Selection.TypeText($" z {source.NumberVolumes}");
+                }
+                Document.ActiveWindow.Selection.TypeText(", ");
+            }
+
+            // URL i dostęp
+            if (source.SourceType == SourceTypeEnum.InternetSite && !String.IsNullOrEmpty(source.URL)) {
+                Document.ActiveWindow.Selection.TypeText($"online: {source.URL}");
+                if (!String.IsNullOrEmpty(source.Access)) {
+                    Document.ActiveWindow.Selection.TypeText($" ({source.Access})");
+                }
+                Document.ActiveWindow.Selection.TypeText(", ");
+            }
+
+            if (source.Author.Editor != null && source.Author.Editor.Objects != null && source.Author.Editor.Objects.Count > 0) {
+                Document.ActiveWindow.Selection.TypeText("red. ");
+                foreach (var author in source.Author.Editor.Objects) {
+                    if (author is BibliographyNameList) {
+                        if ((author as BibliographyNameList).People != null) {
+                            foreach (var person in (author as BibliographyNameList).People) {
+                                var s = "";
+                                if (!String.IsNullOrEmpty(person.Middle)) { s += $" {person.Middle.Substring(0, 1).ToUpper()}."; }
+                                if (!String.IsNullOrEmpty(person.First)) { s += $" {person.First.Substring(0, 1).ToUpper()}."; }
+                                s += $"{person.Last}, ";
+                                Document.ActiveWindow.Selection.TypeText(s);
+                            }
+                        }
+                    }
+                    else {
+                        Document.ActiveWindow.Selection.TypeText($"{author}, ");
+                    }
+                }
+            }
+
+            if (source.Author.Translator != null && source.Author.Translator.Objects != null && source.Author.Translator.Objects.Count > 0) {
+                Document.ActiveWindow.Selection.TypeText("przekł. ");
+                foreach (var author in source.Author.Translator.Objects) {
+                    if (author is BibliographyNameList) {
+                        if ((author as BibliographyNameList).People != null) {
+                            foreach (var person in (author as BibliographyNameList).People) {
+                                var s = "";
+                                if (!String.IsNullOrEmpty(person.Middle)) { s += $" {person.Middle.Substring(0, 1).ToUpper()}."; }
+                                if (!String.IsNullOrEmpty(person.First)) { s += $" {person.First.Substring(0, 1).ToUpper()}."; }
+                                s += $"{person.Last}, ";
+                                Document.ActiveWindow.Selection.TypeText(s);
+                            }
+                        }
+                    }
+                    else {
+                        Document.ActiveWindow.Selection.TypeText($"{author}, ");
+                    }
+                }
+            }
+
+            if (!String.IsNullOrEmpty(source.Publisher)) {
+                Document.ActiveWindow.Selection.TypeText($"{source.Publisher}, ");
+            }
+            if (!String.IsNullOrEmpty(source.City)) {
+                Document.ActiveWindow.Selection.TypeText($"{source.City}");
+            }
+            if (!String.IsNullOrEmpty(source.Year) && source.SourceType != SourceTypeEnum.JournalArticle && source.SourceType != SourceTypeEnum.ArticleInAPeriodical) {
+                if (!String.IsNullOrEmpty(source.City)) { Document.ActiveWindow.Selection.TypeText(" "); }
+                Document.ActiveWindow.Selection.TypeText($"{source.Year}");
+            }
+
+            Document.ActiveWindow.Selection.TypeText(".");
+            Document.ActiveWindow.Selection.TypeText("\r\n");
+
+            MoveToEnd();
+        }
+
+        private void AddHeader(int level, string text) {
+            Microsoft.Office.Interop.Word.Paragraph para1 = Document.Content.Paragraphs.Add(ref missing);
+            object styleName = $"Nagłówek {level}";
+            para1.Range.set_Style(ref styleName);
+            para1.Range.Text = text;
+            para1.Range.InsertParagraphAfter();
+
+            MoveToEnd();
+        }
+
+        private void MoveToEnd() {
+            Document.ActiveWindow.Selection.EndKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
         }
     }
 }

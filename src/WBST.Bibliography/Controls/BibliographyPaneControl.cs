@@ -138,7 +138,10 @@ namespace WBST.Bibliography {
         }
 
         private void btnAppendBibliography_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-
+            var sources = grid.DataSource as List<BibliographySource>;
+            if (sources != null) {
+                FootnoteController.AppendBibliography(sources);
+            }
         }
     }
 }

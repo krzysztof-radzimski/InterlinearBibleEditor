@@ -12,6 +12,10 @@
 					<button id="btnApplyFormatting" imageMso="ApplyStylesPane" onAction="OnAction" label="Zastosuj formatowanie" size="large" />
 					<button idMso="FootnoteInsert" size="large"/>
 					<button idMso="PasteTextOnly" size="large"/>
+
+					<separator id="separator2" />
+
+					<gallery idMso="QuickStylesGallery" size="large"/>
 				</group>
 			</tab>
 		</tabs>
