@@ -173,7 +173,7 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="Controllers\BibliographyFootnoteController.cs" />
+    <Compile Include="Controllers\BibliographyController.cs" />
     <Compile Include="Controllers\ExportAsEPubController.cs" />
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\ImportEPubController.cs" />

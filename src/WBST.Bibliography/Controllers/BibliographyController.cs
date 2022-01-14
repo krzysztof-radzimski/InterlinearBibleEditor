@@ -5,17 +5,17 @@ using System.Linq;
 using WBST.Bibliography.Model;
 
 namespace WBST.Bibliography.Controllers {
-    public interface IBibliographyFootnoteController {
+    public interface IBibliographyController {
         Microsoft.Office.Interop.Word.Document Document { get; }
         void InsertFootNote(BibliographySource item);
         void AppendBibliography(IEnumerable<BibliographySource> sources);
     }
-    public class BibliographyFootnoteController : IBibliographyFootnoteController {
+    public class BibliographyController : IBibliographyController {
         private object missing = System.Reflection.Missing.Value;
         public Microsoft.Office.Interop.Word.Document Document { get; }
 
-        private BibliographyFootnoteController() { }
-        public BibliographyFootnoteController(Microsoft.Office.Interop.Word.Document doc) : this() {
+        private BibliographyController() { }
+        public BibliographyController(Microsoft.Office.Interop.Word.Document doc) : this() {
             Document = doc;
         }
         public void InsertFootNote(BibliographySource item) {
@@ -401,5 +401,38 @@ namespace WBST.Bibliography.Controllers {
         private void MoveToEnd() {
             Document.ActiveWindow.Selection.EndKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
         }
+
+        /*
+          Word.Document doc = wdApp.ActiveDocument;
+      Word.Range rng = doc.Content;
+      object oTrue = true;
+      object oFalse = false;
+      object oListName = "TreeList";
+      Word.ListTemplate lstTemp = doc.ListTemplates.Add(ref oTrue, ref oListName);
+      int i;
+
+      rng.Text = "Level 1\rLevel 1.1\rLevel 1.2\rLevel 2\rLevel 2.1\rLevel 2.1.1";
+
+      i = 1;
+      lstTemp.ListLevels[i].NumberFormat = "%" + i.ToString() + ".";
+      lstTemp.ListLevels[i].NumberStyle = Word.WdListNumberStyle.wdListNumberStyleArabic;
+      lstTemp.ListLevels[i].NumberPosition = wdApp.CentimetersToPoints(0.5f * (i - 1));
+      lstTemp.ListLevels[i].TextPosition = wdApp.CentimetersToPoints(0.5f * i);
+      i = 2;
+      lstTemp.ListLevels[i].NumberFormat = "%" + (i - 1).ToString() + ".%" + i.ToString() + ".";
+      lstTemp.ListLevels[i].NumberStyle = Word.WdListNumberStyle.wdListNumberStyleArabic;
+      lstTemp.ListLevels[i].NumberPosition = wdApp.CentimetersToPoints(0.5f * (i - 1));
+      lstTemp.ListLevels[i].TextPosition = wdApp.CentimetersToPoints(0.5f * i);
+      i = 3;
+      lstTemp.ListLevels[i].NumberFormat = "%" + (i - 2).ToString() + "%" + (i - 1).ToString() + ".%" + i.ToString() + ".";
+      lstTemp.ListLevels[i].NumberStyle = Word.WdListNumberStyle.wdListNumberStyleArabic;
+      lstTemp.ListLevels[i].NumberPosition = wdApp.CentimetersToPoints(0.5f * (i - 1));
+      lstTemp.ListLevels[i].TextPosition = wdApp.CentimetersToPoints(0.5f * i);
+      object oListApplyTo = Word.WdListApplyTo.wdListApplyToWholeList;
+      object oListBehavior = Word.WdDefaultListBehavior.wdWord10ListBehavior;
+
+      rng.ListFormat.ApplyListTemplate(lstTemp, ref oFalse, ref oListApplyTo, ref oListBehavior);
+
+         */
     }
 }
