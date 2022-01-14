@@ -31,6 +31,8 @@
             this.btnAddFootnote = new DevExpress.XtraBars.BarButtonItem();
             this.btnAddSource = new DevExpress.XtraBars.BarButtonItem();
             this.btnEditSource = new DevExpress.XtraBars.BarButtonItem();
+            this.btnDeleteSource = new DevExpress.XtraBars.BarButtonItem();
+            this.btnAppendBibliography = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -38,8 +40,6 @@
             this.grid = new DevExpress.XtraGrid.GridControl();
             this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.defaultLookAndFeel1 = new DevExpress.LookAndFeel.DefaultLookAndFeel(this.components);
-            this.btnDeleteSource = new DevExpress.XtraBars.BarButtonItem();
-            this.btnAppendBibliography = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.barManager)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
@@ -84,8 +84,8 @@
             this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnAddFootnote, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnAddSource, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
-            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnEditSource, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
-            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnDeleteSource, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnEditSource, DevExpress.XtraBars.BarItemPaintStyle.Standard),
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnDeleteSource, DevExpress.XtraBars.BarItemPaintStyle.Standard),
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnAppendBibliography, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)});
             this.bar1.OptionsBar.DrawBorder = false;
             this.bar1.OptionsBar.DrawDragBorder = false;
@@ -117,6 +117,22 @@
             this.btnEditSource.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnEditSource.ImageOptions.SvgImage")));
             this.btnEditSource.Name = "btnEditSource";
             this.btnEditSource.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnEditSource_ItemClick);
+            // 
+            // btnDeleteSource
+            // 
+            this.btnDeleteSource.Caption = "Usuń źródło";
+            this.btnDeleteSource.Id = 3;
+            this.btnDeleteSource.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteSource.ImageOptions.SvgImage")));
+            this.btnDeleteSource.Name = "btnDeleteSource";
+            this.btnDeleteSource.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteSource_ItemClick);
+            // 
+            // btnAppendBibliography
+            // 
+            this.btnAppendBibliography.Caption = "Wstaw bibliografię";
+            this.btnAppendBibliography.Id = 4;
+            this.btnAppendBibliography.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAppendBibliography.ImageOptions.SvgImage")));
+            this.btnAppendBibliography.Name = "btnAppendBibliography";
+            this.btnAppendBibliography.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAppendBibliography_ItemClick);
             // 
             // barDockControlTop
             // 
@@ -178,22 +194,6 @@
             // defaultLookAndFeel1
             // 
             this.defaultLookAndFeel1.LookAndFeel.SkinName = "Office 2019 Black";
-            // 
-            // btnDeleteSource
-            // 
-            this.btnDeleteSource.Caption = "Usuń źródło";
-            this.btnDeleteSource.Id = 3;
-            this.btnDeleteSource.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteSource.ImageOptions.SvgImage")));
-            this.btnDeleteSource.Name = "btnDeleteSource";
-            this.btnDeleteSource.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteSource_ItemClick);
-            // 
-            // btnAppendBibliography
-            // 
-            this.btnAppendBibliography.Caption = "Wstaw bibliografię";
-            this.btnAppendBibliography.Id = 4;
-            this.btnAppendBibliography.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAppendBibliography.ImageOptions.SvgImage")));
-            this.btnAppendBibliography.Name = "btnAppendBibliography";
-            this.btnAppendBibliography.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAppendBibliography_ItemClick);
             // 
             // BibliographyPaneControl
             // 

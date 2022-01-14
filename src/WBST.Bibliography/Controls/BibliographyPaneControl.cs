@@ -12,11 +12,11 @@ namespace WBST.Bibliography {
     public partial class BibliographyPaneControl : XtraUserControl {
         public string Current { get; private set; }
         public Microsoft.Office.Interop.Word.Document Document { get; }
-        public Controllers.IBibliographyFootnoteController FootnoteController { get; }
+        public Controllers.IBibliographyController FootnoteController { get; }
         private BibliographyPaneControl() { InitializeComponent(); }
         public BibliographyPaneControl(Microsoft.Office.Interop.Word.Document document) : this() {
             this.Document = document;
-            FootnoteController = new Controllers.BibliographyFootnoteController(document);
+            FootnoteController = new Controllers.BibliographyController(document);
             LoadBibliography();
         }
 
@@ -138,7 +138,10 @@ namespace WBST.Bibliography {
         }
 
         private void btnAppendBibliography_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-
+            var sources = grid.DataSource as List<BibliographySource>;
+            if (sources != null) {
+                FootnoteController.AppendBibliography(sources);
+            }
         }
     }
 }
