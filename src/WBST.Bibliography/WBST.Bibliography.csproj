@@ -275,7 +275,7 @@
     <ManifestKeyFile>WBST.Bibliography_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>C0D89A42E6A87D05087470CD1D870821FD3902AB</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>196A6DF86D8139729B56A4C711F9AD47A2619D71</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
