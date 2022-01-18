@@ -219,8 +219,8 @@ namespace WBST.Bibliography.Controllers {
 
         public void AppendBibliography(IEnumerable<BibliographySource> sources) {
             if (sources.IsNotNullOrMissing()) {
-                MoveToEnd();
-                AddHeader(1, "Bibliografia");
+                //MoveToEnd();
+                //AddHeader(1, "Bibliografia");
 
                 var groupByComments = sources.Where(x => x.Comments.IsNotNullOrEmpty()).Any();
                 if (groupByComments) {
@@ -242,7 +242,7 @@ namespace WBST.Bibliography.Controllers {
         }
 
         private void AddBibliographyItem(BibliographySource source) {
-            MoveToEnd();
+            //MoveToEnd();
 
             // Autor
             if (source.Author != null && source.Author.Author != null && source.Author.Author.Objects != null) {
@@ -251,8 +251,8 @@ namespace WBST.Bibliography.Controllers {
                         if ((author as BibliographyNameList).People != null) {
                             foreach (var person in (author as BibliographyNameList).People) {
                                 var s = "";
-                                if (!String.IsNullOrEmpty(person.First)) { s += $"{person.First}."; }
-                                if (!String.IsNullOrEmpty(person.Middle)) { s += $"{person.Middle}."; }
+                                if (!String.IsNullOrEmpty(person.First)) { s += $"{person.First}"; }
+                                if (!String.IsNullOrEmpty(person.Middle)) { s += $" {person.Middle}"; }
 
                                 if (source.SourceType == SourceTypeEnum.ArticleInAPeriodical || source.SourceType == SourceTypeEnum.JournalArticle) {
                                     if (person == (author as BibliographyNameList).People.Last()) {
@@ -331,7 +331,7 @@ namespace WBST.Bibliography.Controllers {
                 Document.ActiveWindow.Selection.TypeText(", ");
             }
 
-            if (source.Author.Editor != null && source.Author.Editor.Objects != null && source.Author.Editor.Objects.Count > 0) {
+            if (source.Author != null && source.Author.Editor != null && source.Author.Editor.Objects != null && source.Author.Editor.Objects.Count > 0) {
                 Document.ActiveWindow.Selection.TypeText("red. ");
                 foreach (var author in source.Author.Editor.Objects) {
                     if (author is BibliographyNameList) {
@@ -351,7 +351,7 @@ namespace WBST.Bibliography.Controllers {
                 }
             }
 
-            if (source.Author.Translator != null && source.Author.Translator.Objects != null && source.Author.Translator.Objects.Count > 0) {
+            if (source.Author != null && source.Author.Translator != null && source.Author.Translator.Objects != null && source.Author.Translator.Objects.Count > 0) {
                 Document.ActiveWindow.Selection.TypeText("przekł. ");
                 foreach (var author in source.Author.Translator.Objects) {
                     if (author is BibliographyNameList) {
@@ -385,7 +385,7 @@ namespace WBST.Bibliography.Controllers {
             Document.ActiveWindow.Selection.TypeText(".");
             Document.ActiveWindow.Selection.TypeText("\r\n");
 
-            MoveToEnd();
+            //MoveToEnd();
         }
 
         private void AddHeader(int level, string text) {
