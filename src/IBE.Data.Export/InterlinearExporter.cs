@@ -252,6 +252,9 @@ namespace IBE.Data.Export {
                     _par.ParagraphFormat.KeepWithNext = true;
 
                     foreach (var subtitle in subtitles) {
+                        if (subtitle != subtitles.First()) {
+                            _par.AppendChild(new Run(builder.Document, ControlChar.LineBreak));
+                        }
                         var storyText = subtitle.Text;
                         // <x>230 1-41</x>
                         if (storyText.Contains("<x>")) {
@@ -270,6 +273,10 @@ namespace IBE.Data.Export {
                             storyText = System.Text.RegularExpressions.Regex.Replace(storyText, @"\sPAN(A)?(EM)?(U)?(IE)?", delegate (System.Text.RegularExpressions.Match m) {
                                 return " JAHWE";
                             });
+                        }
+
+                        if (subtitle.Level == 1) {
+                            storyText = storyText.ToUpper();
                         }
 
                         var run = new Run(builder.Document) {
@@ -472,8 +479,15 @@ namespace IBE.Data.Export {
                     _par.ParagraphFormat.KeepWithNext = true;
 
                     foreach (var subtitle in subtitles) {
+                        if (subtitle != subtitles.First()) {
+                            _par.AppendChild(new Run(builder.Document, ControlChar.LineBreak));
+                        }
+                        var storyText = subtitle.Text;
+                        if (subtitle.Level == 1) {
+                            storyText = storyText.ToUpper();
+                        }
                         var run = new Run(builder.Document) {
-                            Text = subtitle.Text
+                            Text = storyText
                         };
                         run.Font.Bold = true;
 
@@ -573,7 +587,7 @@ namespace IBE.Data.Export {
             if (word.Translation.IsNotNull()) {
 
                 if (word.Translation.Contains("<n>")) {
-                    var translation = word.Translation.Replace("<n>", "<span style=\"color: #6c757d;\">").Replace("</n>", "</span>");
+                    var translation = word.Translation.Replace("<n>", "<span style=\"color: #6c757d; font-size: 11pt;\">").Replace("</n>", "</span>");
                     if (word.WordOfJesus) {
                         translation = $"<span style=\"color: #990000;\">{translation}</span>";
                     }
