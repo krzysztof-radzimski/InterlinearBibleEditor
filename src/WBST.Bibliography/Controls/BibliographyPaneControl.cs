@@ -63,7 +63,7 @@ namespace WBST.Bibliography {
         }
 
         private void btnAddSource_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            using (var dlg = new SourceForm()) {
+            using (var dlg = new SourceForm(grid.DataSource as List<BibliographySource>)) {
                 if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                     if (dlg.Source != null) {
                         dlg.Save();
@@ -95,7 +95,7 @@ namespace WBST.Bibliography {
         private void btnEditSource_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             var item = view.GetFocusedRow() as BibliographySource;
             if (item.IsNotNullOrMissing()) {
-                using (var dlg = new SourceForm(item)) {
+                using (var dlg = new SourceForm(item, grid.DataSource as List<BibliographySource>)) {
                     if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                         dlg.Save();
 
@@ -142,6 +142,10 @@ namespace WBST.Bibliography {
             if (sources != null) {
                 FootnoteController.AppendBibliography(sources);
             }
+        }
+
+        private void btnRefresh_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            LoadBibliography();
         }
     }
 }

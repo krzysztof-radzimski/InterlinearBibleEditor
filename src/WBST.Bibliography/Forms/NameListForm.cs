@@ -8,7 +8,7 @@ namespace WBST.Bibliography.Forms {
         public BibliographyNameList NameList { get; private set; }
 
         private NameListForm() {
-            InitializeComponent();
+            InitializeComponent(); 
         }
         public NameListForm(BibliographyNameList nameLists) : this() {
             NameList = nameLists;
@@ -24,6 +24,8 @@ namespace WBST.Bibliography.Forms {
                 Last = txtLast.Text
             });
             grid.RefreshDataSource();
+
+            txtFirst.Text = txtLast.Text = txtMiddle.Text = String.Empty;
         }
 
         private void btnUp_Click(object sender, EventArgs e) {

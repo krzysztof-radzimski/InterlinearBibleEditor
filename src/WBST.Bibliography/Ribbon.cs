@@ -124,6 +124,12 @@ namespace WBST.Bibliography {
                             using (var controller = new ImportMobiController()) { controller.Execute(); }
                             break;
                         }
+                    case "Nav": {
+                            using (var form = new Forms.Form1()) {
+                                form.ShowDialog();
+                            }
+                            break;
+                        }
                 }
             }
         }

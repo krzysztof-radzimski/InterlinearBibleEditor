@@ -185,6 +185,12 @@
       <DependentUpon>BibliographyPaneControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controllers\GetWordApplicationVersionController.cs" />
+    <Compile Include="Forms\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\NameListForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,6 +215,9 @@
     <Compile Include="Utils\ObjectExtensions.cs" />
     <EmbeddedResource Include="Controls\BibliographyPaneControl.resx">
       <DependentUpon>BibliographyPaneControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\NameListForm.resx">
       <DependentUpon>NameListForm.cs</DependentUpon>
@@ -275,7 +284,7 @@
     <ManifestKeyFile>WBST.Bibliography_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>196A6DF86D8139729B56A4C711F9AD47A2619D71</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>C0D89A42E6A87D05087470CD1D870821FD3902AB</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

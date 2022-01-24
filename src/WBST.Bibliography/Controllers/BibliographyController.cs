@@ -219,8 +219,6 @@ namespace WBST.Bibliography.Controllers {
 
         public void AppendBibliography(IEnumerable<BibliographySource> sources) {
             if (sources.IsNotNullOrMissing()) {
-                //MoveToEnd();
-                //AddHeader(1, "Bibliografia");
 
                 var groupByComments = sources.Where(x => x.Comments.IsNotNullOrEmpty()).Any();
                 if (groupByComments) {
@@ -242,8 +240,6 @@ namespace WBST.Bibliography.Controllers {
         }
 
         private void AddBibliographyItem(BibliographySource source) {
-            //MoveToEnd();
-
             // Autor
             if (source.Author != null && source.Author.Author != null && source.Author.Author.Objects != null) {
                 foreach (var author in source.Author.Author.Objects) {
@@ -384,55 +380,26 @@ namespace WBST.Bibliography.Controllers {
 
             Document.ActiveWindow.Selection.TypeText(".");
             Document.ActiveWindow.Selection.TypeText("\r\n");
-
-            //MoveToEnd();
         }
 
         private void AddHeader(int level, string text) {
-            Microsoft.Office.Interop.Word.Paragraph para1 = Document.Content.Paragraphs.Add(ref missing);
-            object styleName = $"Nagłówek {level}";
-            para1.Range.set_Style(ref styleName);
-            para1.Range.Text = text;
-            para1.Range.InsertParagraphAfter();
-
-            MoveToEnd();
+            var start = Document.ActiveWindow.Selection.Range.End;
+            Document.ActiveWindow.Selection.TypeText(text);
+            var rng = Document.Range(start, Document.ActiveWindow.Selection.Range.End);
+            object styleName = $"Naglowek{level}Prosty";
+            rng.set_Style(ref styleName);
+            Document.ActiveWindow.Selection.TypeText("\r\n");
+            object nStyle = "Normalny";
+            Document.ActiveWindow.Selection.set_Style(nStyle);
+            //Microsoft.Office.Interop.Word.Paragraph para1 = Document.Content.Paragraphs.Add(ref missing);
+            //object styleName = $"Nagłówek {level}";
+            //para1.Range.set_Style(ref styleName);
+            //para1.Range.Text = text;
+            //para1.Range.InsertParagraphAfter();
         }
 
-        private void MoveToEnd() {
-            Document.ActiveWindow.Selection.EndKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
-        }
-
-        /*
-          Word.Document doc = wdApp.ActiveDocument;
-      Word.Range rng = doc.Content;
-      object oTrue = true;
-      object oFalse = false;
-      object oListName = "TreeList";
-      Word.ListTemplate lstTemp = doc.ListTemplates.Add(ref oTrue, ref oListName);
-      int i;
-
-      rng.Text = "Level 1\rLevel 1.1\rLevel 1.2\rLevel 2\rLevel 2.1\rLevel 2.1.1";
-
-      i = 1;
-      lstTemp.ListLevels[i].NumberFormat = "%" + i.ToString() + ".";
-      lstTemp.ListLevels[i].NumberStyle = Word.WdListNumberStyle.wdListNumberStyleArabic;
-      lstTemp.ListLevels[i].NumberPosition = wdApp.CentimetersToPoints(0.5f * (i - 1));
-      lstTemp.ListLevels[i].TextPosition = wdApp.CentimetersToPoints(0.5f * i);
-      i = 2;
-      lstTemp.ListLevels[i].NumberFormat = "%" + (i - 1).ToString() + ".%" + i.ToString() + ".";
-      lstTemp.ListLevels[i].NumberStyle = Word.WdListNumberStyle.wdListNumberStyleArabic;
-      lstTemp.ListLevels[i].NumberPosition = wdApp.CentimetersToPoints(0.5f * (i - 1));
-      lstTemp.ListLevels[i].TextPosition = wdApp.CentimetersToPoints(0.5f * i);
-      i = 3;
-      lstTemp.ListLevels[i].NumberFormat = "%" + (i - 2).ToString() + "%" + (i - 1).ToString() + ".%" + i.ToString() + ".";
-      lstTemp.ListLevels[i].NumberStyle = Word.WdListNumberStyle.wdListNumberStyleArabic;
-      lstTemp.ListLevels[i].NumberPosition = wdApp.CentimetersToPoints(0.5f * (i - 1));
-      lstTemp.ListLevels[i].TextPosition = wdApp.CentimetersToPoints(0.5f * i);
-      object oListApplyTo = Word.WdListApplyTo.wdListApplyToWholeList;
-      object oListBehavior = Word.WdDefaultListBehavior.wdWord10ListBehavior;
-
-      rng.ListFormat.ApplyListTemplate(lstTemp, ref oFalse, ref oListApplyTo, ref oListBehavior);
-
-         */
+        //private void MoveToEnd() {
+        //    Document.ActiveWindow.Selection.EndKey(Microsoft.Office.Interop.Word.WdUnits.wdStory);
+        //}
     }
 }

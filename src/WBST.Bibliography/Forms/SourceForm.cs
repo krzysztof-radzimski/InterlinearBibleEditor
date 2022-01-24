@@ -1,9 +1,11 @@
 ﻿using DevExpress.XtraEditors;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Forms;
 using WBST.Bibliography.Model;
+using DevExpress.Utils.Layout;
 
 namespace WBST.Bibliography.Forms {
     public partial class SourceForm : XtraForm {
@@ -13,10 +15,27 @@ namespace WBST.Bibliography.Forms {
             Source = GetDefault();
             LoadData();
         }
-        public SourceForm(BibliographySource source) {
+        public SourceForm(List<BibliographySource> sources) {
+            InitializeComponent();
+            Source = GetDefault();
+            LoadData();
+            AddGroups(sources);
+        }
+        public SourceForm(BibliographySource source, List<BibliographySource> sources) {
             InitializeComponent();
             Source = source;
             LoadData();
+            AddGroups(sources);
+        }
+
+        private void AddGroups(List<BibliographySource> sources) {
+            if (sources != null) {
+                var list = sources.Where(x => x.Comments.IsNotNullOrEmpty()).Select(x => x.Comments).Distinct();
+                txtGroup.Properties.Items.Clear();
+                foreach (var item in list) {
+                    txtGroup.Properties.Items.Add(item);
+                }
+            }
         }
 
         private BibliographySource GetDefault() {
@@ -25,39 +44,36 @@ namespace WBST.Bibliography.Forms {
                 Author = new BibliographyAuthor() {
                     Author = new Author() {
                         Objects = new List<object> {
-                             new BibliographyNameList() {
-                                  People = new List<BibliographyPerson>()
-                             }
-                         }
+                            new BibliographyNameList() {
+                                People = new List<BibliographyPerson>()
+                            }
+                        }
                     },
                     Editor = new Author() {
                         Objects = new List<object> {
-                             new BibliographyNameList() {
-                                  People = new List<BibliographyPerson>()
-                             }
-                         }
+                            new BibliographyNameList() {
+                                People = new List<BibliographyPerson>()
+                            }
+                        }
                     },
                     Translator = new Author() {
                         Objects = new List<object> {
-                             new BibliographyNameList() {
-                                  People = new List<BibliographyPerson>()
-                             }
-                         }
+                            new BibliographyNameList() {
+                                People = new List<BibliographyPerson>()
+                            }
+                        }
                     }
                 },
                 City = "",
                 CountryRegion = "Polska",
-                //DayAccessed = DateTime.Now.Day.ToString().PadLeft(2, '0'),
-                //MonthAccessed = DateTime.Now.Month.ToString().PadLeft(2, '0'),
-                //YearAccessed = DateTime.Now.Year.ToString(),
                 Guid = guid,
                 Publisher = "",
                 SourceType = SourceTypeEnum.Book,
                 Tag = "W" + guid.Substring(0, 5).ToLower(),
                 Title = "",
                 Year = DateTime.Now.Year.ToString(),
-                // Month = DateTime.Now.Month.ToString(),
-                ShortTitle = ""
+                ShortTitle = "",
+                Comments = ""
             };
         }
         private void LoadData() {
@@ -104,6 +120,7 @@ namespace WBST.Bibliography.Forms {
             txtVolume.Text = Source.Volume;
             txtVolumes.Text = Source.NumberVolumes;
             txtYear.Text = Source.Year;
+            txtGroup.Text = Source.Comments;
         }
         public BibliographySource Save() {
             Source.City = txtCity.Text;
@@ -117,6 +134,7 @@ namespace WBST.Bibliography.Forms {
             Source.ShortTitle = txtShortTitle.Text;
             Source.Publisher = txtPublisher.Text;
             Source.URL = txtUrl.Text;
+            Source.Comments = txtGroup.Text;
             switch (txtSourceType.SelectedIndex) {
                 case 0: { Source.SourceType = SourceTypeEnum.Book; break; }
                 case 1: { Source.SourceType = SourceTypeEnum.ArticleInAPeriodical; break; }
@@ -149,41 +167,44 @@ namespace WBST.Bibliography.Forms {
         private void txtSourceType_SelectedIndexChanged(object sender, EventArgs e) {
             try {
                 table.Visible = false;
+                //SetControlVisibility(true);
                 switch (txtSourceType.SelectedIndex) {
                     case 0: {
-                            SetControlVisibility();
-                            lblSourceType.Visible = txtSourceType.Visible =
-                            lblAuthor.Visible = txtAuthor.Visible = btnEditAuthor.Visible =
-                            txtCorporateAuthor.Visible = cbCorporateAuthor.Visible =
-                            lblTitle.Visible = txtTitle.Visible =
-                            lblShortTitle.Visible = txtShortTitle.Visible =
-                            lblPublisher.Visible = txtPublisher.Visible =
-                            lblYear.Visible = txtYear.Visible =
-                            lblCity.Visible = txtCity.Visible =
-                            true;
+                            SetControlVisibility(false,
+                            lblSourceType, txtSourceType,
+                            lblAuthor, txtAuthor, btnEditAuthor,
+                            txtCorporateAuthor, cbCorporateAuthor,
+                            lblTitle, txtTitle,
+                            lblShortTitle, txtShortTitle,
+                            lblPublisher, txtPublisher,
+                            lblYear, txtYear,
+                            lblCity, txtCity,
+                            lblGroup, txtGroup);
                             break;
                         }
                     case 1: {
-                            SetControlVisibility();
-                            lblSourceType.Visible = txtSourceType.Visible =
-                            lblAuthor.Visible = txtAuthor.Visible = btnEditAuthor.Visible =
-                            txtCorporateAuthor.Visible = cbCorporateAuthor.Visible =
-                            lblTitle.Visible = txtTitle.Visible =
-                            lblShortTitle.Visible = txtShortTitle.Visible =
-                            lblJournalName.Visible = txtJournalName.Visible =
-                            lblJournalNumber.Visible = txtJournalNumber.Visible =
-                            true;
+                            SetControlVisibility(false,
+                            lblSourceType, txtSourceType,
+                            lblAuthor, txtAuthor, btnEditAuthor,
+                            txtCorporateAuthor, cbCorporateAuthor,
+                            lblTitle, txtTitle,
+                            lblShortTitle, txtShortTitle,
+                            lblJournalName, txtJournalName,
+                            lblJournalNumber, txtJournalNumber,
+                            lblGroup, txtGroup);
                             break;
                         }
                     case 2: {
-                            SetControlVisibility();
-                            lblSourceType.Visible = txtSourceType.Visible =
-                            lblAuthor.Visible = txtAuthor.Visible = btnEditAuthor.Visible =
-                            txtCorporateAuthor.Visible = cbCorporateAuthor.Visible =
-                            lblTitle.Visible = txtTitle.Visible =
-                            lblShortTitle.Visible = txtShortTitle.Visible =
-                            lblAccess.Visible = txtAccess.Visible =
-                            lblUrl.Visible = txtUrl.Visible = true;
+                            SetControlVisibility(false,
+                            lblSourceType, txtSourceType,
+                            lblAuthor, txtAuthor, btnEditAuthor,
+                            txtCorporateAuthor, cbCorporateAuthor,
+                            lblTitle, txtTitle,
+                            lblShortTitle, txtShortTitle,
+                            lblAccess, txtAccess,
+                            lblUrl, txtUrl,
+                            lblGroup, txtGroup);
+
                             break;
                         }
                 }
@@ -193,8 +214,10 @@ namespace WBST.Bibliography.Forms {
             }
         }
 
-        private void SetControlVisibility(bool show = false) {
+        private void SetControlVisibility(bool show = false, params Control[] visibleControls) {
             foreach (Control item in table.Controls) {
+                //if (item is CheckEdit || item is SimpleButton || item is XtraScrollableControl) { continue; }
+                if (visibleControls != null && visibleControls.Where(x => x.Name == item.Name).Any()) { item.Visible = true; continue; }
                 item.Visible = show;
             }
         }
