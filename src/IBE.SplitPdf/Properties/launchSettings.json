@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "IBE.SplitPdf": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\krzysztof.radzimski\\Documents\\SNPD5.pdf\" 1879"
+    }
+  }
+}
