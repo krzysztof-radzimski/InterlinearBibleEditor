@@ -42,13 +42,6 @@ namespace WBST.Bibliography.Controllers {
                 if (footNote.Index > 1) {
                     var isNext = IsNextFootnote(item, footNote.Index - 1);
                     if (isNext) { type = FootnoteTitleType.Next; }
-                    //var f = Document.Footnotes[footNote.Index - 1];
-                    //if (f.Range.Text.Contains(item.Title) || (!String.IsNullOrEmpty(item.ShortTitle) && f.Range.Text.Contains(item.ShortTitle))) {
-                    //    type = FootnoteTitleType.Next;
-                    //}
-                    //else if (f.Range.Text.Contains("Tamże")) { 
-                    
-                    //}
                 }
 
                 // Jeżeli nie Tamże
@@ -66,33 +59,6 @@ namespace WBST.Bibliography.Controllers {
                         foreach (var author in item.Author.Author.Objects) {
                             if (author is BibliographyNameList) {
                                 AddAuthorFootnoteText(item, author as BibliographyNameList);
-                                //if ((author as BibliographyNameList).People != null) {
-                                //    foreach (var person in (author as BibliographyNameList).People) {
-                                //        var s = "";
-                                //        if (!String.IsNullOrEmpty(person.First)) { s += $"{person.First.Substring(0, 1).ToUpper()}."; }
-                                //        if (!String.IsNullOrEmpty(person.Middle)) { s += $"{person.Middle.Substring(0, 1).ToUpper()}."; }
-
-                                //        if (item.SourceType == SourceTypeEnum.ArticleInAPeriodical || item.SourceType == SourceTypeEnum.JournalArticle) {
-                                //            if (person == (author as BibliographyNameList).People.Last()) {
-                                //                var ym = "";
-
-                                //                if (!String.IsNullOrEmpty(item.Month)) {
-                                //                    ym += item.Month;
-                                //                }
-                                //                if (!String.IsNullOrEmpty(item.Year)) {
-                                //                    if (ym != "") { ym += "."; }
-                                //                    ym += item.Year;
-                                //                }
-                                //                s += $" {person.Last} ({ym}), ";
-                                //            }
-                                //            else {
-                                //                s += $" {person.Last}, ";
-                                //            }
-                                //        }
-                                //        else { s += $" {person.Last}, "; }
-                                //        Document.ActiveWindow.Selection.TypeText(s);
-                                //    }
-                                //}
                             }
                             else {
                                 Document.ActiveWindow.Selection.TypeText($"{author}, ");
@@ -101,9 +67,9 @@ namespace WBST.Bibliography.Controllers {
                     }
                 }
 
-                // Tytuł       
-                Document.ActiveWindow.Selection.Font.Italic = 1;
+                // Tytuł                      
                 if (type == FootnoteTitleType.Short) {
+                    Document.ActiveWindow.Selection.Font.Italic = 1;
                     if (!String.IsNullOrEmpty(item.ShortTitle)) {
                         Document.ActiveWindow.Selection.TypeText(item.ShortTitle + "…");
                     }
@@ -130,7 +96,7 @@ namespace WBST.Bibliography.Controllers {
                 }
 
                 // Nazwa magazynu
-                if (!String.IsNullOrEmpty(item.JournalName)) {
+                if (!String.IsNullOrEmpty(item.JournalName) && type != FootnoteTitleType.Next) {
                     Document.ActiveWindow.Selection.TypeText("w: ");
                     Document.ActiveWindow.Selection.Font.Italic = 1;
                     Document.ActiveWindow.Selection.TypeText(item.JournalName);
@@ -139,22 +105,22 @@ namespace WBST.Bibliography.Controllers {
                 }
 
                 // Numer magazynu
-                if (!String.IsNullOrEmpty(item.Issue)) {
+                if (!String.IsNullOrEmpty(item.Issue) && type != FootnoteTitleType.Next) {
                     Document.ActiveWindow.Selection.TypeText($"nr. {item.Issue}, ");
                 }
 
                 // strony w magazynie, artykule
-                if (!String.IsNullOrEmpty(item.Pages)) {
+                if (!String.IsNullOrEmpty(item.Pages) && type != FootnoteTitleType.Next) {
                     Document.ActiveWindow.Selection.TypeText($"str. {item.Pages}, ");
                 }
 
                 // Wydanie
-                if (!String.IsNullOrEmpty(item.Edition)) {
+                if (!String.IsNullOrEmpty(item.Edition) && type != FootnoteTitleType.Next) {
                     Document.ActiveWindow.Selection.TypeText($"wyd. {item.Edition}, ");
                 }
 
                 // Tom
-                if (!String.IsNullOrEmpty(item.Volume)) {
+                if (!String.IsNullOrEmpty(item.Volume) && type != FootnoteTitleType.Next) {
                     Document.ActiveWindow.Selection.TypeText($"t. {item.Volume}");
                     if (!String.IsNullOrEmpty(item.NumberVolumes)) {
                         Document.ActiveWindow.Selection.TypeText($" z {item.NumberVolumes}");
@@ -177,15 +143,6 @@ namespace WBST.Bibliography.Controllers {
                         foreach (var author in item.Author.Editor.Objects) {
                             if (author is BibliographyNameList) {
                                 AddAuthorFootnoteText(item, author as BibliographyNameList);
-                                //if ((author as BibliographyNameList).People != null) {
-                                //    foreach (var person in (author as BibliographyNameList).People) {
-                                //        var s = "";
-                                //        if (!String.IsNullOrEmpty(person.Middle)) { s += $" {person.Middle.Substring(0, 1).ToUpper()}."; }
-                                //        if (!String.IsNullOrEmpty(person.First)) { s += $" {person.First.Substring(0, 1).ToUpper()}."; }
-                                //        s += $"{person.Last}, ";
-                                //        Document.ActiveWindow.Selection.TypeText(s);
-                                //    }
-                                //}
                             }
                             else {
                                 Document.ActiveWindow.Selection.TypeText($"{author}, ");
@@ -198,15 +155,6 @@ namespace WBST.Bibliography.Controllers {
                         foreach (var author in item.Author.Translator.Objects) {
                             if (author is BibliographyNameList) {
                                 AddAuthorFootnoteText(item, author as BibliographyNameList);
-                                //if ((author as BibliographyNameList).People != null) {
-                                //    foreach (var person in (author as BibliographyNameList).People) {
-                                //        var s = "";
-                                //        if (!String.IsNullOrEmpty(person.Middle)) { s += $" {person.Middle.Substring(0, 1).ToUpper()}."; }
-                                //        if (!String.IsNullOrEmpty(person.First)) { s += $" {person.First.Substring(0, 1).ToUpper()}."; }
-                                //        s += $"{person.Last}, ";
-                                //        Document.ActiveWindow.Selection.TypeText(s);
-                                //    }
-                                //}
                             }
                             else {
                                 Document.ActiveWindow.Selection.TypeText($"{author}, ");

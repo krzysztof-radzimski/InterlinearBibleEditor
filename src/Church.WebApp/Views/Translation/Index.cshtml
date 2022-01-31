@@ -618,12 +618,13 @@ else {
                                             <li><span class="dropdown-header fs-5 disabled">@book.BaseBook.BookShortcut @chapterNumberString:@verse.NumberOfVerse</span></li>
                                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
                                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index&literal=true" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
+                                            <li><a class="dropdown-item" href="@verse.GetOblubienicaUrl()" target="_blank"><i class="fas fa-globe"></i>&nbsp;Porównaj w&nbsp;przekładzie interlinearnym Oblubienica.eu</a></li>
 
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie PDF</a></li>
                                             <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie DOCX</a></li>
                                             <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index&literal=true"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie PDF</a></li>
-                                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index&literal=true"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie DOCX</a></li>
+                                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index&literal=true"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie DOCX</a></li>                                            
 
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @verse.GetSourceText()')" style="cursor: pointer;"><i class="fas fa-copy" style="width:18px;"></i>&nbsp;Kopiuj tekst grecki</a></li>
