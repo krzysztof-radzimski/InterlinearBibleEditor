@@ -109,7 +109,17 @@ namespace WBST.Bibliography {
         public void OnAction(Office.IRibbonControl control) {
             if (control != null && !String.IsNullOrEmpty(control.Id)) {
                 switch (control.Id) {
-                    case "btnApplyFormatting": {
+                    case "btnUrlShortener": {
+                            var urlText = Globals.ThisAddIn.Application.ActiveWindow.Selection.Text.Trim();
+                            if (urlText.IsNotNullOrEmpty() && urlText.StartsWith("http")) {
+                                using (var client = new System.Net.WebClient()) {
+                                    var url = Convert.ToBase64String(Encoding.UTF8.GetBytes(urlText));
+                                    Globals.ThisAddIn.Application.ActiveWindow.Selection.Text = client.DownloadString("https://kosciol-jezusa.pl/api/UrlShortener?url=" + url);
+                                }
+                            }
+                            else {
+                                DevExpress.XtraEditors.XtraMessageBox.Show("Wskazany ciąg nie jest adresem Url", "WBST", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                            }
                             break;
                         }
                     case "btnPublisAsEPub": {
@@ -122,12 +132,6 @@ namespace WBST.Bibliography {
                         }
                     case "btnImportMobi": {
                             using (var controller = new ImportMobiController()) { controller.Execute(); }
-                            break;
-                        }
-                    case "Nav": {
-                            using (var form = new Forms.Form1()) {
-                                form.ShowDialog();
-                            }
                             break;
                         }
                 }
@@ -143,6 +147,8 @@ namespace WBST.Bibliography {
             }
             catch { }
         }
+
+        public void ActivateTabMso(string name) { ribbon.ActivateTabMso(name); }
         #endregion
 
         #region Helpers

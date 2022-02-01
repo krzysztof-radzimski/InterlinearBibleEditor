@@ -9,14 +9,20 @@
 
 					<separator id="separator1" />
 
-					<button id="btnApplyFormatting" imageMso="ApplyStylesPane" onAction="OnAction" label="Zastosuj formatowanie" size="large" visible="false" />
+					<button id="btnUrlShortener" imageMso="HyperlinkEdit" onAction="OnAction" label="Skróć hiperłącze" size="large"/>
+
+					<separator id="separator1a" />
+					
 					<button idMso="FootnoteInsert" size="large"/>
 					<button idMso="PasteTextOnly" size="large"/>
 
 					<separator id="separator2" />
 
 					<gallery idMso="QuickStylesGallery" size="large"/>
-					<button id="Nav"  onAction="OnAction" label="Test" visible="false"/>
+					
+					<separator id="separator3" />
+					
+					<button idMso="ReadAloud" size="large"/>
 				</group>
 			</tab>
 		</tabs>

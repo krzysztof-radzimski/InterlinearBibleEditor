@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using WBST.Bibliography.Model;
 using DevExpress.Utils.Layout;
+using System.Text;
 
 namespace WBST.Bibliography.Forms {
     public partial class SourceForm : XtraForm {
@@ -156,7 +157,10 @@ namespace WBST.Bibliography.Forms {
         }
 
         private void btnShortUrl_Click(object sender, EventArgs e) {
-            Process.Start("https://app.bitly.com/");
+            using (var client = new System.Net.WebClient()) {
+                var url = Convert.ToBase64String(Encoding.UTF8.GetBytes(txtUrl.Text));
+                txtUrl.Text = client.DownloadString("https://kosciol-jezusa.pl/api/UrlShortener?url=" + url);
+            }
         }
 
         private void cbCorporateAuthor_CheckedChanged(object sender, EventArgs e) {

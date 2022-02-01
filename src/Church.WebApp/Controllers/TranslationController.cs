@@ -14,6 +14,7 @@
 using DevExpress.Xpo;
 using IBE.Data.Export.Model;
 using IBE.Data.Model;
+using IBE.Common.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -30,8 +31,18 @@ namespace Church.WebApp.Controllers {
         // "{translationName}/{book?}/{chapter?}/{verse?}"
         [TranslationAuthorize]
         public IActionResult Index(string translationName, string book = null, string chapter = null, string verse = null) {
+            var uow = new UnitOfWork();
+
+            // adresy skrótowe
+            if (!String.IsNullOrEmpty(translationName) && book.IsNull() && translationName.Length == 5) {
+                var _url = new XPQuery<UrlShort>(uow).Where(x => x.ShortUrl == translationName).FirstOrDefault();
+                if (_url.IsNotNull()) {
+                    return Redirect(_url.Url);
+                }
+            }
+
             if (!String.IsNullOrEmpty(translationName)) {
-                var uow = new UnitOfWork();
+
                 var books = new XPQuery<BookBase>(uow).ToList();
 
                 // wyświetlamy listę ksiąg z tego przekładu

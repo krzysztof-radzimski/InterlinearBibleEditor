@@ -22,10 +22,14 @@ namespace WBST.Bibliography.Controllers {
         private bool IsNextFootnote(BibliographySource item, int footnoteIndex) {
             if (footnoteIndex > 0) {
                 var f = Document.Footnotes[footnoteIndex];
-                if (f.Range.Text.Contains(item.Title) || (!String.IsNullOrEmpty(item.ShortTitle) && f.Range.Text.Contains(item.ShortTitle))) {
+                var fText = f.Range.Text;
+                if (String.IsNullOrEmpty(item.ShortTitle)) {
+                    GetShortTitle(item);
+                }
+                if (fText.Contains(item.Title) || (!String.IsNullOrEmpty(item.ShortTitle) && fText.Contains(item.ShortTitle))) {
                     return true;
                 }
-                else if (f.Range.Text.Contains("Tamże")) {
+                else if (fText.Contains("Tamże")) {
                     return IsNextFootnote(item, footnoteIndex - 1);
                 }
             }
@@ -70,26 +74,18 @@ namespace WBST.Bibliography.Controllers {
                 // Tytuł                      
                 if (type == FootnoteTitleType.Short) {
                     Document.ActiveWindow.Selection.Font.Italic = 1;
-                    if (!String.IsNullOrEmpty(item.ShortTitle)) {
-                        Document.ActiveWindow.Selection.TypeText(item.ShortTitle + "…");
-                    }
-                    else {
-                        string shortTitle;
-                        if (item.Title.Length > 10) {
-                            shortTitle = item.Title.Substring(0, 10) + "…";
-                            item.ShortTitle = item.Title.Substring(0, 10);
-                        }
-                        else {
-                            shortTitle = item.Title;
-                        }
+                    var shortTitle = GetShortTitle(item);
+                    if (!String.IsNullOrEmpty(shortTitle)) {
                         Document.ActiveWindow.Selection.TypeText(shortTitle);
                     }
+                    Document.ActiveWindow.Selection.Font.Italic = 0;
                 }
                 else if (type == FootnoteTitleType.Next) {
                     Document.ActiveWindow.Selection.Font.Italic = 0;
                     Document.ActiveWindow.Selection.TypeText("Tamże");
                 }
                 else {
+                    Document.ActiveWindow.Selection.Font.Italic = 1;
                     Document.ActiveWindow.Selection.TypeText(item.Title);
                     Document.ActiveWindow.Selection.Font.Italic = 0;
                     Document.ActiveWindow.Selection.TypeText(", ");
@@ -186,6 +182,23 @@ namespace WBST.Bibliography.Controllers {
 
                 Document.ActiveWindow.Selection.TypeText(".");
             }
+        }
+
+        private string GetShortTitle(BibliographySource item) {
+            var shortTitle = item.ShortTitle;
+            if (!String.IsNullOrEmpty(shortTitle)) { shortTitle += "…"; }
+
+            if (String.IsNullOrEmpty(shortTitle) && !String.IsNullOrEmpty(item.Title)) {
+                if (item.Title.Length > 10) {
+                    shortTitle = item.Title.Substring(0, 10) + "…";
+                    item.ShortTitle = item.Title.Substring(0, 10);
+                }
+                else {
+                    shortTitle = item.Title + "…";
+                    item.ShortTitle = item.Title;
+                }
+            }
+            return shortTitle;
         }
 
         public void AppendBibliography(IEnumerable<BibliographySource> sources) {

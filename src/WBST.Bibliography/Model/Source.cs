@@ -10,7 +10,7 @@ namespace WBST.Bibliography.Model {
         [Browsable(false)] [DisplayName("ID")] public string Guid { get; set; }
         [DisplayName("Tytuł")] public string Title { get; set; }
         [DisplayName("Rok")] public string Year { get; set; }
-        [DisplayName("Miesiąc")] public string Month { get; set; }
+        [Browsable(false)] [DisplayName("Miesiąc")] public string Month { get; set; }
         [DisplayName("Autor")] public BibliographyAuthor Author { get; set; }
         [DisplayName("Miejscowość")] public string City { get; set; }
         [DisplayName("Wydawca")] public string Publisher { get; set; }
@@ -37,9 +37,6 @@ namespace WBST.Bibliography.Model {
 
 
         public bool ShouldSerializeTitle() { return !String.IsNullOrWhiteSpace(Title); }
-        //public bool ShouldSerialize() { return !String.IsNullOrWhiteSpace(); }
-        //public bool ShouldSerialize() { return !String.IsNullOrWhiteSpace(); }
-        //public bool ShouldSerialize() { return !String.IsNullOrWhiteSpace(); }
         public bool ShouldSerializeYear() { return !String.IsNullOrWhiteSpace(Year); }
         public bool ShouldSerializeMonth() { return !String.IsNullOrWhiteSpace(Month); }
         public bool ShouldSerializeCity() { return !String.IsNullOrWhiteSpace(City); }

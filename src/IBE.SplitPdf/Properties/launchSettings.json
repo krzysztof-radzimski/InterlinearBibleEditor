@@ -2,7 +2,7 @@
   "profiles": {
     "IBE.SplitPdf": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\krzysztof.radzimski\\Documents\\SNPD5.pdf\" 1879"
+      "commandLineArgs": "\"https://www.blueletterbible.org/lexicon/g1577/nkjv/tr/0-1/\""
     }
   }
 }

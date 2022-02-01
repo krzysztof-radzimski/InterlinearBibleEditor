@@ -37,7 +37,8 @@ namespace IBE.Data {
             typeof(AncientDictionaryItem),
             typeof(VerseInfo),
             typeof(BookBase),
-            typeof(Article)
+            typeof(Article),
+            typeof(UrlShort)
         };
 
         public static void Connect(bool threadSafe = true, string connectionString = null) {
