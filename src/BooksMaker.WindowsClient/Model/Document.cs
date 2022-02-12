@@ -81,8 +81,8 @@ namespace BooksMaker.WindowsClient.Model {
         }
 
         public void InitNewFile() {
-            Properties = new DocumentProperties {  NameOfPart = "Document Properties"};
-            TitlePage = new DocumentTitlePage{ NameOfPart = "Document Title Page" };
+            Properties = new DocumentProperties { NameOfPart = "Document Properties" };
+            TitlePage = new DocumentTitlePage { NameOfPart = "Document Title Page" };
             Introduction = new DocumentIntroduction { NameOfPart = "Document Introduction" };
             Summary = new DocumentSummary { NameOfPart = "Document Summary" };
             Bibliography = new DocumentBibliography { NameOfPart = "Document Bibliography" };
@@ -129,3 +129,4 @@ namespace BooksMaker.WindowsClient.Model {
             public override Encoding Encoding => Encoding.UTF8;
         }
     }
+}

@@ -487,8 +487,8 @@ else {
                 // Wyswietlanie treści przekładu interlinearnego
                 // --------------------------------------------------
                 footNoteRefIndex = 1;
-
-                var translatedChapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
+                var chapterString = book.NumberOfBook == 230 ? Model.Translation.ChapterPsalmString : book.BaseBook.BookName;
+                var translatedChapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {chapterString} {chapter.NumberOfChapter}. ";
                 var transliteratedChapterText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
                 var sourceChapterText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
                 @foreach (var verse in chapter.Verses) {
@@ -689,7 +689,8 @@ else {
             // Treści pozostałych przekładów
             // ------------------------------------
             else if (!Model.Translation.Hidden) {
-                var chapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
+                var chapterString = book.NumberOfBook == 230 ? Model.Translation.ChapterPsalmString : book.BaseBook.BookName;
+                var chapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {chapterString} {chapter.NumberOfChapter}. ";
                 foreach (var verse in chapter.Verses) {
                     var _verseText = BibleTagController.CleanVerseText(verse.Text);
                     _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");

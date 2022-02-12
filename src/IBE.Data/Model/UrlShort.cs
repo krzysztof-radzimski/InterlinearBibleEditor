@@ -14,4 +14,9 @@ namespace IBE.Data.Model {
         }
         public UrlShort(Session session) : base(session) { }
     }
+
+    public class UrlShortInfo {
+        public string Url { get; set; }
+        public string Short { get; set; }
+    }
 }

@@ -5,7 +5,6 @@ using IBE.Common.Extensions;
 using IBE.Data.Model;
 using System;
 using System.Linq;
-using System.Security.Principal;
 
 namespace IBE.WindowsClient {
     public partial class ArticlesForm : RibbonForm {
@@ -19,7 +18,7 @@ namespace IBE.WindowsClient {
         }
 
         internal void LoadData() {
-            view = new XPView(new UnitOfWork(), typeof(Article));
+            view = new XPView(Uow, typeof(Article));
             view.Properties.Add(new ViewProperty("Id", SortDirection.None, "[Oid]", false, true));
             view.Properties.Add(new ViewProperty("Subject", SortDirection.None, "[Subject]", false, true));
             view.Properties.Add(new ViewProperty("AuthorName", SortDirection.None, "[AuthorName]", false, true));

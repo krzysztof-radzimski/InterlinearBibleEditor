@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+﻿using DevExpress.Xpo;
 using IBE.Common.Extensions;
-using System;
 using IBE.Data.Model;
-using DevExpress.Xpo;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.IO;
 using System.Text;
 
 namespace Church.WebApp.Controllers {
@@ -60,4 +60,29 @@ namespace Church.WebApp.Controllers {
             return default;
         }
     }
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class UrlShortListController : ControllerBase {
+        private readonly IConfiguration Configuration;
+        public UrlShortListController(IConfiguration configuration) {
+            Configuration = configuration;
+        }
+
+        [HttpGet]
+        public List<UrlShortInfo> Get() {
+            var uow = new UnitOfWork();
+            var data = new XPQuery<UrlShort>(uow).ToList();
+            var result = new List<UrlShortInfo>();
+            data.ForEach(x => {
+                result.Add(new UrlShortInfo() {
+                    Short = x.ShortUrl,
+                    Url = x.Url
+                });
+            });
+            return result;
+        }
+    }
+
+
 }

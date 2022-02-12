@@ -1,12 +1,15 @@
 ﻿using DevExpress.Xpo;
 using DevExpress.XtraBars.Ribbon;
-using DevExpress.XtraEditors;
 using DevExpress.XtraSpellChecker;
+using IBE.Common.Extensions;
 using IBE.Data;
 using IBE.Data.Model;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 
 namespace IBE.WindowsClient {
@@ -74,7 +77,7 @@ namespace IBE.WindowsClient {
         }
 
         private void btnCopyDatabaseToWebFolder_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var path =  "../../../../db/IBE.SQLite3";
+            var path = "../../../../db/IBE.SQLite3";
             var path2 = "../../../Church.WebApp/Data/IBE.SQLite3";
             var info = new FileInfo(path);
             if (info.Exists) {
@@ -97,6 +100,29 @@ namespace IBE.WindowsClient {
             frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
             frm.MdiParent = this;
             frm.Show();
+        }
+
+        private void btnImportUrlShortenersList_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            using (var client = new WebClient()) {
+                var dataString = client.DownloadString("https://kosciol-jezusa.pl/api/UrlShortList");
+                if (dataString.IsNotNullOrEmpty()) {
+                    var result = JsonConvert.DeserializeObject<List<UrlShortInfo>>(dataString);
+                    if (result.IsNotNull()) {
+                        var uow = new UnitOfWork();
+                        foreach (var item in result) {
+                            var q = new XPQuery<UrlShort>(uow).Where(x => x.ShortUrl == item.Short).Any();
+                            if (!q) {
+                                var s = new UrlShort(uow) {
+                                    ShortUrl = item.Short,
+                                    Url = item.Url
+                                };
+                                s.Save();
+                                uow.CommitChanges();
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
