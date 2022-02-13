@@ -157,7 +157,7 @@ namespace IBE.WindowsClient {
 #if DEBUG
                             //if (item.NumberOfBook == 470 && _item.NumberOfChapter == 1 && __item.NumberOfVerse == 18) 
                             //    { 
-                            
+
                             //}
 #endif
 
@@ -301,42 +301,44 @@ namespace IBE.WindowsClient {
                         ParentChapter = new XPQuery<Chapter>(uow).Where(x => x.Oid == parentChapterItem.Tag).FirstOrDefault()
                     };
 
-                    if (verseItem.SubtitleLevel1.IsNotNullOrEmpty()) {
-                        var subtitle1 = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse && x.Level ==1).FirstOrDefault();
-                        if (subtitle1.IsNotNull()) {
-                            subtitle1.BeforeVerseNumber = verse.NumberOfVerse;
-                            subtitle1.ParentChapter = verse.ParentChapter;
-                            subtitle1.Level = 1;
-                            subtitle1.Text = verseItem.SubtitleLevel1;
-                        }
-                        else {
-                            subtitle1 = new Subtitle(uow) {
-                                BeforeVerseNumber = verse.NumberOfVerse,
-                                ParentChapter = verse.ParentChapter,
-                                Level = 1,
-                                Text = verseItem.SubtitleLevel1
-                            };
-                        }
-                        subtitle1.Save();
-                    }
-                    if (verseItem.SubtitleLevel2.IsNotNullOrEmpty()) {
-                        var subtitle2 = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse && x.Level == 2).FirstOrDefault();
-                        if (subtitle2.IsNotNull()) {
-                            subtitle2.BeforeVerseNumber = verse.NumberOfVerse;
-                            subtitle2.ParentChapter = verse.ParentChapter;
-                            subtitle2.Level = 1;
-                            subtitle2.Text = verseItem.SubtitleLevel2;
-                        }
-                        else {
-                            subtitle2 = new Subtitle(uow) {
-                                BeforeVerseNumber = verse.NumberOfVerse,
-                                ParentChapter = verse.ParentChapter,
-                                Level = 1,
-                                Text = verseItem.SubtitleLevel2
-                            };
-                        }
-                        subtitle2.Save();
-                    }
+                    SetSubtitle(verse, verseItem, uow, 1);
+                    SetSubtitle(verse, verseItem, uow, 2);
+                    //if (verseItem.SubtitleLevel1.IsNotNullOrEmpty()) {
+                    //    var subtitle1 = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse && x.Level == 1).FirstOrDefault();
+                    //    if (subtitle1.IsNotNull()) {
+                    //        subtitle1.BeforeVerseNumber = verse.NumberOfVerse;
+                    //        subtitle1.ParentChapter = verse.ParentChapter;
+                    //        subtitle1.Level = 1;
+                    //        subtitle1.Text = verseItem.SubtitleLevel1;
+                    //    }
+                    //    else {
+                    //        subtitle1 = new Subtitle(uow) {
+                    //            BeforeVerseNumber = verse.NumberOfVerse,
+                    //            ParentChapter = verse.ParentChapter,
+                    //            Level = 1,
+                    //            Text = verseItem.SubtitleLevel1
+                    //        };
+                    //    }
+                    //    subtitle1.Save();
+                    //}
+                    //if (verseItem.SubtitleLevel2.IsNotNullOrEmpty()) {
+                    //    var subtitle2 = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse && x.Level == 2).FirstOrDefault();
+                    //    if (subtitle2.IsNotNull()) {
+                    //        subtitle2.BeforeVerseNumber = verse.NumberOfVerse;
+                    //        subtitle2.ParentChapter = verse.ParentChapter;
+                    //        subtitle2.Level = 1;
+                    //        subtitle2.Text = verseItem.SubtitleLevel2;
+                    //    }
+                    //    else {
+                    //        subtitle2 = new Subtitle(uow) {
+                    //            BeforeVerseNumber = verse.NumberOfVerse,
+                    //            ParentChapter = verse.ParentChapter,
+                    //            Level = 2,
+                    //            Text = verseItem.SubtitleLevel2
+                    //        };
+                    //    }
+                    //    subtitle2.Save();
+                    //}
 
                     verse.Save();
                     uow.CommitChanges();
@@ -352,6 +354,9 @@ namespace IBE.WindowsClient {
                     verse.NumberOfVerse = verseItem.Number;
                     verse.Text = verseItem.Value;
 
+                    SetSubtitle(verse, verseItem, uow, 1);
+                    SetSubtitle(verse, verseItem, uow, 2);
+
                     verse.Save();
                     uow.CommitChanges();
 
@@ -364,6 +369,35 @@ namespace IBE.WindowsClient {
                 if (ObjectSaved.IsNotNull()) { ObjectSaved(Object, EventArgs.Empty); }
             }
             catch { }
+        }
+
+        private void SetSubtitle(Verse verse, IbeVerseTreeItem verseItem, UnitOfWork uow, int level = 1) {
+            var subtitleText = level == 1 ? verseItem.SubtitleLevel1 : verseItem.SubtitleLevel2;
+            if (subtitleText.IsNotNullOrEmpty()) {
+                var subtitle = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse && x.Level == level).FirstOrDefault();
+                if (subtitle.IsNotNull()) {
+                    subtitle.BeforeVerseNumber = verse.NumberOfVerse;
+                    subtitle.ParentChapter = verse.ParentChapter;
+                    subtitle.Level = level;
+                    subtitle.Text = subtitleText;
+                }
+                else {
+                    subtitle = new Subtitle(uow) {
+                        BeforeVerseNumber = verse.NumberOfVerse,
+                        ParentChapter = verse.ParentChapter,
+                        Level = level,
+                        Text = subtitleText
+                    };
+                }
+                subtitle.Save();
+            }
+            else {
+                // delete subtitle if exists
+                var subtitle = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse && x.Level == level).FirstOrDefault();
+                if (subtitle.IsNotNull()) {
+                    subtitle.Delete();
+                }
+            }
         }
 
         private void btnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
@@ -397,7 +431,7 @@ namespace IBE.WindowsClient {
                             verse.Number = txtNumberOfVerse.Text.ToInt();
                             verse.Changed = true;
                         }
-                        if (verse.SubtitleLevel1!=txtSubtitleLevel1.Text) {
+                        if (verse.SubtitleLevel1 != txtSubtitleLevel1.Text) {
                             verse.SubtitleLevel1 = txtSubtitleLevel1.Text;
                             verse.Changed = true;
                         }

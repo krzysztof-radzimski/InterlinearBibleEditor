@@ -113,6 +113,10 @@ namespace IBE.WindowsClient {
             this.labelControl28 = new DevExpress.XtraEditors.LabelControl();
             this.tabVerse = new DevExpress.XtraTab.XtraTabPage();
             this.tableVerseControls = new DevExpress.Utils.Layout.TablePanel();
+            this.txtSubtitleLevel2 = new DevExpress.XtraEditors.TextEdit();
+            this.txtSubtitleLevel1 = new DevExpress.XtraEditors.TextEdit();
+            this.labelControl37 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl36 = new DevExpress.XtraEditors.LabelControl();
             this.txtNumberOfVerse = new DevExpress.XtraEditors.TextEdit();
             this.editor = new DevExpress.XtraRichEdit.RichEditControl();
             this.labelControl15 = new DevExpress.XtraEditors.LabelControl();
@@ -120,10 +124,6 @@ namespace IBE.WindowsClient {
             this.cbStartFromNewLine = new DevExpress.XtraEditors.CheckEdit();
             this.sidePanel1 = new DevExpress.XtraEditors.SidePanel();
             this.treeList = new DevExpress.XtraTreeList.TreeList();
-            this.labelControl36 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl37 = new DevExpress.XtraEditors.LabelControl();
-            this.txtSubtitleLevel1 = new DevExpress.XtraEditors.TextEdit();
-            this.txtSubtitleLevel2 = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cbHidden.Properties)).BeginInit();
@@ -173,12 +173,12 @@ namespace IBE.WindowsClient {
             this.tabVerse.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tableVerseControls)).BeginInit();
             this.tableVerseControls.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSubtitleLevel2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSubtitleLevel1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNumberOfVerse.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).BeginInit();
             this.sidePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSubtitleLevel1.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSubtitleLevel2.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // labelControl1
@@ -1202,6 +1202,46 @@ namespace IBE.WindowsClient {
             this.tableVerseControls.Size = new System.Drawing.Size(823, 845);
             this.tableVerseControls.TabIndex = 1;
             // 
+            // txtSubtitleLevel2
+            // 
+            this.tableVerseControls.SetColumn(this.txtSubtitleLevel2, 1);
+            this.txtSubtitleLevel2.Location = new System.Drawing.Point(110, 53);
+            this.txtSubtitleLevel2.MenuManager = this.ribbonControl1;
+            this.txtSubtitleLevel2.Name = "txtSubtitleLevel2";
+            this.tableVerseControls.SetRow(this.txtSubtitleLevel2, 2);
+            this.txtSubtitleLevel2.Size = new System.Drawing.Size(710, 20);
+            this.txtSubtitleLevel2.TabIndex = 7;
+            // 
+            // txtSubtitleLevel1
+            // 
+            this.tableVerseControls.SetColumn(this.txtSubtitleLevel1, 1);
+            this.txtSubtitleLevel1.Location = new System.Drawing.Point(110, 27);
+            this.txtSubtitleLevel1.MenuManager = this.ribbonControl1;
+            this.txtSubtitleLevel1.Name = "txtSubtitleLevel1";
+            this.tableVerseControls.SetRow(this.txtSubtitleLevel1, 1);
+            this.txtSubtitleLevel1.Size = new System.Drawing.Size(710, 20);
+            this.txtSubtitleLevel1.TabIndex = 6;
+            // 
+            // labelControl37
+            // 
+            this.tableVerseControls.SetColumn(this.labelControl37, 0);
+            this.labelControl37.Location = new System.Drawing.Point(3, 56);
+            this.labelControl37.Name = "labelControl37";
+            this.tableVerseControls.SetRow(this.labelControl37, 2);
+            this.labelControl37.Size = new System.Drawing.Size(75, 13);
+            this.labelControl37.TabIndex = 5;
+            this.labelControl37.Text = "Subtitle level 2";
+            // 
+            // labelControl36
+            // 
+            this.tableVerseControls.SetColumn(this.labelControl36, 0);
+            this.labelControl36.Location = new System.Drawing.Point(3, 30);
+            this.labelControl36.Name = "labelControl36";
+            this.tableVerseControls.SetRow(this.labelControl36, 1);
+            this.labelControl36.Size = new System.Drawing.Size(75, 13);
+            this.labelControl36.TabIndex = 4;
+            this.labelControl36.Text = "Subtitle level 1";
+            // 
             // txtNumberOfVerse
             // 
             this.tableVerseControls.SetColumn(this.txtNumberOfVerse, 1);
@@ -1226,6 +1266,7 @@ namespace IBE.WindowsClient {
             this.tableVerseControls.SetRow(this.editor, 4);
             this.editor.Size = new System.Drawing.Size(817, 737);
             this.editor.TabIndex = 0;
+            this.editor.Views.SimpleView.ZoomFactor = 2F;
             // 
             // labelControl15
             // 
@@ -1281,46 +1322,6 @@ namespace IBE.WindowsClient {
             this.treeList.TabIndex = 0;
             this.treeList.NodeChanged += new DevExpress.XtraTreeList.NodeChangedEventHandler(this.treeList_NodeChanged);
             this.treeList.FocusedNodeChanged += new DevExpress.XtraTreeList.FocusedNodeChangedEventHandler(this.TreeListFocusedNodeChanged);
-            // 
-            // labelControl36
-            // 
-            this.tableVerseControls.SetColumn(this.labelControl36, 0);
-            this.labelControl36.Location = new System.Drawing.Point(3, 30);
-            this.labelControl36.Name = "labelControl36";
-            this.tableVerseControls.SetRow(this.labelControl36, 1);
-            this.labelControl36.Size = new System.Drawing.Size(75, 13);
-            this.labelControl36.TabIndex = 4;
-            this.labelControl36.Text = "Subtitle level 1";
-            // 
-            // labelControl37
-            // 
-            this.tableVerseControls.SetColumn(this.labelControl37, 0);
-            this.labelControl37.Location = new System.Drawing.Point(3, 56);
-            this.labelControl37.Name = "labelControl37";
-            this.tableVerseControls.SetRow(this.labelControl37, 2);
-            this.labelControl37.Size = new System.Drawing.Size(75, 13);
-            this.labelControl37.TabIndex = 5;
-            this.labelControl37.Text = "Subtitle level 2";
-            // 
-            // txtSubtitleLevel1
-            // 
-            this.tableVerseControls.SetColumn(this.txtSubtitleLevel1, 1);
-            this.txtSubtitleLevel1.Location = new System.Drawing.Point(110, 27);
-            this.txtSubtitleLevel1.MenuManager = this.ribbonControl1;
-            this.txtSubtitleLevel1.Name = "txtSubtitleLevel1";
-            this.tableVerseControls.SetRow(this.txtSubtitleLevel1, 1);
-            this.txtSubtitleLevel1.Size = new System.Drawing.Size(710, 20);
-            this.txtSubtitleLevel1.TabIndex = 6;
-            // 
-            // txtSubtitleLevel2
-            // 
-            this.tableVerseControls.SetColumn(this.txtSubtitleLevel2, 1);
-            this.txtSubtitleLevel2.Location = new System.Drawing.Point(110, 53);
-            this.txtSubtitleLevel2.MenuManager = this.ribbonControl1;
-            this.txtSubtitleLevel2.Name = "txtSubtitleLevel2";
-            this.tableVerseControls.SetRow(this.txtSubtitleLevel2, 2);
-            this.txtSubtitleLevel2.Size = new System.Drawing.Size(710, 20);
-            this.txtSubtitleLevel2.TabIndex = 7;
             // 
             // TranslationEditForm
             // 
@@ -1386,12 +1387,12 @@ namespace IBE.WindowsClient {
             ((System.ComponentModel.ISupportInitialize)(this.tableVerseControls)).EndInit();
             this.tableVerseControls.ResumeLayout(false);
             this.tableVerseControls.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSubtitleLevel2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSubtitleLevel1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNumberOfVerse.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).EndInit();
             this.sidePanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.treeList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSubtitleLevel1.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSubtitleLevel2.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
