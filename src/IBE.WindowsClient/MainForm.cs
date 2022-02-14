@@ -124,5 +124,12 @@ namespace IBE.WindowsClient {
                 }
             }
         }
+
+        private void btnSongs_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var frm = new SongsForm();
+            frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
+            frm.MdiParent = this;
+            frm.Show();
+        }
     }
 }

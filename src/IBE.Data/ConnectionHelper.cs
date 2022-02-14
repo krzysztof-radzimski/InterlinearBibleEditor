@@ -38,7 +38,9 @@ namespace IBE.Data {
             typeof(VerseInfo),
             typeof(BookBase),
             typeof(Article),
-            typeof(UrlShort)
+            typeof(UrlShort),
+            typeof(Song),
+            typeof(SongVerse)
         };
 
         public static void Connect(bool threadSafe = true, string connectionString = null) {

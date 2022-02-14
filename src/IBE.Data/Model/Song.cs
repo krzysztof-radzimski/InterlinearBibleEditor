@@ -1,4 +1,5 @@
 ﻿using DevExpress.Xpo;
+using System.ComponentModel;
 
 namespace IBE.Data.Model {
     public class Song : XPObject {
@@ -7,6 +8,7 @@ namespace IBE.Data.Model {
         private int bpm;
         private int number;
         private string youtube;
+        private SongGroupType type;
 
         [Size(250)]
         public string Name {
@@ -36,6 +38,11 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(YouTube), ref youtube, value); }
         }
 
+        public SongGroupType Type {
+            get { return type; }
+            set { SetPropertyValue(nameof(Type), ref type, value); }
+        }
+
         [Association("SongVerses")]
         public XPCollection<SongVerse> SongVerses {
             get { return GetCollection<SongVerse>(nameof(SongVerses)); }
@@ -48,7 +55,7 @@ namespace IBE.Data.Model {
         private Song parent;
         private string text;
         private string chords;
-        private VerseType type;
+        private SongVerseType type;
 
         [Size(250)]
         public string Text {
@@ -62,12 +69,12 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(Chords), ref chords, value); }
         }
 
-        public VerseType Type {
+        public SongVerseType Type {
             get { return type; }
             set { SetPropertyValue(nameof(Type), ref type, value); }
         }
 
-        [System.ComponentModel.Browsable(false)]
+        [Browsable(false)]
         [Association("SongVerses")]
         public Song Parent {
             get { return parent; }
@@ -77,9 +84,15 @@ namespace IBE.Data.Model {
         public SongVerse(Session session) : base(session) { }
     }
 
-    public enum VerseType : int {
+    public enum SongVerseType : int {
         Default = 0,
         Chorus,
         Bridge
+    }
+    public enum SongGroupType : int {        
+        Default = 0,
+        Carols,
+        Eucharist,
+        SongsForChildren
     }
 }

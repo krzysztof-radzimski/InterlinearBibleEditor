@@ -28,7 +28,7 @@
             this.btnAddSong = new DevExpress.XtraBars.BarButtonItem();
             this.btnDeleteSong = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.rpgHome = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.grid = new DevExpress.XtraGrid.GridControl();
             this.gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
@@ -69,16 +69,16 @@
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
-            this.ribbonPageGroup1});
+            this.rpgHome});
             this.rpHome.Name = "rpHome";
             this.rpHome.Text = "Home";
             // 
-            // ribbonPageGroup1
+            // rpgHome
             // 
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnAddSong);
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnDeleteSong);
-            this.ribbonPageGroup1.Name = "ribbonPageGroup1";
-            this.ribbonPageGroup1.Text = "ribbonPageGroup1";
+            this.rpgHome.ItemLinks.Add(this.btnAddSong);
+            this.rpgHome.ItemLinks.Add(this.btnDeleteSong);
+            this.rpgHome.Name = "rpgHome";
+            this.rpgHome.Text = "Songs";
             // 
             // grid
             // 
@@ -97,6 +97,8 @@
             this.gridView.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.gridView.GridControl = this.grid;
             this.gridView.Name = "gridView";
+            this.gridView.OptionsView.ColumnAutoWidth = false;
+            this.gridView.OptionsView.ShowIndicator = false;
             // 
             // SongsForm
             // 
@@ -122,7 +124,7 @@
         private DevExpress.XtraBars.BarButtonItem btnAddSong;
         private DevExpress.XtraBars.BarButtonItem btnDeleteSong;
         private DevExpress.XtraBars.Ribbon.RibbonPage rpHome;
-        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup rpgHome;
         private DevExpress.XtraGrid.GridControl grid;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView;
     }

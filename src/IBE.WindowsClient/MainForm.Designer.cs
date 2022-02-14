@@ -34,14 +34,15 @@ namespace IBE.WindowsClient {
             this.btnCopyDatabaseToWebFolder = new DevExpress.XtraBars.BarButtonItem();
             this.btnStrongsCodes = new DevExpress.XtraBars.BarButtonItem();
             this.btnAncientDictionary = new DevExpress.XtraBars.BarButtonItem();
+            this.btnImportUrlShortenersList = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            this.ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(this.components);
             this.spellChecker1 = new DevExpress.XtraSpellChecker.SpellChecker(this.components);
-            this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            this.ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            this.btnImportUrlShortenersList = new DevExpress.XtraBars.BarButtonItem();
+            this.btnSongs = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).BeginInit();
             this.SuspendLayout();
@@ -61,9 +62,10 @@ namespace IBE.WindowsClient {
             this.btnCopyDatabaseToWebFolder,
             this.btnStrongsCodes,
             this.btnAncientDictionary,
-            this.btnImportUrlShortenersList});
+            this.btnImportUrlShortenersList,
+            this.btnSongs});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 14;
+            this.ribbonControl1.MaxItemId = 15;
             this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
@@ -133,6 +135,14 @@ namespace IBE.WindowsClient {
             this.btnAncientDictionary.Name = "btnAncientDictionary";
             this.btnAncientDictionary.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAncientDictionary_ItemClick);
             // 
+            // btnImportUrlShortenersList
+            // 
+            this.btnImportUrlShortenersList.Caption = "Import url shorteners list";
+            this.btnImportUrlShortenersList.Id = 13;
+            this.btnImportUrlShortenersList.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnImportUrlShortenersList.ImageOptions.SvgImage")));
+            this.btnImportUrlShortenersList.Name = "btnImportUrlShortenersList";
+            this.btnImportUrlShortenersList.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnImportUrlShortenersList_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -148,6 +158,23 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnCopyDatabaseToWebFolder, true);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
+            // 
+            // ribbonPage1
+            // 
+            this.ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
+            this.ribbonPageGroup2});
+            this.ribbonPage1.Name = "ribbonPage1";
+            this.ribbonPage1.Text = "Additional";
+            // 
+            // ribbonPageGroup2
+            // 
+            this.ribbonPageGroup2.ItemLinks.Add(this.btnSongs);
+            this.ribbonPageGroup2.ItemLinks.Add(this.btnBaseBooks);
+            this.ribbonPageGroup2.ItemLinks.Add(this.btnStrongsCodes);
+            this.ribbonPageGroup2.ItemLinks.Add(this.btnAncientDictionary);
+            this.ribbonPageGroup2.ItemLinks.Add(this.btnImportUrlShortenersList, true);
+            this.ribbonPageGroup2.Name = "ribbonPageGroup2";
+            this.ribbonPageGroup2.Text = "ribbonPageGroup2";
             // 
             // ribbonStatusBar1
             // 
@@ -169,29 +196,13 @@ namespace IBE.WindowsClient {
             this.spellChecker1.ParentContainer = this;
             this.spellChecker1.SpellCheckMode = DevExpress.XtraSpellChecker.SpellCheckMode.AsYouType;
             // 
-            // ribbonPage1
+            // btnSongs
             // 
-            this.ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
-            this.ribbonPageGroup2});
-            this.ribbonPage1.Name = "ribbonPage1";
-            this.ribbonPage1.Text = "Additional";
-            // 
-            // ribbonPageGroup2
-            // 
-            this.ribbonPageGroup2.ItemLinks.Add(this.btnBaseBooks);
-            this.ribbonPageGroup2.ItemLinks.Add(this.btnStrongsCodes);
-            this.ribbonPageGroup2.ItemLinks.Add(this.btnAncientDictionary);
-            this.ribbonPageGroup2.ItemLinks.Add(this.btnImportUrlShortenersList);
-            this.ribbonPageGroup2.Name = "ribbonPageGroup2";
-            this.ribbonPageGroup2.Text = "ribbonPageGroup2";
-            // 
-            // btnImportUrlShortenersList
-            // 
-            this.btnImportUrlShortenersList.Caption = "Import url shorteners list";
-            this.btnImportUrlShortenersList.Id = 13;
-            this.btnImportUrlShortenersList.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnImportUrlShortenersList.ImageOptions.SvgImage")));
-            this.btnImportUrlShortenersList.Name = "btnImportUrlShortenersList";
-            this.btnImportUrlShortenersList.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnImportUrlShortenersList_ItemClick);
+            this.btnSongs.Caption = "Songs";
+            this.btnSongs.Id = 14;
+            this.btnSongs.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnSongs.ImageOptions.SvgImage")));
+            this.btnSongs.Name = "btnSongs";
+            this.btnSongs.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnSongs_ItemClick);
             // 
             // MainForm
             // 
@@ -232,6 +243,7 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.BarButtonItem btnImportUrlShortenersList;
         private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage1;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup2;
+        private DevExpress.XtraBars.BarButtonItem btnSongs;
     }
 }
 

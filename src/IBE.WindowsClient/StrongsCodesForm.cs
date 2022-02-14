@@ -13,7 +13,7 @@ namespace IBE.WindowsClient {
             view.ShowLoadingPanel();
         }
 
-        private void StrongsCodesForm_Load(object sender, System.EventArgs e) {
+        private void StrongsCodesForm_Load(object sender, EventArgs e) {
             var task = Task.Factory.StartNew(() => {
                 return new XPQuery<StrongCode>(new UnitOfWork()).Where(x => x.Lang == Language.Greek).OrderBy(x => x.Transliteration);
             });
