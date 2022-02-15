@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <div style="text-align: justify; max-width: 900px; margin: auto;">
+    <div style="max-width: 900px; margin: auto;">
 
         @foreach (var item in Model.GetParts()) {
             <div class="row">
@@ -48,7 +48,7 @@
                         @Html.Raw(item.Text)
                         &nbsp;
                     </div>
-                    <div class="col mt-3">
+                    <div class="col-auto mt-3 mw-138">
                         @Html.Raw(item.Chords)
                     </div>
 
@@ -57,7 +57,7 @@
                     <div class="col mt-3">
                         @Html.Raw(item.Text)
                     </div>
-                    <div class="col mt-3">
+                    <div class="col-auto mt-3 mw-138">
                         @Html.Raw(item.Chords)
                     </div>
                 }
@@ -65,7 +65,7 @@
                     <div class="col mt-3 fst-italic">
                         @Html.Raw(item.Text)
                     </div>
-                    <div class="col mt-3">
+                    <div class="col-auto mt-3 mw-138">
                         @Html.Raw(item.Chords)
                     </div>
                 }
