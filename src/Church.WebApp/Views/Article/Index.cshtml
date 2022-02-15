@@ -33,7 +33,7 @@
     <div class="row shadow-lg" style="max-width: 1040px; margin: auto;">
         <div class="col p-4 d-flex flex-column position-static">
             <div>
-                <strong class="d-inline-block mb-2 text-success pill-white" style="width:auto;"><a href="/articles" class="text-decoration-none" title="Więcej artykułów"><i class="far fa-arrow-alt-circle-left"></i></a></strong>
+                <strong class="d-inline-block mb-2 text-success pill-white-lg"><a href="/articles" class="text-decoration-none" title="Więcej artykułów"><i class="far fa-arrow-alt-circle-left"></i></a></strong>
                 <strong class="d-inline-block mb-2 text-success pill-white">@Model.Article.Type.GetDescription()</strong>
             </div>
             <h3 class="mb-0">@Model.Article.Subject</h3>
@@ -60,5 +60,5 @@
     </div>
 }
 else {
-    <p>Bra danych do wyświetlenia</p>
+    <p>Brak danych do wyświetlenia</p>
 }

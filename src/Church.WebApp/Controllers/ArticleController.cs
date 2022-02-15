@@ -17,7 +17,6 @@ using IBE.Common.Extensions;
 using IBE.Data.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;

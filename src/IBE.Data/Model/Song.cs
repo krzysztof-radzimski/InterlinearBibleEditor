@@ -1,4 +1,6 @@
 ﻿using DevExpress.Xpo;
+using IBE.Common.Extensions;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace IBE.Data.Model {
@@ -43,12 +45,53 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(Type), ref type, value); }
         }
 
+        // [NonPersistent] public string TypeDescription => Type.GetDescription(); 
+
         [Association("SongVerses")]
         public XPCollection<SongVerse> SongVerses {
             get { return GetCollection<SongVerse>(nameof(SongVerses)); }
         }
 
         public Song(Session session) : base(session) { }
+
+        public SongPart[] GetParts() {
+            var list = new List<SongPart>();
+            SongPart current = null;
+
+            foreach (var item in SongVerses) {
+                var addBr = true;
+                var index = SongVerses.IndexOf(item);
+                if (index < SongVerses.Count - 1) {
+                    var next = SongVerses[index + 1];
+                    if (next.Type != item.Type || next.Number != item.Number) {
+                        addBr = false;
+                    }
+                }
+                else {
+                    addBr = false;
+                }
+
+                if (current.IsNull()) {
+                    current = new SongPart() { Type = item.Type, Number = item.Number, Text = "", Chords = "" };
+                    list.Add(current);
+                }
+                else if (current.IsNotNull() && (current.Type != item.Type || current.Number != item.Number)) {
+                    current = new SongPart() { Type = item.Type, Number = item.Number, Text = "", Chords = "" };
+                    list.Add(current);
+                }
+                current.Chords += item.Chords + (addBr ? "<br />" : "");
+                current.Text += item.Text + (addBr ? "<br />" : "");
+            }
+
+            return list.ToArray();
+        }
+    }
+
+    public class SongPart {
+        public string Text { get; set; }
+        public string Chords { get; set; }
+        public SongVerseType Type { get; set; }
+        public int Number { get; set; }
     }
 
     public class SongVerse : XPObject {
@@ -56,6 +99,7 @@ namespace IBE.Data.Model {
         private string text;
         private string chords;
         private SongVerseType type;
+        private int number;
 
         [Size(250)]
         public string Text {
@@ -74,6 +118,11 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(Type), ref type, value); }
         }
 
+        public int Number {
+            get { return number; }
+            set { SetPropertyValue(nameof(Number), ref number, value); }
+        }
+
         [Browsable(false)]
         [Association("SongVerses")]
         public Song Parent {
@@ -85,14 +134,21 @@ namespace IBE.Data.Model {
     }
 
     public enum SongVerseType : int {
+        [Description("Zwrotka")]
         Default = 0,
+        [Description("Refren")]
         Chorus,
+        [Description("Most")]
         Bridge
     }
-    public enum SongGroupType : int {        
+    public enum SongGroupType : int {
+        [Description("Pieśń")]
         Default = 0,
+        [Description("Kolęda")]
         Carols,
+        [Description("Pieśń do Wieczerzy Pańskiej")]
         Eucharist,
+        [Description("Pieśni dla dzieci")]
         SongsForChildren
     }
 }

@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Pieśni";
+
+    var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
+    var __path = this.Context.Request.Path;
+
+}
+@using System
+@using Church.WebApp.Models
+@using IBE.Common.Extensions
+@using DevExpress.Xpo;
+@using System.Linq;
+@using IBE.Data.Model;
+@inject IConfiguration Configuration
+
+@model XPView
+
+<div class="max-width-1000" style="padding-top: 20px;">
+    <h1><i class="fas fa-music"></i> @ViewData["Title"]</h1>
+
+    @foreach (ViewRecord record in Model) {
+        var type = (SongGroupType)record["Type"];
+        <div class="row">
+            <div class="col-auto">
+                @record["Number"]
+            </div>
+            <div class="col">
+                <a href="/Song?id=@record["Id"]" class="link text-decoration-none">@record["Name"]</a>
+            </div>
+            <div class="col-auto">
+                @type.GetDescription()
+            </div>
+        </div>
+    }
+</div>

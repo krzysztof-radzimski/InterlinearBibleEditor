@@ -27,6 +27,7 @@
             this.ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
             this.btnAddSong = new DevExpress.XtraBars.BarButtonItem();
             this.btnDeleteSong = new DevExpress.XtraBars.BarButtonItem();
+            this.btnEdit = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.rpgHome = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.grid = new DevExpress.XtraGrid.GridControl();
@@ -43,9 +44,10 @@
             this.ribbonControl1.ExpandCollapseItem,
             this.ribbonControl1.SearchEditItem,
             this.btnAddSong,
-            this.btnDeleteSong});
+            this.btnDeleteSong,
+            this.btnEdit});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 3;
+            this.ribbonControl1.MaxItemId = 4;
             this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
@@ -57,7 +59,9 @@
             this.btnAddSong.Caption = "Add song";
             this.btnAddSong.Id = 1;
             this.btnAddSong.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAddSong.ImageOptions.SvgImage")));
+            this.btnAddSong.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
             this.btnAddSong.Name = "btnAddSong";
+            this.btnAddSong.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAddSong_ItemClick);
             // 
             // btnDeleteSong
             // 
@@ -65,6 +69,15 @@
             this.btnDeleteSong.Id = 2;
             this.btnDeleteSong.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteSong.ImageOptions.SvgImage")));
             this.btnDeleteSong.Name = "btnDeleteSong";
+            this.btnDeleteSong.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteSong_ItemClick);
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.Caption = "Edit song";
+            this.btnEdit.Id = 3;
+            this.btnEdit.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnEdit.ImageOptions.SvgImage")));
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnEdit_ItemClick);
             // 
             // rpHome
             // 
@@ -75,7 +88,8 @@
             // 
             // rpgHome
             // 
-            this.rpgHome.ItemLinks.Add(this.btnAddSong);
+            this.rpgHome.ItemLinks.Add(this.btnAddSong, true);
+            this.rpgHome.ItemLinks.Add(this.btnEdit);
             this.rpgHome.ItemLinks.Add(this.btnDeleteSong);
             this.rpgHome.Name = "rpgHome";
             this.rpgHome.Text = "Songs";
@@ -97,8 +111,11 @@
             this.gridView.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.gridView.GridControl = this.grid;
             this.gridView.Name = "gridView";
+            this.gridView.OptionsBehavior.Editable = false;
+            this.gridView.OptionsBehavior.ReadOnly = true;
             this.gridView.OptionsView.ColumnAutoWidth = false;
             this.gridView.OptionsView.ShowIndicator = false;
+            this.gridView.DoubleClick += new System.EventHandler(this.gridView_DoubleClick);
             // 
             // SongsForm
             // 
@@ -127,5 +144,6 @@
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup rpgHome;
         private DevExpress.XtraGrid.GridControl grid;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView;
+        private DevExpress.XtraBars.BarButtonItem btnEdit;
     }
 }

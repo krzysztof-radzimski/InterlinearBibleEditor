@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Pieśń";
+
+    var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
+    var __path = this.Context.Request.Path;
+
+}
+@using Church.WebApp.Models
+@using IBE.Common.Extensions
+@using DevExpress.Xpo;
+@using System.Linq;
+@using IBE.Data.Model;
+@inject IConfiguration Configuration
+
+@model Song
+
+@section HeaderScripts {
+    @if (Model.IsNotNull()) {
+<!-- social sharing metadata -->
+<meta property="og:title" content="@Model.Name - @Configuration["PageTitle"]" />
+<meta property="og:description" content="@Model.Name" />
+<meta property="og:image" content="@__host/img/biblelink.jpg" />
+<meta property="og:url" content="@__host/Song?id=@Model.Oid" />
+<meta property="og:type" content="song" />
+<meta property="og:locale" content="pl_PL" />
+    }
+}
+
+@if (Model != null) {
+    <div class="row shadow-lg" style="max-width: 1040px; margin: auto;">
+        <div class="col p-4 d-flex flex-column position-static">
+            <div>
+                <strong class="d-inline-block mb-2 text-success pill-white-lg"><a href="/songs" class="text-decoration-none" title="Więcej pieśni"><i class="far fa-arrow-alt-circle-left"></i></a></strong>
+                <strong class="d-inline-block mb-2 text-success pill-white-lg">@Model.Type.GetDescription()</strong>
+            </div>
+            <h3 class="mb-0">@Model.Name</h3>
+            <p class="mb-auto fst-italic">Sygnatura: <b>@Model.Signature</b> Tempo <b>@Model.BPM</b></p>
+            <p class="mb-auto">Numer: <b>@Model.Number</b></p>
+        </div>
+    </div>
+
+    <div style="text-align: justify; max-width: 900px; margin: auto;">
+
+        @foreach (var item in Model.GetParts()) {
+            <div class="row">
+                @if (item.Type == SongVerseType.Chorus) {
+                    <div class="col mt-3 quote2">
+                        @Html.Raw(item.Text)
+                        &nbsp;
+                    </div>
+                    <div class="col mt-3">
+                        @Html.Raw(item.Chords)
+                    </div>
+
+                }
+                else if (item.Type == SongVerseType.Default) {
+                    <div class="col mt-3">
+                        @Html.Raw(item.Text)
+                    </div>
+                    <div class="col mt-3">
+                        @Html.Raw(item.Chords)
+                    </div>
+                }
+                else if (item.Type == SongVerseType.Bridge) {
+                    <div class="col mt-3 fst-italic">
+                        @Html.Raw(item.Text)
+                    </div>
+                    <div class="col mt-3">
+                        @Html.Raw(item.Chords)
+                    </div>
+                }
+            </div>
+        }
+
+        @if (Model.YouTube.IsNotNullOrEmpty()) {
+            <br/>
+            <div class="embed-responsive embed-responsive-16by9 shadow-lg">
+                <iframe id="YouTubeFrame" width="560" height="600" src="@Model.YouTube" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        }
+
+    </div>
+}
+else {
+    <p>Brak danych do wyświetlenia</p>
+}
