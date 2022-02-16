@@ -1,4 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using DevExpress.Xpo;
+using IBE.Data.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
 
 namespace IBE.Data.Import.Test {
@@ -36,5 +39,23 @@ namespace IBE.Data.Import.Test {
         //    trans.Import_TRO();
         //    trans.Import_IBHP();
         //}
+
+        [TestMethod]
+        public void FillSongVerseIndexes() {
+
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            uow.BeginTransaction();
+            foreach (var song in new XPQuery<Song>(uow)) {
+                var index = 1;
+                foreach (var verse in song.SongVerses) {
+                    verse.Index = index;
+                    index++;
+                }
+            }
+            uow.CommitChanges();
+        }
+
+
     }
 }

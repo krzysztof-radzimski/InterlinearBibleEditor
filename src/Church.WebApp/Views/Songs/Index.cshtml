@@ -15,6 +15,16 @@
 
 @model XPView
 
+@section HeaderScripts {
+<!-- social sharing metadata -->
+<meta property="og:title" content="@ViewData["Title"] - @Configuration["PageTitle"]" />
+<meta property="og:description" content="Śpiewnik zborowy" />
+<meta property="og:image" content="@__host/img/TloSpiewnik.png" />
+<meta property="og:url" content="@__host/Songs" />
+<meta property="og:type" content="song" />
+<meta property="og:locale" content="pl_PL" />
+}
+
 <div class="max-width-1000" style="padding-top: 20px;">
     <div style="text-align: center;">
         <img src="/img/TloSpiewnik.png" style="max-width: 80%;" /><br/>

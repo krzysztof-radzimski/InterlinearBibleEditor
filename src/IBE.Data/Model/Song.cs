@@ -2,6 +2,7 @@
 using IBE.Common.Extensions;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace IBE.Data.Model {
     public class Song : XPObject {
@@ -58,11 +59,11 @@ namespace IBE.Data.Model {
             var list = new List<SongPart>();
             SongPart current = null;
 
-            foreach (var item in SongVerses) {
+            foreach (var item in SongVerses.OrderBy(x => x.Index)) {
                 var addBr = true;
-                var index = SongVerses.IndexOf(item);
-                if (index < SongVerses.Count - 1) {
-                    var next = SongVerses[index + 1];
+
+                var next = SongVerses.Where(x => x.Index == item.Index + 1).FirstOrDefault();
+                if (next != null) {
                     if (next.Type != item.Type || next.Number != item.Number) {
                         addBr = false;
                     }
@@ -100,6 +101,7 @@ namespace IBE.Data.Model {
         private string chords;
         private SongVerseType type;
         private int number;
+        private int index;
 
         [Size(250)]
         public string Text {
@@ -118,9 +120,15 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(Type), ref type, value); }
         }
 
+        [Description("Part Number")]
         public int Number {
             get { return number; }
             set { SetPropertyValue(nameof(Number), ref number, value); }
+        }
+
+        public int Index {
+            get { return index; }
+            set { SetPropertyValue(nameof(Index), ref index, value); }
         }
 
         [Browsable(false)]

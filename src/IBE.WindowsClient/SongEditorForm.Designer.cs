@@ -27,6 +27,18 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SongEditorForm));
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.btnPaste = new DevExpress.XtraEditors.DropDownButton();
+            this.mnuPaste = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.btnPasteVerse = new DevExpress.XtraBars.BarButtonItem();
+            this.btnPasteChorus = new DevExpress.XtraBars.BarButtonItem();
+            this.btnPasteBridge = new DevExpress.XtraBars.BarButtonItem();
+            this.btnPasteChords = new DevExpress.XtraBars.BarButtonItem();
+            this.btnDeleteVerse = new DevExpress.XtraBars.BarButtonItem();
+            this.barManager = new DevExpress.XtraBars.BarManager(this.components);
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnCancel = new DevExpress.XtraEditors.SimpleButton();
             this.btnOk = new DevExpress.XtraEditors.SimpleButton();
             this.grid = new DevExpress.XtraGrid.GridControl();
@@ -43,22 +55,13 @@
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
-            this.btnPaste = new DevExpress.XtraEditors.DropDownButton();
-            this.mnuPaste = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.barManager = new DevExpress.XtraBars.BarManager(this.components);
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.btnPasteVerse = new DevExpress.XtraBars.BarButtonItem();
-            this.btnPasteChorus = new DevExpress.XtraBars.BarButtonItem();
-            this.btnPasteBridge = new DevExpress.XtraBars.BarButtonItem();
-            this.btnPasteChords = new DevExpress.XtraBars.BarButtonItem();
-            this.btnDeleteVerse = new DevExpress.XtraBars.BarButtonItem();
+            this.btnInsertVerseBefore = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mnuPaste)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).BeginInit();
@@ -67,8 +70,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtBPM.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSignature.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mnuPaste)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager)).BeginInit();
             this.SuspendLayout();
             // 
             // tablePanel1
@@ -119,6 +120,124 @@
             this.tablePanel1.SetRow(this.panelControl1, 7);
             this.panelControl1.Size = new System.Drawing.Size(792, 44);
             this.panelControl1.TabIndex = 12;
+            // 
+            // btnPaste
+            // 
+            this.btnPaste.DropDownControl = this.mnuPaste;
+            this.btnPaste.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnPaste.ImageOptions.SvgImage")));
+            this.btnPaste.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.btnPaste.Location = new System.Drawing.Point(9, 9);
+            this.btnPaste.MenuManager = this.barManager;
+            this.btnPaste.Name = "btnPaste";
+            this.btnPaste.Size = new System.Drawing.Size(80, 23);
+            this.btnPaste.TabIndex = 3;
+            this.btnPaste.Text = "Paste";
+            this.btnPaste.Click += new System.EventHandler(this.btnPaste_Click);
+            // 
+            // mnuPaste
+            // 
+            this.mnuPaste.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnPasteVerse),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnPasteChorus),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnPasteBridge),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnPasteChords),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnDeleteVerse),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnInsertVerseBefore)});
+            this.mnuPaste.Manager = this.barManager;
+            this.mnuPaste.Name = "mnuPaste";
+            // 
+            // btnPasteVerse
+            // 
+            this.btnPasteVerse.Caption = "Paste verse";
+            this.btnPasteVerse.Id = 0;
+            this.btnPasteVerse.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnPasteVerse.ImageOptions.SvgImage")));
+            this.btnPasteVerse.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F1);
+            this.btnPasteVerse.Name = "btnPasteVerse";
+            this.btnPasteVerse.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnPasteVerse_ItemClick);
+            // 
+            // btnPasteChorus
+            // 
+            this.btnPasteChorus.Caption = "Paste chorus";
+            this.btnPasteChorus.Id = 1;
+            this.btnPasteChorus.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnPasteChorus.ImageOptions.SvgImage")));
+            this.btnPasteChorus.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F2);
+            this.btnPasteChorus.Name = "btnPasteChorus";
+            this.btnPasteChorus.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnPasteChorus_ItemClick);
+            // 
+            // btnPasteBridge
+            // 
+            this.btnPasteBridge.Caption = "Paste bridge";
+            this.btnPasteBridge.Id = 2;
+            this.btnPasteBridge.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnPasteBridge.ImageOptions.SvgImage")));
+            this.btnPasteBridge.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F3);
+            this.btnPasteBridge.Name = "btnPasteBridge";
+            this.btnPasteBridge.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnPasteBridge_ItemClick);
+            // 
+            // btnPasteChords
+            // 
+            this.btnPasteChords.Caption = "Paste chords";
+            this.btnPasteChords.Id = 3;
+            this.btnPasteChords.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnPasteChords.ImageOptions.SvgImage")));
+            this.btnPasteChords.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F4);
+            this.btnPasteChords.Name = "btnPasteChords";
+            this.btnPasteChords.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnPasteChords_ItemClick);
+            // 
+            // btnDeleteVerse
+            // 
+            this.btnDeleteVerse.Caption = "Delete verse";
+            this.btnDeleteVerse.Id = 4;
+            this.btnDeleteVerse.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteVerse.ImageOptions.SvgImage")));
+            this.btnDeleteVerse.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete));
+            this.btnDeleteVerse.Name = "btnDeleteVerse";
+            this.btnDeleteVerse.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteVerse_ItemClick);
+            // 
+            // barManager
+            // 
+            this.barManager.DockControls.Add(this.barDockControlTop);
+            this.barManager.DockControls.Add(this.barDockControlBottom);
+            this.barManager.DockControls.Add(this.barDockControlLeft);
+            this.barManager.DockControls.Add(this.barDockControlRight);
+            this.barManager.Form = this;
+            this.barManager.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+            this.btnPasteVerse,
+            this.btnPasteChorus,
+            this.btnPasteBridge,
+            this.btnPasteChords,
+            this.btnDeleteVerse,
+            this.btnInsertVerseBefore});
+            this.barManager.MaxItemId = 6;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Manager = this.barManager;
+            this.barDockControlTop.Size = new System.Drawing.Size(798, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 778);
+            this.barDockControlBottom.Manager = this.barManager;
+            this.barDockControlBottom.Size = new System.Drawing.Size(798, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlLeft.Manager = this.barManager;
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 778);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(798, 0);
+            this.barDockControlRight.Manager = this.barManager;
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 778);
             // 
             // btnCancel
             // 
@@ -335,121 +454,15 @@
             this.labelControl1.TabIndex = 0;
             this.labelControl1.Text = "Name:";
             // 
-            // btnPaste
+            // btnInsertVerseBefore
             // 
-            this.btnPaste.DropDownControl = this.mnuPaste;
-            this.btnPaste.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnPaste.ImageOptions.SvgImage")));
-            this.btnPaste.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
-            this.btnPaste.Location = new System.Drawing.Point(9, 9);
-            this.btnPaste.MenuManager = this.barManager;
-            this.btnPaste.Name = "btnPaste";
-            this.btnPaste.Size = new System.Drawing.Size(80, 23);
-            this.btnPaste.TabIndex = 3;
-            this.btnPaste.Text = "Paste";
-            this.btnPaste.Click += new System.EventHandler(this.btnPaste_Click);
-            // 
-            // mnuPaste
-            // 
-            this.mnuPaste.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.btnPasteVerse),
-            new DevExpress.XtraBars.LinkPersistInfo(this.btnPasteChorus),
-            new DevExpress.XtraBars.LinkPersistInfo(this.btnPasteBridge),
-            new DevExpress.XtraBars.LinkPersistInfo(this.btnPasteChords),
-            new DevExpress.XtraBars.LinkPersistInfo(this.btnDeleteVerse)});
-            this.mnuPaste.Manager = this.barManager;
-            this.mnuPaste.Name = "mnuPaste";
-            // 
-            // barManager
-            // 
-            this.barManager.DockControls.Add(this.barDockControlTop);
-            this.barManager.DockControls.Add(this.barDockControlBottom);
-            this.barManager.DockControls.Add(this.barDockControlLeft);
-            this.barManager.DockControls.Add(this.barDockControlRight);
-            this.barManager.Form = this;
-            this.barManager.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.btnPasteVerse,
-            this.btnPasteChorus,
-            this.btnPasteBridge,
-            this.btnPasteChords,
-            this.btnDeleteVerse});
-            this.barManager.MaxItemId = 5;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Manager = this.barManager;
-            this.barDockControlTop.Size = new System.Drawing.Size(798, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 778);
-            this.barDockControlBottom.Manager = this.barManager;
-            this.barDockControlBottom.Size = new System.Drawing.Size(798, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlLeft.Manager = this.barManager;
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 778);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(798, 0);
-            this.barDockControlRight.Manager = this.barManager;
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 778);
-            // 
-            // btnPasteVerse
-            // 
-            this.btnPasteVerse.Caption = "Paste verse";
-            this.btnPasteVerse.Id = 0;
-            this.btnPasteVerse.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnPasteDefault.ImageOptions.SvgImage")));
-            this.btnPasteVerse.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F1);
-            this.btnPasteVerse.Name = "btnPasteVerse";
-            this.btnPasteVerse.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnPasteVerse_ItemClick);
-            // 
-            // btnPasteChorus
-            // 
-            this.btnPasteChorus.Caption = "Paste chorus";
-            this.btnPasteChorus.Id = 1;
-            this.btnPasteChorus.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
-            this.btnPasteChorus.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F2);
-            this.btnPasteChorus.Name = "btnPasteChorus";
-            this.btnPasteChorus.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnPasteChorus_ItemClick);
-            // 
-            // btnPasteBridge
-            // 
-            this.btnPasteBridge.Caption = "Paste bridge";
-            this.btnPasteBridge.Id = 2;
-            this.btnPasteBridge.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem2.ImageOptions.SvgImage")));
-            this.btnPasteBridge.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F3);
-            this.btnPasteBridge.Name = "btnPasteBridge";
-            this.btnPasteBridge.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnPasteBridge_ItemClick);
-            // 
-            // btnPasteChords
-            // 
-            this.btnPasteChords.Caption = "Paste chords";
-            this.btnPasteChords.Id = 3;
-            this.btnPasteChords.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem3.ImageOptions.SvgImage")));
-            this.btnPasteChords.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F4);
-            this.btnPasteChords.Name = "btnPasteChords";
-            this.btnPasteChords.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnPasteChords_ItemClick);
-            // 
-            // btnDeleteVerse
-            // 
-            this.btnDeleteVerse.Caption = "Delete verse";
-            this.btnDeleteVerse.Id = 4;
-            this.btnDeleteVerse.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteVerse.ImageOptions.SvgImage")));
-            this.btnDeleteVerse.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete));
-            this.btnDeleteVerse.Name = "btnDeleteVerse";
-            this.btnDeleteVerse.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteVerse_ItemClick);
+            this.btnInsertVerseBefore.Caption = "Insert verse before";
+            this.btnInsertVerseBefore.Id = 5;
+            this.btnInsertVerseBefore.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnInsertVerseBefore.ImageOptions.SvgImage")));
+            this.btnInsertVerseBefore.ItemShortcut = new DevExpress.XtraBars.BarShortcut(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+                | System.Windows.Forms.Keys.B));
+            this.btnInsertVerseBefore.Name = "btnInsertVerseBefore";
+            this.btnInsertVerseBefore.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnInsertVerseBefore_ItemClick);
             // 
             // SongEditorForm
             // 
@@ -472,6 +485,8 @@
             this.tablePanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.mnuPaste)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtType.Properties)).EndInit();
@@ -480,8 +495,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtBPM.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSignature.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.mnuPaste)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -519,5 +532,6 @@
         private DevExpress.XtraBars.BarButtonItem btnPasteBridge;
         private DevExpress.XtraBars.BarButtonItem btnPasteChords;
         private DevExpress.XtraBars.BarButtonItem btnDeleteVerse;
+        private DevExpress.XtraBars.BarButtonItem btnInsertVerseBefore;
     }
 }

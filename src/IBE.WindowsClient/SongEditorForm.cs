@@ -28,6 +28,8 @@ namespace IBE.WindowsClient {
             grid.DataSource = song.SongVerses;
             gridView.BestFitColumns();
             gridView.Columns["Oid"].Visible = false;
+            gridView.Columns["Index"].SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+
         }
 
         public Song Save() {
@@ -120,22 +122,26 @@ namespace IBE.WindowsClient {
 
                     var emptyVerses = This.SongVerses.Where(x => x.Text.IsNullOrEmpty());
                     if (emptyVerses.Any()) {
-                        var index = 0;
+                        var idx = 0;
                         foreach (var item in emptyVerses) {
-                            if (index < t.Length) {
-                                item.Text = t[index];
+                            var index = This.SongVerses.Count > 0 ? This.SongVerses.Max(x => x.Index) + 1 : 1;
+                            if (idx < t.Length) {
+                                item.Text = t[idx];
                                 item.Type = type;
                                 item.Number = number;
-                                index++;
+                                item.Index = index;
+                                idx++;
                             }
                         }
                     }
                     else {
                         foreach (var item in t) {
+                            var index = This.SongVerses.Count > 0 ? This.SongVerses.Max(x => x.Index) + 1 : 1;
                             This.SongVerses.Add(new SongVerse(This.Session as UnitOfWork) {
                                 Text = item,
                                 Type = type,
-                                Number = number
+                                Number = number,
+                                Index = index
                             });
                         }
                     }
@@ -180,6 +186,32 @@ namespace IBE.WindowsClient {
             var item = gridView.GetFocusedRow() as SongVerse;
             if (item != null) {
                 item.Delete();
+            }
+        }
+
+        private void btnInsertVerseBefore_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var current = gridView.GetFocusedRow() as SongVerse;
+            if (current != null) {
+                var currentIndex = current.Index;
+                This.SongVerses.Add(new SongVerse(This.Session as UnitOfWork) {
+                    Index = currentIndex,
+                    Number = current.Number,
+                    Type = current.Type
+                });
+
+                var start = false;
+                foreach (var item in This.SongVerses.OrderBy(x => x.Index)) {
+                    if (item == current) {
+                        start = true;
+                    }
+                    if (start) {
+                        if (item.Oid < 0) { continue; }
+                        item.Index++;
+                    }
+                }
+
+                gridView.RefreshData();
+                gridView.BestFitColumns();
             }
         }
     }
