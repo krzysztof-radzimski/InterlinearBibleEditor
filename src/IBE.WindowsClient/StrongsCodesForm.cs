@@ -1,5 +1,6 @@
 ﻿using DevExpress.Xpo;
 using DevExpress.XtraEditors;
+using IBE.Common.Extensions;
 using IBE.Data.Model;
 using System;
 using System.Data;
@@ -18,12 +19,11 @@ namespace IBE.WindowsClient {
                 return new XPQuery<StrongCode>(new UnitOfWork()).Where(x => x.Lang == Language.Greek).OrderBy(x => x.Transliteration);
             });
             task.ContinueWith(x => {
-                this.BeginInvoke(new Action(() =>{
-                    grid.DataSource = x.Result;
-                    view.BestFitColumns();
-                    view.HideLoadingPanel();
-                }));
-                
+                this.SafeInvoke(f => {
+                    f.grid.DataSource = x.Result;
+                    f.view.BestFitColumns();
+                    f.view.HideLoadingPanel();
+                });
             });
         }
     }

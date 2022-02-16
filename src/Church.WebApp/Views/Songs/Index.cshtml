@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Pieśni";
+    ViewData["Title"] = "Śpiewajmy dla Jezusa";
 
     var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
     var __path = this.Context.Request.Path;
@@ -16,16 +16,20 @@
 @model XPView
 
 <div class="max-width-1000" style="padding-top: 20px;">
-    <h1><i class="fas fa-music"></i> @ViewData["Title"]</h1>
-
+    <div style="text-align: center;">
+        <img src="/img/TloSpiewnik.png" style="max-width: 80%;" /><br/>
+        <h1>@ViewData["Title"]</h1>
+        <h3>Śpiewnik zborowy<br/>Kościoła Chrześcijan Baptystów w&nbsp;Nowym&nbsp;Dworze Mazowieckim</h3>
+    </div>
+   
     @foreach (ViewRecord record in Model) {
         var type = (SongGroupType)record["Type"];
         <div class="row">
-            <div class="col-auto">
+            <div class="col-auto" style="min-width: 60px;">
                 @record["Number"]
             </div>
             <div class="col">
-                <a href="/Song?id=@record["Id"]" class="link text-decoration-none">@record["Name"]</a>
+                <a href="/Song?id=@record["Number"]" class="link text-decoration-none">@record["Name"]</a>
             </div>
             <div class="col-auto">
                 @type.GetDescription()

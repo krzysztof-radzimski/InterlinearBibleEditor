@@ -1,14 +1,17 @@
 ﻿using DevExpress.Xpo;
 using DevExpress.XtraBars.Ribbon;
+using DevExpress.XtraEditors;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace IBE.WindowsClient {
     public partial class SongsForm : RibbonForm {
         private UnitOfWork Uow = null;
+        private XPView view = null;
         public SongsForm() {
             InitializeComponent();
             gridView.ShowLoadingPanel();
@@ -17,26 +20,20 @@ namespace IBE.WindowsClient {
         }
 
         internal void LoadData() {
-            var task = Task.Factory.StartNew(() => {
-                var view = new XPView(Uow, typeof(Song));
-                view.Properties.Add(new ViewProperty("Id", SortDirection.None, "[Oid]", false, true));
-                view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
-                view.Properties.Add(new ViewProperty("Signature", SortDirection.None, "[Signature]", false, true));
-                view.Properties.Add(new ViewProperty("BPM", SortDirection.None, "[BPM]", false, true));
-                view.Properties.Add(new ViewProperty("Number", SortDirection.Ascending, "[Number]", false, true));
-                view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
-                return view;
-            });
-            task.ContinueWith(x => {
-                this.BeginInvoke(new Action(() => {
-                    grid.DataSource = x.Result;
-                    gridView.BestFitColumns();
-                    gridView.Columns["Id"].Visible = false;
-                    gridView.Columns["Type"].Group();
-                    gridView.ExpandAllGroups();
-                    gridView.HideLoadingPanel();
-                }));
-            });
+            view = new XPView(Uow, typeof(Song));
+            view.Properties.Add(new ViewProperty("Id", SortDirection.None, "[Oid]", false, true));
+            view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
+            view.Properties.Add(new ViewProperty("Signature", SortDirection.None, "[Signature]", false, true));
+            view.Properties.Add(new ViewProperty("BPM", SortDirection.None, "[BPM]", false, true));
+            view.Properties.Add(new ViewProperty("Number", SortDirection.Ascending, "[Number]", false, true));
+            view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+
+            grid.DataSource = view;
+            gridView.BestFitColumns();
+            gridView.Columns["Id"].Visible = false;
+            gridView.Columns["Type"].Group();
+            gridView.ExpandAllGroups();
+            gridView.HideLoadingPanel();
         }
 
         private void gridView_DoubleClick(object sender, EventArgs e) {
@@ -46,7 +43,7 @@ namespace IBE.WindowsClient {
                 var song = new XPQuery<Song>(Uow).Where(x => x.Oid == id).FirstOrDefault();
                 using (var dlg = new SongEditorForm(song)) {
                     dlg.IconOptions.SvgImage = this.IconOptions.SvgImage;
-                    if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                    if (dlg.ShowDialog() == DialogResult.OK) {
                         dlg.Save();
                         LoadData();
                     }
@@ -58,7 +55,7 @@ namespace IBE.WindowsClient {
             var song = new Song(Uow);
             using (var dlg = new SongEditorForm(song)) {
                 dlg.IconOptions.SvgImage = this.IconOptions.SvgImage;
-                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                if (dlg.ShowDialog() == DialogResult.OK) {
                     dlg.Save();
                     LoadData();
                 }

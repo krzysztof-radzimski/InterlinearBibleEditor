@@ -27,7 +27,7 @@ namespace Church.WebApp.Controllers {
                     value = value.Substring(0, value.IndexOf("&"));
                 }
                 var id = value.ToLower().Replace("?id=", "").Trim().ToInt();
-                var song = new XPQuery<Song>(new UnitOfWork()).Where(x => x.Oid == id).FirstOrDefault();
+                var song = new XPQuery<Song>(new UnitOfWork()).Where(x => x.Number == id).FirstOrDefault();
                 if (song.IsNotNull()) {
                     return View(song);
                 }

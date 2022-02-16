@@ -68,6 +68,7 @@ namespace IBE.WindowsClient {
                         }
 
                         gridView.RefreshData();
+                        gridView.BestFitColumns();
                     }
                     else if (gridView.FocusedColumn.FieldName == "Chords") {
                         var emptyVerses = This.SongVerses.Where(x => x.Chords.IsNullOrEmpty());
@@ -89,9 +90,96 @@ namespace IBE.WindowsClient {
                         }
 
                         gridView.RefreshData();
+                        gridView.BestFitColumns();
                     }
                 }
 
+            }
+        }
+
+        private void btnPasteBridge_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            PasteAs(SongVerseType.Bridge);
+        }
+        private void btnPasteChorus_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            PasteAs(SongVerseType.Chorus);
+        }
+        private void btnPasteVerse_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            PasteAs(SongVerseType.Default);
+        }
+
+        private void PasteAs(SongVerseType type) {
+            var text = Clipboard.GetText();
+            if (text.IsNotNullOrEmpty()) {
+                var t = text.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Length > 0) {
+                    var number = 1;
+                    var last = This.SongVerses.Where(x => x.Type == type).LastOrDefault();
+                    if (last.IsNotNull()) {
+                        number = last.Number + 1;
+                    }
+
+                    var emptyVerses = This.SongVerses.Where(x => x.Text.IsNullOrEmpty());
+                    if (emptyVerses.Any()) {
+                        var index = 0;
+                        foreach (var item in emptyVerses) {
+                            if (index < t.Length) {
+                                item.Text = t[index];
+                                item.Type = type;
+                                item.Number = number;
+                                index++;
+                            }
+                        }
+                    }
+                    else {
+                        foreach (var item in t) {
+                            This.SongVerses.Add(new SongVerse(This.Session as UnitOfWork) {
+                                Text = item,
+                                Type = type,
+                                Number = number
+                            });
+                        }
+                    }
+
+                    gridView.RefreshData();
+                    gridView.BestFitColumns();
+                }
+
+            }
+        }
+
+        private void btnPasteChords_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var text = Clipboard.GetText();
+            if (text.IsNotNullOrEmpty()) {
+                var t = text.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Length > 0) {
+                    var emptyVerses = This.SongVerses.Where(x => x.Chords.IsNullOrEmpty());
+                    if (emptyVerses.Any()) {
+                        var index = 0;
+                        foreach (var item in emptyVerses) {
+                            if (index < t.Length) {
+                                item.Chords = t[index];
+                                index++;
+                            }
+                        }
+                    }
+                    else {
+                        foreach (var item in t) {
+                            This.SongVerses.Add(new SongVerse(This.Session as UnitOfWork) {
+                                Chords = item
+                            });
+                        }
+                    }
+
+                    gridView.RefreshData();
+                    gridView.BestFitColumns();
+                }
+            }
+        }
+
+        private void btnDeleteVerse_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var item = gridView.GetFocusedRow() as SongVerse;
+            if (item != null) {
+                item.Delete();
             }
         }
     }

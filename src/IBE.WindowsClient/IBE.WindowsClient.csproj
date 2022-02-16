@@ -138,6 +138,7 @@
     <Compile Include="BaseBooksForm.Designer.cs">
       <DependentUpon>BaseBooksForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\Extensions.cs" />
     <Compile Include="Controllers\HTMLSyntaxHighlightService.cs" />
     <Compile Include="Controllers\XHtmlDocumentExporter.cs" />
     <Compile Include="Controls\VerseGridControl.cs">
