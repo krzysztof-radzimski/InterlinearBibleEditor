@@ -47,13 +47,13 @@ namespace Church.WebApp.Controllers {
 
                 // wyświetlamy listę ksiąg z tego przekładu
                 if (String.IsNullOrEmpty(book)) {
-                    var translation = new XPQuery<Translation>(uow).Where(x => x.Name.Replace("'", "").Replace("+", "") == translationName).FirstOrDefault();
+                    var translation = new XPQuery<Translation>(uow).Where(x => x.Name.Replace("'", "").Replace("+", "").ToLower() == translationName.ToLower()).FirstOrDefault();
                     if (translation != null) {
                         return View(new TranslationControllerModel(translation, books: books));
                     }
                 }
                 else {
-                    var translation = new XPQuery<Translation>(uow).Where(x => x.Name.Replace("'", "").Replace("+", "") == translationName).FirstOrDefault();
+                    var translation = new XPQuery<Translation>(uow).Where(x => x.Name.Replace("'", "").Replace("+", "").ToLower() == translationName.ToLower()).FirstOrDefault();
                     if (translation != null) {
                         var result = new TranslationControllerModel(translation, book, chapter, verse, books);
 

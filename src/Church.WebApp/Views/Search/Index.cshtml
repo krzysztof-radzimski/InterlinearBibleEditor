@@ -6,7 +6,6 @@
 @model Church.WebApp.Controllers.SearchResultsModel
 
 @if (Model != null) {
-
     <p>
         @if (Model.Words != null && Model.Words.Count() > 0) {
             <span>
@@ -42,6 +41,7 @@
             }
         }
     </p>
+
     @if (Model.Words != null && Model.Words.Count() > 0) {
 
         var result = Model.GroupBy(x => x.Translation);
@@ -64,22 +64,43 @@
                 <div class="tab-pane shadow-sm p-3 mb-5 bg-body rounded fade@_active" id="@item.Key.ToLower()" role="tabpanel" aria-labelledby="@item.Key.ToLower()-tab">
                     <h4>@item.First().TranslationName</h4>
 
-                    @foreach (var verse in item) {
-                        var text = verse.VerseText;
-                        //foreach (var word in Model.Words) {
-                        //    if (word.Contains("ma") || word.Contains("ar")) { continue; }
-                        //    text = text.Replace(word, $@"<mark>{word}</mark>", StringComparison.CurrentCultureIgnoreCase);
-                        //}
+                    <div class="container">
+                        <div class="row p-1">
+                            <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 8%; min-width: 50px;">Siglum</div>
+                            <div class="col fw-bold p-1 border-top border-bottom border-start">Treść</div>
+                            <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 5%; min-width: 50px;">&nbsp;</div>
+                        </div>
 
-                        <p><a href="../@verse.Translation/@verse.Book/@verse.Chapter/@verse.Verse" class="text-decoration-none" target="_blank">@verse.BookShortcut @verse.Chapter:@verse.Verse</a>&nbsp;@Html.Raw(text)</p>
-                    }
+                        @foreach (var verse in item) {
+                            var text = verse.VerseText;
 
+                            <div class="row p-1">
+                                <div class="col-auto p-1" style="width: 8%; font-size: 80%; min-width: 50px;">
+                                    <a href="../@verse.Translation/@verse.Book/@verse.Chapter/@verse.Verse" class="text-decoration-none" target="_blank">@verse.BookShortcut @verse.Chapter:@verse.Verse</a>
+                                </div>
+                                <div class="col p-1">
+                                    @Html.Raw(text)
+                                </div>
+                                <div class="col-auto p-1" style="width: 5%; min-width: 50px;">
+                                    <a class="dropdown-item" onclick="copyToClipboard3('@verse.SimpleText')" style="cursor: pointer;" title="Kopiuj treść wersetu"><i class="far fa-copy"></i></a>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
                 </div>
             }
-
         </div>
 
-        @section Scripts {
+    }
+}
+
+else {
+    <h4>Wyszukiwanie</h4>
+    <p>Brak wyników</p>
+}
+
+@section Scripts {
 
 <script>
     docReady(function () {
@@ -95,10 +116,3 @@
 </script>
 
         }
-
-    }
-}
-else {
-    <h4>Wyszukiwanie</h4>
-    <p>Brak wyników</p>
-}

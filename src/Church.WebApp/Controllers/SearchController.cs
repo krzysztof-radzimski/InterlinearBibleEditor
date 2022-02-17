@@ -107,7 +107,15 @@ namespace Church.WebApp.Controllers {
                     var translation = translationNames.Where(x => x.Key == index.TranslationName).FirstOrDefault();
                     if (translation.IsNull() || translation.Key.IsNull()) { continue; }
                     var translationDesc = translation.Value;
-
+                    var verseText = record["VerseText"].ToString();
+                    verseText = verseText.Replace("<J>", "<span style='color: darkred;'>").Replace("</J>", "</span>");
+                    var simpleText = verseText.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+                    if (translation.Key == "NPI" || translation.Key == "IPD") {
+                        simpleText = simpleText.Replace("―", "");
+                        verseText = verseText.Replace("―", "");
+                    }
+                    simpleText = System.Text.RegularExpressions.Regex.Replace(simpleText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
+                    simpleText = $"{baseBookShortcut} {index.NumberOfChapter}:{record["NumberOfVerse"]} „{simpleText}” ({translation.Key})";
                     model.Add(new SearchItemModel() {
                         Book = index.NumberOfBook,
                         BookShortcut = baseBookShortcut,
@@ -115,7 +123,8 @@ namespace Church.WebApp.Controllers {
                         Verse = record["NumberOfVerse"].ToInt(),
                         TranslationName = translationDesc,
                         Translation = index.TranslationName,
-                        VerseText = record["VerseText"].ToString()
+                        VerseText = verseText,
+                        SimpleText = simpleText
                     });
                 }
             }
@@ -142,7 +151,7 @@ namespace Church.WebApp.Controllers {
         public int Chapter { get; set; }
         public int Verse { get; set; }
         public string VerseText { get; set; }
-
+        public string SimpleText { get; set; }
     }
 
     public enum SearchRangeType {
