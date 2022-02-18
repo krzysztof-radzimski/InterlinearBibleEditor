@@ -236,6 +236,15 @@ namespace WBST.Bibliography.Forms {
         }
 
         private void btnEditAuthor_Click(object sender, EventArgs e) {
+            if (Source.Author.Author == null) {
+                Source.Author.Author = new Author() {
+                    Objects = new List<object>() {
+                        new BibliographyNameList() {
+                             People = new List<BibliographyPerson>()
+                        }
+                    }
+                };
+            }
             using (var dlg = new NameListForm(Source.Author.Author.NamesList)) {
                 if (dlg.ShowDialog() == DialogResult.OK) {
                     txtAuthor.Text = Source.Author.Author.NamesList.ToString();
