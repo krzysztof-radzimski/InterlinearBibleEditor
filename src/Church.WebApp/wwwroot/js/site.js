@@ -28,6 +28,13 @@ function copyToClipboard3(fullText) {
     document.execCommand("copy");
     $temp.remove();
 }
+function copyToClipboard4(element, startText, endText) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val(startText + ' ' + $(element).text() + ' ' + endText).select();
+    document.execCommand("copy");
+    $temp.remove();
+}
 function onModalSaveButtonClick(chapter, translation) {
     var stext = chapter + ":";
     var text = "";

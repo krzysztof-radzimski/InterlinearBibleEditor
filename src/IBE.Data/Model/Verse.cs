@@ -12,6 +12,9 @@
   ===================================================================================*/
 
 using DevExpress.Xpo;
+using IBE.Common.Extensions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IBE.Data.Model {
     public class Verse : XPObject {
@@ -113,7 +116,43 @@ namespace IBE.Data.Model {
             }
             return default;
         }
+
+        public string GetSiglum(VerseIndex index = null, params BookBase[] bookBases) {
+            if (bookBases.IsNotNull()) {
+                if (index == null) { index = GetVerseIndex(); }
+                var baseBook = bookBases.Where(x => x.NumberOfBook == index.NumberOfBook).FirstOrDefault();
+                if (baseBook.IsNotNull()) {
+                    return $"{baseBook.BookShortcut} {index.NumberOfChapter}:{index.NumberOfVerse}";
+                }
+            }
+
+            return $"{GetBookName()} {ParentChapter.NumberOfChapter}:{NumberOfVerse}";
+        }
+        public string GetBookName(VerseIndex index = null, params BookBase[] bookBases) {
+            if (bookBases.IsNotNull()) {
+                if (index == null) { index = GetVerseIndex(); }
+                var baseBook = bookBases.Where(x => x.NumberOfBook == index.NumberOfBook).FirstOrDefault();
+                if (baseBook.IsNotNull()) {
+                    return baseBook.BookName;
+                }
+            }
+            return GetBookName();
+        }
+        public string GetSimpleText(VerseIndex index = null, params BookBase[] bookBases) {
+            if (index == null) { index = GetVerseIndex(); }
+            var translation = index.TranslationName;
+            var baseBookShortcut = bookBases != null ? bookBases.Where(x => x.NumberOfBook == index.NumberOfBook).First().BookShortcut : ParentChapter.ParentBook.BaseBook.BookShortcut;
+            var verseText = Text;
+            var simpleText = verseText.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+            if (translation == "NPI" || translation == "IPD") {
+                simpleText = simpleText.Replace("―", "");
+            }
+            if (translation == "PBD") { translation = "SNPPD"; }
+            simpleText = System.Text.RegularExpressions.Regex.Replace(simpleText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
+            simpleText = $"{baseBookShortcut} {index.NumberOfChapter}:{index.NumberOfVerse} „{simpleText}” ({translation})";
+            return simpleText;
+        }
     }
 
-   
+
 }

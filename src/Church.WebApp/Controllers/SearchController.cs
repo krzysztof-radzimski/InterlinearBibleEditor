@@ -110,12 +110,14 @@ namespace Church.WebApp.Controllers {
                     var verseText = record["VerseText"].ToString();
                     verseText = verseText.Replace("<J>", "<span style='color: darkred;'>").Replace("</J>", "</span>");
                     var simpleText = verseText.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
-                    if (translation.Key == "NPI" || translation.Key == "IPD") {
+                    var translationName = translation.Key;
+                    if (translationName == "NPI" || translationName == "IPD") {
                         simpleText = simpleText.Replace("―", "");
                         verseText = verseText.Replace("―", "");
                     }
+                    if (translationName == "PBD") { translationName = "SNPPD"; }
                     simpleText = System.Text.RegularExpressions.Regex.Replace(simpleText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
-                    simpleText = $"{baseBookShortcut} {index.NumberOfChapter}:{record["NumberOfVerse"]} „{simpleText}” ({translation.Key})";
+                    simpleText = $"{baseBookShortcut} {index.NumberOfChapter}:{record["NumberOfVerse"]} „{simpleText}” ({translationName})";
                     model.Add(new SearchItemModel() {
                         Book = index.NumberOfBook,
                         BookShortcut = baseBookShortcut,
@@ -124,7 +126,8 @@ namespace Church.WebApp.Controllers {
                         TranslationName = translationDesc,
                         Translation = index.TranslationName,
                         VerseText = verseText,
-                        SimpleText = simpleText
+                        SimpleText = simpleText,
+                        Index = _index.ToString()
                     });
                 }
             }
@@ -152,6 +155,7 @@ namespace Church.WebApp.Controllers {
         public int Verse { get; set; }
         public string VerseText { get; set; }
         public string SimpleText { get; set; }
+        public string Index { get; set; }
     }
 
     public enum SearchRangeType {

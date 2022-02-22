@@ -189,6 +189,16 @@ namespace WBST.Bibliography.Controllers {
             if (!String.IsNullOrEmpty(shortTitle)) { shortTitle += "…"; }
 
             if (String.IsNullOrEmpty(shortTitle) && !String.IsNullOrEmpty(item.Title)) {
+                var t = item.Title.Split(' ');
+                if (t.Length > 2) {
+                    shortTitle = "";
+                    foreach (var s in t) {
+                        shortTitle += s[0].ToString().ToUpper();
+                    }
+                    item.ShortTitle = shortTitle;
+                    return shortTitle + "…";
+                }
+
                 if (item.Title.Length > 10) {
                     shortTitle = item.Title.Substring(0, 10) + "…";
                     item.ShortTitle = item.Title.Substring(0, 10);

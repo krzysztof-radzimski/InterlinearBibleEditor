@@ -69,6 +69,7 @@
                             <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 8%; min-width: 50px;">Siglum</div>
                             <div class="col fw-bold p-1 border-top border-bottom border-start">Treść</div>
                             <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 5%; min-width: 50px;">&nbsp;</div>
+                            <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 5%; min-width: 50px;">&nbsp;</div>
                         </div>
 
                         @foreach (var verse in item) {
@@ -82,7 +83,10 @@
                                     @Html.Raw(text)
                                 </div>
                                 <div class="col-auto p-1" style="width: 5%; min-width: 50px;">
-                                    <a class="dropdown-item" onclick="copyToClipboard3('@verse.SimpleText')" style="cursor: pointer;" title="Kopiuj treść wersetu"><i class="far fa-copy"></i></a>
+                                    <a class="dropdown-item" onclick="copyToClipboard3('@verse.SimpleText')" style="cursor: pointer;" title="Kopiuj treść @verse.BookShortcut @verse.Chapter:@verse.Verse"><i class="far fa-copy"></i></a>
+                                </div>
+                                <div class="col-auto p-1" style="width: 5%; min-width: 50px;">
+                                    <a class="dropdown-item" style="cursor: pointer;" title="Porównaj tłumaczeń @verse.BookShortcut @verse.Chapter:@verse.Verse" href="/CompareVerse?id=@verse.Index"><i class="fas fa-fish"></i></a>
                                 </div>
                             </div>
                         }

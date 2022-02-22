@@ -52,8 +52,11 @@ else if (Model.Book.IsNullOrEmpty()) {
 
     <div class="container">
         <div class="row justify-content-center max-width-800">
-            @foreach (var book in Model.Translation.Books) {
-
+            @foreach (var book in Model.Translation.Books) {    
+                var baseBook = book.BaseBook;
+             @* var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : String.Empty;
+                var bookName = baseBook.IsNotNull() ? baseBook.BookName : String.Empty;*@
+                var bookTitle = baseBook.IsNotNull() ? baseBook.BookTitle : String.Empty;
                 if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !book.IsTranslated && Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) { continue; }
 
                 var color = System.Drawing.ColorTranslator.FromHtml(@book.Color);
@@ -64,9 +67,9 @@ else if (Model.Book.IsNullOrEmpty()) {
 
                 var pillHtml = $@"<span class=""badge bg-success rounded-pill"" style=""position: absolute; right: -10px; top: -15px"">{book.NumberOfChapters}</span>";
 
-                <div class="col p-2" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3);" title="@book.BaseBook.BookTitle">
+                <div class="col p-2" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3);" title="@bookTitle">
                     <span style="position: relative;">
-                        <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@book.BaseBook.BookTitle" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@book.Chapters.Min(x=>x.NumberOfChapter)">@Html.Raw(bookHtml)&nbsp;</a>@Html.Raw(pillHtml)
+                        <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@bookTitle" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@book.Chapters.Min(x=>x.NumberOfChapter)">@Html.Raw(bookHtml)&nbsp;</a>@Html.Raw(pillHtml)
                     </span>
                 </div>
             }
@@ -112,7 +115,14 @@ else {
     //
     IBE.Data.Model.Book book = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(Model.Book)).FirstOrDefault();
     if (book.IsNotNull()) {
-        ViewData["Title"] = Model.Translation.Description + " - " + book.BaseBook.BookTitle;
+        var baseBook = book.BaseBook;
+        var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : String.Empty;
+        var bookName = baseBook.IsNotNull() ? baseBook.BookName : String.Empty;
+        var bookTitle = baseBook.IsNotNull() ? baseBook.BookTitle : String.Empty;
+        var bookStatus = baseBook.IsNotNull() ? baseBook.StatusBookType : IBE.Data.Model.TheBookType.Bible;
+        var canonType = baseBook.IsNotNull() ? baseBook.StatusCanonType : IBE.Data.Model.CanonType.Canon;
+
+        ViewData["Title"] = Model.Translation.Description + " - " + bookTitle;
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 
@@ -137,16 +147,16 @@ else {
                 <abbr type="button" class="btn btn-outline-success" title="Polecamy ten przekład">Polecamy</abbr>
             }
 
-            @if (book.BaseBook.StatusBookType == IBE.Data.Model.TheBookType.ChurchFathersLetter) {
+            @if (bookStatus == IBE.Data.Model.TheBookType.ChurchFathersLetter) {
                 <abbr type="button" class="btn btn-outline-secondary" title="Pisma chrześcijańskie okresu Ojców Kościoła (wczesny kościół od II-Iv w.n.e.)">Patrologia</abbr>
             }
 
 
-            @if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.SecondCanon) {
-                <abbr type="button" class="btn btn-outline-danger" title="Uwaga! @book.BaseBook.BookTitle jest księgą wtórnie-kanoniczną">Wtórnie-kanoniczna</abbr>
+            @if (canonType == IBE.Data.Model.CanonType.SecondCanon) {
+                <abbr type="button" class="btn btn-outline-danger" title="Uwaga! @bookTitle jest księgą wtórnie-kanoniczną">Wtórnie-kanoniczna</abbr>
             }
-            else if (book.BaseBook.Status.CanonType == IBE.Data.Model.CanonType.Apocrypha) {
-                <abbr type="button" class="btn btn-outline-danger" title="Uwaga! @book.BaseBook.BookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej">Apokryf</abbr>
+            else if (canonType == IBE.Data.Model.CanonType.Apocrypha) {
+                <abbr type="button" class="btn btn-outline-danger" title="Uwaga! @bookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej">Apokryf</abbr>
             }
 
             @if (Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) {
@@ -307,18 +317,16 @@ else {
                         }
 
                         <a class="col-auto dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i" style="width: auto;">@__chapterNumberString</a>
-
-                        @*<li><a class="dropdown-item@_active" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@i">@__chapterNumberString</a></li>*@
                     }
                 </div>
             </div>
         </div>
 
         <h2 class="text-center p-2 max-width-800"><a class="text-decoration-none text-dark" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@null">@Model.Translation.Description</a></h2>
-        <h2 class="text-center p-2 max-width-800 capital">@book.BaseBook.BookTitle</h2>
+        <h2 class="text-center p-2 max-width-800 capital">@bookTitle</h2>
         var chapterNumber = Convert.ToInt32(Model.Chapter);
         if (chapterNumber == __chapterNumbers.First()) {
-            if (book.BaseBook.IsNotNull()) {
+            if (bookName.IsNotNullOrEmpty()) {
 
                 <div class="lh-base fs-5" style="max-width: 1000px; margin: auto; text-align: justify; width: 100%;">
                     <div style=" display: table;">
@@ -528,6 +536,7 @@ else {
                 <br />
 
                 @foreach (var verse in chapter.Verses) {
+                    var verseIndex = verse.GetVerseIndex();
                     //
                     // Sródtytuły
                     //
@@ -606,6 +615,7 @@ else {
                             <div class="container position-relative">
                                 @if (isFirst && Model.Chapter.ToInt() > 0) {
                                     var clipboardShortText = BibleTagController.CleanVerseText(verse.Text);
+                                    var siglum = verse.GetSiglum(verseIndex, baseBook);
                                     //
                                     // Numer wersetu
                                     //
@@ -614,7 +624,7 @@ else {
                                         <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
                                         <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold verse-interlinear-btn" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 120%;">@verse.NumberOfVerse.</a>
                                         <ul class="dropdown-menu" aria-labelledby="verseMenu_@verse.NumberOfVerse" style="width: 600px; max-width: 70vw;">
-                                            <li><span class="dropdown-header fs-5 disabled">@book.BaseBook.BookShortcut @chapterNumberString:@verse.NumberOfVerse</span></li>
+                                            <li><span class="dropdown-header fs-5 disabled">@bookShortcut @chapterNumberString:@verse.NumberOfVerse</span></li>
                                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
                                             <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index&literal=true" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
                                             <li><a class="dropdown-item" href="@verse.GetOblubienicaUrl()" target="_blank"><i class="fas fa-globe"></i>&nbsp;Porównaj w&nbsp;przekładzie interlinearnym Oblubienica.eu</a></li>
@@ -623,12 +633,12 @@ else {
                                             <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie PDF</a></li>
                                             <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie DOCX</a></li>
                                             <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index&literal=true"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie PDF</a></li>
-                                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index&literal=true"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie DOCX</a></li>                                            
+                                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index&literal=true"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie DOCX</a></li>
 
                                             <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @verse.GetSourceText()')" style="cursor: pointer;"><i class="fas fa-copy" style="width:18px;"></i>&nbsp;Kopiuj tekst grecki</a></li>
-                                            <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @verse.GetTransliterationText()')" style="cursor: pointer;"><i class="far fa-file-alt" style="width:18px;"></i>&nbsp;Kopiuj transliterację tekstu greckiego</a></li>
-                                            <li><a class="dropdown-item" onclick="copyToClipboard3('@book.BaseBook.BookName @chapter.NumberOfChapter:@verse.NumberOfVerse (@Model.Translation.Name.Replace("'","")) @clipboardShortText')" style="cursor: pointer;"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść wersetu</a></li>
+                                            <li><a class="dropdown-item" onclick="copyToClipboard3('@siglum @verse.GetSourceText() (@verseIndex.TranslationName.Replace("'",""))')" style="cursor: pointer;"><i class="fas fa-copy" style="width:18px;"></i>&nbsp;Kopiuj tekst grecki</a></li>
+                                            <li><a class="dropdown-item" onclick="copyToClipboard3('@siglum @verse.GetTransliterationText() (@verseIndex.TranslationName.Replace("'",""))')" style="cursor: pointer;"><i class="far fa-file-alt" style="width:18px;"></i>&nbsp;Kopiuj transliterację tekstu greckiego</a></li>
+                                            <li><a class="dropdown-item" onclick="copyToClipboard3('@siglum @clipboardShortText (@verseIndex.TranslationName.Replace("'",""))')" style="cursor: pointer;"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść wersetu</a></li>
 
                                         </ul>
                                         <input id="verse-hidden-@verse.NumberOfVerse" type="hidden" value="@clipboardShortText" data-bs-number="@verse.NumberOfVerse" />
@@ -889,7 +899,7 @@ else {
                         <span id="verseText_@verse.NumberOfVerse" class="position-relative">
                             <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold position-absolute verse-btn" role="button" data-bs-toggle="" aria-expanded="false" onclick="showDopdownMenu(this, 'verseDropDownMenu_@verse.NumberOfVerse')">@verse.NumberOfVerse.</a>&nbsp;<span id="verseMenuText_@verse.NumberOfVerse">@Html.Raw(text.Trim())</span>
                             <ul id="verseDropDownMenu_@verse.NumberOfVerse" class="my-dropdown" aria-labelledby="verseMenu_@verse.NumberOfVerse">
-                                <li><span class="dropdown-header fs-5 disabled">@book.BaseBook.BookShortcut @chapterNumber:@verse.NumberOfVerse&nbsp;<button class="btn btn-danger float-end" type="button" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');">Zamknij</button></span></li>
+                                <li><span class="dropdown-header fs-5 disabled">@bookShortcut @chapterNumber:@verse.NumberOfVerse&nbsp;<button class="btn btn-danger float-end" type="button" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');">Zamknij</button></span></li>
                                 <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
                                 <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index&literal=true" target="_blank" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
 

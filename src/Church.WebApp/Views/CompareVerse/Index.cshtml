@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Porównanie tłumaczeń";
 }
+@using DevExpress.Xpo
 @using IBE.Common.Extensions
 @using Church.WebApp.Controllers;
 @using System.Linq;
@@ -10,8 +11,11 @@
 @model CompareVerseModel
 
 @if (Model.IsNotNull() && Model.Verses.Count > 0) {
+
     var first = Model.Verses.First();
-    var name = $"{first.GetBookName()} {first.ParentChapter.NumberOfChapter}:{first.NumberOfVerse}";
+    var bookBases = new XPQuery<BookBase>(first.Session).ToArray();
+    var firstIndex = first.GetVerseIndex();
+    var name = first.GetSiglum(firstIndex, bookBases);
     var title = $"Porównanie tłumaczeń {name}";
     var literalTitle = $"Porównanie tłumaczeń dosłownych {name}";
 
@@ -57,6 +61,14 @@
                     var translationName = item.ParentTranslation.Name;
                     var translationDesc = item.ParentTranslation.Description;
                     var translationType = item.ParentTranslation.Type.GetDescription();
+                    var verseText = item.Text;
+                    verseText = verseText
+                    .Replace("―", String.Empty)
+                    .Replace("<n>", @"<span class=""text-muted"">")
+                    .Replace("</n>", "</span>")
+                    .Replace("<J>", "<span style='color: darkred;'>")
+                    .Replace("</J>", "</span>");
+                    var simpleText = item.GetSimpleText(index, bookBases);
 
                     var link = $@"<a href=""/{index.TranslationName}/{index.NumberOfBook}/{index.NumberOfChapter}/{index.NumberOfVerse}"" class=""text-decoration-none"" title=""{translationDesc}"">{translationName}</a>";
 
@@ -64,8 +76,8 @@
                         <div class="col-auto p-1 border-bottom" style="width: 8%; font-size: 80%; min-width: 50px;">@Html.Raw(link)</div>
                         <div class="col-auto p-1 border-bottom border-start" style="width: 8%; font-size: 80%; min-width: 80px;">@translationType</div>
                         <div class="col-auto p-1 border-bottom border-start" style="width: 15%; font-size: 80%; min-width: 100px">@translationDesc</div>
-                        <div class="col p-1 border-start border-bottom" id="verseText_@index.TranslationName">@Html.Raw(item.Text.Replace("―", String.Empty).Replace("<n>", @"<span class=""text-muted"">").Replace("</n>", "</span>"))</div>
-                        <div class="col-auto p-1 border-bottom border-start" style="width: 5%; min-width: 50px;"><a class="dropdown-item" onclick="copyToClipboard2('#verseText_@index.TranslationName', '@name (@index.TranslationName)')" style="cursor: pointer;" title="Kopiuj treść wersetu"><i class="far fa-copy"></i></a></div>
+                        <div class="col p-1 border-start border-bottom" id="verseText_@index.TranslationName">@Html.Raw(verseText)</div>
+                        <div class="col-auto p-1 border-bottom border-start" style="width: 5%; min-width: 50px;"><a class="dropdown-item" onclick="copyToClipboard3('@simpleText')" style="cursor: pointer;" title="Kopiuj treść wersetu"><i class="far fa-copy"></i></a></div>
                     </div>
                 }
 
