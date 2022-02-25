@@ -66,7 +66,7 @@ namespace IBE.WindowsClient.Controls {
                     txtStoryTextLevel2.Text = subtitle.Text;
                 }
             }
-            
+
             if (loadOtherTranslations) {
                 var getTranslations = Task.Factory.StartNew(() => {
                     var index = new VerseIndex(Verse.Index);
@@ -76,30 +76,58 @@ namespace IBE.WindowsClient.Controls {
                     };
                     view.Properties.Add(new ViewProperty("Oid", SortDirection.None, "[Oid]", false, true));
                     view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
-                    view.Properties.Add(new ViewProperty("Type", SortDirection.Descending, "[Type]", false, true));
+                    view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
 
+                    var indexes = new List<string>();
                     foreach (ViewRecord item in view) {
-                        var id = item["Oid"].ToInt();
                         var name = item["Name"].ToString();
-                        var tvi = new TranslationVerseInfo() {
-                            TranslationName = name
-                        };
-
                         var _index = $"{name.Replace("'", "").Replace("+", "")}.{index.NumberOfBook}.{index.NumberOfChapter}.{index.NumberOfVerse}";
+                        indexes.Add(_index);
 
-                        var _view = new XPView(Verse.Session, typeof(Verse)) {
-                            CriteriaString = $"[Index] = '{_index}'"
+                        var tvi = new TranslationVerseInfo() {
+                            TranslationName = name.Replace("'", "").Replace("+", ""),
+                            SortIndex = ((TranslationType)item["Type"]).GetCategory().ToInt()
                         };
-                        _view.Properties.Add(new ViewProperty("Text", SortDirection.None, "[Text]", false, true));
-                        foreach (ViewRecord _item in _view) {
-                            tvi.VerseText = _item["Text"].ToString().Replace("<pb/>", "").Replace("<t>", "").Replace("<m>", "").Replace("</t>", "").Replace("</m>", "").Replace("<e>", "").Replace("</e>", "");
-                        }
-                        if (tvi.VerseText.IsNotNullOrEmpty()) {
-                            list.Add(tvi);
-                        }
+                        list.Add(tvi);
                     }
 
-                    return list;
+                    var _view = new XPView(Verse.Session, typeof(Verse)) {
+                        Criteria = new DevExpress.Data.Filtering.InOperator("Index", indexes)
+                    };
+
+                    _view.Properties.Add(new ViewProperty("Index", SortDirection.None, "[Index]", false, true));
+                    _view.Properties.Add(new ViewProperty("Text", SortDirection.None, "[Text]", false, true));
+
+                    foreach (ViewRecord item in _view) {
+                        var idx = new VerseIndex(item["Index"].ToString());
+                        var tvi = list.Where(x => x.TranslationName == idx.TranslationName).FirstOrDefault();
+                        if (tvi.IsNotNull()) {
+                            tvi.VerseText = item["Text"].ToString().Replace("<pb/>", "").Replace("<t>", "").Replace("<m>", "").Replace("</t>", "").Replace("</m>", "").Replace("<e>", "").Replace("</e>", "");
+                        };
+                    }
+
+                    //foreach (ViewRecord item in view) {
+                    //    var id = item["Oid"].ToInt();
+                    //    var name = item["Name"].ToString();
+                    //    var tvi = new TranslationVerseInfo() {
+                    //        TranslationName = name
+                    //    };
+
+                    //    var _index = $"{name.Replace("'", "").Replace("+", "")}.{index.NumberOfBook}.{index.NumberOfChapter}.{index.NumberOfVerse}";
+
+                    //    var _view = new XPView(Verse.Session, typeof(Verse)) {
+                    //        CriteriaString = $"[Index] = '{_index}'"
+                    //    };
+                    //    _view.Properties.Add(new ViewProperty("Text", SortDirection.None, "[Text]", false, true));
+                    //    foreach (ViewRecord _item in _view) {
+                    //        tvi.VerseText = _item["Text"].ToString().Replace("<pb/>", "").Replace("<t>", "").Replace("<m>", "").Replace("</t>", "").Replace("</m>", "").Replace("<e>", "").Replace("</e>", "");
+                    //    }
+                    //    if (tvi.VerseText.IsNotNullOrEmpty()) {
+                    //        list.Add(tvi);
+                    //    }
+                    //}
+
+                    return list.Where(x=>x.VerseText.IsNotNullOrEmpty()).OrderBy(x => x.SortIndex).ToList();
                 });
 
                 getTranslations.ContinueWith((x) => {
@@ -284,6 +312,8 @@ namespace IBE.WindowsClient.Controls {
         public class TranslationVerseInfo {
             public string TranslationName { get; set; }
             public string VerseText { get; set; }
+
+            [System.ComponentModel.Browsable(false)] public int SortIndex { get; set; }
         }
 
         private void layoutView1_DoubleClick(object sender, System.EventArgs e) {

@@ -1,10 +1,12 @@
 ﻿using DevExpress.Xpo;
 using IBE.Data.Export.Model;
+using IBE.Data.Model;
 
 namespace IBE.Data.Export.Controllers {
     public interface IBibleTagController {
         string AppendNonBreakingSpaces(string text);
         string CleanVerseText(string text);
+        string GetVerseSimpleText(string verseText, VerseIndex index, string baseBookShortcut);
 
         string GetInternalVerseRangeHtml(string input, TranslationControllerModel model);
         string GetInternalVerseRangeText(string input, TranslationControllerModel model);

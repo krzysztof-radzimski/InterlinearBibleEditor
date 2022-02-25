@@ -19,6 +19,17 @@ namespace IBE.Data.Export.Controllers {
         public string CleanVerseText(string text) {
             return text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
         }
+        public string GetVerseSimpleText(string verseText, VerseIndex index , string baseBookShortcut) {
+            var translation = index.TranslationName;
+            var simpleText = verseText.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+            if (translation == "NPI" || translation == "IPD") {
+                simpleText = simpleText.Replace("―", "");
+            }
+            if (translation == "PBD") { translation = "SNPPD"; }
+            simpleText = System.Text.RegularExpressions.Regex.Replace(simpleText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
+            simpleText = $"{baseBookShortcut} {index.NumberOfChapter}:{index.NumberOfVerse} „{simpleText}” ({translation})";
+            return simpleText;
+        }
 
         public string GetMultiChapterRangeText(string input, TranslationControllerModel model) {
             var pattern = @"\<x\>(?<book>[0-9]+)\s(?<chapterStart>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)(\s)?\-(\s)?(?<chapterEnd>[0-9]+)(\s)?\:(\s)?(?<verseEnd>[0-9]+)";

@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DevExpress.Xpo;
+using IBE.Common.Extensions;
+using IBE.Data.Model;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using IBE.Common.Extensions;
-using DevExpress.Xpo;
-using IBE.Data.Model;
 
 namespace Church.WebApp.Controllers {
     public class StrongsCodeController : Controller {

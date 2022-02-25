@@ -412,8 +412,44 @@ namespace IBE.WindowsClient {
                 var c = new GreekTransliterationController();
 
                 foreach (var verseWord in VerseControl.Verse.VerseWords) {
+                    var sourceWord = verseWord.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\"", "?");
+
                     if (verseWord.Translation.IsNullOrEmpty()) {
-                        var w = c.GetSourceWordWithoutBreathAndAccent(verseWord.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\"", "?"), out var isUpper);
+                        var exactItem = dic.Where(x => x.Word == sourceWord.ToLower()).FirstOrDefault();
+                        if (exactItem.IsNotNull()) {
+                            var translation = String.Empty;
+                            var _isUpper = System.Char.IsUpper(sourceWord[0]);
+                            if (_isUpper && exactItem.Translation.IsNotNullOrEmpty() && exactItem.Translation.Length > 1) {
+                                translation = exactItem.Translation.Substring(0, 1).ToUpper() + exactItem.Translation.Substring(1).ToLower();
+                            }
+                            else {
+                                translation = exactItem.Translation.ToLower();
+                            }
+                            if (translation.IsNotNullOrEmpty()) {
+                                translation = translation.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\"", "?");
+                                if (verseWord.SourceWord.EndsWith(",")) {
+                                    translation += ",";
+                                }
+                                if (verseWord.SourceWord.EndsWith(";")) {
+                                    translation += ";";
+                                }
+                                if (verseWord.SourceWord.EndsWith("·")) {
+                                    translation += ":";
+                                }
+                                if (verseWord.SourceWord.EndsWith(".")) {
+                                    translation += ".";
+                                }
+
+                                verseWord.Translation = translation;
+                                verseWord.Save();
+
+                                continue;
+                            }
+                        }
+
+
+
+                        var w = c.GetSourceWordWithoutBreathAndAccent(sourceWord, out var isUpper);
                         var item = dic.Where(x => x.Word == w.ToLower()).FirstOrDefault();
                         if (item.IsNotNull()) {
                             var translation = String.Empty;
@@ -462,8 +498,42 @@ namespace IBE.WindowsClient {
 
                 foreach (var verse in verses) {
                     foreach (var verseWord in verse.VerseWords) {
+                        var sourceWord = verseWord.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\"", "?");
+
                         if (verseWord.Translation.IsNullOrEmpty()) {
-                            var w = c.GetSourceWordWithoutBreathAndAccent(verseWord.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\"", "?"), out var isUpper);
+                            var exactItem = dic.Where(x => x.Word == sourceWord.ToLower()).FirstOrDefault();
+                            if (exactItem.IsNotNull()) {
+                                var translation = String.Empty;
+                                var _isUpper = System.Char.IsUpper(sourceWord[0]);
+                                if (_isUpper && exactItem.Translation.IsNotNullOrEmpty() && exactItem.Translation.Length > 1) {
+                                    translation = exactItem.Translation.Substring(0, 1).ToUpper() + exactItem.Translation.Substring(1).ToLower();
+                                }
+                                else {
+                                    translation = exactItem.Translation.ToLower();
+                                }
+                                if (translation.IsNotNullOrEmpty()) {
+                                    translation = translation.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\"", "?");
+                                    if (verseWord.SourceWord.EndsWith(",")) {
+                                        translation += ",";
+                                    }
+                                    if (verseWord.SourceWord.EndsWith(";")) {
+                                        translation += ";";
+                                    }
+                                    if (verseWord.SourceWord.EndsWith("·")) {
+                                        translation += ":";
+                                    }
+                                    if (verseWord.SourceWord.EndsWith(".")) {
+                                        translation += ".";
+                                    }
+
+                                    verseWord.Translation = translation;
+                                    verseWord.Save();
+
+                                    continue;
+                                }                                
+                            }
+
+                            var w = c.GetSourceWordWithoutBreathAndAccent(sourceWord, out var isUpper);
                             var item = dic.Where(x => x.Word == w.ToLower()).FirstOrDefault();
                             if (item.IsNotNull()) {
                                 var translation = String.Empty;

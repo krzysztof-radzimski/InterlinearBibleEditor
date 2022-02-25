@@ -1,21 +1,21 @@
-﻿using DevExpress.Xpo;
-using IBE.Common.Extensions;
+﻿using IBE.Common.Extensions;
 using IBE.Data.Export;
-using IBE.Data.Model;
+using IBE.Data.Export.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
 namespace Church.WebApp.Controllers {
     public abstract class DownloadCompareVerseController : Controller {
         protected readonly IConfiguration Configuration;
+        protected readonly IBibleTagController BibleTag;
         protected abstract ExportSaveFormat Format { get; }
-        public DownloadCompareVerseController(IConfiguration configuration) {
+        public DownloadCompareVerseController(IConfiguration configuration, IBibleTagController bibleTagController) {
             Configuration = configuration;
+            BibleTag = bibleTagController;
         }
 
         [HttpGet]
@@ -48,21 +48,9 @@ namespace Church.WebApp.Controllers {
         }
 
         private async Task<CompareVerseModel> GetModel(QueryString qs) {
-            if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 3) {
-                var value = qs.Value;
-                var onlyLiteral = value.Contains("literal");
-                if (value.Contains("&")) {
-                    value = value.Substring(0, value.IndexOf("&"));
-                }
-                var id = value.Replace("?id=", "").Trim();
-                var vi = new VerseIndex(id);
-                var verses = new XPQuery<Verse>(new UnitOfWork())
-                        .Where(x => x.Index.EndsWith($".{vi.NumberOfBook}.{vi.NumberOfChapter}.{vi.NumberOfVerse}") && x.Text != null && x.Text != "" && !x.ParentChapter.ParentBook.ParentTranslation.Hidden && (onlyLiteral ? (x.ParentChapter.ParentBook.ParentTranslation.Type == TranslationType.Literal || x.ParentChapter.ParentBook.ParentTranslation.Type == TranslationType.Interlinear) : true))
-                        .OrderBy(x => x.ParentChapter.ParentBook.ParentTranslation.Type)
-                        .ToList();
-                return new CompareVerseModel() { Index = vi, Verses = verses };
+            using (var controller = new CompareVerseController(BibleTag)) {
+                return controller.GetModel(qs);
             }
-            return default;
         }
 
         private async Task<byte[]> GetLicData() {
@@ -80,7 +68,7 @@ namespace Church.WebApp.Controllers {
     [Route("api/[controller]")]
     public class DownloadCompareVersePdfController : DownloadCompareVerseController {
         protected override ExportSaveFormat Format => ExportSaveFormat.Pdf;
-        public DownloadCompareVersePdfController(IConfiguration configuration) : base(configuration) { }
+        public DownloadCompareVersePdfController(IConfiguration configuration, IBibleTagController bibleTagController) : base(configuration, bibleTagController) { }
     }
 
 
@@ -88,6 +76,6 @@ namespace Church.WebApp.Controllers {
     [Route("api/[controller]")]
     public class DownloadCompareVerseDocxController : DownloadCompareVerseController {
         protected override ExportSaveFormat Format => ExportSaveFormat.Docx;
-        public DownloadCompareVerseDocxController(IConfiguration configuration) : base(configuration) { }
+        public DownloadCompareVerseDocxController(IConfiguration configuration, IBibleTagController bibleTagController) : base(configuration, bibleTagController) { }
     }
 }

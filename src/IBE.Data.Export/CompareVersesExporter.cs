@@ -5,7 +5,6 @@ using IBE.Data.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace IBE.Data.Export {
     public class CompareVersesExporter : BaseExporter {
@@ -17,8 +16,7 @@ namespace IBE.Data.Export {
             if (model.IsNull()) { throw new ArgumentNullException("model"); }
             var builder = GetDocumentBuilder();
 
-            var first = model.Verses.First();
-            var title = $"Porównanie tłumaczeń {first.GetBookName()} {first.ParentChapter.NumberOfChapter}:{first.NumberOfVerse}";
+            var title = $"Porównanie tłumaczeń {model.BookName} {model.Index.NumberOfChapter}:{model.Index.NumberOfVerse}";
             {
                 var par = builder.CurrentParagraph;
                 par.ParagraphFormat.Style = builder.Document.Styles["Nagłówek 1"];
@@ -51,13 +49,13 @@ namespace IBE.Data.Export {
             builder.EndRow();
 
             foreach (var item in model.Verses) {
-                var index = item.GetVerseIndex();
+                var index = item.Index;
                 if (index.IsNull()) { continue; }
-                var translationName = item.ParentTranslation.Name;
-                var translationDesc = item.ParentTranslation.Description;
-                var translationType = item.ParentTranslation.Type.GetDescription();
+                var translationName = item.TranslationName;
+                var translationDesc = item.TranslationDescription;
+                var translationType = item.TranslationType.GetDescription();
                 Dictionary<int, string> footNotes = null;
-                var itemHtml = GetVerseHtml(item, out footNotes);
+                var itemHtml = GetVerseHtml(model, item, out footNotes);
 
                 builder.InsertCell();
                 builder.Writeln(translationName);
@@ -83,10 +81,10 @@ namespace IBE.Data.Export {
             return SaveBuilder(saveFormat, builder);
         }
 
-        private string GetVerseHtml(Verse verse, out Dictionary<int, string> notes) {
+        private string GetVerseHtml(CompareVerseModel model, CompareVerseInfo verse, out Dictionary<int, string> notes) {
             notes = null;
             var footNotes = new Dictionary<int, string>();
-            var book = verse.ParentChapter.ParentBook;
+            //var book = verse.ParentChapter.ParentBook;
 
             var text = " " + verse.Text;
             if (text.Contains("<n>") && text.Contains("*")) {
@@ -136,25 +134,25 @@ namespace IBE.Data.Export {
             text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
 
             // zamiana na imię Boże
-            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+            if (model.Part == BiblePart.OldTestament) {
                 text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
                     var prefix = m.Groups["prefix"].Value;
                     return $"{prefix}JAHWE{m.Value.Last()}";
                 });
             }
-            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+            if (model.Part == BiblePart.OldTestament) {
                 text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>JHWH)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
                     var prefix = m.Groups["prefix"].Value;
                     return $"{prefix}JAHWE{m.Value.Last()}";
                 });
             }
-            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
+            if (model.Part == BiblePart.OldTestament) {
                 text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(a)?(y)?(ie)?(ę)?(o)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
                     var prefix = m.Groups["prefix"].Value;
                     return $"{prefix}JAHWE{m.Value.Last()}";
                 });
             }
-            if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.NewTestament) {
+            if (model.Part == BiblePart.NewTestament) {
                 text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(?<ending>(a)?(y)?(ie)?(ę)?(o)?))[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
                     var prefix = m.Groups["prefix"].Value;
                     var ending = m.Groups["ending"].Value;

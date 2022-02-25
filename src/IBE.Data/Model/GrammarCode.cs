@@ -15,9 +15,7 @@ using DevExpress.Xpo;
 using IBE.Common.Extensions;
 using IBE.Data.Model.Grammar;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace IBE.Data.Model {
