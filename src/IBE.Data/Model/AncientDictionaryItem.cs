@@ -63,7 +63,7 @@ namespace IBE.Data.Model {
         public XPCollection<VerseInfo> VersesReferences {
             get { return GetCollection<VerseInfo>(nameof(VersesReferences)); }
         }
-
+        public AncientDictionaryItem() : base() { }
         public AncientDictionaryItem(Session session) : base(session) { }
     }
 }

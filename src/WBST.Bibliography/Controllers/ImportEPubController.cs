@@ -38,17 +38,6 @@ namespace WBST.Bibliography.Controllers {
                         }
                     });
 
-
-                    //if (File.Exists(docxFilePath)) {
-                    //    if (XtraMessageBox.Show("Czy nadpisać istniejący plik programu Word?", "Microsoft Word", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) {
-                    //        return default;
-                    //    }
-                    //}
-
-                    //document.Save(docxFilePath);
-
-
-
                     return docxFilePath;
                 }
             }

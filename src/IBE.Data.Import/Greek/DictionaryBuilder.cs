@@ -50,7 +50,7 @@ namespace IBE.Data.Import.Greek {
             };
             ancientDictionaryItemView.Properties.Add(new ViewProperty("Word", SortDirection.None, "[Word]", false, true));
             foreach (ViewRecord item in ancientDictionaryItemView) {
-                items.Add(new AncientDictionaryItem(null) { Word = item["Word"].ToString() });
+                items.Add(new AncientDictionaryItem() { Word = item["Word"].ToString() });
             }
 
             foreach (ViewRecord item in verseView) {

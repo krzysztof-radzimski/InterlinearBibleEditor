@@ -106,27 +106,6 @@ namespace IBE.WindowsClient.Controls {
                         };
                     }
 
-                    //foreach (ViewRecord item in view) {
-                    //    var id = item["Oid"].ToInt();
-                    //    var name = item["Name"].ToString();
-                    //    var tvi = new TranslationVerseInfo() {
-                    //        TranslationName = name
-                    //    };
-
-                    //    var _index = $"{name.Replace("'", "").Replace("+", "")}.{index.NumberOfBook}.{index.NumberOfChapter}.{index.NumberOfVerse}";
-
-                    //    var _view = new XPView(Verse.Session, typeof(Verse)) {
-                    //        CriteriaString = $"[Index] = '{_index}'"
-                    //    };
-                    //    _view.Properties.Add(new ViewProperty("Text", SortDirection.None, "[Text]", false, true));
-                    //    foreach (ViewRecord _item in _view) {
-                    //        tvi.VerseText = _item["Text"].ToString().Replace("<pb/>", "").Replace("<t>", "").Replace("<m>", "").Replace("</t>", "").Replace("</m>", "").Replace("<e>", "").Replace("</e>", "");
-                    //    }
-                    //    if (tvi.VerseText.IsNotNullOrEmpty()) {
-                    //        list.Add(tvi);
-                    //    }
-                    //}
-
                     return list.Where(x=>x.VerseText.IsNotNullOrEmpty()).OrderBy(x => x.SortIndex).ToList();
                 });
 
@@ -285,12 +264,16 @@ namespace IBE.WindowsClient.Controls {
                         Word.GrammarCode = new XPQuery<GrammarCode>(Word.Session).Where(x => x.GrammarCodeVariant1 == GrammarCode).FirstOrDefault();
                     }
                 }
-                if (StrongsCode.HasValue && StrongsCode.Value != Word.StrongCode?.Code) {
+                var differentLang = false;
+                if (Word.StrongCode.IsNotNull()) {
+                    differentLang = Word.StrongCode.Lang != Language.Greek;
+                }
+                if (StrongsCode.HasValue && (StrongsCode.Value != Word.StrongCode?.Code || differentLang)) {
                     if (!StrongsCode.HasValue) {
                         Word.StrongCode = null;
                     }
                     else {
-                        Word.StrongCode = new XPQuery<StrongCode>(Word.Session).Where(x => x.Code == StrongsCode.Value).FirstOrDefault();
+                        Word.StrongCode = new XPQuery<StrongCode>(Word.Session).Where(x => x.Code == StrongsCode.Value && x.Lang == Language.Greek).FirstOrDefault();
                     }
                 }
                 Word.Save();
@@ -368,14 +351,14 @@ namespace IBE.WindowsClient.Controls {
             var layoutView = gridControl.FocusedView as LayoutView;
             if (e.KeyCode == Keys.Tab && layoutView.IsNotNull()) {
                 BeginInvoke(new MethodInvoker(() => {
-                    if (layoutView.FocusedColumn.FieldName != "Translation") {
+                    if (layoutView.IsNotNull() && layoutView.FocusedColumn.IsNotNull() && layoutView.FocusedColumn.FieldName != "Translation") {
                         SendKeys.Send("{TAB}");
                     }
                 }));
             }
             if (e.KeyCode == Keys.F12 && layoutView.IsNotNull()) {
                 BeginInvoke(new MethodInvoker(() => {
-                    if (layoutView.FocusedColumn.FieldName == "Translation") {
+                    if (layoutView.FocusedColumn.IsNotNull() && layoutView.FocusedColumn.FieldName == "Translation") {
                         layoutView.SetFocusedValue("―");
                     }
                 }));

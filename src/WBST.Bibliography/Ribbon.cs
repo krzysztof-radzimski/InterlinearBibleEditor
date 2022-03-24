@@ -134,6 +134,7 @@ namespace WBST.Bibliography {
                             using (var controller = new ImportMobiController()) { controller.Execute(); }
                             break;
                         }
+                    case "btnRemoveOrphans": { RemoveOrphans(); break; }
                 }
             }
         }
@@ -169,5 +170,24 @@ namespace WBST.Bibliography {
         }
 
         #endregion
+
+        private void RemoveOrphans() {
+            RemoveOrphans("o", "a", "i", "u", "w", "z", "a", "(z", "(o", "(a", "(i", "(u", "(w", "(a", "o", "i");
+        }
+
+        private void RemoveOrphans(params string[] table) {
+            var doc = Globals.ThisAddIn.Application.ActiveDocument;
+            foreach (string s in table) {
+                string findText = $" {s} ";
+                string replaceWith = $" {s}\u00A0";
+                var find = doc.Range().Find;
+                find.ClearFormatting();
+                find.Text = findText;
+                find.MatchCase = false;
+                find.Replacement.ClearFormatting();
+                find.Replacement.Text = replaceWith;
+                find.Execute(Replace: Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll, Forward: true, Wrap: Microsoft.Office.Interop.Word.WdFindWrap.wdFindContinue);
+            }
+        }
     }
 }

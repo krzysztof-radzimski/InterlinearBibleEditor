@@ -12,16 +12,17 @@
 					<button id="btnUrlShortener" imageMso="HyperlinkEdit" onAction="OnAction" label="Skróć hiperłącze" size="large"/>
 
 					<separator id="separator1a" />
-					
+
 					<button idMso="FootnoteInsert" size="large"/>
 					<button idMso="PasteTextOnly" size="large"/>
+					<button id="btnRemoveOrphans" imageMso="ReplaceDialog" onAction="OnAction" label="Usuń sierotki" size="large"/>
 
 					<separator id="separator2" />
 
 					<gallery idMso="QuickStylesGallery" size="large"/>
-					
+
 					<separator id="separator3" />
-					
+
 					<button idMso="ReadAloud" size="large"/>
 				</group>
 			</tab>

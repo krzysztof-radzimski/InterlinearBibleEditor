@@ -85,6 +85,20 @@ namespace IBE.ePubConverter.Common.Converters {
                                     list.Add(field);
                                 }
                             }
+                            else if (link.SubAddress != null && link.SubAddress.Contains("footnote")) {
+                                var footnotePar = FindParagraphByHyperlink(document, link.Result, link.SubAddress + "-backlink");
+                                if (footnotePar != null) {
+                                    list2.Add(footnotePar);
+                                    var footnoteText = footnotePar.ToString(Aspose.Words.SaveFormat.Text).Replace(link.Result, "");
+                                    builder.MoveToField(field, true);
+                                    var f = builder.InsertFootnote(Aspose.Words.Notes.FootnoteType.Footnote, footnoteText.Trim());
+                                    f.Font.Size = 12;
+                                    f.Font.Color = System.Drawing.Color.Black;
+                                    f.Font.Bold = true;
+                                    f.Font.Underline = Aspose.Words.Underline.None;
+                                    list.Add(field);
+                                }
+                            }
                         }
                     }
 
@@ -107,17 +121,33 @@ namespace IBE.ePubConverter.Common.Converters {
                     }
 
                     // headings
-                    var chapterTitleStyle = document.Styles.Where(x => x.Name == "chapter_title").FirstOrDefault();
-                    if (chapterTitleStyle != null) {
-                        chapterTitleStyle.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading1].Name;
+                    {
+                        var chapterTitleStyle = document.Styles.Where(x => x.Name == "chapter_title").FirstOrDefault();
+                        if (chapterTitleStyle != null) {
+                            chapterTitleStyle.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading1].Name;
+                        }
+                        var subTitleStyle = document.Styles.Where(x => x.Name == "subtitle1" || x.Name == "subtitle").FirstOrDefault();
+                        if (subTitleStyle != null) {
+                            subTitleStyle.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading2].Name;
+                        }
+                        var subTitle2Style = document.Styles.Where(x => x.Name == "subtitle2").FirstOrDefault();
+                        if (subTitle2Style != null) {
+                            subTitle2Style.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading3].Name;
+                        }
                     }
-                    var subTitleStyle = document.Styles.Where(x => x.Name == "subtitle1" || x.Name == "subtitle").FirstOrDefault();
-                    if (subTitleStyle != null) {
-                        subTitleStyle.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading2].Name;
-                    }
-                    var subTitle2Style = document.Styles.Where(x => x.Name == "subtitle2").FirstOrDefault();
-                    if (subTitle2Style != null) {
-                        subTitle2Style.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading3].Name;
+                    {
+                        var chapterNumberStyle = document.Styles.Where(x => x.Name == "p_numer-rozdzialu").FirstOrDefault();
+                        if (chapterNumberStyle != null) {
+                            chapterNumberStyle.ParagraphFormat.KeepWithNext = true;
+                        }
+                        var chapterTitleStyle = document.Styles.Where(x => x.Name == "p_tytul-rozdzialu").FirstOrDefault();
+                        if (chapterTitleStyle != null) {
+                            chapterTitleStyle.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading1].Name;
+                        }
+                        var subTitleStyle = document.Styles.Where(x => x.Name == "p_podtytul").FirstOrDefault();
+                        if (subTitleStyle != null) {
+                            subTitleStyle.BaseStyleName = document.Styles[Aspose.Words.StyleIdentifier.Heading2].Name;
+                        }
                     }
                 }
             }
@@ -145,6 +175,17 @@ namespace IBE.ePubConverter.Common.Converters {
             foreach (Aspose.Words.Section section in document.Sections) {
                 var node = section.Body.Paragraphs.Where(x => x.ToString(Aspose.Words.SaveFormat.Text).Trim().StartsWith(startsWith)).LastOrDefault();
                 if (node != null) { return node as Aspose.Words.Paragraph; }
+            }
+            return default;
+        }
+        private Aspose.Words.Paragraph FindParagraphByHyperlink(Aspose.Words.Document document, string result, string subAddress) {
+            foreach (Aspose.Words.Section section in document.Sections) {
+                foreach (Aspose.Words.Paragraph para in section.Body.Paragraphs) {
+                    if (para.Range.Fields.Where(x => x is Aspose.Words.Fields.FieldHyperlink && (x as Aspose.Words.Fields.FieldHyperlink).Result == result && (x as Aspose.Words.Fields.FieldHyperlink).SubAddress.Contains(subAddress)).Any()) {
+                        return para;
+                    }
+
+                }
             }
             return default;
         }
