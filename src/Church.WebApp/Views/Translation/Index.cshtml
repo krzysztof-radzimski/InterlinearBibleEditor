@@ -415,7 +415,7 @@ else {
                             </div>
                         }
                     </div>
-                    @if (Model.Translation.Name != "PBD") {
+                    @if (Model.Translation.Name != "PBD" && Model.Translation.BookType != IBE.Data.Model.TheBookType.ChurchFathersLetter) {
                         <p class="fs-70per"><br />* Opis księgi pochodzi z <a href="http://feib.pl" target="_blank">Przekładu Dosłownego Pisma Świetego Starego i Nowego Przymierza EIB</a>.</p>
                     }
                 </div>
