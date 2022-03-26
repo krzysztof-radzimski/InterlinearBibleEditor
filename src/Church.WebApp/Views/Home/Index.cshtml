@@ -3,7 +3,7 @@
     var host = this.Context.Request.Host;
 }
 @using IBE.Common.Extensions
-@inject IConfiguration Configuration 
+@inject IConfiguration Configuration
 @model List<Church.WebApp.Controllers.ArticleInfo>
 
 @section HeaderScripts {
@@ -16,7 +16,8 @@
 <meta property="og:locale" content="pl_PL" />
 }
 <div style="padding-top: 20px;" class="max-width-1000">
-    <p id="banner" class="fs-5 text-center shadow p-3 mb-3 rounded"></p>
+    @*<p id="banner" class="fs-5 text-center shadow p-3 mb-3 rounded"></p>*@
+    @Html.Partial("~/Views/Shared/_Baner.cshtml")
 
     @if (Model.IsNotNull() && Model.Count > 0) {
         foreach (var item in Model) {
@@ -41,17 +42,17 @@
             </a>
         }
         <div class="d-flex flex-row-reverse mt-3">
-            <a href="../Articles" class="btn btn-secondary">Więcej...</a>            
+            <a href="../Articles" class="btn btn-secondary">Więcej...</a>
         </div>
 
-        <br/>
+        <br />
     }
 
 
     <div class="embed-responsive embed-responsive-16by9 shadow-lg">
         <iframe id="YouTubeFrame" width="560" height="600" src="https://www.youtube.com/embed/videoseries?list=PLUYRCCWSMh69waBP7LPvu_aAm8pkKL6Gh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
-     <br/>
+    <br />
     <h2>Słowo powitania</h2>
 
     <p class="fs-5 mt-3">

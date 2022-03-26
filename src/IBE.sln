@@ -55,7 +55,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WBST.Bibliography", "WBST.B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IBE.SplitPdf", "IBE.SplitPdf\IBE.SplitPdf.csproj", "{1AA61F95-226F-49CE-8B46-047C09C8F343}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBE.Ukrainian.UI", "IBE.Ukrainian.UI\IBE.Ukrainian.UI.csproj", "{F43153D9-7DE8-4964-8094-BE3613F645A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IBE.Ukrainian.UI", "IBE.Ukrainian.UI\IBE.Ukrainian.UI.csproj", "{F43153D9-7DE8-4964-8094-BE3613F645A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

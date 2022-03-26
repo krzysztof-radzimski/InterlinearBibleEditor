@@ -11,6 +11,7 @@
 
   ===================================================================================*/
 
+using Church.WebApp.Models;
 using DevExpress.Xpo;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
@@ -29,7 +30,18 @@ namespace Church.WebApp.Controllers {
                 var id = value.ToLower().Replace("?id=", "").Trim().ToInt();
                 var song = new XPQuery<Song>(new UnitOfWork()).Where(x => x.Number == id).FirstOrDefault();
                 if (song.IsNotNull()) {
-                    return View(song);
+
+                    var view = new XPView(song.Session, typeof(Song));
+                    view.CriteriaString = $"([Number] < {song.Number + 10} ) AND ([Number] > {song.Number - 10})";
+                    view.Properties.Add(new ViewProperty("Id", SortDirection.None, "[Oid]", false, true));
+                    view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
+                    //view.Properties.Add(new ViewProperty("Signature", SortDirection.None, "[Signature]", false, true));
+                    //view.Properties.Add(new ViewProperty("BPM", SortDirection.None, "[BPM]", false, true));
+                    view.Properties.Add(new ViewProperty("Number", SortDirection.Ascending, "[Number]", false, true));
+                    //view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+                    var result = new SongControllerModel() { Song = song, Songs = view };
+
+                    return View(result);
                 }
             }
             return View();

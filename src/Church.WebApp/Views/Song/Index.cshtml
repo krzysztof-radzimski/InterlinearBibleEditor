@@ -1,6 +1,6 @@
-﻿@model Song
+﻿@model SongControllerModel
 @{
-    ViewData["Title"] = Model.IsNotNull() ? Model.Name : "Pieśń";
+    ViewData["Title"] = Model.IsNotNull() ? Model.Song.Name : "Pieśń";
 
     var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
     var __path = this.Context.Request.Path;
@@ -18,10 +18,10 @@
 @section HeaderScripts {
     @if (Model.IsNotNull()) {
 <!-- social sharing metadata -->
-<meta property="og:title" content="@Model.Name - @Configuration["PageTitle"]" />
-<meta property="og:description" content="@Model.Name" />
+<meta property="og:title" content="@Model.Song.Name - @Configuration["PageTitle"]" />
+<meta property="og:description" content="@Model.Song.Name" />
 <meta property="og:image" content="@__host/img/TloSpiewnik.png" />
-<meta property="og:url" content="@__host/Song?id=@Model.Oid" />
+<meta property="og:url" content="@__host/Song?id=@Model.Song.Oid" />
 <meta property="og:type" content="song" />
 <meta property="og:locale" content="pl_PL" />
     }
@@ -32,20 +32,38 @@
         <div class="col p-4 d-flex flex-column position-static">
             <div>
                 <strong class="d-inline-block mb-2 text-success pill-white-lg"><a href="/Songs" class="text-decoration-none" title="Więcej pieśni"><i class="far fa-arrow-alt-circle-left"></i></a></strong>
-                <strong class="d-inline-block mb-2 text-success pill-white-lg">@Model.Type.GetDescription()</strong>
+                <strong class="d-inline-block mb-2 text-success pill-white-lg">@Model.Song.Type.GetDescription()</strong>
             </div>
-            <h3 class="mb-0">@Model.Number. @Model.Name</h3>
-            <h4 class="mb-auto">Sygnatura:&nbsp;<b>@Model.Signature</b> Tempo:&nbsp;<b>@Model.BPM</b></h4>
+            <h3 class="mb-0">@Model.Song.Number. @Model.Song.Name</h3>
+            <h4 class="mb-auto">Sygnatura:&nbsp;<b>@Model.Song.Signature</b> Tempo:&nbsp;<b>@Model.Song.BPM</b></h4>
             <p class="mb-auto fst-italic"><b>Śpiewajmy dla Jezusa</b><br />Śpiewnik zborowy KChB w Nowym Dworze Mazowieckim</p>
 
+
+            <div class="dropdown d-grid gap-2 d-md-flex" style="width: auto;">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
+                    Wybierz inną pieśń
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook">
+                    @foreach (ViewRecord record in Model.Songs) {
+                        var number = record["Number"];
+                        var name = record["Name"];
+                        if (number.ToInt() == Model.Song.Number) {
+                             <li><span class="dropdown-item active">@number.@name</span></li>
+                        }
+                        else {
+                            <li><a class="dropdown-item" href="/Song?id=@number">@number.@name</a></li>
+                        }
+                    }
+                </ul>
+            </div>
         </div>
 
-        <div class="col-auto d-none d-lg-block" style="background-image: url('/img/TloSpiewnik.png'); background-position: center center; background-repeat: no-repeat; background-size: cover; max-width: 350px; width: 40%;"></div>
+        <div class="col-auto d-none d-lg-block" style="background-image: url('/img/TloSpiewnik.png'); background-position: center center; background-repeat: no-repeat; background-size: cover; max-width: 410px; width: 50%;"></div>
     </div>
 
-    <div style="max-width: 1025px; margin: auto; padding-top: 20px;">
+    <div style="max-width: 1025px; margin: auto; padding-top: 20px; font-size: 120%;">
 
-        @foreach (var item in Model.GetParts()) {
+        @foreach (var item in Model.Song.GetParts()) {
             <div class="row">
                 @if (item.Type == SongVerseType.Chorus) {
                     <div class="col mt-3 quote2">
@@ -76,10 +94,10 @@
             </div>
         }
 
-        @if (Model.YouTube.IsNotNullOrEmpty()) {
+        @if (Model.Song.YouTube.IsNotNullOrEmpty()) {
             <br />
             <div class="embed-responsive embed-responsive-16by9 shadow-lg">
-                <iframe id="YouTubeFrame" width="560" height="600" src="@Model.YouTube" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe id="YouTubeFrame" width="560" height="600" src="@Model.Song.YouTube" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         }
 
