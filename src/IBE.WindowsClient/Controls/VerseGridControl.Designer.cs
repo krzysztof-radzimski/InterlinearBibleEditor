@@ -67,12 +67,12 @@ namespace IBE.WindowsClient.Controls {
             this.wbGrammarCodes = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tabSettings = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
+            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
+            this.txtStoryTextLevel2 = new DevExpress.XtraEditors.TextEdit();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.txtStoryTextLevel1 = new DevExpress.XtraEditors.TextEdit();
             this.cbStartFromNewLine = new DevExpress.XtraEditors.CheckEdit();
             this.splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
-            this.txtStoryTextLevel2 = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1)).BeginInit();
@@ -104,9 +104,9 @@ namespace IBE.WindowsClient.Controls {
             this.tabSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
             this.tablePanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel2.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // gridControl
@@ -119,7 +119,7 @@ namespace IBE.WindowsClient.Controls {
             this.repositoryItemCheckEdit1,
             this.repositoryItemCheckEdit2,
             this.repositoryItemMemoEdit1});
-            this.gridControl.Size = new System.Drawing.Size(1294, 400);
+            this.gridControl.Size = new System.Drawing.Size(1294, 450);
             this.gridControl.TabIndex = 0;
             this.gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.layoutView1});
@@ -164,9 +164,7 @@ namespace IBE.WindowsClient.Controls {
             // 
             // colNumber
             // 
-            this.colNumber.AppearanceCell.BackColor = System.Drawing.Color.DimGray;
             this.colNumber.AppearanceCell.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.colNumber.AppearanceCell.Options.UseBackColor = true;
             this.colNumber.AppearanceCell.Options.UseFont = true;
             this.colNumber.AppearanceCell.Options.UseTextOptions = true;
             this.colNumber.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
@@ -191,11 +189,11 @@ namespace IBE.WindowsClient.Controls {
             // 
             // colStrongsCode
             // 
-            this.colStrongsCode.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.colStrongsCode.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.colStrongsCode.AppearanceCell.Options.UseForeColor = true;
             this.colStrongsCode.AppearanceCell.Options.UseTextOptions = true;
             this.colStrongsCode.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            this.colStrongsCode.AppearanceHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.colStrongsCode.AppearanceHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.colStrongsCode.AppearanceHeader.Options.UseForeColor = true;
             this.colStrongsCode.Caption = "Strong\'s Code";
             this.colStrongsCode.FieldName = "StrongsCode";
@@ -286,7 +284,7 @@ namespace IBE.WindowsClient.Controls {
             // colTranslation
             // 
             this.colTranslation.AppearanceCell.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.colTranslation.AppearanceCell.ForeColor = System.Drawing.Color.Yellow;
+            this.colTranslation.AppearanceCell.ForeColor = System.Drawing.Color.Gold;
             this.colTranslation.AppearanceCell.Options.UseFont = true;
             this.colTranslation.AppearanceCell.Options.UseForeColor = true;
             this.colTranslation.AppearanceCell.Options.UseTextOptions = true;
@@ -303,7 +301,7 @@ namespace IBE.WindowsClient.Controls {
             this.layoutViewField_layoutViewColumn1_4.EditorPreferredWidth = 10;
             this.layoutViewField_layoutViewColumn1_4.Location = new System.Drawing.Point(0, 110);
             this.layoutViewField_layoutViewColumn1_4.Name = "layoutViewField_layoutViewColumn1_4";
-            this.layoutViewField_layoutViewColumn1_4.Size = new System.Drawing.Size(302, 22);
+            this.layoutViewField_layoutViewColumn1_4.Size = new System.Drawing.Size(302, 18);
             this.layoutViewField_layoutViewColumn1_4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutViewField_layoutViewColumn1_4.TextVisible = false;
             // 
@@ -324,7 +322,7 @@ namespace IBE.WindowsClient.Controls {
             // layoutViewField_layoutViewColumn1_5
             // 
             this.layoutViewField_layoutViewColumn1_5.EditorPreferredWidth = 10;
-            this.layoutViewField_layoutViewColumn1_5.Location = new System.Drawing.Point(0, 132);
+            this.layoutViewField_layoutViewColumn1_5.Location = new System.Drawing.Point(0, 128);
             this.layoutViewField_layoutViewColumn1_5.Name = "layoutViewField_layoutViewColumn1_5";
             this.layoutViewField_layoutViewColumn1_5.Size = new System.Drawing.Size(302, 20);
             this.layoutViewField_layoutViewColumn1_5.TextSize = new System.Drawing.Size(79, 13);
@@ -348,19 +346,15 @@ namespace IBE.WindowsClient.Controls {
             // layoutViewField_layoutViewColumn1_6
             // 
             this.layoutViewField_layoutViewColumn1_6.EditorPreferredWidth = 10;
-            this.layoutViewField_layoutViewColumn1_6.Location = new System.Drawing.Point(0, 152);
+            this.layoutViewField_layoutViewColumn1_6.Location = new System.Drawing.Point(0, 148);
             this.layoutViewField_layoutViewColumn1_6.Name = "layoutViewField_layoutViewColumn1_6";
             this.layoutViewField_layoutViewColumn1_6.Size = new System.Drawing.Size(302, 20);
             this.layoutViewField_layoutViewColumn1_6.TextSize = new System.Drawing.Size(79, 13);
             // 
             // colFootnote
             // 
-            this.colFootnote.AppearanceCell.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.colFootnote.AppearanceCell.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.colFootnote.AppearanceCell.ForeColor = System.Drawing.Color.LemonChiffon;
-            this.colFootnote.AppearanceCell.Options.UseBackColor = true;
             this.colFootnote.AppearanceCell.Options.UseFont = true;
-            this.colFootnote.AppearanceCell.Options.UseForeColor = true;
             this.colFootnote.AppearanceCell.Options.UseTextOptions = true;
             this.colFootnote.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.colFootnote.Caption = "Footnote";
@@ -382,9 +376,9 @@ namespace IBE.WindowsClient.Controls {
             this.layoutViewField_layoutViewColumn1_7.AppearanceItemCaption.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.layoutViewField_layoutViewColumn1_7.AppearanceItemCaption.Options.UseFont = true;
             this.layoutViewField_layoutViewColumn1_7.EditorPreferredWidth = 300;
-            this.layoutViewField_layoutViewColumn1_7.Location = new System.Drawing.Point(0, 172);
+            this.layoutViewField_layoutViewColumn1_7.Location = new System.Drawing.Point(0, 168);
             this.layoutViewField_layoutViewColumn1_7.Name = "layoutViewField_layoutViewColumn1_7";
-            this.layoutViewField_layoutViewColumn1_7.Size = new System.Drawing.Size(302, 70);
+            this.layoutViewField_layoutViewColumn1_7.Size = new System.Drawing.Size(302, 71);
             this.layoutViewField_layoutViewColumn1_7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutViewField_layoutViewColumn1_7.TextVisible = false;
             // 
@@ -410,16 +404,16 @@ namespace IBE.WindowsClient.Controls {
             this.tabPane.Controls.Add(this.tabGrammarCode);
             this.tabPane.Controls.Add(this.tabSettings);
             this.tabPane.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tabPane.Location = new System.Drawing.Point(0, 410);
+            this.tabPane.Location = new System.Drawing.Point(0, 460);
             this.tabPane.Name = "tabPane";
             this.tabPane.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tabVerseTranslations,
             this.tabStrongDictionary,
             this.tabGrammarCode,
             this.tabSettings});
-            this.tabPane.RegularSize = new System.Drawing.Size(1294, 300);
+            this.tabPane.RegularSize = new System.Drawing.Size(1294, 250);
             this.tabPane.SelectedPage = this.tabVerseTranslations;
-            this.tabPane.Size = new System.Drawing.Size(1294, 300);
+            this.tabPane.Size = new System.Drawing.Size(1294, 250);
             this.tabPane.TabIndex = 1;
             this.tabPane.TabStop = false;
             this.tabPane.Text = "tabPane1";
@@ -429,7 +423,7 @@ namespace IBE.WindowsClient.Controls {
             this.tabVerseTranslations.Caption = "Translations";
             this.tabVerseTranslations.Controls.Add(this.gridTranslations);
             this.tabVerseTranslations.Name = "tabVerseTranslations";
-            this.tabVerseTranslations.Size = new System.Drawing.Size(1294, 275);
+            this.tabVerseTranslations.Size = new System.Drawing.Size(1294, 225);
             // 
             // gridTranslations
             // 
@@ -437,7 +431,7 @@ namespace IBE.WindowsClient.Controls {
             this.gridTranslations.Location = new System.Drawing.Point(0, 0);
             this.gridTranslations.MainView = this.viewTranslations;
             this.gridTranslations.Name = "gridTranslations";
-            this.gridTranslations.Size = new System.Drawing.Size(1294, 275);
+            this.gridTranslations.Size = new System.Drawing.Size(1294, 225);
             this.gridTranslations.TabIndex = 0;
             this.gridTranslations.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.viewTranslations});
@@ -452,7 +446,6 @@ namespace IBE.WindowsClient.Controls {
             this.viewTranslations.OptionsBehavior.Editable = false;
             this.viewTranslations.OptionsBehavior.ReadOnly = true;
             this.viewTranslations.OptionsView.BestFitMode = DevExpress.XtraGrid.Views.Grid.GridBestFitMode.Full;
-            this.viewTranslations.OptionsView.ColumnAutoWidth = false;
             this.viewTranslations.OptionsView.ShowColumnHeaders = false;
             this.viewTranslations.OptionsView.ShowDetailButtons = false;
             this.viewTranslations.OptionsView.ShowGroupExpandCollapseButtons = false;
@@ -657,10 +650,29 @@ namespace IBE.WindowsClient.Controls {
             this.tablePanel1.Size = new System.Drawing.Size(1294, 275);
             this.tablePanel1.TabIndex = 3;
             // 
+            // labelControl5
+            // 
+            this.tablePanel1.SetColumn(this.labelControl5, 1);
+            this.labelControl5.Location = new System.Drawing.Point(16, 66);
+            this.labelControl5.Name = "labelControl5";
+            this.tablePanel1.SetRow(this.labelControl5, 3);
+            this.labelControl5.Size = new System.Drawing.Size(91, 13);
+            this.labelControl5.TabIndex = 3;
+            this.labelControl5.Text = "Story title - level 2";
+            // 
+            // txtStoryTextLevel2
+            // 
+            this.tablePanel1.SetColumn(this.txtStoryTextLevel2, 1);
+            this.txtStoryTextLevel2.Location = new System.Drawing.Point(16, 89);
+            this.txtStoryTextLevel2.Name = "txtStoryTextLevel2";
+            this.tablePanel1.SetRow(this.txtStoryTextLevel2, 4);
+            this.txtStoryTextLevel2.Size = new System.Drawing.Size(1275, 20);
+            this.txtStoryTextLevel2.TabIndex = 3;
+            // 
             // labelControl4
             // 
             this.tablePanel1.SetColumn(this.labelControl4, 1);
-            this.labelControl4.Location = new System.Drawing.Point(16, 27);
+            this.labelControl4.Location = new System.Drawing.Point(16, 23);
             this.labelControl4.Name = "labelControl4";
             this.tablePanel1.SetRow(this.labelControl4, 1);
             this.labelControl4.Size = new System.Drawing.Size(91, 13);
@@ -670,7 +682,7 @@ namespace IBE.WindowsClient.Controls {
             // txtStoryTextLevel1
             // 
             this.tablePanel1.SetColumn(this.txtStoryTextLevel1, 1);
-            this.txtStoryTextLevel1.Location = new System.Drawing.Point(16, 46);
+            this.txtStoryTextLevel1.Location = new System.Drawing.Point(16, 43);
             this.txtStoryTextLevel1.Name = "txtStoryTextLevel1";
             this.tablePanel1.SetRow(this.txtStoryTextLevel1, 2);
             this.txtStoryTextLevel1.Size = new System.Drawing.Size(1275, 20);
@@ -689,30 +701,11 @@ namespace IBE.WindowsClient.Controls {
             // splitterControl1
             // 
             this.splitterControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitterControl1.Location = new System.Drawing.Point(0, 400);
+            this.splitterControl1.Location = new System.Drawing.Point(0, 450);
             this.splitterControl1.Name = "splitterControl1";
             this.splitterControl1.Size = new System.Drawing.Size(1294, 10);
             this.splitterControl1.TabIndex = 2;
             this.splitterControl1.TabStop = false;
-            // 
-            // txtStoryTextLevel2
-            // 
-            this.tablePanel1.SetColumn(this.txtStoryTextLevel2, 1);
-            this.txtStoryTextLevel2.Location = new System.Drawing.Point(16, 98);
-            this.txtStoryTextLevel2.Name = "txtStoryTextLevel2";
-            this.tablePanel1.SetRow(this.txtStoryTextLevel2, 4);
-            this.txtStoryTextLevel2.Size = new System.Drawing.Size(1275, 20);
-            this.txtStoryTextLevel2.TabIndex = 3;
-            // 
-            // labelControl5
-            // 
-            this.tablePanel1.SetColumn(this.labelControl5, 1);
-            this.labelControl5.Location = new System.Drawing.Point(16, 75);
-            this.labelControl5.Name = "labelControl5";
-            this.tablePanel1.SetRow(this.labelControl5, 3);
-            this.labelControl5.Size = new System.Drawing.Size(91, 13);
-            this.labelControl5.TabIndex = 3;
-            this.labelControl5.Text = "Story title - level 2";
             // 
             // VerseGridControl
             // 
@@ -757,9 +750,9 @@ namespace IBE.WindowsClient.Controls {
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
             this.tablePanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel2.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
