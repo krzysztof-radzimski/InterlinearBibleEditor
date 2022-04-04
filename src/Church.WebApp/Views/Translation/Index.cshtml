@@ -686,7 +686,7 @@ else {
 
                 @if (footNotes.Count > 0) {
                     <hr style="max-width: 30%;" />
-                    <div class="lh-sm fs-6" style="text-align: left">
+                    <div id="footnotes" class="lh-sm fs-6" style="text-align: left">
                         @foreach (var item in footNotes) {
                             @Html.Raw(item)
                         }
@@ -779,12 +779,12 @@ else {
 
                     var text = " " + verse.Text;
                     if (text.Contains("<n>") && text.Contains("*")) {
-                        var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\*";
+                        var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\*\·";
                         var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
                         var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
                         var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
                         var f4 = $@"\[\*\*\*\*\s?(?<f4>[{footNoteTextPatternFragment}]+)\]";
-                        var f5 = $@"\[\*\*\*\*\*\s?(?<f4>[{footNoteTextPatternFragment}]+)\]";
+                        var f5 = $@"\[\*\*\*\*\*\s?(?<f5>[{footNoteTextPatternFragment}]+)\]";
                         var footNoteTextPattern = $@"\<n\>{f1}(\s+)?({f2})?(\s+)?({f3})?(\s+)?({f4})?(\s+)?({f5})?\</n\>";
 
                         var f1Index = 0;
@@ -922,7 +922,7 @@ else {
 
                 @if (footNotes.Count > 0) {
                     <hr style="max-width: 30%;" />
-                    <div class="lh-sm fs-6" style="text-align: left">
+                    <div id="footnotes" class="lh-sm fs-6" style="text-align: left">
                         @foreach (var item in footNotes) {
                             @Html.Raw(item)
                         }

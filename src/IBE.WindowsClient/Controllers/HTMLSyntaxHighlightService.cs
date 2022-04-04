@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DevExpress.XtraRichEdit.Services;
-using DevExpress.XtraRichEdit.API.Native;
-using DevExpress.CodeParser;
-using System.Drawing;
+﻿using DevExpress.CodeParser;
 using DevExpress.XtraRichEdit;
+using DevExpress.XtraRichEdit.API.Native;
+using DevExpress.XtraRichEdit.Services;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace IBE.WindowsClient.Controllers {
     public class HTMLSyntaxHighlightService : ISyntaxHighlightService {

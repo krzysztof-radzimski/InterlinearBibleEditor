@@ -9,25 +9,6 @@ using System.Xml.Linq;
 using WBST.Bibliography.Controllers;
 using Office = Microsoft.Office.Core;
 
-// TODO:  Follow these steps to enable the Ribbon (XML) item:
-
-// 1: Copy the following code block into the ThisAddin, ThisWorkbook, or ThisDocument class.
-
-//  protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
-//  {
-//      return new Ribbon1();
-//  }
-
-// 2. Create callback methods in the "Ribbon Callbacks" region of this class to handle user
-//    actions, such as clicking a button. Note: if you have exported this Ribbon from the Ribbon designer,
-//    move your code from the event handlers to the callback methods and modify the code to work with the
-//    Ribbon extensibility (RibbonX) programming model.
-
-// 3. Assign attributes to the control tags in the Ribbon XML file to identify the appropriate callback methods in your code.  
-
-// For more information, see the Ribbon XML documentation in the Visual Studio Tools for Office Help.
-
-
 namespace WBST.Bibliography {
     [ComVisible(true)]
     public class Ribbon : Office.IRibbonExtensibility {
@@ -134,7 +115,9 @@ namespace WBST.Bibliography {
                             using (var controller = new ImportMobiController()) { controller.Execute(); }
                             break;
                         }
-                    case "btnRemoveOrphans": { RemoveOrphans(); break; }
+                    case "btnRemoveOrphans": {
+                            using (var controller = new RemoveOrphansController()) { controller.Execute(); }
+                            break; }
                 }
             }
         }
@@ -170,49 +153,5 @@ namespace WBST.Bibliography {
         }
 
         #endregion
-
-        private void RemoveOrphans() {
-            RemoveOrphans(
-                "o", "a", "i", "u", "w", "z", "a", 
-                
-                "(z", "(o", "(a", "(i", "(u", "(w", "(a", "o", "i", 
-                "[z", "[o", "[a", "[i", "[u", "[w", "[a", "[o", "[i",
-
-                "O", "A", "I", "U", "W", "Z", "A",
-
-                "(Z", "(O", "(A", "(I", "(U", "(W", "(A", "O", "I",
-                "[Z", "[O", "[A", "[I", "[U", "[W", "[A", "[O", "[I",
-
-                "1", "2", "3", "4", "5", "6", "7", "8", "9",
-                "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
-                "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
-                "30", "31", "32", "33", "34", "35", "36", "37", "38", "39",
-                "40", "41", "42", "43", "44", "45", "46", "47", "48", "49",
-                "50", "51", "52", "53", "54", "55", "56", "57", "58", "59",
-                "60", "61", "62", "63", "64", "65", "66", "67", "68", "69",
-
-                "1.", "2.", "3.", "4.", "5.", "6.", "7.", "8.", "9.",
-                "10.", "11.", "12.", "13.", "14.", "15.", "16.", "17.", "18.", "19.",
-                "20.", "21.", "22.", "23.", "24.", "25.", "26.", "27.", "28.", "29.",
-                "30.", "31.", "32.", "33.", "34.", "35.", "36.", "37.", "38.", "39.",
-                "40.", "41.", "42.", "43.", "44.", "45.", "46.", "47.", "48.", "49.",
-                "50.", "51.", "52.", "53.", "54.", "55.", "56.", "57.", "58.", "59.",
-                "60.", "61.", "62.", "63.", "64.", "65.", "66.", "67.", "68.", "69.");
-        }
-
-        private void RemoveOrphans(params string[] table) {
-            var doc = Globals.ThisAddIn.Application.ActiveDocument;
-            foreach (string s in table) {
-                string findText = $" {s} ";
-                string replaceWith = $" {s}\u00A0";
-                var find = doc.Range().Find;
-                find.ClearFormatting();
-                find.Text = findText;
-                find.MatchCase = true;
-                find.Replacement.ClearFormatting();
-                find.Replacement.Text = replaceWith;
-                find.Execute(Replace: Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll, Forward: true, Wrap: Microsoft.Office.Interop.Word.WdFindWrap.wdFindContinue);
-            }
-        }
     }
 }

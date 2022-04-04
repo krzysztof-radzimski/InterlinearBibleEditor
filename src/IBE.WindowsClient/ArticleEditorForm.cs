@@ -14,6 +14,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -89,9 +90,6 @@ namespace IBE.WindowsClient {
             txtType.Properties.DataSource = list;
         }
         private void btnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            //var filePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".html");
-            //editor.SaveDocument(filePath, DocumentFormat.Html);
-            //System.Diagnostics.Process.Start(filePath);
             if (Article.IsNotNull()) {
                 var fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".docx");
                 editor.SaveDocument(fileName, DocumentFormat.OpenXml);
@@ -101,8 +99,9 @@ namespace IBE.WindowsClient {
                 }
 
                 var data = editor.SaveDocument(XHtmlDocumentFormat.Id);
-                Article.Text = Encoding.UTF8.GetString(data);
-
+                var articleHtml = Encoding.UTF8.GetString(data);
+                articleHtml = UpdateArticleHtml(articleHtml);
+                Article.Text = articleHtml;
                 Article.Date = txtDate.DateTime;
                 Article.AuthorName = txtAuthor.Text;
                 Article.Lead = txtLead.Text;
@@ -134,23 +133,42 @@ namespace IBE.WindowsClient {
             }
         }
 
-        private void simpleButton1_Click(object sender, EventArgs e) {
-            var fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".html");
-            editor.SaveDocument(fileName, XHtmlDocumentFormat.Id);
+        private string UpdateArticleHtml(string articleHtml) {
+            var patternFontSize = @"font\-size\:\s?[0-9]+px;";
+            articleHtml = Regex.Replace(articleHtml, patternFontSize, string.Empty);
+
+            var patternEmptyStyles = @"\sstyle=""(\s+)?""";
+            articleHtml = Regex.Replace(articleHtml, patternEmptyStyles, string.Empty);
+
+            return articleHtml;
+        }
+
+        private void btnPreviewHtml_Click(object sender, EventArgs e) {
+            var name = Guid.NewGuid().ToString();
+            var fileName = Path.Combine(Path.GetTempPath(), $"{name}.html");
+#if DEBUG
+            //var fileNameDocx = Path.Combine(Path.GetTempPath(), $"{name}.docx");
+            //editor.SaveDocument(fileNameDocx, DocumentFormat.OpenXml);
+#endif
+            var data = editor.SaveDocument(XHtmlDocumentFormat.Id);
+            var articleHtml = Encoding.UTF8.GetString(data);
+            articleHtml = UpdateArticleHtml(articleHtml);
+            File.WriteAllText(fileName, articleHtml, Encoding.UTF8);
+            //editor.SaveDocument(fileName, XHtmlDocumentFormat.Id);
             System.Diagnostics.Process.Start(fileName);
         }
 
         private void btnQuote_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-           //var pos = editor.Document.CaretPosition;
-           var sel = editor.Document.Selection;
-           var pars = editor.Document.Paragraphs.Get(sel);
+            //var pos = editor.Document.CaretPosition;
+            var sel = editor.Document.Selection;
+            var pars = editor.Document.Paragraphs.Get(sel);
             //var par = editor.Document.Paragraphs.Get(pos);
             var style = editor.Document.ParagraphStyles["Quote"];
             foreach (var par in pars) {
                 if (style.IsNotNull()) {
                     par.Style = style;
                 }
-            }           
+            }
         }
     }
 }

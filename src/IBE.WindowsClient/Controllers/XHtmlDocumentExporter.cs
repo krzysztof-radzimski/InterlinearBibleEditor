@@ -212,7 +212,7 @@ namespace IBE.WindowsClient.Controllers {
                     }
                     DocumentContentWriter.Write("<li>");
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "heading1") {
+                else if (IsStyle(paragraph.ParagraphStyle, "heading1")) {
                     if (inList) {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
@@ -220,42 +220,42 @@ namespace IBE.WindowsClient.Controllers {
                     DocumentContentWriter.Write("<h1>");
 
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "heading2") {
+                else if (IsStyle(paragraph.ParagraphStyle, "heading2")) {
                     if (inList) {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
                     }
                     DocumentContentWriter.Write("<h2>");
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "heading3") {
+                else if (IsStyle(paragraph.ParagraphStyle, "heading3")) {
                     if (inList) {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
                     }
                     DocumentContentWriter.Write("<h3>");
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "heading4") {
+                else if (IsStyle(paragraph.ParagraphStyle, "heading4")) {
                     if (inList) {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
                     }
                     DocumentContentWriter.Write("<h4>");
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "heading5") {
+                else if (IsStyle(paragraph.ParagraphStyle, "heading5")) {
                     if (inList) {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
                     }
                     DocumentContentWriter.Write("<h5>");
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "quote") {
+                else if (IsStyle(paragraph.ParagraphStyle, "quote")) {
                     if (inList) {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
                     }
                     DocumentContentWriter.Write(@"<p class=""mt-3 quote"">");
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "normal") {
+                else if (IsStyle(paragraph.ParagraphStyle, "normal")) {
                     if (inList) {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
@@ -283,25 +283,25 @@ namespace IBE.WindowsClient.Controllers {
                 if (number.IsNotNullOrEmpty()) {
                     DocumentContentWriter.Write("</li>");
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "heading1") {
+                else if (IsStyle(paragraph.ParagraphStyle, "heading1")) {
                     DocumentContentWriter.Write("</h1>");
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "heading2") {
+                else if (IsStyle(paragraph.ParagraphStyle, "heading2")) {
                     DocumentContentWriter.Write("</h2>");
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "heading3") {
+                else if (IsStyle(paragraph.ParagraphStyle, "heading3")) {
                     DocumentContentWriter.Write("</h3>");
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "heading4") {
+                else if (IsStyle(paragraph.ParagraphStyle, "heading4")) {
                     DocumentContentWriter.Write("</h4>");
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "heading5") {
+                else if (IsStyle(paragraph.ParagraphStyle, "heading5")) {
                     DocumentContentWriter.Write("</h5>");
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "normal") {
+                else if (IsStyle(paragraph.ParagraphStyle, "normal")) {
                     DocumentContentWriter.Write(@"</p>");
                 }
-                else if (paragraph.ParagraphStyle.StyleName.ToLower().Replace(" ", "") == "quote") {
+                else if (IsStyle(paragraph.ParagraphStyle, "quote")) {
                     DocumentContentWriter.Write(@"</p>");
                 }
             }
@@ -310,6 +310,14 @@ namespace IBE.WindowsClient.Controllers {
             }
 
             return pi;
+        }
+
+        bool IsStyle(ParagraphStyle style, string styleName) {
+            if (style.IsNotNull()) {
+                if (style.StyleName.ToLower().Replace(" ", "") == styleName) { return true; }
+                return IsStyle(style.Parent, styleName);
+            }
+            return default;
         }
 
         HyperlinkInfo GetHyperlinkInfo(TextRun run) {

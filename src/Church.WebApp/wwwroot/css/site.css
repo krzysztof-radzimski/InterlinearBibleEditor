@@ -28,6 +28,7 @@
     width: 100px;
     text-align: center;
 }
+
 .pill-white-lg {
     border-radius: 10px;
     background-color: white;
@@ -91,7 +92,10 @@
 .mw-60-per {
     min-width: 60%;
 }
-.mw-138 {min-width: 138px;}
+
+.mw-138 {
+    min-width: 138px;
+}
 
 a.navbar-brand {
     white-space: normal;

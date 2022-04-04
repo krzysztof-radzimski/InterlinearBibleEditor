@@ -148,7 +148,7 @@ namespace IBE.WindowsClient {
             this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             this.txtType = new DevExpress.XtraEditors.LookUpEdit();
-            this.simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
+            this.btnPreviewHtml = new DevExpress.XtraEditors.SimpleButton();
             this.txtLead = new DevExpress.XtraEditors.MemoEdit();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.txtAuthor = new DevExpress.XtraEditors.TextEdit();
@@ -1129,7 +1129,7 @@ namespace IBE.WindowsClient {
             this.tablePanel1.Controls.Add(this.labelControl6);
             this.tablePanel1.Controls.Add(this.labelControl5);
             this.tablePanel1.Controls.Add(this.txtType);
-            this.tablePanel1.Controls.Add(this.simpleButton1);
+            this.tablePanel1.Controls.Add(this.btnPreviewHtml);
             this.tablePanel1.Controls.Add(this.txtLead);
             this.tablePanel1.Controls.Add(this.labelControl4);
             this.tablePanel1.Controls.Add(this.txtAuthor);
@@ -1208,16 +1208,16 @@ namespace IBE.WindowsClient {
             this.txtType.Size = new System.Drawing.Size(352, 20);
             this.txtType.TabIndex = 9;
             // 
-            // simpleButton1
+            // btnPreviewHtml
             // 
-            this.tablePanel1.SetColumn(this.simpleButton1, 0);
-            this.simpleButton1.Location = new System.Drawing.Point(3, 259);
-            this.simpleButton1.Name = "simpleButton1";
-            this.tablePanel1.SetRow(this.simpleButton1, 8);
-            this.simpleButton1.Size = new System.Drawing.Size(352, 20);
-            this.simpleButton1.TabIndex = 8;
-            this.simpleButton1.Text = "HTML Preview";
-            this.simpleButton1.Click += new System.EventHandler(this.simpleButton1_Click);
+            this.tablePanel1.SetColumn(this.btnPreviewHtml, 0);
+            this.btnPreviewHtml.Location = new System.Drawing.Point(3, 259);
+            this.btnPreviewHtml.Name = "simpleButton1";
+            this.tablePanel1.SetRow(this.btnPreviewHtml, 8);
+            this.btnPreviewHtml.Size = new System.Drawing.Size(352, 20);
+            this.btnPreviewHtml.TabIndex = 8;
+            this.btnPreviewHtml.Text = "HTML Preview";
+            this.btnPreviewHtml.Click += new System.EventHandler(this.btnPreviewHtml_Click);
             // 
             // txtLead
             // 
@@ -1475,7 +1475,7 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraEditors.MemoEdit txtLead;
         private DevExpress.XtraEditors.LabelControl labelControl4;
         private DevExpress.XtraEditors.TextEdit txtAuthor;
-        private DevExpress.XtraEditors.SimpleButton simpleButton1;
+        private DevExpress.XtraEditors.SimpleButton btnPreviewHtml;
         private DevExpress.XtraEditors.LookUpEdit txtType;
         private DevExpress.XtraEditors.PictureEdit txtAuthorPicture;
         private DevExpress.XtraEditors.LabelControl labelControl6;
