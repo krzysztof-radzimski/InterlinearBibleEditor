@@ -14,6 +14,7 @@
 using DevExpress.Xpo;
 using IBE.Common.Extensions;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -26,7 +27,7 @@ namespace IBE.Data.Model {
         private string pronunciation;
         private string shortDefinition;
         private string definition;
-        
+
         public Language Lang {
             get { return lang; }
             set { SetPropertyValue(nameof(Lang), ref lang, value); }
@@ -37,8 +38,8 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(Code), ref code, value); }
         }
 
-        [NonPersistent]
-        public string Topic { get { return $"{Lang.GetCategory()}{Code}"; } }
+        [NonPersistent] public string Topic { get { return $"{Lang.GetCategory()}{Code}"; } }
+        [NonPersistent] public string FullCode { get { return $"{Lang.GetCategory()}{Code.ToString().PadLeft(4, '0')}"; } }
 
         [Size(200)]
         public string Transliteration {

@@ -10,8 +10,12 @@
 @{
     var prev = Model.Code - 1;
     var next = Model.Code + 1;
-    var definition = Model.Definition.Replace(@"href='S:G", @"href='StrongsCode?id=G").Replace(@"href='S:H", @"href='StrongsCode?id=H");
-    var pattern = @"href\=\'B\:(?<book>[0-9]+)\s(?<chapter>[0-9]+)\:(?<verse>[0-9]+)\'";
+    var definition = Model.Definition
+        .Replace(@"href=""S:G", @"href=""StrongsCode?id=G")
+        .Replace(@"href=""S:H", @"href=""StrongsCode?id=H")
+        .Replace(@"href='S:G", @"href='StrongsCode?id=G")
+        .Replace(@"href='S:H", @"href='StrongsCode?id=H");
+    var pattern = @"href\=[\'\""]B\:(?<book>[0-9]+)\s(?<chapter>[0-9]+)\:(?<verse>[0-9]+)[\'\""]";
     definition = System.Text.RegularExpressions.Regex.Replace(definition, pattern, delegate (System.Text.RegularExpressions.Match m) {
         var numberOfBook = m.Groups["book"].Value.ToInt();
         var numberOfChapter = m.Groups["chapter"].Value.ToInt();

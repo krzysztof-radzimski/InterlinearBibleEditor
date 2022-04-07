@@ -75,11 +75,12 @@ namespace IBE.WindowsClient {
             this.view.OptionsView.ShowDetailButtons = false;
             this.view.OptionsView.ShowGroupPanel = false;
             this.view.OptionsView.ShowIndicator = false;
+            this.view.DoubleClick += new System.EventHandler(this.view_DoubleClick);
             // 
             // colTopic
             // 
             this.colTopic.Caption = "Topic";
-            this.colTopic.FieldName = "Topic";
+            this.colTopic.FieldName = "FullCode";
             this.colTopic.Name = "colTopic";
             this.colTopic.Visible = true;
             this.colTopic.VisibleIndex = 0;
