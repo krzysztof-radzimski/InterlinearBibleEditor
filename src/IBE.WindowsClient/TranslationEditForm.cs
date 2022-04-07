@@ -53,6 +53,7 @@ namespace IBE.WindowsClient {
             btnAddChapter.Enabled = false;
             btnAddVerse.Enabled = false;
             btnAddVerses.Enabled = false;
+            btnRecognizeChapterContent.Enabled = false;
 
             tabs.ShowTabHeader = DevExpress.Utils.DefaultBoolean.False;
         }
@@ -529,6 +530,7 @@ namespace IBE.WindowsClient {
                         btnAddVerse.Enabled = false;
                         btnAddVerses.Enabled = false;
                         btnDeleteBook.Enabled = false;
+                        btnRecognizeChapterContent.Enabled = false;
                         tabs.Visible = false;
                     }
                     else if (_record.Type == IbeTreeItemType.Book) {
@@ -618,6 +620,7 @@ namespace IBE.WindowsClient {
                 btnAddVerse.Enabled = false;
                 btnAddVerses.Enabled = false;
                 btnDeleteBook.Enabled = false;
+                btnRecognizeChapterContent.Enabled = false;
 
                 if (Object.Type == TranslationType.Interlinear && !e.IsNew) {
                     var v = new XPQuery<Verse>(Object.Session).Where(x => x.Oid == e.Tag.ToInt()).FirstOrDefault();
@@ -647,6 +650,7 @@ namespace IBE.WindowsClient {
                 btnAddChapter.Enabled = false;
                 btnAddVerse.Enabled = true;
                 btnAddVerses.Enabled = true;
+                btnRecognizeChapterContent.Enabled = true;
                 btnDeleteBook.Enabled = false;
 
                 tabs.SelectedTabPage = tabChapter;
@@ -665,6 +669,7 @@ namespace IBE.WindowsClient {
             btnAddChapter.Enabled = true;
             btnAddVerse.Enabled = false;
             btnAddVerses.Enabled = false;
+            btnRecognizeChapterContent.Enabled = false;
 
             tabs.SelectedTabPage = tabBook;
             tabs.Visible = true;
@@ -781,6 +786,39 @@ namespace IBE.WindowsClient {
                         (Object.Session as UnitOfWork).CommitChanges();
                         treeList.ClearNodes();
                         LoadTree();
+                    }
+                }
+            }
+        }
+
+        private void btnRecognizeChapterContent_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var chapter = treeList.GetDataRecordByNode(treeList.FocusedNode) as IbeTreeItem;
+            if (chapter.Type == IbeTreeItemType.Chapter) {
+                using (var dlg = new RecognizeChapterContentForm()) {
+                    if (dlg.ShowDialog() == DialogResult.OK) {
+                        var result = dlg.GetRecognizedVerses();
+                        if (result.Count > 0) {
+                            foreach (var recognizedVerse in result) {
+                                var item = new IbeVerseTreeItem() {
+                                    Text = recognizedVerse.Content,
+                                    ParentID = chapter.ID,
+                                    ID = $"{Guid.NewGuid()}",
+                                    IsNew = true,
+                                    Tag = -1,
+                                    Value = String.Empty,
+                                    Number = recognizedVerse.Number,
+                                    StartFromNewLine = false
+                                };
+                                TreeItems.Add(item);
+                            }
+
+                            (chapter as IbeChapterTreeItem).NumberOfVerses = result.Count;
+                            txtChapterNumberOfVerses.Text = (chapter as IbeChapterTreeItem).NumberOfVerses.ToString();
+                            chapter.Changed = true;
+
+                            treeList.RefreshDataSource();
+                            treeList.FocusedNode.Expand();
+                        }
                     }
                 }
             }

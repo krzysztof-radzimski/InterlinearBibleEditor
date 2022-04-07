@@ -543,11 +543,10 @@ else {
                     if (chapter.Subtitles != null && chapter.Subtitles.Count > 0) {
                         var subtitles = chapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).OrderBy(x => x.Level);
                         if (subtitles.Count() > 0) {
+                            <div class="col pb-3">&nbsp;</div>
                             foreach (var story in subtitles) {
-
                                 var storyText = story.Text;
-
-                                <div class="col pb-3">&nbsp;</div>
+                                
                                 if (story.Level == 1) {
                                     <div class="col w-100 fs-5 pb-3 p-2 fw-bold text-center story">@Html.Raw(storyText)</div>
                                 }
