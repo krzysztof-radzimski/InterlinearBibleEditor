@@ -799,13 +799,15 @@ namespace IBE.WindowsClient {
                         var result = dlg.GetRecognizedVerses();
                         if (result.Count > 0) {
                             foreach (var recognizedVerse in result) {
+                                var __text = recognizedVerse.Content;
+                                if (__text.Length > 40) { __text = __text.Substring(0, 40) + "..."; }
                                 var item = new IbeVerseTreeItem() {
-                                    Text = recognizedVerse.Content,
+                                    Text = $"{recognizedVerse.Number}. {__text}",
                                     ParentID = chapter.ID,
                                     ID = $"{Guid.NewGuid()}",
                                     IsNew = true,
                                     Tag = -1,
-                                    Value = String.Empty,
+                                    Value = recognizedVerse.Content,
                                     Number = recognizedVerse.Number,
                                     StartFromNewLine = false
                                 };
