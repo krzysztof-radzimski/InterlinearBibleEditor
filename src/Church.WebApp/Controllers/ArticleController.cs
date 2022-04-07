@@ -37,7 +37,7 @@ namespace Church.WebApp.Controllers {
                     value = value.Substring(0, value.IndexOf("&"));
                 }
                 var id = value.ToLower().Replace("?id=", "").Trim().ToInt();
-                var article = new XPQuery<Article>(new UnitOfWork()).Where(x => x.Oid == id).FirstOrDefault();
+                var article = new XPQuery<Article>(new UnitOfWork()).Where(x => x.Oid == id && !x.Hidden).FirstOrDefault();
                 if (article.IsNotNull()) {
                     return View(new ArticleControllerModel() { Article = article });
                 }

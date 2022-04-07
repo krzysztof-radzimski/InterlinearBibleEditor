@@ -158,6 +158,7 @@ namespace IBE.WindowsClient {
             this.txtSubject = new DevExpress.XtraEditors.TextEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.sidePanel2 = new DevExpress.XtraEditors.SidePanel();
+            this.cbHidden = new DevExpress.XtraEditors.CheckEdit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemFontEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemRichEditFontSizeEdit1)).BeginInit();
@@ -176,6 +177,7 @@ namespace IBE.WindowsClient {
             ((System.ComponentModel.ISupportInitialize)(this.txtDate.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSubject.Properties)).BeginInit();
             this.sidePanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cbHidden.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // ribbonControl1
@@ -371,7 +373,7 @@ namespace IBE.WindowsClient {
             this.editor.Options.DocumentCapabilities.OleObjects = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.DocumentCapabilities.Tables = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.DocumentCapabilities.TrackChanges = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
-            this.editor.Size = new System.Drawing.Size(986, 711);
+            this.editor.Size = new System.Drawing.Size(986, 774);
             this.editor.TabIndex = 1;
             // 
             // fontSizeIncreaseItem1
@@ -1096,7 +1098,7 @@ namespace IBE.WindowsClient {
             this.sidePanel1.Dock = System.Windows.Forms.DockStyle.Right;
             this.sidePanel1.Location = new System.Drawing.Point(986, 130);
             this.sidePanel1.Name = "sidePanel1";
-            this.sidePanel1.Size = new System.Drawing.Size(359, 711);
+            this.sidePanel1.Size = new System.Drawing.Size(359, 774);
             this.sidePanel1.TabIndex = 3;
             // 
             // tabs
@@ -1107,9 +1109,9 @@ namespace IBE.WindowsClient {
             this.tabs.Name = "tabs";
             this.tabs.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tabSettings});
-            this.tabs.RegularSize = new System.Drawing.Size(358, 711);
+            this.tabs.RegularSize = new System.Drawing.Size(358, 774);
             this.tabs.SelectedPage = this.tabSettings;
-            this.tabs.Size = new System.Drawing.Size(358, 711);
+            this.tabs.Size = new System.Drawing.Size(358, 774);
             this.tabs.TabIndex = 0;
             this.tabs.Text = "tabPane1";
             // 
@@ -1119,12 +1121,13 @@ namespace IBE.WindowsClient {
             this.tabSettings.Controls.Add(this.tablePanel1);
             this.tabSettings.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabSettings.ImageOptions.SvgImage")));
             this.tabSettings.Name = "tabSettings";
-            this.tabSettings.Size = new System.Drawing.Size(358, 667);
+            this.tabSettings.Size = new System.Drawing.Size(358, 730);
             // 
             // tablePanel1
             // 
             this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
+            this.tablePanel1.Controls.Add(this.cbHidden);
             this.tablePanel1.Controls.Add(this.txtAuthorPicture);
             this.tablePanel1.Controls.Add(this.labelControl6);
             this.tablePanel1.Controls.Add(this.labelControl5);
@@ -1155,14 +1158,14 @@ namespace IBE.WindowsClient {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(358, 667);
+            this.tablePanel1.Size = new System.Drawing.Size(358, 730);
             this.tablePanel1.TabIndex = 0;
             // 
             // txtAuthorPicture
@@ -1212,7 +1215,7 @@ namespace IBE.WindowsClient {
             // 
             this.tablePanel1.SetColumn(this.btnPreviewHtml, 0);
             this.btnPreviewHtml.Location = new System.Drawing.Point(3, 259);
-            this.btnPreviewHtml.Name = "simpleButton1";
+            this.btnPreviewHtml.Name = "btnPreviewHtml";
             this.tablePanel1.SetRow(this.btnPreviewHtml, 8);
             this.btnPreviewHtml.Size = new System.Drawing.Size(352, 20);
             this.btnPreviewHtml.TabIndex = 8;
@@ -1313,15 +1316,26 @@ namespace IBE.WindowsClient {
             this.sidePanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sidePanel2.Location = new System.Drawing.Point(0, 130);
             this.sidePanel2.Name = "sidePanel2";
-            this.sidePanel2.Size = new System.Drawing.Size(986, 711);
+            this.sidePanel2.Size = new System.Drawing.Size(986, 774);
             this.sidePanel2.TabIndex = 4;
             this.sidePanel2.Text = "sidePanel2";
+            // 
+            // cbHidden
+            // 
+            this.tablePanel1.SetColumn(this.cbHidden, 0);
+            this.cbHidden.Location = new System.Drawing.Point(3, 655);
+            this.cbHidden.MenuManager = this.ribbonControl1;
+            this.cbHidden.Name = "cbHidden";
+            this.cbHidden.Properties.Caption = "Hidden";
+            this.tablePanel1.SetRow(this.cbHidden, 13);
+            this.cbHidden.Size = new System.Drawing.Size(352, 18);
+            this.cbHidden.TabIndex = 13;
             // 
             // ArticleEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1345, 841);
+            this.ClientSize = new System.Drawing.Size(1345, 904);
             this.Controls.Add(this.sidePanel2);
             this.Controls.Add(this.sidePanel1);
             this.Controls.Add(this.ribbonControl1);
@@ -1347,6 +1361,7 @@ namespace IBE.WindowsClient {
             ((System.ComponentModel.ISupportInitialize)(this.txtDate.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSubject.Properties)).EndInit();
             this.sidePanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cbHidden.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1481,5 +1496,6 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraEditors.LabelControl labelControl6;
         private DevExpress.XtraEditors.LabelControl labelControl5;
         private DevExpress.XtraBars.BarButtonItem btnQuote;
+        private DevExpress.XtraEditors.CheckEdit cbHidden;
     }
 }

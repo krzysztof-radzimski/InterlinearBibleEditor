@@ -32,7 +32,7 @@ namespace Church.WebApp.Controllers {
         }
 
         public IActionResult Index() {
-            var articles = new XPQuery<Article>(new UnitOfWork()).OrderByDescending(x => x.Date).Take(4);
+            var articles = new XPQuery<Article>(new UnitOfWork()).Where(x=>!x.Hidden).OrderByDescending(x => x.Date).Take(4);
             var list = new List<ArticleInfo>();
             foreach (var item in articles) {
                     list.Add(new ArticleInfo() {

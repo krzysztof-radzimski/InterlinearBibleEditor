@@ -29,7 +29,7 @@ namespace Church.WebApp.Controllers {
         }
 
         public IActionResult Index() {
-            var articles = new XPQuery<Article>(new UnitOfWork()).OrderByDescending(x => x.Date);
+            var articles = new XPQuery<Article>(new UnitOfWork()).Where(x=>!x.Hidden).OrderByDescending(x => x.Date);
             var leaded = 4;
             var list = new List<ArticleInfoBase>();
 

@@ -12,6 +12,7 @@ namespace IBE.Data.Model {
         private byte[] documentData;
         private ArticleType type;
         private byte[] authorPicture;
+        private bool hidden;
 
         [Size(200)]
         public string Subject {
@@ -55,6 +56,11 @@ namespace IBE.Data.Model {
         public byte[] AuthorPicture {
             get { return authorPicture; }
             set { SetPropertyValue(nameof(AuthorPicture), ref authorPicture, value); }
+        }
+
+        public bool Hidden {
+            get { return hidden; }
+            set { SetPropertyValue(nameof(Hidden), ref hidden, value); }
         }
 
         public Article(Session session) : base(session) { }

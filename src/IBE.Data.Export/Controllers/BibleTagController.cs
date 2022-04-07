@@ -36,7 +36,7 @@ namespace IBE.Data.Export.Controllers {
             input = System.Text.RegularExpressions.Regex.Replace(input, pattern, delegate (System.Text.RegularExpressions.Match m) {
                 var translationName = model.Translation.Name.Replace("+", "").Replace("'", "");
                 var numberOfBook = m.Groups["book"].Value.ToInt();
-                var bookShortcut = model.Translation.Books.Where(x => x.NumberOfBook == numberOfBook).First().BaseBook.BookShortcut;
+                var bookShortcut = model.Books.Where(x => x.NumberOfBook == numberOfBook).First().BookShortcut;
                 var chapterStart = m.Groups["chapterStart"].Value.ToInt();
                 var chapterEnd = m.Groups["chapterEnd"].Value.ToInt();
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
@@ -51,7 +51,7 @@ namespace IBE.Data.Export.Controllers {
             input = System.Text.RegularExpressions.Regex.Replace(input, pattern, delegate (System.Text.RegularExpressions.Match m) {
                 var translationName = model.Translation.Name.Replace("+", "").Replace("'", "");
                 var numberOfBook = m.Groups["book"].Value.ToInt();
-                var bookShortcut = model.Translation.Books.Where(x => x.NumberOfBook == numberOfBook).First().BaseBook.BookShortcut;
+                var bookShortcut = model.Books.Where(x => x.NumberOfBook == numberOfBook).First().BookShortcut;
                 var chapterStart = m.Groups["chapterStart"].Value.ToInt();
                 var chapterEnd = m.Groups["chapterEnd"].Value.ToInt();
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
@@ -67,7 +67,7 @@ namespace IBE.Data.Export.Controllers {
             input = System.Text.RegularExpressions.Regex.Replace(input, pattern, delegate (System.Text.RegularExpressions.Match m) {
                 var translationName = model.Translation.Name.Replace("+", "").Replace("'", "");
                 var numberOfBook = m.Groups["book"].Value.ToInt();
-                var bookShortcut = model.Translation.Books.Where(x => x.NumberOfBook == numberOfBook).First().BaseBook.BookShortcut;
+                var bookShortcut = model.Books.Where(x => x.NumberOfBook == numberOfBook).First().BookShortcut;
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
 
                 var text = String.Empty;
@@ -90,7 +90,7 @@ namespace IBE.Data.Export.Controllers {
             input = System.Text.RegularExpressions.Regex.Replace(input, pattern, delegate (System.Text.RegularExpressions.Match m) {
                 var translationName = model.Translation.Name.Replace("+", "").Replace("'", "");
                 var numberOfBook = m.Groups["book"].Value.ToInt();
-                var bookShortcut = model.Translation.Books.Where(x => x.NumberOfBook == numberOfBook).First().BaseBook.BookShortcut;
+                var bookShortcut = model.Books.Where(x => x.NumberOfBook == numberOfBook).First().BookShortcut;
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
 
                 var html = String.Empty;
@@ -114,7 +114,7 @@ namespace IBE.Data.Export.Controllers {
             input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
                 var translationName = model.Translation.Name.Replace("+", "").Replace("'", "");
                 var numberOfBook = m.Groups["book"].Value.ToInt();
-                var bookShortcut = model.Translation.Books.Where(x => x.NumberOfBook == numberOfBook).First().BaseBook.BookShortcut;
+                var bookShortcut = model.Books.Where(x => x.NumberOfBook == numberOfBook).First().BookShortcut;
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
                 var verseEnd = m.Groups["verseEnd"].Value.ToInt();
@@ -139,7 +139,7 @@ namespace IBE.Data.Export.Controllers {
             input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
                 var translationName = model.Translation.Name.Replace("+", "").Replace("'", "");
                 var numberOfBook = m.Groups["book"].Value.ToInt();
-                var bookShortcut = model.Translation.Books.Where(x => x.NumberOfBook == numberOfBook).First().BaseBook.BookShortcut;
+                var bookShortcut = model.Books.Where(x => x.NumberOfBook == numberOfBook).First().BookShortcut;
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
                 var verseEnd = m.Groups["verseEnd"].Value.ToInt();
@@ -154,7 +154,7 @@ namespace IBE.Data.Export.Controllers {
             input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
                 var translationName = model.Translation.Name.Replace("+", "").Replace("'", "");
                 var numberOfBook = m.Groups["book"].Value.ToInt();
-                var bookShortcut = model.Translation.Books.Where(x => x.NumberOfBook == numberOfBook).First().BaseBook.BookShortcut;
+                var bookShortcut = model.Books.Where(x => x.NumberOfBook == numberOfBook).First().BookShortcut;
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
 
@@ -172,7 +172,7 @@ namespace IBE.Data.Export.Controllers {
         public string GetInternalVerseText(string input, TranslationControllerModel model) {
             input = System.Text.RegularExpressions.Regex.Replace(input, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\<\/x\>", delegate (System.Text.RegularExpressions.Match m) {
                 var numberOfBook = m.Groups["book"].Value.ToInt();
-                var bookShortcut = model.Translation.Books.Where(x => x.NumberOfBook == numberOfBook).First().BaseBook.BookShortcut;
+                var bookShortcut = model.Books.Where(x => x.NumberOfBook == numberOfBook).First().BookShortcut;
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
                 var verseStart = m.Groups["verseStart"].Value.ToInt();
 

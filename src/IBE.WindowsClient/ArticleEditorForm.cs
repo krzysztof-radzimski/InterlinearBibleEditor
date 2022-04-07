@@ -6,8 +6,6 @@ using IBE.Common.Extensions;
 using IBE.Data.Model;
 using IBE.WindowsClient.Controllers;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -15,8 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace IBE.WindowsClient {
     public partial class ArticleEditorForm : RibbonForm {
@@ -73,6 +69,7 @@ namespace IBE.WindowsClient {
                 txtLead.Text = Article.Lead;
                 txtSubject.Text = Article.Subject;
                 txtDate.DateTime = Article.Date;
+                cbHidden.Checked = Article.Hidden;
 
                 if (Article.DocumentData.IsNotNull()) {
                     editor.LoadDocument(Article.DocumentData);
@@ -107,6 +104,7 @@ namespace IBE.WindowsClient {
                 Article.Lead = txtLead.Text;
                 Article.Subject = txtSubject.Text;
                 Article.Type = (ArticleType)txtType.EditValue;
+                Article.Hidden = cbHidden.Checked;
 
                 if (txtAuthorPicture.Image.IsNotNull()) {
                     var mem = new MemoryStream();

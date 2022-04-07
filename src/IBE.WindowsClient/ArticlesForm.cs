@@ -25,6 +25,7 @@ namespace IBE.WindowsClient {
             view.Properties.Add(new ViewProperty("Date", SortDirection.None, "[Date]", false, true));
             view.Properties.Add(new ViewProperty("Lead", SortDirection.None, "[Lead]", false, true));
             view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+            view.Properties.Add(new ViewProperty("Hidden", SortDirection.None, "[Hidden]", false, true));
             grid.DataSource = view;
             gridView.BestFitColumns();
         }
