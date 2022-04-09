@@ -24,6 +24,7 @@ namespace IBE.WindowsClient.Controls {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VerseGridControl));
             this.gridControl = new DevExpress.XtraGrid.GridControl();
             this.layoutView1 = new DevExpress.XtraGrid.Views.Layout.LayoutView();
             this.colNumber = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
@@ -53,16 +54,11 @@ namespace IBE.WindowsClient.Controls {
             this.gridTranslations = new DevExpress.XtraGrid.GridControl();
             this.viewTranslations = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.tabStrongDictionary = new DevExpress.XtraBars.Navigation.TabNavigationPage();
-            this.wvStrong = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tblStrong = new DevExpress.Utils.Layout.TablePanel();
-            this.txtDefinition = new DevExpress.XtraRichEdit.RichEditControl();
+            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.btnMoreStronsCodeInfo = new DevExpress.XtraEditors.SimpleButton();
+            this.btnEditStrongsCode = new DevExpress.XtraEditors.SimpleButton();
             this.vwStrongLocal = new Microsoft.Web.WebView2.WinForms.WebView2();
-            this.btnSaveStrongDefinition = new DevExpress.XtraEditors.SimpleButton();
-            this.txtShortDefinition = new DevExpress.XtraEditors.TextEdit();
-            this.lblStrongCode = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.tabGrammarCode = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.wbGrammarCodes = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tabSettings = new DevExpress.XtraBars.Navigation.TabNavigationPage();
@@ -73,6 +69,7 @@ namespace IBE.WindowsClient.Controls {
             this.txtStoryTextLevel1 = new DevExpress.XtraEditors.TextEdit();
             this.cbStartFromNewLine = new DevExpress.XtraEditors.CheckEdit();
             this.splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
+            this.btnMoreBLB = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1)).BeginInit();
@@ -94,11 +91,11 @@ namespace IBE.WindowsClient.Controls {
             ((System.ComponentModel.ISupportInitialize)(this.gridTranslations)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.viewTranslations)).BeginInit();
             this.tabStrongDictionary.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.wvStrong)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tblStrong)).BeginInit();
             this.tblStrong.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
+            this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.vwStrongLocal)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtShortDefinition.Properties)).BeginInit();
             this.tabGrammarCode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.wbGrammarCodes)).BeginInit();
             this.tabSettings.SuspendLayout();
@@ -455,148 +452,73 @@ namespace IBE.WindowsClient.Controls {
             // tabStrongDictionary
             // 
             this.tabStrongDictionary.Caption = "Strong";
-            this.tabStrongDictionary.Controls.Add(this.wvStrong);
             this.tabStrongDictionary.Controls.Add(this.tblStrong);
             this.tabStrongDictionary.Name = "tabStrongDictionary";
-            this.tabStrongDictionary.Size = new System.Drawing.Size(1294, 275);
-            // 
-            // wvStrong
-            // 
-            this.wvStrong.CreationProperties = null;
-            this.wvStrong.DefaultBackgroundColor = System.Drawing.Color.Transparent;
-            this.wvStrong.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.wvStrong.Location = new System.Drawing.Point(1023, 0);
-            this.wvStrong.Name = "wvStrong";
-            this.wvStrong.Size = new System.Drawing.Size(271, 275);
-            this.wvStrong.TabIndex = 1;
-            this.wvStrong.ZoomFactor = 1D;
-            this.wvStrong.CoreWebView2InitializationCompleted += new System.EventHandler<Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs>(this.wvStrong_CoreWebView2InitializationCompleted);
+            this.tabStrongDictionary.Size = new System.Drawing.Size(1294, 225);
             // 
             // tblStrong
             // 
             this.tblStrong.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
             new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 100F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 44.33F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 60.67F)});
-            this.tblStrong.Controls.Add(this.txtDefinition);
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
+            this.tblStrong.Controls.Add(this.panelControl1);
             this.tblStrong.Controls.Add(this.vwStrongLocal);
-            this.tblStrong.Controls.Add(this.btnSaveStrongDefinition);
-            this.tblStrong.Controls.Add(this.txtShortDefinition);
-            this.tblStrong.Controls.Add(this.lblStrongCode);
-            this.tblStrong.Controls.Add(this.labelControl3);
-            this.tblStrong.Controls.Add(this.labelControl2);
-            this.tblStrong.Controls.Add(this.labelControl1);
-            this.tblStrong.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tblStrong.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tblStrong.Location = new System.Drawing.Point(0, 0);
             this.tblStrong.Name = "tblStrong";
             this.tblStrong.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F)});
-            this.tblStrong.Size = new System.Drawing.Size(1023, 275);
+            this.tblStrong.Size = new System.Drawing.Size(1294, 225);
             this.tblStrong.TabIndex = 0;
             // 
-            // txtDefinition
+            // panelControl1
             // 
-            this.txtDefinition.ActiveViewType = DevExpress.XtraRichEdit.RichEditViewType.Simple;
-            this.tblStrong.SetColumn(this.txtDefinition, 1);
-            this.txtDefinition.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDefinition.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
-            this.txtDefinition.Location = new System.Drawing.Point(103, 43);
-            this.txtDefinition.Name = "txtDefinition";
-            this.txtDefinition.Options.ClipboardFormats.AllowHtml = true;
-            this.txtDefinition.Options.ClipboardFormats.Html = DevExpress.XtraRichEdit.RichEditClipboardMode.Enabled;
-            this.txtDefinition.Options.CopyPaste.InsertOptions = DevExpress.XtraRichEdit.API.Native.InsertOptions.KeepTextOnly;
-            this.tblStrong.SetRow(this.txtDefinition, 2);
-            this.txtDefinition.Size = new System.Drawing.Size(384, 209);
-            this.txtDefinition.TabIndex = 7;
+            this.panelControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.tblStrong.SetColumn(this.panelControl1, 0);
+            this.panelControl1.Controls.Add(this.btnMoreBLB);
+            this.panelControl1.Controls.Add(this.btnMoreStronsCodeInfo);
+            this.panelControl1.Controls.Add(this.btnEditStrongsCode);
+            this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelControl1.Location = new System.Drawing.Point(3, 3);
+            this.panelControl1.Name = "panelControl1";
+            this.tblStrong.SetRow(this.panelControl1, 0);
+            this.panelControl1.Size = new System.Drawing.Size(94, 219);
+            this.panelControl1.TabIndex = 4;
+            // 
+            // btnMoreStronsCodeInfo
+            // 
+            this.btnMoreStronsCodeInfo.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnMoreStronsCodeInfo.ImageOptions.SvgImage")));
+            this.btnMoreStronsCodeInfo.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.btnMoreStronsCodeInfo.Location = new System.Drawing.Point(6, 35);
+            this.btnMoreStronsCodeInfo.Name = "btnMoreStronsCodeInfo";
+            this.btnMoreStronsCodeInfo.Size = new System.Drawing.Size(85, 23);
+            this.btnMoreStronsCodeInfo.TabIndex = 1;
+            this.btnMoreStronsCodeInfo.Text = "More BH";
+            this.btnMoreStronsCodeInfo.Click += new System.EventHandler(this.btnMoreStronsCodeInfo_Click);
+            // 
+            // btnEditStrongsCode
+            // 
+            this.btnEditStrongsCode.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnEditStrongsCode.ImageOptions.SvgImage")));
+            this.btnEditStrongsCode.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.btnEditStrongsCode.Location = new System.Drawing.Point(6, 6);
+            this.btnEditStrongsCode.Name = "btnEditStrongsCode";
+            this.btnEditStrongsCode.Size = new System.Drawing.Size(85, 23);
+            this.btnEditStrongsCode.TabIndex = 0;
+            this.btnEditStrongsCode.Text = "Edit";
+            this.btnEditStrongsCode.Click += new System.EventHandler(this.btnEditStrongsCode_Click);
             // 
             // vwStrongLocal
             // 
-            this.tblStrong.SetColumn(this.vwStrongLocal, 2);
+            this.tblStrong.SetColumn(this.vwStrongLocal, 1);
             this.vwStrongLocal.CreationProperties = null;
             this.vwStrongLocal.DefaultBackgroundColor = System.Drawing.Color.Transparent;
             this.vwStrongLocal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vwStrongLocal.Location = new System.Drawing.Point(493, 3);
+            this.vwStrongLocal.Location = new System.Drawing.Point(103, 3);
             this.vwStrongLocal.Name = "vwStrongLocal";
             this.tblStrong.SetRow(this.vwStrongLocal, 0);
-            this.tblStrong.SetRowSpan(this.vwStrongLocal, 4);
-            this.vwStrongLocal.Size = new System.Drawing.Size(527, 269);
+            this.vwStrongLocal.Size = new System.Drawing.Size(1188, 219);
             this.vwStrongLocal.TabIndex = 3;
             this.vwStrongLocal.ZoomFactor = 1D;
-            // 
-            // btnSaveStrongDefinition
-            // 
-            this.tblStrong.SetColumn(this.btnSaveStrongDefinition, 1);
-            this.btnSaveStrongDefinition.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnSaveStrongDefinition.Location = new System.Drawing.Point(412, 258);
-            this.btnSaveStrongDefinition.Name = "btnSaveStrongDefinition";
-            this.tblStrong.SetRow(this.btnSaveStrongDefinition, 3);
-            this.btnSaveStrongDefinition.Size = new System.Drawing.Size(75, 14);
-            this.btnSaveStrongDefinition.TabIndex = 6;
-            this.btnSaveStrongDefinition.Text = "Save";
-            this.btnSaveStrongDefinition.Click += new System.EventHandler(this.btnSaveStrongDefinition_Click);
-            // 
-            // txtShortDefinition
-            // 
-            this.tblStrong.SetColumn(this.txtShortDefinition, 1);
-            this.txtShortDefinition.Location = new System.Drawing.Point(103, 23);
-            this.txtShortDefinition.Name = "txtShortDefinition";
-            this.txtShortDefinition.Properties.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.txtShortDefinition.Properties.Appearance.Options.UseFont = true;
-            this.tblStrong.SetRow(this.txtShortDefinition, 1);
-            this.txtShortDefinition.Size = new System.Drawing.Size(384, 24);
-            this.txtShortDefinition.TabIndex = 4;
-            // 
-            // lblStrongCode
-            // 
-            this.lblStrongCode.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblStrongCode.Appearance.Options.UseFont = true;
-            this.tblStrong.SetColumn(this.lblStrongCode, 1);
-            this.lblStrongCode.Location = new System.Drawing.Point(103, 3);
-            this.lblStrongCode.Name = "lblStrongCode";
-            this.tblStrong.SetRow(this.lblStrongCode, 0);
-            this.lblStrongCode.Size = new System.Drawing.Size(9, 14);
-            this.lblStrongCode.TabIndex = 3;
-            this.lblStrongCode.Text = "...";
-            // 
-            // labelControl3
-            // 
-            this.labelControl3.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelControl3.Appearance.Options.UseFont = true;
-            this.tblStrong.SetColumn(this.labelControl3, 0);
-            this.labelControl3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelControl3.Location = new System.Drawing.Point(3, 43);
-            this.labelControl3.Name = "labelControl3";
-            this.tblStrong.SetRow(this.labelControl3, 2);
-            this.labelControl3.Size = new System.Drawing.Size(94, 17);
-            this.labelControl3.TabIndex = 2;
-            this.labelControl3.Text = "Definition";
-            // 
-            // labelControl2
-            // 
-            this.labelControl2.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelControl2.Appearance.Options.UseFont = true;
-            this.tblStrong.SetColumn(this.labelControl2, 0);
-            this.labelControl2.Location = new System.Drawing.Point(3, 23);
-            this.labelControl2.Name = "labelControl2";
-            this.tblStrong.SetRow(this.labelControl2, 1);
-            this.labelControl2.Size = new System.Drawing.Size(89, 14);
-            this.labelControl2.TabIndex = 1;
-            this.labelControl2.Text = "Short definition";
-            // 
-            // labelControl1
-            // 
-            this.labelControl1.Appearance.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.labelControl1.Appearance.Options.UseFont = true;
-            this.tblStrong.SetColumn(this.labelControl1, 0);
-            this.labelControl1.Location = new System.Drawing.Point(3, 3);
-            this.labelControl1.Name = "labelControl1";
-            this.tblStrong.SetRow(this.labelControl1, 0);
-            this.labelControl1.Size = new System.Drawing.Size(31, 14);
-            this.labelControl1.TabIndex = 0;
-            this.labelControl1.Text = "Code";
             // 
             // tabGrammarCode
             // 
@@ -707,6 +629,17 @@ namespace IBE.WindowsClient.Controls {
             this.splitterControl1.TabIndex = 2;
             this.splitterControl1.TabStop = false;
             // 
+            // btnMoreBLB
+            // 
+            this.btnMoreBLB.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton1.ImageOptions.SvgImage")));
+            this.btnMoreBLB.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.btnMoreBLB.Location = new System.Drawing.Point(6, 64);
+            this.btnMoreBLB.Name = "btnMoreBLB";
+            this.btnMoreBLB.Size = new System.Drawing.Size(85, 23);
+            this.btnMoreBLB.TabIndex = 2;
+            this.btnMoreBLB.Text = "More BLB";
+            this.btnMoreBLB.Click += new System.EventHandler(this.btnMoreBLB_Click);
+            // 
             // VerseGridControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -738,12 +671,11 @@ namespace IBE.WindowsClient.Controls {
             ((System.ComponentModel.ISupportInitialize)(this.gridTranslations)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.viewTranslations)).EndInit();
             this.tabStrongDictionary.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.wvStrong)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tblStrong)).EndInit();
             this.tblStrong.ResumeLayout(false);
-            this.tblStrong.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
+            this.panelControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.vwStrongLocal)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtShortDefinition.Properties)).EndInit();
             this.tabGrammarCode.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.wbGrammarCodes)).EndInit();
             this.tabSettings.ResumeLayout(false);
@@ -786,13 +718,6 @@ namespace IBE.WindowsClient.Controls {
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit2;
         private DevExpress.XtraGrid.Views.Layout.LayoutViewField layoutViewField_layoutViewColumn1_6;
         private DevExpress.Utils.Layout.TablePanel tblStrong;
-        private DevExpress.XtraEditors.LabelControl labelControl2;
-        private DevExpress.XtraEditors.LabelControl labelControl1;
-        private DevExpress.XtraEditors.SimpleButton btnSaveStrongDefinition;
-        private DevExpress.XtraEditors.TextEdit txtShortDefinition;
-        private DevExpress.XtraEditors.LabelControl lblStrongCode;
-        private DevExpress.XtraEditors.LabelControl labelControl3;
-        private Microsoft.Web.WebView2.WinForms.WebView2 wvStrong;
         private DevExpress.XtraEditors.SplitterControl splitterControl1;
         private DevExpress.XtraGrid.GridControl gridTranslations;
         private DevExpress.XtraGrid.Views.Grid.GridView viewTranslations;
@@ -804,9 +729,12 @@ namespace IBE.WindowsClient.Controls {
         private DevExpress.XtraEditors.LabelControl labelControl4;
         private DevExpress.XtraEditors.TextEdit txtStoryTextLevel1;
         private DevExpress.XtraEditors.CheckEdit cbStartFromNewLine;
-        private DevExpress.XtraRichEdit.RichEditControl txtDefinition;
         private Microsoft.Web.WebView2.WinForms.WebView2 vwStrongLocal;
         private DevExpress.XtraEditors.LabelControl labelControl5;
         private DevExpress.XtraEditors.TextEdit txtStoryTextLevel2;
+        private DevExpress.XtraEditors.PanelControl panelControl1;
+        private DevExpress.XtraEditors.SimpleButton btnEditStrongsCode;
+        private DevExpress.XtraEditors.SimpleButton btnMoreStronsCodeInfo;
+        private DevExpress.XtraEditors.SimpleButton btnMoreBLB;
     }
 }

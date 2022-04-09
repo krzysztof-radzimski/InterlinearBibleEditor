@@ -24,6 +24,7 @@ using IBE.WindowsClient.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -36,7 +37,6 @@ namespace IBE.WindowsClient.Controls {
         public VerseGridControl() {
             InitializeComponent();
             TransliterationController = new GreekTransliterationController();
-            txtDefinition.ReplaceService<ISyntaxHighlightService>(new HTMLSyntaxHighlightService(txtDefinition));
         }
         public VerseGridControl(Verse verse, bool loadOtherTranslations = true) : this() {
             LoadData(verse, loadOtherTranslations);
@@ -106,7 +106,7 @@ namespace IBE.WindowsClient.Controls {
                         };
                     }
 
-                    return list.Where(x=>x.VerseText.IsNotNullOrEmpty()).OrderBy(x => x.SortIndex).ToList();
+                    return list.Where(x => x.VerseText.IsNotNullOrEmpty()).OrderBy(x => x.SortIndex).ToList();
                 });
 
                 getTranslations.ContinueWith((x) => {
@@ -377,29 +377,11 @@ namespace IBE.WindowsClient.Controls {
                     //
                     if (hi.Column.FieldName == "StrongsCode" && word.StrongsCode.HasValue) {
                         tabPane.SelectedPage = tabStrongDictionary;
-                        lblStrongCode.Text = $"G{word.StrongsCode}";
-                        txtDefinition.Text = word.Word.StrongCode.Definition;
-                        txtShortDefinition.Text = word.Word.StrongCode.ShortDefinition;
-                        btnSaveStrongDefinition.Tag = word.Word.StrongCode;
+                        btnEditStrongsCode.Tag = word.Word.StrongCode;
+                        btnMoreStronsCodeInfo.Tag = word.Word.StrongCode;
 
-                        var htmlString = $@"
-                                <!DOCTYPE html>
+                        LoadStrongCodeHtml(word.Word.StrongCode);
 
-                                <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
-                                <head>
-                                    <meta charset=""utf-8"" />
-                                    <title>Strongs code</title>                                    
-                                </head>
-                                <body style=""color: White;"">
-                                <h2>G{word.StrongsCode}</h2>
-                                <h3>{word.Word.StrongCode.ShortDefinition}</h3>
-                                <div>{word.Word.StrongCode.Definition}</div>
-                                </body>
-                                </html>
-                                ";
-                        vwStrongLocal.NavigateToString(htmlString);
-
-                        wvStrong.Source = new Uri($"https://biblehub.com/greek/{word.StrongsCode}.htm");
                     }
                     else if (hi.Column.FieldName == "StrongsCode" && !word.StrongsCode.HasValue) {
                         var value = word.StrongsCode.HasValue ? word.StrongsCode.Value.ToString() : String.Empty;
@@ -408,6 +390,8 @@ namespace IBE.WindowsClient.Controls {
                             var sc = new XPQuery<StrongCode>(Verse.Session).Where(x => x.Code == strongCode.ToInt() && x.Lang == Language.Greek).FirstOrDefault();
                             if (sc.IsNotNull()) {
                                 word.StrongsCode = sc.Code;
+                                btnEditStrongsCode.Tag = sc;
+                                btnMoreStronsCodeInfo.Tag = sc;
                                 layoutView1.RefreshData();
                             }
                         }
@@ -474,41 +458,82 @@ namespace IBE.WindowsClient.Controls {
             }
         }
 
-        private void wvStrong_CoreWebView2InitializationCompleted(object sender, Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs e) {
-            wvStrong.CoreWebView2.DOMContentLoaded += CoreWebView2_DOMContentLoaded;
-        }
-
-        private void CoreWebView2_DOMContentLoaded(object sender, Microsoft.Web.WebView2.Core.CoreWebView2DOMContentLoadedEventArgs e) {
-            var script = @"
-var body = document.body;
-for(var i = 0; i < 3; i++){
-    var el = body.getElementsByTagName('div')[0];
-    if (el != undefined) {
-       body.removeChild(el);
-    }
-}
-";
-            wvStrong.CoreWebView2.ExecuteScriptAsync(script);
-        }
-
-        private void btnSaveStrongDefinition_Click(object sender, EventArgs e) {
-            var sc = btnSaveStrongDefinition.Tag as StrongCode;
-            if (sc.IsNotNull()) {
-                sc.Definition = txtDefinition.Text;
-                sc.ShortDefinition = txtShortDefinition.Text;
-                sc.Save();
-
-                var uow = sc.Session as UnitOfWork;
-                if (uow.IsNotNull()) {
-                    uow.CommitChanges();
-                    uow.ReloadChangedObjects();
-                }
+        private void LoadStrongCodeHtml(StrongCode code) {
+            var codeHtml = code.Definition;
+            //
+            codeHtml = Regex.Replace(codeHtml, @"href\=\'S\:G(?<nr>[0-9]+)\'", delegate (Match m) {
+                var nr = m.Groups["nr"].Value;
+                return $@"target=""_blank"" href=""https://biblehub.com/greek/{nr}.htm"""  ;
+            });
+            if (codeHtml.StartsWith("\ufeff")) {
+                codeHtml = codeHtml.Substring(1);
             }
+            var htmlString = $@"
+<!DOCTYPE html>
+
+<html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
+<head>
+    <meta charset=""utf-8"" />
+    <title>Strongs code</title> 
+    <style>
+        body {{
+            color: white;
+        }}
+        h2, h3 {{
+            margin:0; 
+            padding:0;
+        }}
+        a {{
+            color: yellow;
+            text-decoration: none;
+        }}
+        a:hover {{
+            text-decoration: underline;
+        }}
+    </style>
+</head>
+<body>
+<h2>{code.Topic}</h2>
+<h3>{code.SourceWord} | {code.Pronunciation} | {code.ShortDefinition}</h3>
+<div>{codeHtml.Trim()}</div>
+</body>
+</html>
+";
+            vwStrongLocal.NavigateToString(htmlString);
         }
 
         private void VerseGridControl_Load(object sender, EventArgs e) {
             wbGrammarCodes.EnsureCoreWebView2Async();
             vwStrongLocal.EnsureCoreWebView2Async();
+        }
+
+        private void btnEditStrongsCode_Click(object sender, EventArgs e) {
+            if (btnEditStrongsCode.Tag is StrongCode) {
+                var strongCode = (StrongCode)btnEditStrongsCode.Tag;
+                using (var dlg = new StrongsCodeEditForm()) {
+                    dlg.LoadData(strongCode);
+                    if (dlg.ShowDialog() == DialogResult.OK) {
+                        dlg.SaveData();
+                        LoadStrongCodeHtml(strongCode);
+                    }
+                }
+            }
+        }
+
+        private void btnMoreStronsCodeInfo_Click(object sender, EventArgs e) {
+            var strongsCode = btnMoreStronsCodeInfo.Tag as StrongCode;
+            if (strongsCode.IsNotNull()) {
+                var url = $"https://biblehub.com/greek/{strongsCode.Code}.htm";
+                System.Diagnostics.Process.Start(url);
+            }
+        }
+
+        private void btnMoreBLB_Click(object sender, EventArgs e) {
+            var strongsCode = btnMoreStronsCodeInfo.Tag as StrongCode;
+            if (strongsCode.IsNotNull()) {
+                var url = $"https://www.blueletterbible.org/lexicon/g{strongsCode.Code}/nkjv/tr/0-1/";
+                System.Diagnostics.Process.Start(url);
+            }
         }
     }
 }
