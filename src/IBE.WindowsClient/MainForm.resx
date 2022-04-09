@@ -314,6 +314,33 @@
         DQogIDwvZz4NCjwvc3ZnPgs=
 </value>
   </data>
+  <data name="btnUpdateVersesIndex.ImageOptions.SvgImage" type="DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v21.2" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFlEZXZFeHByZXNzLkRhdGEudjIxLjIsIFZlcnNpb249MjEuMi4z
+        LjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjg4ZDE3NTRkNzAwZTQ5YQUBAAAAHURl
+        dkV4cHJlc3MuVXRpbHMuU3ZnLlN2Z0ltYWdlAQAAAAREYXRhBwICAAAACQMAAAAPAwAAAJ8EAAAC77u/
+        PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4NCjxzdmcgeD0iMHB4IiB5PSIwcHgi
+        IHZpZXdCb3g9IjAgMCAzMiAzMiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcv
+        MjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWw6c3Bh
+        Y2U9InByZXNlcnZlIiBpZD0iVXBkYXRlVGFibGVPZkNvbnRlbnRzIiBzdHlsZT0iZW5hYmxlLWJhY2tn
+        cm91bmQ6bmV3IDAgMCAzMiAzMiI+DQogIDxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+CgkuQmxhY2t7Zmls
+        bDojNzI3MjcyO30KCS5CbHVle2ZpbGw6IzExNzdENzt9CgkuR3JlZW57ZmlsbDojMDM5QzIzO30KCS5z
+        dDB7b3BhY2l0eTowLjU7fQo8L3N0eWxlPg0KICA8ZyBjbGFzcz0ic3QwIj4NCiAgICA8cGF0aCBkPSJN
+        MjAsOGgtMlY2aDJWOHogTTIwLDEwaC0ydjJoMlYxMHogTTIwLDE0aC0ydjJoMlYxNHogTTE2LDhoLTJW
+        NmgyVjh6IE0xNiwxMGgtMnYyaDJWMTB6IE0xNiwxOGgtMnYyaDJWMTh6ICAgIE0xNiwyMmgtMnYyaDJW
+        MjJ6IE0xNiwxNGgtMnYyaDJWMTR6IiBjbGFzcz0iQmxhY2siIC8+DQogIDwvZz4NCiAgPHBhdGggZD0i
+        TTI0LDhoLTJWNmgyVjh6IE0yNCwxMGgtMnYyaDJWMTB6IE0yNCwxNGgtMnYyaDJWMTR6IiBjbGFzcz0i
+        Qmx1ZSIgLz4NCiAgPHBhdGggZD0iTTEyLDhINlY2aDZWOHogTTEyLDE4SDZ2Mmg2VjE4eiBNMTYsMjhI
+        NFYyaDIydjE0LjFjMC43LDAuMSwxLjQsMC4yLDIsMC41VjFjMC0wLjYtMC40LTEtMS0xSDMgIEMyLjQs
+        MCwyLDAuNCwyLDF2MjhjMCwwLjYsMC40LDEsMSwxaDEzVjI4eiBNNiwyNGg2di0ySDZWMjR6IE0xMiwx
+        MEg2djJoNlYxMHogTTEyLDE0SDZ2Mmg2VjE0eiIgY2xhc3M9IkJsYWNrIiAvPg0KICA8cGF0aCBkPSJN
+        MzIsMTh2NmgtMC4xaC0ySDI2bDIuNS0yLjVDMjcuNiwyMC42LDI2LjQsMjAsMjUsMjBjLTIuNCwwLTQu
+        NCwxLjctNC45LDRoLTJjMC41LTMuNCwzLjQtNiw2LjktNiAgYzEuOSwwLDMuNywwLjgsNC45LDIuMUwz
+        MiwxOHogTTI1LDMwYy0xLjQsMC0yLjYtMC42LTMuNS0xLjVMMjQsMjZoLTMuOWgtMkgxOHY2bDIuMS0y
+        LjFjMS4zLDEuMywzLDIuMSw0LjksMi4xICBjMy41LDAsNi40LTIuNiw2LjktNmgtMkMyOS40LDI4LjMs
+        MjcuNCwzMCwyNSwzMHoiIGNsYXNzPSJHcmVlbiIgLz4NCjwvc3ZnPgs=
+</value>
+  </data>
   <metadata name="xtraTabbedMdiManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

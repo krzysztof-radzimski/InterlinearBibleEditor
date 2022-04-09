@@ -131,5 +131,17 @@ namespace IBE.WindowsClient {
             frm.MdiParent = this;
             frm.Show();
         }
+
+        private void btnUpdateVersesIndex_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var uow = new UnitOfWork();
+            var verses = new XPQuery<Verse>(uow).Where(x => x.Index == null || x.Index == string.Empty).ToList();
+            foreach (var item in verses) {
+                var translationName = item.ParentTranslation.Name.Replace("+", "").Replace("'", "");
+                var index = $"{translationName}.{item.ParentChapter.ParentBook.NumberOfBook}.{item.ParentChapter.NumberOfChapter}.{item.NumberOfVerse}";
+                item.Index = index;
+                item.Save();
+            }
+            uow.CommitChanges();
+        }
     }
 }

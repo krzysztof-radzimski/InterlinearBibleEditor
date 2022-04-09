@@ -35,6 +35,7 @@ namespace IBE.WindowsClient {
             this.btnStrongsCodes = new DevExpress.XtraBars.BarButtonItem();
             this.btnAncientDictionary = new DevExpress.XtraBars.BarButtonItem();
             this.btnImportUrlShortenersList = new DevExpress.XtraBars.BarButtonItem();
+            this.btnSongs = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
@@ -42,7 +43,7 @@ namespace IBE.WindowsClient {
             this.ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(this.components);
             this.spellChecker1 = new DevExpress.XtraSpellChecker.SpellChecker(this.components);
-            this.btnSongs = new DevExpress.XtraBars.BarButtonItem();
+            this.btnUpdateVersesIndex = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).BeginInit();
             this.SuspendLayout();
@@ -63,9 +64,10 @@ namespace IBE.WindowsClient {
             this.btnStrongsCodes,
             this.btnAncientDictionary,
             this.btnImportUrlShortenersList,
-            this.btnSongs});
+            this.btnSongs,
+            this.btnUpdateVersesIndex});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 15;
+            this.ribbonControl1.MaxItemId = 16;
             this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
@@ -143,6 +145,14 @@ namespace IBE.WindowsClient {
             this.btnImportUrlShortenersList.Name = "btnImportUrlShortenersList";
             this.btnImportUrlShortenersList.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnImportUrlShortenersList_ItemClick);
             // 
+            // btnSongs
+            // 
+            this.btnSongs.Caption = "Songs";
+            this.btnSongs.Id = 14;
+            this.btnSongs.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnSongs.ImageOptions.SvgImage")));
+            this.btnSongs.Name = "btnSongs";
+            this.btnSongs.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnSongs_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -173,6 +183,7 @@ namespace IBE.WindowsClient {
             this.ribbonPageGroup2.ItemLinks.Add(this.btnStrongsCodes);
             this.ribbonPageGroup2.ItemLinks.Add(this.btnAncientDictionary);
             this.ribbonPageGroup2.ItemLinks.Add(this.btnImportUrlShortenersList, true);
+            this.ribbonPageGroup2.ItemLinks.Add(this.btnUpdateVersesIndex);
             this.ribbonPageGroup2.Name = "ribbonPageGroup2";
             this.ribbonPageGroup2.Text = "ribbonPageGroup2";
             // 
@@ -196,13 +207,13 @@ namespace IBE.WindowsClient {
             this.spellChecker1.ParentContainer = this;
             this.spellChecker1.SpellCheckMode = DevExpress.XtraSpellChecker.SpellCheckMode.AsYouType;
             // 
-            // btnSongs
+            // btnUpdateVersesIndex
             // 
-            this.btnSongs.Caption = "Songs";
-            this.btnSongs.Id = 14;
-            this.btnSongs.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnSongs.ImageOptions.SvgImage")));
-            this.btnSongs.Name = "btnSongs";
-            this.btnSongs.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnSongs_ItemClick);
+            this.btnUpdateVersesIndex.Caption = "Update Verses Index";
+            this.btnUpdateVersesIndex.Id = 15;
+            this.btnUpdateVersesIndex.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnUpdateVersesIndex.ImageOptions.SvgImage")));
+            this.btnUpdateVersesIndex.Name = "btnUpdateVersesIndex";
+            this.btnUpdateVersesIndex.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnUpdateVersesIndex_ItemClick);
             // 
             // MainForm
             // 
@@ -244,6 +255,7 @@ namespace IBE.WindowsClient {
         private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage1;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup2;
         private DevExpress.XtraBars.BarButtonItem btnSongs;
+        private DevExpress.XtraBars.BarButtonItem btnUpdateVersesIndex;
     }
 }
 

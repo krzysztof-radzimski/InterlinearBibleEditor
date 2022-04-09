@@ -294,12 +294,14 @@ namespace IBE.WindowsClient {
                 var verseItem = item as IbeVerseTreeItem;
                 if (item.IsNew) {
                     var parentChapterItem = TreeItems.Where(x => x.ID == verseItem.ParentID).FirstOrDefault() as IbeChapterTreeItem;
-
+                    var chapter = new XPQuery<Chapter>(uow).Where(x => x.Oid == parentChapterItem.Tag).FirstOrDefault();
+                    var translationName = Object.Name.Replace("+", "").Replace("'", "");
                     var verse = new Verse(uow) {
                         NumberOfVerse = verseItem.Number,
                         StartFromNewLine = verseItem.StartFromNewLine,
                         Text = verseItem.Value,
-                        ParentChapter = new XPQuery<Chapter>(uow).Where(x => x.Oid == parentChapterItem.Tag).FirstOrDefault()
+                        Index = $"{translationName}.{chapter.ParentBook.NumberOfBook}.{chapter.NumberOfChapter}.{verseItem.Number}",
+                        ParentChapter = chapter
                     };
 
                     SetSubtitle(verse, verseItem, uow, 1);
