@@ -461,7 +461,7 @@ namespace IBE.WindowsClient.Controls {
         private void LoadStrongCodeHtml(StrongCode code) {
             var codeHtml = code.Definition;
             //
-            codeHtml = Regex.Replace(codeHtml, @"href\=\'S\:G(?<nr>[0-9]+)\'", delegate (Match m) {
+            codeHtml = Regex.Replace(codeHtml, @"href\=[\'\""]S\:G(?<nr>[0-9]+)[\'\""]", delegate (Match m) {
                 var nr = m.Groups["nr"].Value;
                 return $@"target=""_blank"" href=""https://biblehub.com/greek/{nr}.htm"""  ;
             });
