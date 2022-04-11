@@ -52,10 +52,8 @@ else if (Model.Book.IsNullOrEmpty()) {
 
     <div class="container">
         <div class="row justify-content-center max-width-800">
-            @foreach (var book in Model.Translation.Books) {    
+            @foreach (var book in Model.Translation.Books) {
                 var baseBook = book.BaseBook;
-             @* var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : String.Empty;
-                var bookName = baseBook.IsNotNull() ? baseBook.BookName : String.Empty;*@
                 var bookTitle = baseBook.IsNotNull() ? baseBook.BookTitle : String.Empty;
                 if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !book.IsTranslated && Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) { continue; }
 
@@ -65,11 +63,16 @@ else if (Model.Book.IsNullOrEmpty()) {
                     bookHtml = $"{book.BaseBook.BookShortcut}&nbsp;({bookHtml})";
                 }
 
+                var bookLinkChapterNumber = book.Chapters.Min(x => x.NumberOfChapter);
+                if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
+                    bookLinkChapterNumber = book.Chapters.Where(x => x.IsTranslated).Min(x => x.NumberOfChapter);
+                }
+
                 var pillHtml = $@"<span class=""badge bg-success rounded-pill"" style=""position: absolute; right: -10px; top: -15px"">{book.NumberOfChapters}</span>";
 
                 <div class="col p-2" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3);" title="@bookTitle">
                     <span style="position: relative;">
-                        <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@bookTitle" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@book.Chapters.Min(x=>x.NumberOfChapter)">@Html.Raw(bookHtml)&nbsp;</a>@Html.Raw(pillHtml)
+                        <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@bookTitle" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@bookLinkChapterNumber">@Html.Raw(bookHtml)&nbsp;</a>@Html.Raw(pillHtml)
                     </span>
                 </div>
             }
@@ -546,7 +549,7 @@ else {
                             <div class="col pb-3">&nbsp;</div>
                             foreach (var story in subtitles) {
                                 var storyText = story.Text;
-                                
+
                                 if (story.Level == 1) {
                                     <div class="col w-100 fs-5 pb-3 p-2 fw-bold text-center story">@Html.Raw(storyText)</div>
                                 }
