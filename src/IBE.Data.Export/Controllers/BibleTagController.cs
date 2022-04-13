@@ -17,7 +17,22 @@ namespace IBE.Data.Export.Controllers {
             return text;
         }
         public string CleanVerseText(string text) {
-            return text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+            text = System.Text.RegularExpressions.Regex.Replace(text, @"\<a\s+href\=[\""\'].+[\""\']\>(?<value>.+)\<\/a\>", delegate (System.Text.RegularExpressions.Match m) {
+                return m.Groups["value"].Value;
+            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            return text.Replace("</t>", "")
+                       .Replace("<t>", "")
+                       .Replace("<pb/>", "")
+                       .Replace("<n>", "")
+                       .Replace("</n>", "")
+                       .Replace("<e>", "")
+                       .Replace("</e>", "")
+                       .Replace("―", "")
+                       .Replace('\'', '”')
+                       .Replace("<J>", "")
+                       .Replace("</J>", "")
+                       .Replace("<i>", "")
+                       .Replace("</i>", "");
         }
         public string GetVerseSimpleText(string verseText, VerseIndex index , string baseBookShortcut) {
             var translation = index.TranslationName;
@@ -295,6 +310,14 @@ namespace IBE.Data.Export.Controllers {
                     return GetOtherVersesTranslation(session, numberOfBook, numberOfChapter, verseStart, verseEnd);
                 }
             }
+        }
+
+        public string RepairStrongs(string input) {
+            var result = input.Replace(@"href=""S:G", @"href=""/StrongsCode?id=G")
+                .Replace(@"href=""S:H", @"href=""/StrongsCode?id=H")
+                .Replace(@"href='S:G", @"href='/StrongsCode?id=G")
+                .Replace(@"href='S:H", @"href='/StrongsCode?id=H");
+            return result;
         }
         private string GetOtherVersesTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart, int verseEnd) {
             IEnumerable<Verse> verses = null;

@@ -598,6 +598,9 @@ else {
                             footnoteTextTitle = BibleTagController.GetInternalVerseListText(footnoteTextTitle, Model);
                             footnoteTextTitle = BibleTagController.GetMultiChapterRangeText(footnoteTextTitle, Model);
                         }
+                        if (footnoteText.IsNotNullOrEmpty() && footnoteText.Contains("<a href")) {
+                             footnoteText = BibleTagController.RepairStrongs(footnoteText);
+                        }
                         if (footnoteTextTitle.IsNotNullOrEmpty()) {
                             footnoteTextTitle = BibleTagController.CleanVerseText(footnoteTextTitle);
                         }
