@@ -52,10 +52,8 @@ else if (Model.Book.IsNullOrEmpty()) {
 
     <div class="container">
         <div class="row justify-content-center max-width-800">
-            @foreach (var book in Model.Translation.Books) {    
+            @foreach (var book in Model.Translation.Books) {
                 var baseBook = book.BaseBook;
-             @* var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : String.Empty;
-                var bookName = baseBook.IsNotNull() ? baseBook.BookName : String.Empty;*@
                 var bookTitle = baseBook.IsNotNull() ? baseBook.BookTitle : String.Empty;
                 if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !book.IsTranslated && Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) { continue; }
 
@@ -65,11 +63,16 @@ else if (Model.Book.IsNullOrEmpty()) {
                     bookHtml = $"{book.BaseBook.BookShortcut}&nbsp;({bookHtml})";
                 }
 
+                var bookLinkChapterNumber = book.Chapters.Min(x => x.NumberOfChapter);
+                if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
+                    bookLinkChapterNumber = book.Chapters.Where(x => x.IsTranslated).Min(x => x.NumberOfChapter);
+                }
+
                 var pillHtml = $@"<span class=""badge bg-success rounded-pill"" style=""position: absolute; right: -10px; top: -15px"">{book.NumberOfChapters}</span>";
 
                 <div class="col p-2" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3);" title="@bookTitle">
                     <span style="position: relative;">
-                        <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@bookTitle" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@book.Chapters.Min(x=>x.NumberOfChapter)">@Html.Raw(bookHtml)&nbsp;</a>@Html.Raw(pillHtml)
+                        <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@bookTitle" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@bookLinkChapterNumber">@Html.Raw(bookHtml)&nbsp;</a>@Html.Raw(pillHtml)
                     </span>
                 </div>
             }
@@ -546,7 +549,7 @@ else {
                             <div class="col pb-3">&nbsp;</div>
                             foreach (var story in subtitles) {
                                 var storyText = story.Text;
-                                
+
                                 if (story.Level == 1) {
                                     <div class="col w-100 fs-5 pb-3 p-2 fw-bold text-center story">@Html.Raw(storyText)</div>
                                 }
@@ -606,7 +609,7 @@ else {
                         }
                         if (footnoteText.IsNotNullOrEmpty()) {
                             translation += $@"<a class=""text-decoration-none fw-bold interlinear-footnote-ref"" href=""#footNote{footNoteRefIndex}"" title=""{footnoteTextTitle}"" id=""ref{footNoteRefIndex}"">{footNoteRefIndex}</a>";
-                            footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteRefIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteRefIndex}')""/><span style=""cursor: pointer;"" >{footNoteRefIndex}</a>)&nbsp;{footnoteText}</p>");
+                            footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteRefIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteRefIndex}')""/><span style=""cursor: pointer;"" >{footNoteRefIndex}</a>)&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{footnoteText}</p>");
                             footNoteRefIndex++;
                         }
 
@@ -798,27 +801,27 @@ else {
                         text = System.Text.RegularExpressions.Regex.Replace(text, footNoteTextPattern, delegate (System.Text.RegularExpressions.Match m) {
                             if (m.Groups != null && m.Groups.Count > 0) {
                                 if (m.Groups["f1"] != null && m.Groups["f1"].Success) {
-                                    footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f1"].Value}</p>");
+                                    footNotes.Add($@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f1"].Value}</p>");
                                     f1Index = footNoteIndex;
                                     footNoteIndex++;
                                 }
                                 if (m.Groups["f2"] != null && m.Groups["f2"].Success) {
-                                    footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f2"].Value}</p>");
+                                    footNotes.Add($@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f2"].Value}</p>");
                                     f2Index = footNoteIndex;
                                     footNoteIndex++;
                                 }
                                 if (m.Groups["f3"] != null && m.Groups["f3"].Success) {
-                                    footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f3"].Value}</p>");
+                                    footNotes.Add($@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f3"].Value}</p>");
                                     f3Index = footNoteIndex;
                                     footNoteIndex++;
                                 }
                                 if (m.Groups["f4"] != null && m.Groups["f4"].Success) {
-                                    footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f4"].Value}</p>");
+                                    footNotes.Add($@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f4"].Value}</p>");
                                     f4Index = footNoteIndex;
                                     footNoteIndex++;
                                 }
                                 if (m.Groups["f5"] != null && m.Groups["f5"].Success) {
-                                    footNotes.Add($@"<p class=""mb-0""><a name=""footNote{footNoteIndex}"" />{footNoteIndex})&nbsp;{m.Groups["f5"].Value}</p>");
+                                    footNotes.Add($@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f5"].Value}</p>");
                                     f5Index = footNoteIndex;
                                     footNoteIndex++;
                                 }
@@ -835,7 +838,7 @@ else {
                             if (m.Value == "***") { footNoteRefIndex = f3Index; }
                             if (m.Value == "****") { footNoteRefIndex = f4Index; }
                             if (m.Value == "*****") { footNoteRefIndex = f5Index; }
-                            var result = $@"<a style=""vertical-align: super;"" class=""fs-6 text-decoration-none"" href=""#footNote{footNoteRefIndex}"">{footNoteRefIndex}</a>";
+                            var result = $@"<a id=""ref{footNoteRefIndex}"" class=""footnote-ref text-decoration-none"" href=""#footNote{footNoteRefIndex}"">{footNoteRefIndex}</a>";
 
                             return result;
                         }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
@@ -941,8 +944,7 @@ else {
         //
         var _disabledStart = String.Empty;
         var _disabledEnd = String.Empty;
-        var tableOfNumber = new List<int>
-            ();
+        var tableOfNumber = new List<int>();
 
         if (chapter.IsNotNull()) {
             _disabledStart = chapter.NumberOfChapter == 1 ? " disabled" : "";
