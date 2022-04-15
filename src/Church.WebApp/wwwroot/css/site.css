@@ -69,10 +69,6 @@
     text-transform: uppercase;
 }
 
-    .capital::first-letter {
-        font-size: 140%;
-    }
-
 .max-width-800 {
     max-width: 800px;
     margin: auto;
