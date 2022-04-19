@@ -32,18 +32,18 @@ namespace Church.WebApp.Controllers {
         }
 
         public IActionResult Index() {
-            var articles = new XPQuery<Article>(new UnitOfWork()).Where(x=>!x.Hidden).OrderByDescending(x => x.Date).Take(4);
+            var articles = new XPQuery<Article>(new UnitOfWork()).Where(x => !x.Hidden).OrderByDescending(x => x.Date).Take(4);
             var list = new List<ArticleInfo>();
             foreach (var item in articles) {
-                    list.Add(new ArticleInfo() {
-                        AuthorName = item.AuthorName,
-                        AuthorPicture = item.AuthorPicture.IsNotNull() ? Convert.ToBase64String(item.AuthorPicture) : String.Empty,
-                        Date = item.Date,
-                        Id = item.Oid,
-                        Lead = item.Lead,
-                        Subject = item.Subject,
-                        Type = item.Type.GetDescription()
-                    });               
+                list.Add(new ArticleInfo() {
+                    AuthorName = item.AuthorName,
+                    AuthorPicture = item.AuthorPicture.IsNotNull() ? Convert.ToBase64String(item.AuthorPicture) : String.Empty,
+                    Date = item.Date,
+                    Id = item.Oid,
+                    Lead = item.Lead,
+                    Subject = item.Subject,
+                    Type = item.Type.GetDescription()
+                });
             }
             return View(list);
         }
@@ -72,7 +72,10 @@ namespace Church.WebApp.Controllers {
         }
 
         public IActionResult AboutBible() {
-            return View();
+            var uow = new UnitOfWork();
+            var books = new XPQuery<BookBase>(uow).ToList();
+            var translation = new XPQuery<Translation>(uow).Where(x => x.Name.Replace("'", "").Replace("+", "").ToLower() == "UBG18".ToLower()).FirstOrDefault();
+            return View(new IBE.Data.Export.Model.TranslationControllerModel(translation, books: books));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

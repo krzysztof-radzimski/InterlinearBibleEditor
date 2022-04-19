@@ -65,7 +65,10 @@ else if (Model.Book.IsNullOrEmpty()) {
 
                 var bookLinkChapterNumber = book.Chapters.Min(x => x.NumberOfChapter);
                 if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
-                    bookLinkChapterNumber = book.Chapters.Where(x => x.IsTranslated).Min(x => x.NumberOfChapter);
+                    var translatedChapters = book.Chapters.Where(x => x.IsTranslated);
+                    if (translatedChapters.Any()) {
+                        bookLinkChapterNumber = translatedChapters.Min(x => x.NumberOfChapter);
+                    }
                 }
 
                 var pillHtml = $@"<span class=""badge bg-success rounded-pill"" style=""position: absolute; right: -10px; top: -15px"">{book.NumberOfChapters}</span>";
@@ -443,7 +446,7 @@ else {
                         }
                     </div>
                     @if (Model.Translation.Name != "PBD" && Model.Translation.BookType != IBE.Data.Model.TheBookType.ChurchFathersLetter) {
-                        <p class="fs-70per"><br />* Opis księgi pochodzi z <a href="http://feib.pl" target="_blank">Przekładu Dosłownego Pisma Świetego Starego i Nowego Przymierza EIB</a>.</p>
+                        <p class="fs-70per"><br />* Opis księgi na podstawie <a href="http://feib.pl" target="_blank">Przekładu Dosłownego Pisma Świetego Starego i Nowego Przymierza EIB</a>.</p>
                     }
                 </div>
             }

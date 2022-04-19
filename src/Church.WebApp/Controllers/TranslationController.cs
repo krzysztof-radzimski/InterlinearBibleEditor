@@ -33,6 +33,8 @@ namespace Church.WebApp.Controllers {
         public IActionResult Index(string translationName, string book = null, string chapter = null, string verse = null) {
             var uow = new UnitOfWork();
 
+            if (translationName == "SNPPD") { translationName = "PBD"; }
+
             // adresy skrótowe
             if (!String.IsNullOrEmpty(translationName) && book.IsNull() && translationName.Length == 5) {
                 var _url = new XPQuery<UrlShort>(uow).Where(x => x.ShortUrl == translationName).FirstOrDefault();

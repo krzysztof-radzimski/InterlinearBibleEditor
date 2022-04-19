@@ -74,6 +74,7 @@ namespace Church.WebApp.Controllers {
                 if (context.IsNotNull() && context.RouteData.IsNotNull() && context.RouteData.Values.IsNotNull() && context.RouteData.Values.Count > 2) {
                     var translationName = context.RouteData.Values["translationName"].ToString();
                     if (translationName.IsNotNull()) {
+                        if (translationName == "SNPPD") { translationName = "PBD"; }
                         var translation = new XPQuery<Translation>(new UnitOfWork()).Where(x => x.Name.Replace("'", "").Replace("+", "") == translationName && !x.OpenAccess).FirstOrDefault();
                         if (translation.IsNotNull()) {
                             context.Result = new RedirectResult("/Account/Index?ReturnUrl=" + context.HttpContext.Request.Path.Value);

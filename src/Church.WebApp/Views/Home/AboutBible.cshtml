@@ -4,28 +4,30 @@
     var __path = this.Context.Request.Path;
 
 }
-@inject IConfiguration Configuration 
+@inject IConfiguration Configuration
+@inject IBibleTagController BibleTagController
+@model TranslationControllerModel
 @section HeaderScripts {
 
-    <!-- social sharing metadata -->
-    <meta property="og:title" content="@ViewData["Title"] - @Configuration["PageTitle"]" />
-    <meta property="og:description" content="@ViewData["Title"]" />
-    <meta property="og:image" content="@__host/img/biblelink.jpg" />
-    <meta property="og:url" content="@__host@__path" />
-    <meta property="og:type" content="article" />
-    <meta property="og:locale" content="pl_PL" />
+<!-- social sharing metadata -->
+<meta property="og:title" content="@ViewData["Title"] - @Configuration["PageTitle"]" />
+<meta property="og:description" content="@ViewData["Title"]" />
+<meta property="og:image" content="@__host/img/biblelink.jpg" />
+<meta property="og:url" content="@__host@__path" />
+<meta property="og:type" content="article" />
+<meta property="og:locale" content="pl_PL" />
 
-    <style>
-        .list-group-item {
-            display: list-item;
-        }
-    </style>
+<style>
+    .list-group-item {
+        display: list-item;
+    }
+</style>
 }
 
 
 <div class="clearfix max-width-1000" style="padding-top: 20px;">
     <h1><i class="fas fa-bible"></i> O Biblii<span style="font-size: 70%"> – czyli Piśmie Świętym Starego i Nowego Przymierza</span></h1>
-    
+
     <p class="fs-5 text-center shadow p-3 mb-3 rounded">
         <img src="~/img/biblelink.jpg" style="width: 100%; max-height: 300px; " class="shadow-lg" />
     </p>
@@ -39,7 +41,7 @@
     <p class="fs-5">
         Obyś – drogi czytelniku – odnalazł Tego, który jest „Drogą, Prawdą i&nbsp;Życiem” (<a href="/UBG18/500/14/6">Jan&nbsp;14:6</a>), oby Jego słowo „było zawsze na twoich ustach i&nbsp;w&nbsp;twoim sercu” (<a href="/UBG18/50/30/14">Pwt&nbsp;30:14</a>).
     </p>
-    
+
 
     @using DevExpress.Xpo
     @using IBE.Data.Model
@@ -47,12 +49,12 @@
     @using System.Linq;
     @using Church.WebApp.Models
     @{
-        var bible = new XPQuery<BookBase>(new UnitOfWork()).ToList();
-        var oldTestament = bible.Where(x => x.StatusBookType == TheBookType.Bible && x.StatusCanonType == CanonType.Canon && x.StatusBiblePart == BiblePart.OldTestament).OrderBy(x => x.NumberOfBook);
-        var newTestament = bible.Where(x => x.StatusBookType == TheBookType.Bible && x.StatusCanonType == CanonType.Canon && x.StatusBiblePart == BiblePart.NewTestament).OrderBy(x => x.NumberOfBook);
+        //var bible = new XPQuery<BookBase>(new UnitOfWork()).ToList();
+        var oldTestament = Model.Books.Where(x => x.StatusBookType == TheBookType.Bible && x.StatusCanonType == CanonType.Canon && x.StatusBiblePart == BiblePart.OldTestament).OrderBy(x => x.NumberOfBook);
+        var newTestament = Model.Books.Where(x => x.StatusBookType == TheBookType.Bible && x.StatusCanonType == CanonType.Canon && x.StatusBiblePart == BiblePart.NewTestament).OrderBy(x => x.NumberOfBook);
     }
 
-    <p class="fs-80per">* Opisy ksiąg pochodzą z <a href="http://feib.pl" target="_blank">Przekładu Dosłownego Pisma Świetego Starego i Nowego Przymierza EIB</a>.</p>
+    <p class="fs-80per">* Opisy ksiąg na podstawie <a href="http://feib.pl" target="_blank">Przekładu Dosłownego Pisma Świetego Starego i Nowego Przymierza EIB</a>.</p>
 
     <div class="accordion" id="accordionExample">
         <div class="accordion-item">
@@ -73,9 +75,14 @@
                                 <div style=" display: table;">
                                     @if (item.AuthorName.IsNotNullOrEmpty()) {
                                         var __text = item.AuthorName;
-                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                                            return " " + m.Value.Trim() + "&nbsp;";
-                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        __text = BibleTagController.AppendNonBreakingSpaces(__text);
+
+                                        __text = BibleTagController.GetInternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
+                                        __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                                         <div style="display: table-row">
                                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
@@ -85,9 +92,14 @@
 
                                     @if (item.TimeOfWriting.IsNotNullOrEmpty()) {
                                         var __text = item.TimeOfWriting;
-                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                                            return " " + m.Value.Trim() + "&nbsp;";
-                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        __text = BibleTagController.AppendNonBreakingSpaces(__text);
+
+                                        __text = BibleTagController.GetInternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
+                                        __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                                         <div style="display: table-row">
                                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
@@ -97,9 +109,14 @@
 
                                     @if (item.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
                                         var __text = item.PlaceWhereBookWasWritten;
-                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                                            return " " + m.Value.Trim() + "&nbsp;";
-                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        __text = BibleTagController.AppendNonBreakingSpaces(__text);
+
+                                        __text = BibleTagController.GetInternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
+                                        __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                                         <div style="display: table-row">
                                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
@@ -109,9 +126,14 @@
 
                                     @if (item.Purpose.IsNotNullOrEmpty()) {
                                         var __text = item.Purpose;
-                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                                            return " " + m.Value.Trim() + "&nbsp;";
-                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        __text = BibleTagController.AppendNonBreakingSpaces(__text);
+
+                                        __text = BibleTagController.GetInternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
+                                        __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                                         <div style="display: table-row">
                                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
@@ -121,9 +143,14 @@
 
                                     @if (item.Subject.IsNotNullOrEmpty()) {
                                         var __text = item.Subject;
-                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                                            return " " + m.Value.Trim() + "&nbsp;";
-                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        __text = BibleTagController.AppendNonBreakingSpaces(__text);
+
+                                        __text = BibleTagController.GetInternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
+                                        __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                                         <div style="display: table-row">
                                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
@@ -149,14 +176,19 @@
                             <li class="list-group-item">
                                 <span style="font-size: 120%; font-weight: bold; padding-top: 10px;">
                                     <a href="/UBG18/@item.NumberOfBook/1" title="Uwspółcześniona Biblia Gdańska">@item.BookTitle</a>
-                                </span><span> | <a href="/BW/@item.NumberOfBook/1" title="Biblia Warszawska">BW</a> | <a href="/SNP18/@item.NumberOfBook/1" title="Biblia to jest Pismo Święte Starego i Nowego Przymierza EIB">SNP</a> | <a href="/PBD/@item.NumberOfBook/1" title=" Nowego Przymierze EIB Przekład Dosłowny">PBD</a></span>
+                                </span><span> | <a href="/BW/@item.NumberOfBook/1" title="Biblia Warszawska">BW</a> | <a href="/SNP18/@item.NumberOfBook/1" title="Biblia to jest Pismo Święte Starego i Nowego Przymierza EIB">SNP</a> | <a href="/SNPPD/@item.NumberOfBook/1" title=" Nowego Przymierze EIB Przekład Dosłowny">SNPPD</a></span>
                                 <br />
                                 <div style=" display: table;">
                                     @if (item.AuthorName.IsNotNullOrEmpty()) {
                                         var __text = item.AuthorName;
-                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                                            return " " + m.Value.Trim() + "&nbsp;";
-                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        __text = BibleTagController.AppendNonBreakingSpaces(__text);
+
+                                        __text = BibleTagController.GetInternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
+                                        __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                                         <div style="display: table-row">
                                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Autor: </div>
@@ -166,9 +198,14 @@
 
                                     @if (item.TimeOfWriting.IsNotNullOrEmpty()) {
                                         var __text = item.TimeOfWriting;
-                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                                            return " " + m.Value.Trim() + "&nbsp;";
-                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        __text = BibleTagController.AppendNonBreakingSpaces(__text);
+
+                                        __text = BibleTagController.GetInternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
+                                        __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                                         <div style="display: table-row">
                                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Czas: </div>
@@ -178,9 +215,14 @@
 
                                     @if (item.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
                                         var __text = item.PlaceWhereBookWasWritten;
-                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                                            return " " + m.Value.Trim() + "&nbsp;";
-                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        __text = BibleTagController.AppendNonBreakingSpaces(__text);
+
+                                        __text = BibleTagController.GetInternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
+                                        __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                                         <div style="display: table-row">
                                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Miejsce: </div>
@@ -190,9 +232,14 @@
 
                                     @if (item.Purpose.IsNotNullOrEmpty()) {
                                         var __text = item.Purpose;
-                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                                            return " " + m.Value.Trim() + "&nbsp;";
-                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        __text = BibleTagController.AppendNonBreakingSpaces(__text);
+
+                                        __text = BibleTagController.GetInternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
+                                        __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                                         <div style="display: table-row">
                                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Cel: </div>
@@ -202,9 +249,14 @@
 
                                     @if (item.Subject.IsNotNullOrEmpty()) {
                                         var __text = item.Subject;
-                                        __text = System.Text.RegularExpressions.Regex.Replace(__text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                                            return " " + m.Value.Trim() + "&nbsp;";
-                                        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                                        __text = BibleTagController.AppendNonBreakingSpaces(__text);
+
+                                        __text = BibleTagController.GetInternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
+                                        __text = BibleTagController.GetExternalVerseHtml(__text, Model);
+                                        __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
+                                        __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
                                         <div style="display: table-row">
                                             <div style="font-weight: bold; display: table-cell; padding-right: 10px;">Temat: </div>
