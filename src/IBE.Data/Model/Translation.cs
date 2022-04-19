@@ -148,11 +148,20 @@ namespace IBE.Data.Model {
                             }
                             else {
                                 translatedBooksText += "<ul>";
-                                var chapters = book.Chapters.OrderBy(x => x.NumberOfChapter);
+                                var firstChapterNumber = book.Chapters.Select(x => x.NumberOfChapter).Min();
                                 var translationStart = -1;
                                 var translationEnd = 0;
-                                foreach (var chapter in chapters) {
-                                    if (!chapter.IsTranslated) {
+                                var translatedNumbers = book.Chapters.Where(x => x.IsTranslated).OrderBy(x => x.NumberOfChapter).Select(x => x.NumberOfChapter);
+                                for (int i = firstChapterNumber; i <= book.NumberOfChapters; i++) {
+                                    var isTranslated = translatedNumbers.Contains(i);
+                                    if (!isTranslated || i == book.NumberOfChapters) {
+                                        if (isTranslated) {
+                                            if (translationStart == -1) {
+                                                translationStart = i;
+                                            }
+                                            translationEnd = i;
+                                        }
+
                                         if (translationStart != -1 && translationEnd != 0) {
                                             translatedBooksText += "<li>";
 
@@ -176,11 +185,12 @@ namespace IBE.Data.Model {
                                     }
                                     else {
                                         if (translationStart == -1) {
-                                            translationStart = chapter.NumberOfChapter;
+                                            translationStart = i;
                                         }
-                                        translationEnd = chapter.NumberOfChapter;
+                                        translationEnd = i;
                                     }
                                 }
+
                                 translatedBooksText += "</ul>";
                             }
 
@@ -200,7 +210,7 @@ namespace IBE.Data.Model {
         [Description("")]
         [Category("0")]
         None = 0,
-        
+
         [Description("Przekład interlinearny")]
         [Category("1")]
         Interlinear = 1,
@@ -208,11 +218,11 @@ namespace IBE.Data.Model {
         [Description("Przekład literacki")]
         [Category("3")]
         Default = 2,
-        
+
         [Description("Przekład dynamiczny")]
         [Category("4")]
         Dynamic = 3,
-        
+
         [Description("Przekład dosłowny")]
         [Category("2")]
         Literal = 4
