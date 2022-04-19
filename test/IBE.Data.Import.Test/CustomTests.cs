@@ -77,6 +77,21 @@ namespace IBE.Data.Import.Test {
             uow.CommitChanges();
         }
 
+        [TestMethod]
+        public void UpdateChapterVersesCount() {
+            ConnectionHelper.Connect();
+            var uow = new UnitOfWork();
+            uow.BeginTransaction();
+
+            var chapters = new XPQuery<Model.Chapter>(uow).Where(x => x.NumberOfVerses == 0).ToList();
+            foreach (var chapter in chapters) {
+                chapter.NumberOfVerses = chapter.Verses.Count;
+                chapter.Save();
+            }
+
+            uow.CommitChanges();
+        }
+
 
         [TestMethod]
         public void UpdateInterlinearVerseText() {
