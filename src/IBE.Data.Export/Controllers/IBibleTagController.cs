@@ -27,5 +27,7 @@ namespace IBE.Data.Export.Controllers {
         string GetMultiChapterRangeText(string input, TranslationControllerModel model);
 
         string GetVerseTranslation(Session session, int numberOfBook, int numberOfChapter, int verseStart, int verseEnd = 0, string translationName = "NPI");
+
+        string RepairStrongs(string input);
     }
 }
