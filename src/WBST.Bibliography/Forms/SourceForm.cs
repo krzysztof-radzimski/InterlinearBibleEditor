@@ -236,6 +236,9 @@ namespace WBST.Bibliography.Forms {
         }
 
         private void btnEditAuthor_Click(object sender, EventArgs e) {
+            if (Source.Author == null) {
+                Source.Author = new BibliographyAuthor();
+            }
             if (Source.Author.Author == null) {
                 Source.Author.Author = new Author() {
                     Objects = new List<object>() {

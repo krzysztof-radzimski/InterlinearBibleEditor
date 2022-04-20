@@ -56,7 +56,9 @@ namespace WBST.Bibliography {
                 btnAddFootnote.Enabled = list.Count > 0;
 
                 view.Columns["SourceType"].Group();
-                view.Columns["Title"].SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+                view.Columns["Author"].SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+                view.Columns["Author"].VisibleIndex = 1;
+
                 view.BestFitColumns();
                 view.ExpandAllGroups();
             }

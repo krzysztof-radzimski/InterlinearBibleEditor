@@ -134,7 +134,7 @@ namespace WBST.Bibliography.Controllers {
                         Document.ActiveWindow.Selection.TypeText(", ");
                     }
 
-                    if (item.Author.Editor != null && item.Author.Editor.Objects != null && item.Author.Editor.Objects.Count > 0) {
+                    if (item.Author != null && item.Author.Editor != null && item.Author.Editor.Objects != null && item.Author.Editor.Objects.Count > 0) {
                         Document.ActiveWindow.Selection.TypeText("red. ");
                         foreach (var author in item.Author.Editor.Objects) {
                             if (author is BibliographyNameList) {
@@ -146,7 +146,7 @@ namespace WBST.Bibliography.Controllers {
                         }
                     }
 
-                    if (item.Author.Translator != null && item.Author.Translator.Objects != null && item.Author.Translator.Objects.Count > 0) {
+                    if (item.Author != null && item.Author.Translator != null && item.Author.Translator.Objects != null && item.Author.Translator.Objects.Count > 0) {
                         Document.ActiveWindow.Selection.TypeText("przekł. ");
                         foreach (var author in item.Author.Translator.Objects) {
                             if (author is BibliographyNameList) {
