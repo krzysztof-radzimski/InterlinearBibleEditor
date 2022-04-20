@@ -11,7 +11,7 @@
 @model CompareVerseModel
 
 @if (Model.IsNotNull() && Model.Verses.Count > 0) {
-    var name = Model.GetSiglum(); 
+    var name = Model.GetSiglum();
     var title = $"Porównanie tłumaczeń {name}";
     var literalTitle = $"Porównanie tłumaczeń dosłownych {name}";
 
@@ -35,6 +35,14 @@
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@Model.Index.Index&literal=true"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;@literalTitle w formacie PDF</a></li>
                     <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@Model.Index.Index&literal=true"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;@literalTitle w formacie Microsoft Word</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    @if (Model.LiteralOnly) {
+                        <li><a class="dropdown-item" href="/CompareVerse?q=@Model.Index.Index"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;@title</a></li>
+                    }
+                    else {
+                        <li><a class="dropdown-item" href="/CompareVerse?q=@Model.Index.Index&literal=true"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;@literalTitle</a></li>
+                    }
+
                 </ul>
             </div>
 

@@ -131,6 +131,8 @@ namespace IBE.Data.Model {
             set { SetPropertyValue(nameof(IsTranslated), ref isTranslated, value); }
         }
 
+        [NonPersistent] public bool IsNT => NumberOfBook >= 470 && NumberOfBook <= 730;
+
         public Book(Session session) : base(session) { }
 
         public override string ToString() {

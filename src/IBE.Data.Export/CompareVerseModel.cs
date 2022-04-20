@@ -8,6 +8,7 @@ namespace IBE.Data.Export {
         public BiblePart Part { get; set; }
         public VerseIndex Index { get; set; }
         public List<CompareVerseInfo> Verses { get; set; }
+        public bool LiteralOnly { get; set; }
 
         public string GetSiglum() {
             return $"{BookShortcut} {Index.NumberOfChapter}:{Index.NumberOfVerse}";

@@ -24,7 +24,7 @@ namespace Church.WebApp.Controllers {
         internal CompareVerseModel GetModel(QueryString qs) {
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 3) {
                 var value = qs.Value;
-                var onlyLiteral = value.Contains("literal");
+                var literalOnly = value.Contains("literal");
                 if (value.Contains("&")) {
                     value = value.Substring(0, value.IndexOf("&"));
                 }
@@ -56,13 +56,14 @@ namespace Church.WebApp.Controllers {
                     Verses = new List<CompareVerseInfo>(),
                     BookName = baseBookName,
                     BookShortcut = baseBookShortcut,
-                    Part = biblePart
+                    Part = biblePart,
+                    LiteralOnly = literalOnly
                 };
 
 
                 var criteriaString = "[Hidden] = 0";
-                if (onlyLiteral) {
-                    criteriaString += " AND (([Type] = 1) OR ([Type] = 2))";
+                if (literalOnly) {
+                    criteriaString += " AND (([Type] = 1) OR ([Type] = 4))";
                 }
 
                 var viewTranslation = new XPView(uow, typeof(Translation)) {

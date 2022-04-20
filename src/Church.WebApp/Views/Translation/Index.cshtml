@@ -661,8 +661,9 @@ else {
                                                 <li><span class="dropdown-header fs-5 disabled">@bookShortcut @chapterNumberString:@verse.NumberOfVerse</span></li>
                                                 <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
                                                 <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index&literal=true" target="_blank"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
-                                                <li><a class="dropdown-item" href="@verse.GetOblubienicaUrl()" target="_blank"><i class="fas fa-globe"></i>&nbsp;Porównaj w&nbsp;przekładzie interlinearnym Oblubienica.eu</a></li>
-
+                                                @if (book.IsNT) {
+                                                    <li><a class="dropdown-item" href="@verse.GetOblubienicaUrl()" target="_blank"><i class="fas fa-globe"></i>&nbsp;Porównaj w&nbsp;przekładzie interlinearnym Oblubienica.eu</a></li>
+                                                }
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie PDF</a></li>
                                                 <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie DOCX</a></li>
@@ -948,6 +949,9 @@ else {
 
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" onclick="copyToClipboard3('@clipboardText'); hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');" style="cursor: pointer;"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj werset</a></li>
+                                    @if (book.IsNT) {
+                                        <li><a class="dropdown-item" href="@verse.GetOblubienicaUrl()" target="_blank"><i class="fas fa-globe"></i>&nbsp;Porównaj w&nbsp;przekładzie interlinearnym Oblubienica.eu</a></li>
+                                    }
                                 </ul>
                                 <input id="verse-hidden-@verse.NumberOfVerse" type="hidden" value="@clipboardShortText" data-bs-number="@verse.NumberOfVerse" />
                             </span>
