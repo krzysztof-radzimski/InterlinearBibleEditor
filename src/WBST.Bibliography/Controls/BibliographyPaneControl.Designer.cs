@@ -33,6 +33,7 @@
             this.btnEditSource = new DevExpress.XtraBars.BarButtonItem();
             this.btnDeleteSource = new DevExpress.XtraBars.BarButtonItem();
             this.btnAppendBibliography = new DevExpress.XtraBars.BarButtonItem();
+            this.btnRefresh = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -40,10 +41,12 @@
             this.grid = new DevExpress.XtraGrid.GridControl();
             this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.defaultLookAndFeel1 = new DevExpress.LookAndFeel.DefaultLookAndFeel(this.components);
-            this.btnRefresh = new DevExpress.XtraBars.BarButtonItem();
+            this.btnAppendBibliographyItem = new DevExpress.XtraBars.BarButtonItem();
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barManager)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.view)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
             this.SuspendLayout();
             // 
             // standaloneBarDockControl1
@@ -73,8 +76,9 @@
             this.btnEditSource,
             this.btnDeleteSource,
             this.btnAppendBibliography,
-            this.btnRefresh});
-            this.barManager.MaxItemId = 6;
+            this.btnRefresh,
+            this.btnAppendBibliographyItem});
+            this.barManager.MaxItemId = 7;
             // 
             // bar1
             // 
@@ -88,7 +92,8 @@
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnAddSource, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnEditSource, DevExpress.XtraBars.BarItemPaintStyle.Standard),
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnDeleteSource, DevExpress.XtraBars.BarItemPaintStyle.Standard),
-            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnAppendBibliography, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnAppendBibliography, "", true, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.Standard),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnAppendBibliographyItem),
             new DevExpress.XtraBars.LinkPersistInfo(this.btnRefresh)});
             this.bar1.OptionsBar.DrawBorder = false;
             this.bar1.OptionsBar.DrawDragBorder = false;
@@ -136,6 +141,14 @@
             this.btnAppendBibliography.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAppendBibliography.ImageOptions.SvgImage")));
             this.btnAppendBibliography.Name = "btnAppendBibliography";
             this.btnAppendBibliography.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAppendBibliography_ItemClick);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Caption = "Odśwież";
+            this.btnRefresh.Id = 5;
+            this.btnRefresh.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnRefresh.ImageOptions.SvgImage")));
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnRefresh_ItemClick);
             // 
             // barDockControlTop
             // 
@@ -192,19 +205,29 @@
             this.view.OptionsView.ColumnAutoWidth = false;
             this.view.OptionsView.ShowGroupPanel = false;
             this.view.OptionsView.ShowIndicator = false;
+            this.view.PopupMenuShowing += new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.view_PopupMenuShowing);
             this.view.DoubleClick += new System.EventHandler(this.view_DoubleClick);
             // 
             // defaultLookAndFeel1
             // 
             this.defaultLookAndFeel1.LookAndFeel.SkinName = "Office 2019 Black";
             // 
-            // btnRefresh
+            // btnAppendBibliographyItem
             // 
-            this.btnRefresh.Caption = "Odśwież";
-            this.btnRefresh.Id = 5;
-            this.btnRefresh.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnRefresh.ImageOptions.SvgImage")));
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnRefresh_ItemClick);
+            this.btnAppendBibliographyItem.Caption = "Wstaw pozycję bibliografi";
+            this.btnAppendBibliographyItem.Id = 6;
+            this.btnAppendBibliographyItem.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAppendBibliographyItem.ImageOptions.SvgImage")));
+            this.btnAppendBibliographyItem.Name = "btnAppendBibliographyItem";
+            this.btnAppendBibliographyItem.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAppendBibliographyItem_ItemClick);
+            // 
+            // popupMenu1
+            // 
+            this.popupMenu1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnEditSource),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnDeleteSource),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnAppendBibliographyItem)});
+            this.popupMenu1.Manager = this.barManager;
+            this.popupMenu1.Name = "popupMenu1";
             // 
             // BibliographyPaneControl
             // 
@@ -221,6 +244,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.barManager)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -244,5 +268,7 @@
         private DevExpress.XtraBars.BarButtonItem btnDeleteSource;
         private DevExpress.XtraBars.BarButtonItem btnAppendBibliography;
         private DevExpress.XtraBars.BarButtonItem btnRefresh;
+        private DevExpress.XtraBars.BarButtonItem btnAppendBibliographyItem;
+        private DevExpress.XtraBars.PopupMenu popupMenu1;
     }
 }

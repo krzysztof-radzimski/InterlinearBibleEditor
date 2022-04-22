@@ -29,6 +29,7 @@
             this.btnOK = new DevExpress.XtraEditors.SimpleButton();
             this.panel = new DevExpress.XtraEditors.XtraScrollableControl();
             this.table = new DevExpress.Utils.Layout.TablePanel();
+            this.lblGroup = new DevExpress.XtraEditors.LabelControl();
             this.txtAccess = new DevExpress.XtraEditors.DateEdit();
             this.txtJournalNumber = new DevExpress.XtraEditors.TextEdit();
             this.txtJournalName = new DevExpress.XtraEditors.TextEdit();
@@ -36,9 +37,7 @@
             this.txtEdition = new DevExpress.XtraEditors.TextEdit();
             this.txtVolumes = new DevExpress.XtraEditors.TextEdit();
             this.txtVolume = new DevExpress.XtraEditors.TextEdit();
-            this.txtCity = new DevExpress.XtraEditors.TextEdit();
             this.txtYear = new DevExpress.XtraEditors.TextEdit();
-            this.txtPublisher = new DevExpress.XtraEditors.TextEdit();
             this.txtShortTitle = new DevExpress.XtraEditors.TextEdit();
             this.txtTitle = new DevExpress.XtraEditors.TextEdit();
             this.btnShortUrl = new DevExpress.XtraEditors.SimpleButton();
@@ -67,8 +66,9 @@
             this.lblAuthor = new DevExpress.XtraEditors.LabelControl();
             this.txtSourceType = new DevExpress.XtraEditors.ComboBoxEdit();
             this.lblSourceType = new DevExpress.XtraEditors.LabelControl();
-            this.lblGroup = new DevExpress.XtraEditors.LabelControl();
             this.txtGroup = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.txtPublisher = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.txtCity = new DevExpress.XtraEditors.ComboBoxEdit();
             ((System.ComponentModel.ISupportInitialize)(this.panelBottom)).BeginInit();
             this.panelBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cbShowAllFields.Properties)).BeginInit();
@@ -83,9 +83,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtEdition.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtVolumes.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtVolume.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtCity.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtYear.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPublisher.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtShortTitle.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTitle.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTranslator.Properties)).BeginInit();
@@ -95,6 +93,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtAuthor.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSourceType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtGroup.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPublisher.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCity.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // panelBottom
@@ -160,9 +160,7 @@
             this.table.Controls.Add(this.txtEdition);
             this.table.Controls.Add(this.txtVolumes);
             this.table.Controls.Add(this.txtVolume);
-            this.table.Controls.Add(this.txtCity);
             this.table.Controls.Add(this.txtYear);
-            this.table.Controls.Add(this.txtPublisher);
             this.table.Controls.Add(this.txtShortTitle);
             this.table.Controls.Add(this.txtTitle);
             this.table.Controls.Add(this.btnShortUrl);
@@ -192,6 +190,8 @@
             this.table.Controls.Add(this.txtSourceType);
             this.table.Controls.Add(this.lblSourceType);
             this.table.Controls.Add(this.txtGroup);
+            this.table.Controls.Add(this.txtPublisher);
+            this.table.Controls.Add(this.txtCity);
             this.table.Dock = System.Windows.Forms.DockStyle.Fill;
             this.table.Location = new System.Drawing.Point(0, 0);
             this.table.Name = "table";
@@ -217,6 +217,17 @@
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
             this.table.Size = new System.Drawing.Size(800, 505);
             this.table.TabIndex = 0;
+            // 
+            // lblGroup
+            // 
+            this.table.SetColumn(this.lblGroup, 1);
+            this.lblGroup.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lblGroup.Location = new System.Drawing.Point(79, 448);
+            this.lblGroup.Name = "lblGroup";
+            this.table.SetRow(this.lblGroup, 17);
+            this.lblGroup.Size = new System.Drawing.Size(29, 20);
+            this.lblGroup.TabIndex = 22;
+            this.lblGroup.Text = "Grupa";
             // 
             // txtAccess
             // 
@@ -286,15 +297,6 @@
             this.txtVolume.Size = new System.Drawing.Size(572, 20);
             this.txtVolume.TabIndex = 14;
             // 
-            // txtCity
-            // 
-            this.table.SetColumn(this.txtCity, 2);
-            this.txtCity.Location = new System.Drawing.Point(114, 188);
-            this.txtCity.Name = "txtCity";
-            this.table.SetRow(this.txtCity, 7);
-            this.txtCity.Size = new System.Drawing.Size(572, 20);
-            this.txtCity.TabIndex = 9;
-            // 
             // txtYear
             // 
             this.table.SetColumn(this.txtYear, 2);
@@ -303,15 +305,6 @@
             this.table.SetRow(this.txtYear, 6);
             this.txtYear.Size = new System.Drawing.Size(572, 20);
             this.txtYear.TabIndex = 8;
-            // 
-            // txtPublisher
-            // 
-            this.table.SetColumn(this.txtPublisher, 2);
-            this.txtPublisher.Location = new System.Drawing.Point(114, 136);
-            this.txtPublisher.Name = "txtPublisher";
-            this.table.SetRow(this.txtPublisher, 5);
-            this.txtPublisher.Size = new System.Drawing.Size(572, 20);
-            this.txtPublisher.TabIndex = 7;
             // 
             // txtShortTitle
             // 
@@ -619,17 +612,6 @@
             this.lblSourceType.TabIndex = 0;
             this.lblSourceType.Text = "Typ źródła:";
             // 
-            // lblGroup
-            // 
-            this.table.SetColumn(this.lblGroup, 1);
-            this.lblGroup.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lblGroup.Location = new System.Drawing.Point(79, 448);
-            this.lblGroup.Name = "lblGroup";
-            this.table.SetRow(this.lblGroup, 17);
-            this.lblGroup.Size = new System.Drawing.Size(29, 20);
-            this.lblGroup.TabIndex = 22;
-            this.lblGroup.Text = "Grupa";
-            // 
             // txtGroup
             // 
             this.table.SetColumn(this.txtGroup, 2);
@@ -640,6 +622,28 @@
             this.table.SetRow(this.txtGroup, 17);
             this.txtGroup.Size = new System.Drawing.Size(572, 20);
             this.txtGroup.TabIndex = 23;
+            // 
+            // txtPublisher
+            // 
+            this.table.SetColumn(this.txtPublisher, 2);
+            this.txtPublisher.Location = new System.Drawing.Point(114, 136);
+            this.txtPublisher.Name = "txtPublisher";
+            this.txtPublisher.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.table.SetRow(this.txtPublisher, 5);
+            this.txtPublisher.Size = new System.Drawing.Size(572, 20);
+            this.txtPublisher.TabIndex = 7;
+            // 
+            // txtCity
+            // 
+            this.table.SetColumn(this.txtCity, 2);
+            this.txtCity.Location = new System.Drawing.Point(114, 188);
+            this.txtCity.Name = "txtCity";
+            this.txtCity.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.table.SetRow(this.txtCity, 7);
+            this.txtCity.Size = new System.Drawing.Size(572, 20);
+            this.txtCity.TabIndex = 9;
             // 
             // SourceForm
             // 
@@ -673,9 +677,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtEdition.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtVolumes.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtVolume.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtCity.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtYear.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPublisher.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtShortTitle.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTitle.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTranslator.Properties)).EndInit();
@@ -685,6 +687,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtAuthor.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSourceType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtGroup.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPublisher.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtCity.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -729,12 +733,12 @@
         private DevExpress.XtraEditors.TextEdit txtEdition;
         private DevExpress.XtraEditors.TextEdit txtVolumes;
         private DevExpress.XtraEditors.TextEdit txtVolume;
-        private DevExpress.XtraEditors.TextEdit txtCity;
         private DevExpress.XtraEditors.TextEdit txtYear;
-        private DevExpress.XtraEditors.TextEdit txtPublisher;
         private DevExpress.XtraEditors.TextEdit txtShortTitle;
         private DevExpress.XtraEditors.TextEdit txtTitle;
         private DevExpress.XtraEditors.LabelControl lblGroup;
         private DevExpress.XtraEditors.ComboBoxEdit txtGroup;
+        private DevExpress.XtraEditors.ComboBoxEdit txtPublisher;
+        private DevExpress.XtraEditors.ComboBoxEdit txtCity;
     }
 }

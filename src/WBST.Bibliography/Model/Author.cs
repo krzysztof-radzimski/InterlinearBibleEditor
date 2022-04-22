@@ -18,7 +18,7 @@ namespace WBST.Bibliography.Model {
 
         public override string ToString() {
             var str = "";
-            if (Author != null) { str += $"{Author}; "; }
+            if (Author != null) { str += $"{Author}; "; } 
             if (Editor != null) { str += $"red. {Editor}; "; }
             if (Translator != null) { str += $"przeł. {Translator};"; }
             var result = str.Trim();
@@ -62,6 +62,13 @@ namespace WBST.Bibliography.Model {
         [DisplayName("Imię")] public string First { get; set; }
         [DisplayName("Drugie imię")] public string Middle { get; set; }
         [DisplayName("Nazwisko")] public string Last { get; set; }
+
+        public override string ToString() {
+            var str = string.Empty;
+            str += $"{this.First} {this.Middle}".Trim();
+            str += $" {this.Last}";
+            return str.Trim();
+        }
     }
 
 }

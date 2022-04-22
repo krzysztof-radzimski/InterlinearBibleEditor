@@ -1,29 +1,36 @@
 ﻿using DevExpress.XtraEditors;
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows.Forms;
-using WBST.Bibliography.Model;
-using DevExpress.Utils.Layout;
+using System.IO;
+using System.Linq;
 using System.Text;
+using System.Windows.Forms;
+using System.Xml.Serialization;
+using WBST.Bibliography.Model;
 
 namespace WBST.Bibliography.Forms {
     public partial class SourceForm : XtraForm {
+        private List<BibliographySource> Sources { get; }
         public BibliographySource Source { get; private set; }
         public SourceForm() {
             InitializeComponent();
+            Sources = null;
+            SetComboBoxLists();
             Source = GetDefault();
             LoadData();
         }
         public SourceForm(List<BibliographySource> sources) {
             InitializeComponent();
+            Sources = sources;
+            SetComboBoxLists(sources);
             Source = GetDefault();
             LoadData();
             AddGroups(sources);
         }
         public SourceForm(BibliographySource source, List<BibliographySource> sources) {
             InitializeComponent();
+            Sources = sources;
+            SetComboBoxLists(sources);
             Source = source;
             LoadData();
             AddGroups(sources);
@@ -269,6 +276,43 @@ namespace WBST.Bibliography.Forms {
                     txtTranslator.Text = Source.Author.Translator.NamesList.ToString();
                 }
             }
+        }
+
+        private void SetComboBoxLists(List<BibliographySource> sources = null) {
+            try {
+                var listOfCities = new List<string>();
+                var listOfPublishers = new List<string>();
+
+                if (sources.IsNullOrMissing()) {
+                    sources = new List<BibliographySource>();
+                    var globalBibliography = Globals.ThisAddIn.Application.Bibliography;
+                    foreach (Microsoft.Office.Interop.Word.Source item in globalBibliography.Sources) {
+                        if (item != null) {
+                            var xml = item.XML;
+                            if (xml != null) {
+                                var serializer = new XmlSerializer(typeof(BibliographySource));
+                                var o = serializer.Deserialize(new MemoryStream(Encoding.UTF8.GetBytes(xml)));
+                                if (o is BibliographySource) {
+                                    sources.Add(o as BibliographySource);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                foreach (var s in sources) {
+                    if (s.City.IsNotNullOrEmpty() && !listOfCities.Contains(s.City.Trim())) {
+                        listOfCities.Add(s.City.Trim());
+                    }
+                    if (s.Publisher.IsNotNullOrEmpty() && !listOfPublishers.Contains(s.Publisher.Trim())) {
+                        listOfPublishers.Add(s.Publisher.Trim());
+                    }
+                }               
+
+                txtCity.Properties.Items.AddRange(listOfCities.OrderBy(x=>x).ToArray());
+                txtPublisher.Properties.Items.AddRange(listOfPublishers.OrderBy(x => x).ToArray());
+            }
+            catch { }
         }
     }
 }

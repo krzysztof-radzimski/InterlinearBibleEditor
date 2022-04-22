@@ -8,6 +8,7 @@ namespace WBST.Bibliography.Controllers {
     public interface IBibliographyController {
         Microsoft.Office.Interop.Word.Document Document { get; }
         void InsertFootNote(BibliographySource item);
+        void AppendBibliography(BibliographySource source);
         void AppendBibliography(IEnumerable<BibliographySource> sources);
     }
     public class BibliographyController : IBibliographyController {
@@ -209,6 +210,12 @@ namespace WBST.Bibliography.Controllers {
                 }
             }
             return shortTitle;
+        }
+
+        public void AppendBibliography(BibliographySource source) {
+            if (source != null) {
+                AddBibliographyItem(source);
+            }
         }
 
         public void AppendBibliography(IEnumerable<BibliographySource> sources) {

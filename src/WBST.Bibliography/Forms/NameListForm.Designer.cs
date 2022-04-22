@@ -27,7 +27,7 @@
             this.btnCancel = new DevExpress.XtraEditors.SimpleButton();
             this.btnOK = new DevExpress.XtraEditors.SimpleButton();
             this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
-            this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
+            this.btnAdd = new DevExpress.XtraEditors.DropDownButton();
             this.txtMiddle = new DevExpress.XtraEditors.TextEdit();
             this.txtFirst = new DevExpress.XtraEditors.TextEdit();
             this.txtLast = new DevExpress.XtraEditors.TextEdit();
@@ -264,7 +264,7 @@
         private DevExpress.XtraEditors.SimpleButton btnOK;
         private DevExpress.Utils.Layout.TablePanel tablePanel1;
         private DevExpress.XtraEditors.LabelControl labelControl1;
-        private DevExpress.XtraEditors.SimpleButton btnAdd;
+        private DevExpress.XtraEditors.DropDownButton btnAdd;
         private DevExpress.XtraEditors.TextEdit txtMiddle;
         private DevExpress.XtraEditors.TextEdit txtFirst;
         private DevExpress.XtraEditors.TextEdit txtLast;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 using WBST.Bibliography.Forms;
 using WBST.Bibliography.Model;
@@ -148,6 +149,20 @@ namespace WBST.Bibliography {
 
         private void btnRefresh_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             LoadBibliography();
+        }
+
+        private void view_PopupMenuShowing(object sender, DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventArgs e) {
+            if (e.HitInfo.InRow) {
+                System.Drawing.Point p2 = Control.MousePosition;
+                this.popupMenu1.ShowPopup(p2);
+            }
+        }
+
+        private void btnAppendBibliographyItem_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var item = view.GetFocusedRow() as BibliographySource;
+            if (item.IsNotNullOrMissing()) {
+                FootnoteController.AppendBibliography(item);
+            }
         }
     }
 }
