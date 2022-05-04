@@ -358,10 +358,12 @@ else {
         var chapterNumber = Convert.ToInt32(Model.Chapter);
         if (chapterNumber == __chapterNumbers.First()) {
             if (bookName.IsNotNullOrEmpty()) {
+                var descExists = false;
 
                 <div class="lh-base fs-5" style="max-width: 1000px; margin: auto; text-align: justify; width: 100%;">
                     <div style=" display: table;">
                         @if (book.BaseBook.AuthorName.IsNotNullOrEmpty()) {
+                            descExists = true;
                             var __text = book.BaseBook.AuthorName;
                             __text = BibleTagController.AppendNonBreakingSpaces(__text);
 
@@ -379,6 +381,7 @@ else {
                         }
 
                         @if (book.BaseBook.TimeOfWriting.IsNotNullOrEmpty()) {
+                            descExists = true;
                             var __text = book.BaseBook.TimeOfWriting;
                             __text = BibleTagController.AppendNonBreakingSpaces(__text);
 
@@ -396,6 +399,7 @@ else {
                         }
 
                         @if (book.BaseBook.PlaceWhereBookWasWritten.IsNotNullOrEmpty()) {
+                            descExists = true;
                             var __text = book.BaseBook.PlaceWhereBookWasWritten;
                             __text = BibleTagController.AppendNonBreakingSpaces(__text);
 
@@ -413,6 +417,7 @@ else {
                         }
 
                         @if (book.BaseBook.Purpose.IsNotNullOrEmpty()) {
+                            descExists = true;
                             var __text = book.BaseBook.Purpose;
                             __text = BibleTagController.AppendNonBreakingSpaces(__text);
 
@@ -430,6 +435,7 @@ else {
                         }
 
                         @if (book.BaseBook.Subject.IsNotNullOrEmpty()) {
+                            descExists = true;
                             var __text = book.BaseBook.Subject;
                             __text = BibleTagController.AppendNonBreakingSpaces(__text);
 
@@ -446,7 +452,7 @@ else {
                             </div>
                         }
                     </div>
-                    @if (Model.Translation.Name != "PBD" && Model.Translation.BookType != IBE.Data.Model.TheBookType.ChurchFathersLetter) {
+                    @if (descExists && Model.Translation.Name != "PBD" && Model.Translation.BookType != IBE.Data.Model.TheBookType.ChurchFathersLetter) {
                         <p class="fs-70per"><br />* Opis księgi na podstawie <a href="http://feib.pl" target="_blank">Przekładu Dosłownego Pisma Świetego Starego i Nowego Przymierza EIB</a>.</p>
                     }
                 </div>

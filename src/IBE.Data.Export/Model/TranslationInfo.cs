@@ -10,5 +10,6 @@ namespace IBE.Data.Export.Model {
         public bool Recommended { get; set; }
         public bool PasswordRequired { get; set; }
         public string TranslationType { get { return Type.GetDescription(); } }
+        public Language Language { get; set; }
     }
 }

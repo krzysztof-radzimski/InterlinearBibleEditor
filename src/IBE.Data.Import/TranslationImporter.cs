@@ -122,6 +122,18 @@ namespace IBE.Data.Import {
                         var longName = reader.GetString(2);
                         var bookColor = reader.GetString(3);
 
+                        var baseBook = new XPQuery<BookBase>(uow).Where(x => x.NumberOfBook == numberOfBook).FirstOrDefault();
+                        if (baseBook.IsNull()) {
+                            baseBook = new BookBase(uow) {
+                                NumberOfBook = numberOfBook,
+                                BookShortcut = shortName,
+                                BookName = longName,
+                                Color = bookColor,
+                                Status = new XPQuery<BookStatus>(uow).Where(x => x.BiblePart == BiblePart.OldTestament && x.CanonType == CanonType.Apocrypha).FirstOrDefault()
+                            };
+                            baseBook.Save();
+                        }
+
                         list.Add(new {
                             BookName = longName,
                             BookShortcut = shortName,

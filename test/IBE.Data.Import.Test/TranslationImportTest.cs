@@ -29,6 +29,7 @@ namespace IBE.Data.Import.Test {
             }
 
             if (trans.IsNotNull()) {
+                trans.BookType = TheBookType.Bible;
                 trans.Type = type;
                 trans.Recommended = recommended;
                 trans.Catolic = catolic;
@@ -58,6 +59,8 @@ namespace IBE.Data.Import.Test {
         [TestMethod] public void Import_PBPW() { ImportTranslation(@"..\..\..\..\db\import\PBPW.zip", type: TranslationType.Literal, catolic: true); }
         [TestMethod] public void Import_TRO() { ImportTranslation(@"..\..\..\..\db\import\TRO.zip", true, TranslationType.Literal); }
         [TestMethod] public void Import_IBHP() { ImportTranslation(@"..\..\..\..\db\import\IBHP+.zip", true, TranslationType.Literal); }
+
+        [TestMethod] public void Import_TUB() { ImportTranslation(@"..\..\..\..\db\import\TUB.zip", type: TranslationType.Default); }
 
         //[TestMethod] public void ExportInterlinearTest() {
         //    var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".docx");

@@ -92,8 +92,8 @@
                                         var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
                                         var _notrecommendedBadge = item.TranslationType == IBE.Data.Model.TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm abbr-small"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
                                         var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
-
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name"><b>@item.Name</b>&nbsp;<span class="fs-80per">@_description</span>&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)</a></li>
+                                        var _isUA = item.Language == IBE.Data.Model.Language.Ukrainian ? @"&nbsp;<img src=""/img/ukraine.png"" style=""width: 16px; "" />" : "";
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name"><b>@item.Name</b>&nbsp;<span class="fs-80per">@_description</span>&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)@Html.Raw(@_isUA)</a></li>
                                     }
 
                                     if (groupName.Key == IBE.Data.Model.TranslationType.Interlinear.GetDescription()) {

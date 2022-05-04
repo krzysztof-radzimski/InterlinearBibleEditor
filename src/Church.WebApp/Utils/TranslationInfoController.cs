@@ -23,6 +23,7 @@ namespace Church.WebApp.Utils {
             view.Properties.Add(new ViewProperty("Catolic", SortDirection.None, "[Catolic]", false, true));
             view.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
             view.Properties.Add(new ViewProperty("OpenAccess", SortDirection.None, "[OpenAccess]", false, true));
+            view.Properties.Add(new ViewProperty("Language", SortDirection.None, "[Language]", false, true));
 
             var model = new List<TranslationInfo>();
             foreach (ViewRecord item in view) {
@@ -32,7 +33,8 @@ namespace Church.WebApp.Utils {
                     Description = item["Description"].ToString(),
                     Catholic = (bool)item["Catolic"],
                     Recommended = (bool)item["Recommended"],
-                    PasswordRequired = !((bool)item["OpenAccess"])
+                    PasswordRequired = !((bool)item["OpenAccess"]),
+                    Language = (Language)item["Language"]
                 });
             }
 

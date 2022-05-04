@@ -26,7 +26,9 @@ namespace IBE.Data.Model {
         [Category("EN")]
         English,
         [Category("PL")]
-        Polish
+        Polish,
+        [Category("UA")]
+        Ukrainian
     }
     public static class LanguageExtensions {
         public static Language GetLanguage(this string value) {

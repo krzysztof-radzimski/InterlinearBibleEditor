@@ -61,6 +61,6 @@
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
-		<PackageReference Include="devexpress.win.design" Version="21.2.3" />
+		<PackageReference Include="devexpress.win.design" Version="21.2.7" />
 	</ItemGroup>
 </Project>

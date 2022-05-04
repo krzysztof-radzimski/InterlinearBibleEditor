@@ -640,7 +640,7 @@ namespace IBE.Data.Export {
                                 Type = (TranslationType)item["Type"],
                                 Catholic = (bool)item["Catholic"],
                                 Recommended = (bool)item["Recommended"],
-                                PasswordRequired = !((bool)item["OpenAccess"])
+                                PasswordRequired = !((bool)item["OpenAccess"])                       
                             });
                         }
                     }
