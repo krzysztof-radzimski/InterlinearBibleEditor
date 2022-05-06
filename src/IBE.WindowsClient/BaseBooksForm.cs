@@ -1,15 +1,11 @@
 ﻿using DevExpress.Xpo;
 using DevExpress.XtraBars.Ribbon;
+using DevExpress.XtraEditors;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace IBE.WindowsClient {
@@ -71,6 +67,23 @@ namespace IBE.WindowsClient {
                     uow.CommitChanges();
                     LoadData();
                 }
+            }
+        }
+
+        private void btnDelete_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var uow = (gridView.GetRow(0) as BookBase).Session as UnitOfWork;
+            var record = gridView.GetFocusedRow() as ViewRecord;
+            if (record.IsNotNull()) {
+                var id = record["Id"].ToInt();
+                var book = new XPQuery<BookBase>(uow).Where(x => x.Oid == id).FirstOrDefault();
+                if (book.TranslationBooks.IsNotNull() && book.TranslationBooks.Count > 0) {
+                    if (XtraMessageBox.Show("Base book has related translations. Continue?", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) {
+                        return;
+                    }
+                }
+                book.Delete();
+                uow.CommitChanges();
+                LoadData();
             }
         }
     }

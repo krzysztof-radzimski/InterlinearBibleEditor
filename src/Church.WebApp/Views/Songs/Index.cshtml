@@ -39,14 +39,14 @@
     @foreach (ViewRecord record in Model) {
         var type = (SongGroupType)record["Type"];
         <div class="row">
-            <div class="col-auto" style="min-width: 60px;">
-                @record["Number"]
+            <div class="col-auto" style="min-width: 70px;">
+                <a href="/Song?id=@record["Number"]" class="btn text-start fw-bold" role="button" aria-pressed="true">@record["Number"]</a>                
             </div>
             <div class="col">
-                <a href="/Song?id=@record["Number"]" class="link text-decoration-none">@record["Name"]</a>
+                <a href="/Song?id=@record["Number"]" class="btn text-primary text-start" role="button">@record["Name"]</a>
             </div>
             <div class="col-auto">
-                @type.GetDescription()
+               <span class="btn text-secondary text-end">@type.GetDescription()</span> 
             </div>
         </div>
     }

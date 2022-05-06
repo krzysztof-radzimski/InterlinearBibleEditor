@@ -13,6 +13,7 @@
 
 using DevExpress.Xpo;
 using IBE.Common.Extensions;
+using IBE.Data.Export.Controllers;
 using IBE.Data.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -24,9 +25,11 @@ using System.Linq;
 namespace Church.WebApp.Controllers {
     public class SearchController : Controller {
         private const string TYPE_QUERY = "&type=";
-        private readonly ILogger<SearchController> _logger;
-        public SearchController(ILogger<SearchController> logger) {
-            _logger = logger;
+        private readonly ILogger<SearchController> Logger;
+        private readonly IBibleTagController BibleTag;
+        public SearchController(ILogger<SearchController> logger, IBibleTagController bibleTag) {
+            Logger = logger;
+            BibleTag = bibleTag;
         }
 
         public IActionResult Index() {
@@ -108,16 +111,22 @@ namespace Church.WebApp.Controllers {
                     if (translation.IsNull() || translation.Key.IsNull()) { continue; }
                     var translationDesc = translation.Value;
                     var verseText = record["VerseText"].ToString();
-                    verseText = verseText.Replace("<J>", "<span style='color: darkred;'>").Replace("</J>", "</span>");
-                    var simpleText = verseText.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+                    verseText = verseText
+                            .Replace("―", String.Empty)
+                            .Replace("<n>", @"<span class=""text-muted"">")
+                            .Replace("</n>", "</span>")
+                            .Replace("<J>", "<span style='color: darkred;'>")
+                            .Replace("</J>", "</span>");
+                    //var simpleText = verseText.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+                    var simpleText = BibleTag.GetVerseSimpleText(record["VerseText"].ToString(), index, baseBookShortcut);
                     var translationName = translation.Key;
-                    if (translationName == "NPI" || translationName == "IPD") {
-                        simpleText = simpleText.Replace("―", "");
-                        verseText = verseText.Replace("―", "");
-                    }
+                    //if (translationName == "NPI" || translationName == "IPD") {
+                    //    simpleText = simpleText.Replace("―", "");
+                    //    verseText = verseText.Replace("―", "");
+                    //}
                     if (translationName == "PBD") { translationName = "SNPPD"; }
-                    simpleText = System.Text.RegularExpressions.Regex.Replace(simpleText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
-                    simpleText = $"{baseBookShortcut} {index.NumberOfChapter}:{record["NumberOfVerse"]} „{simpleText}” ({translationName})";
+                    //simpleText = System.Text.RegularExpressions.Regex.Replace(simpleText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
+                    //simpleText = $"{baseBookShortcut} {index.NumberOfChapter}:{record["NumberOfVerse"]} „{simpleText}” ({translationName})";
                     model.Add(new SearchItemModel() {
                         Book = index.NumberOfBook,
                         BookShortcut = baseBookShortcut,

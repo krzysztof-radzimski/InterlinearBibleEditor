@@ -5,5 +5,6 @@ namespace Church.WebApp.Models {
     public class SongControllerModel {
         public Song Song { get; set; }
         public XPView Songs { get; set; }
+        public int MaxNumber { get; set; }
     }
 }

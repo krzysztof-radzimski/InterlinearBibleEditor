@@ -39,6 +39,7 @@
             // 
             // ribbonControl1
             // 
+            this.ribbonControl1.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(45, 48, 45, 48);
             this.ribbonControl1.ExpandCollapseItem.Id = 0;
             this.ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.ribbonControl1.ExpandCollapseItem,
@@ -47,12 +48,14 @@
             this.btnDeleteSong,
             this.btnEdit});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
+            this.ribbonControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ribbonControl1.MaxItemId = 4;
             this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl1.Name = "ribbonControl1";
+            this.ribbonControl1.OptionsMenuMinWidth = 495;
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
-            this.ribbonControl1.Size = new System.Drawing.Size(800, 130);
+            this.ribbonControl1.Size = new System.Drawing.Size(1200, 172);
             // 
             // btnAddSong
             // 
@@ -68,6 +71,7 @@
             this.btnDeleteSong.Caption = "Delete";
             this.btnDeleteSong.Id = 2;
             this.btnDeleteSong.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteSong.ImageOptions.SvgImage")));
+            this.btnDeleteSong.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete));
             this.btnDeleteSong.Name = "btnDeleteSong";
             this.btnDeleteSong.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteSong_ItemClick);
             // 
@@ -97,11 +101,13 @@
             // grid
             // 
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grid.Location = new System.Drawing.Point(0, 130);
+            this.grid.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grid.Location = new System.Drawing.Point(0, 172);
             this.grid.MainView = this.gridView;
+            this.grid.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grid.MenuManager = this.ribbonControl1;
             this.grid.Name = "grid";
-            this.grid.Size = new System.Drawing.Size(800, 320);
+            this.grid.Size = new System.Drawing.Size(1200, 555);
             this.grid.TabIndex = 2;
             this.grid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView});
@@ -109,6 +115,7 @@
             // gridView
             // 
             this.gridView.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.gridView.DetailHeight = 565;
             this.gridView.GridControl = this.grid;
             this.gridView.Name = "gridView";
             this.gridView.OptionsBehavior.Editable = false;
@@ -119,11 +126,12 @@
             // 
             // SongsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1200, 727);
             this.Controls.Add(this.grid);
             this.Controls.Add(this.ribbonControl1);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "SongsForm";
             this.Ribbon = this.ribbonControl1;
             this.Text = "Songs";

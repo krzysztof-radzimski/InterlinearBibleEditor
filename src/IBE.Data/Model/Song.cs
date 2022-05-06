@@ -154,7 +154,7 @@ namespace IBE.Data.Model {
         Default = 0,
         [Description("Kolęda")]
         Carols,
-        [Description("Wieczerza Pańska")]
+        [Description("Wieczerza")]
         Eucharist,
         [Description("Dla dzieci")]
         SongsForChildren

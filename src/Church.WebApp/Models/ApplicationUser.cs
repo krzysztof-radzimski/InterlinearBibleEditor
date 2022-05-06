@@ -16,7 +16,10 @@ namespace Church.WebApp.Models {
             Configuration = configuration;
         }
         public IEnumerable<ApplicationUser> GetUsers() {
-            return new List<ApplicationUser>() { new ApplicationUser { Id = 1, UserName = "WND", EmailAddress = "info@kosciol-jezusa.pl", Password = Configuration["TranslationPwd"] } };
+            return new List<ApplicationUser>() { 
+                new ApplicationUser { Id = 1, UserName = "WND", EmailAddress = "info@kosciol-jezusa.pl", Password = Configuration["TranslationPwd"] },
+                new ApplicationUser { Id = 2, UserName = "petz@feib.pl", EmailAddress = "petz@feib.pl", Password = "$Harfeusz2022" }
+            };
         }
     }
 }

@@ -1,8 +1,15 @@
-Dodaæ moje prace z WBST
-http://kosciol-jezusa.pl/SNP18/30/23/41 poprawiæ œródtytu³y z cytowanymi fragmentami
-Dodaæ 2 rozdzia³ 1 Jana jako przet³umaczone
-Rodzaju 4:8 Sta³o siê
+Zmieniæ zapis przypisów w zwyk³ych przek³adach
+numery przypisów [[1]]
+treœci przenieœæ do nowej tabeli
 
-Eksport interlinearki: same numery wersetów bez rozdzia³u, kszta³t z ustawiony wype³nieniem: brak. 
-Dzieki temu nie bêdzie efektu przykrywania przypisów.
-Numery przypisów, bez dodawania nawiasu, tylko stosowanie custom mark.
+---------------------------------------------------------------------------
+| Oid | Index        | Number | Content
+---------------------------------------------------------------------------
+| 1   | PBD.470.1.1  | 1      | S³owo <i>zwój</i> wystêpuje bez rodzajnika, 
+                                ale t³umaczy siê je jako okreœlone, 
+                                zgodnie z zasad¹ Apolloniusza 
+                                dotycz¹c¹ pisania tytu³ów w grece, 
+                                Mt 1:1<sup>L</sup>.
+---------------------------------------------------------------------------
+| 2   | PBD.470.1.1 | a       | <x>100 7:12,13,14</x>; 1Krn 17:11; Iz 11:1; 
+                                Jr 23:5-6; <x>470 9:27</x>

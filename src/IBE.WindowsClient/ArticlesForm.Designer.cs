@@ -27,11 +27,11 @@ namespace IBE.WindowsClient {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ArticlesForm));
             this.ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
             this.btnAddArticle = new DevExpress.XtraBars.BarButtonItem();
+            this.btnDeleteArticle = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.grid = new DevExpress.XtraGrid.GridControl();
             this.gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.btnDeleteArticle = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
@@ -39,6 +39,7 @@ namespace IBE.WindowsClient {
             // 
             // ribbonControl1
             // 
+            this.ribbonControl1.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(45, 48, 45, 48);
             this.ribbonControl1.ExpandCollapseItem.Id = 0;
             this.ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.ribbonControl1.ExpandCollapseItem,
@@ -46,20 +47,32 @@ namespace IBE.WindowsClient {
             this.btnAddArticle,
             this.btnDeleteArticle});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
+            this.ribbonControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ribbonControl1.MaxItemId = 3;
             this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl1.Name = "ribbonControl1";
+            this.ribbonControl1.OptionsMenuMinWidth = 495;
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
-            this.ribbonControl1.Size = new System.Drawing.Size(800, 130);
+            this.ribbonControl1.Size = new System.Drawing.Size(1200, 172);
             // 
             // btnAddArticle
             // 
             this.btnAddArticle.Caption = "Add new article";
             this.btnAddArticle.Id = 1;
             this.btnAddArticle.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAddArticle.ImageOptions.SvgImage")));
+            this.btnAddArticle.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
             this.btnAddArticle.Name = "btnAddArticle";
             this.btnAddArticle.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAddArticle_ItemClick);
+            // 
+            // btnDeleteArticle
+            // 
+            this.btnDeleteArticle.Caption = "Delete";
+            this.btnDeleteArticle.Id = 2;
+            this.btnDeleteArticle.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteArticle.ImageOptions.SvgImage")));
+            this.btnDeleteArticle.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete));
+            this.btnDeleteArticle.Name = "btnDeleteArticle";
+            this.btnDeleteArticle.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteArticle_ItemClick);
             // 
             // rpHome
             // 
@@ -78,11 +91,13 @@ namespace IBE.WindowsClient {
             // grid
             // 
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grid.Location = new System.Drawing.Point(0, 130);
+            this.grid.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grid.Location = new System.Drawing.Point(0, 172);
             this.grid.MainView = this.gridView;
+            this.grid.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grid.MenuManager = this.ribbonControl1;
             this.grid.Name = "grid";
-            this.grid.Size = new System.Drawing.Size(800, 320);
+            this.grid.Size = new System.Drawing.Size(1200, 555);
             this.grid.TabIndex = 2;
             this.grid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView});
@@ -90,6 +105,7 @@ namespace IBE.WindowsClient {
             // gridView
             // 
             this.gridView.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.gridView.DetailHeight = 565;
             this.gridView.GridControl = this.grid;
             this.gridView.Name = "gridView";
             this.gridView.OptionsBehavior.Editable = false;
@@ -101,21 +117,14 @@ namespace IBE.WindowsClient {
             this.gridView.OptionsView.ShowIndicator = false;
             this.gridView.DoubleClick += new System.EventHandler(this.gridView_DoubleClick);
             // 
-            // btnDeleteArticle
-            // 
-            this.btnDeleteArticle.Caption = "Delete";
-            this.btnDeleteArticle.Id = 2;
-            this.btnDeleteArticle.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteArticle.ImageOptions.SvgImage")));
-            this.btnDeleteArticle.Name = "btnDeleteArticle";
-            this.btnDeleteArticle.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteArticle_ItemClick);
-            // 
             // ArticlesForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1200, 727);
             this.Controls.Add(this.grid);
             this.Controls.Add(this.ribbonControl1);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ArticlesForm";
             this.Ribbon = this.ribbonControl1;
             this.Text = "ArticlesForm";

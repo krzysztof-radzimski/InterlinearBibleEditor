@@ -36,16 +36,16 @@ else if (Model.Book.IsNullOrEmpty()) {
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         @if (Model.Translation.Type == IBE.Data.Model.TranslationType.Dynamic) {
-            <abbr type="button" class="btn btn-outline-danger" title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Dynamiczny</abbr>
+            <span role="button" class="btn btn-danger" title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Dynamiczny</span>
         }
         else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Literal) {
-            <abbr type="button" class="btn btn-outline-success" title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Dosłowny</abbr>
+            <span role="button" class="btn btn-success" title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Dosłowny</span>
         }
         else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
-            <abbr type="button" class="btn btn-outline-primary" title="Przekład interlinearny - transliteracja tekstu z języka oryginalnego">Interlinia</abbr>
+            <span role="button" class="btn btn-primary" title="Przekład interlinearny - transliteracja tekstu z języka oryginalnego">Interlinia</span>
         }
         else {
-            <abbr type="button" class="btn btn-outline-info" title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Literacki</abbr>
+            <span role="button" class="btn btn-info" title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Literacki</span>
         }
     </div>
 
@@ -134,36 +134,36 @@ else {
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 
             @if (Model.Translation.Type == IBE.Data.Model.TranslationType.Dynamic) {
-                <abbr type="button" class="btn btn-outline-danger" title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Dynamiczny</abbr>
+                <span role="button" class="btn btn-danger" title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Dynamiczny</span>
             }
             else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Literal) {
-                <abbr type="button" class="btn btn-outline-success" title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Dosłowny</abbr>
+                <span role="button" class="btn btn-success" title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Dosłowny</span>
             }
             else if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear) {
-                <abbr type="button" class="btn btn-outline-primary" title="Przekład interlinearny - transliteracja tekstu z języka oryginalnego">Interlinia</abbr>
+                <span role="button" class="btn btn-primary" title="Przekład interlinearny - transliteracja tekstu z języka oryginalnego">Interlinia</span>
             }
             else {
-                <abbr type="button" class="btn btn-outline-info" title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Literacki</abbr>
+                <span role="button" class="btn btn-info" title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Literacki</span>
             }
 
             @if (Model.Translation.Catolic) {
-                <abbr type="button" class="btn btn-outline-dark" title="Przekład katolicki">Katolicki</abbr>
+                <span role="button" class="btn btn-dark" title="Przekład katolicki">Katolicki</span>
             }
 
             @if (Model.Translation.Recommended) {
-                <abbr type="button" class="btn btn-outline-success" title="Polecamy ten przekład">Polecamy</abbr>
+                <span role="button" class="btn btn-success" title="Polecamy ten przekład">Polecamy</span>
             }
 
             @if (bookStatus == IBE.Data.Model.TheBookType.ChurchFathersLetter) {
-                <abbr type="button" class="btn btn-outline-secondary" title="Pisma chrześcijańskie okresu Ojców Kościoła (wczesny kościół od II-Iv w.n.e.)">Patrologia</abbr>
+                <span role="button" class="btn btn-secondary" title="Pisma chrześcijańskie okresu Ojców Kościoła (wczesny kościół od II-Iv w.n.e.)">Patrologia</span>
             }
 
 
             @if (canonType == IBE.Data.Model.CanonType.SecondCanon) {
-                <abbr type="button" class="btn btn-outline-danger" title="Uwaga! @bookTitle jest księgą wtórnie-kanoniczną">Wtórnie-kanoniczna</abbr>
+                <span role="button" class="btn btn-danger" title="Uwaga! @bookTitle jest księgą wtórnie-kanoniczną">Wtórnie-kanoniczna</span>
             }
             else if (canonType == IBE.Data.Model.CanonType.Apocrypha) {
-                <abbr type="button" class="btn btn-outline-danger" title="Uwaga! @bookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej">Apokryf</abbr>
+                <span role="button" class="btn btn-danger" title="Uwaga! @bookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej">Apokryf</span>
             }
 
             @if (Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) {
