@@ -23,14 +23,16 @@ namespace WBST.Bibliography.Controllers {
         private bool IsNextFootnote(BibliographySource item, int footnoteIndex) {
             if (footnoteIndex > 0) {
                 var f = Document.Footnotes[footnoteIndex];
-                var fText = f.Range.Text;
+                var fText = f.Range.Text.ToLower().Trim();
+                var shortTitle = item.ShortTitle.IsNotNullOrEmpty() ? item.ShortTitle.ToLower().Trim() : String.Empty;
+                var title = item.Title.IsNotNullOrEmpty() ? item.Title.ToLower().Trim() : String.Empty;
                 if (String.IsNullOrEmpty(item.ShortTitle)) {
                     GetShortTitle(item);
                 }
                 if (fText.Contains(item.Title) || (!String.IsNullOrEmpty(item.ShortTitle) && fText.Contains(item.ShortTitle))) {
                     return true;
                 }
-                else if (fText.Contains("Tamże")) {
+                else if (fText.Contains("tamże")) {
                     return IsNextFootnote(item, footnoteIndex - 1);
                 }
             }
@@ -66,7 +68,9 @@ namespace WBST.Bibliography.Controllers {
                                 AddAuthorFootnoteText(item, author as BibliographyNameList);
                             }
                             else {
+                                Document.ActiveWindow.Selection.Font.SmallCaps = 1;
                                 Document.ActiveWindow.Selection.TypeText($"{author}, ");
+                                Document.ActiveWindow.Selection.Font.SmallCaps = 0;
                             }
                         }
                     }
@@ -83,7 +87,9 @@ namespace WBST.Bibliography.Controllers {
                 }
                 else if (type == FootnoteTitleType.Next) {
                     Document.ActiveWindow.Selection.Font.Italic = 0;
+                    Document.ActiveWindow.Selection.Font.SmallCaps = 1;
                     Document.ActiveWindow.Selection.TypeText("Tamże");
+                    Document.ActiveWindow.Selection.Font.SmallCaps = 0;
                 }
                 else {
                     Document.ActiveWindow.Selection.Font.Italic = 1;
@@ -266,7 +272,9 @@ namespace WBST.Bibliography.Controllers {
                             }
                         }
                         else { s += $" {person.Last}, "; }
+                        Document.ActiveWindow.Selection.Font.SmallCaps = 1;
                         Document.ActiveWindow.Selection.TypeText(s);
+                        Document.ActiveWindow.Selection.Font.SmallCaps = 0;
                     }
                 }
             }
@@ -301,12 +309,17 @@ namespace WBST.Bibliography.Controllers {
                                     }
                                 }
                                 else { s += $" {person.Last}, "; }
+
+                                Document.ActiveWindow.Selection.Font.SmallCaps = 1;
                                 Document.ActiveWindow.Selection.TypeText(s);
+                                Document.ActiveWindow.Selection.Font.SmallCaps = 0;
                             }
                         }
                     }
                     else {
+                        Document.ActiveWindow.Selection.Font.SmallCaps = 1;
                         Document.ActiveWindow.Selection.TypeText($"{author}, ");
+                        Document.ActiveWindow.Selection.Font.SmallCaps = 0;
                     }
                 }
             }
