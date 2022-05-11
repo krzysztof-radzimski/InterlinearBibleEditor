@@ -380,8 +380,8 @@ namespace WBST.Bibliography.Controllers {
                         if ((author as BibliographyNameList).People != null) {
                             foreach (var person in (author as BibliographyNameList).People) {
                                 var s = "";
-                                if (!String.IsNullOrEmpty(person.Middle)) { s += $" {person.Middle.Substring(0, 1).ToUpper()}."; }
-                                if (!String.IsNullOrEmpty(person.First)) { s += $" {person.First.Substring(0, 1).ToUpper()}."; }
+                                if (!String.IsNullOrEmpty(person.Middle)) { s += $"{person.Middle.Substring(0, 1).ToUpper()}. "; }
+                                if (!String.IsNullOrEmpty(person.First)) { s += $"{person.First.Substring(0, 1).ToUpper()}. "; }
                                 s += $"{person.Last}, ";
                                 Document.ActiveWindow.Selection.TypeText(s);
                             }
@@ -400,8 +400,8 @@ namespace WBST.Bibliography.Controllers {
                         if ((author as BibliographyNameList).People != null) {
                             foreach (var person in (author as BibliographyNameList).People) {
                                 var s = "";
-                                if (!String.IsNullOrEmpty(person.Middle)) { s += $" {person.Middle.Substring(0, 1).ToUpper()}."; }
-                                if (!String.IsNullOrEmpty(person.First)) { s += $" {person.First.Substring(0, 1).ToUpper()}."; }
+                                if (!String.IsNullOrEmpty(person.Middle)) { s += $"{person.Middle.Substring(0, 1).ToUpper()}. "; }
+                                if (!String.IsNullOrEmpty(person.First)) { s += $"{person.First.Substring(0, 1).ToUpper()}. "; }
                                 s += $"{person.Last}, ";
                                 Document.ActiveWindow.Selection.TypeText(s);
                             }
