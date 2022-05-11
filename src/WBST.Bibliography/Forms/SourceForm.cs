@@ -10,35 +10,26 @@ using WBST.Bibliography.Model;
 
 namespace WBST.Bibliography.Forms {
     public partial class SourceForm : XtraForm {
-        private List<BibliographySource> Sources { get; }
+        public static List<BibliographySource> Sources { get; private set; }
         public BibliographySource Source { get; private set; }
         public SourceForm() {
             InitializeComponent();
-            Sources = null;
             SetComboBoxLists();
             Source = GetDefault();
             LoadData();
+            AddGroups();
         }
-        public SourceForm(List<BibliographySource> sources) {
+        public SourceForm(BibliographySource source) {
             InitializeComponent();
-            Sources = sources;
-            SetComboBoxLists(sources);
-            Source = GetDefault();
-            LoadData();
-            AddGroups(sources);
-        }
-        public SourceForm(BibliographySource source, List<BibliographySource> sources) {
-            InitializeComponent();
-            Sources = sources;
-            SetComboBoxLists(sources);
+            SetComboBoxLists();
             Source = source;
             LoadData();
-            AddGroups(sources);
+            AddGroups();
         }
 
-        private void AddGroups(List<BibliographySource> sources) {
-            if (sources != null) {
-                var list = sources.Where(x => x.Comments.IsNotNullOrEmpty()).Select(x => x.Comments).Distinct();
+        private void AddGroups() {
+            if (Sources != null) {
+                var list = Sources.Where(x => x.Comments.IsNotNullOrEmpty()).Select(x => x.Comments).Distinct();
                 txtGroup.Properties.Items.Clear();
                 foreach (var item in list) {
                     txtGroup.Properties.Items.Add(item);
@@ -178,7 +169,7 @@ namespace WBST.Bibliography.Forms {
         private void txtSourceType_SelectedIndexChanged(object sender, EventArgs e) {
             try {
                 table.Visible = false;
-                //SetControlVisibility(true);
+
                 switch (txtSourceType.SelectedIndex) {
                     case 0: {
                             SetControlVisibility(false,
@@ -278,13 +269,13 @@ namespace WBST.Bibliography.Forms {
             }
         }
 
-        private void SetComboBoxLists(List<BibliographySource> sources = null) {
+        private void SetComboBoxLists() {
             try {
                 var listOfCities = new List<string>();
                 var listOfPublishers = new List<string>();
 
-                if (sources.IsNullOrMissing()) {
-                    sources = new List<BibliographySource>();
+                if (Sources == null || Sources.Count == 0) {
+                    Sources = new List<BibliographySource>();
                     var globalBibliography = Globals.ThisAddIn.Application.Bibliography;
                     foreach (Microsoft.Office.Interop.Word.Source item in globalBibliography.Sources) {
                         if (item != null) {
@@ -293,23 +284,23 @@ namespace WBST.Bibliography.Forms {
                                 var serializer = new XmlSerializer(typeof(BibliographySource));
                                 var o = serializer.Deserialize(new MemoryStream(Encoding.UTF8.GetBytes(xml)));
                                 if (o is BibliographySource) {
-                                    sources.Add(o as BibliographySource);
+                                    Sources.Add(o as BibliographySource);
                                 }
                             }
                         }
                     }
                 }
 
-                foreach (var s in sources) {
+                foreach (var s in Sources) {
                     if (s.City.IsNotNullOrEmpty() && !listOfCities.Contains(s.City.Trim())) {
                         listOfCities.Add(s.City.Trim());
                     }
                     if (s.Publisher.IsNotNullOrEmpty() && !listOfPublishers.Contains(s.Publisher.Trim())) {
                         listOfPublishers.Add(s.Publisher.Trim());
                     }
-                }               
+                }
 
-                txtCity.Properties.Items.AddRange(listOfCities.OrderBy(x=>x).ToArray());
+                txtCity.Properties.Items.AddRange(listOfCities.OrderBy(x => x).ToArray());
                 txtPublisher.Properties.Items.AddRange(listOfPublishers.OrderBy(x => x).ToArray());
             }
             catch { }

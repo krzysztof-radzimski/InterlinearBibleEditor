@@ -66,9 +66,11 @@ namespace WBST.Bibliography {
         }
 
         private void btnAddSource_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            using (var dlg = new SourceForm(grid.DataSource as List<BibliographySource>)) {
-                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+            using (var dlg = new SourceForm()) {
+                if (dlg.ShowDialog() == DialogResult.OK) {
                     if (dlg.Source != null) {
+                        SourceForm.Sources.Add(dlg.Source);
+
                         dlg.Save();
                         var xml = GetXml(dlg.Source);
 
@@ -98,8 +100,8 @@ namespace WBST.Bibliography {
         private void btnEditSource_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             var item = view.GetFocusedRow() as BibliographySource;
             if (item.IsNotNullOrMissing()) {
-                using (var dlg = new SourceForm(item, grid.DataSource as List<BibliographySource>)) {
-                    if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                using (var dlg = new SourceForm(item)) {
+                    if (dlg.ShowDialog() == DialogResult.OK) {
                         dlg.Save();
 
                         Microsoft.Office.Interop.Word.Source src = null;
