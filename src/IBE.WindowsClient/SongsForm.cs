@@ -31,7 +31,7 @@ namespace IBE.WindowsClient {
             grid.DataSource = view;
             gridView.BestFitColumns();
             gridView.Columns["Id"].Visible = false;
-            gridView.Columns["Type"].Group();
+            //gridView.Columns["Type"].Group();
             gridView.ExpandAllGroups();
             gridView.HideLoadingPanel();
         }

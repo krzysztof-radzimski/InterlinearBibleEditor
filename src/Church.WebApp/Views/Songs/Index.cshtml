@@ -18,7 +18,7 @@
 @section HeaderScripts {
 <!-- social sharing metadata -->
 <meta property="og:title" content="@ViewData["Title"] - @Configuration["PageTitle"]" />
-<meta property="og:description" content="Śpiewnik zborowy" />
+<meta property="og:description" content="Śpiewnik zborowy Kościoła Chrześcijan Baptystów w Nowym Dworze Mazowieckim" />
 <meta property="og:image" content="@__host/img/TloSpiewnik.png" />
 <meta property="og:url" content="@__host/Songs" />
 <meta property="og:type" content="song" />
@@ -27,27 +27,52 @@
 
 <div class="max-width-1000" style="padding-top: 20px;">
     <div style="text-align: center;">
-        <img src="/img/TloSpiewnik.png" style="max-width: 80%;" /><br/>
+        <img src="/img/TloSpiewnik.png" style="max-width: 50%;" /><br />
         <h1>@ViewData["Title"]</h1>
-        <h3>Śpiewnik zborowy<br/>Kościoła Chrześcijan Baptystów w&nbsp;Nowym&nbsp;Dworze Mazowieckim</h3>
-
-
-        
-
+        <h3>Śpiewnik zborowy</h3>
+       
+        <div class="d-flex" id="filter-form">
+            <input id="filter-input-text" name="text" class="form-control me-2" type="text" placeholder="Filtruj pieśni" aria-label="Filtruj pieśni" onkeyup="SongFilterButtonClick()" />
+            <button id="filter-button" class="btn btn-outline-success" type="button" onclick="SongFilterButtonClick()">Filtruj</button>
+        </div>
     </div>
-   
+
     @foreach (ViewRecord record in Model) {
         var type = (SongGroupType)record["Type"];
-        <div class="row">
+        <div class="row song-row">
             <div class="col-auto" style="min-width: 70px;">
-                <a href="/Song?id=@record["Number"]" class="btn text-start fw-bold" role="button" aria-pressed="true">@record["Number"]</a>                
+                <a href="/Song?id=@record["Number"]" class="btn text-start fw-bold" role="button" aria-pressed="true">@record["Number"]</a>
             </div>
             <div class="col">
                 <a href="/Song?id=@record["Number"]" class="btn text-primary text-start" role="button">@record["Name"]</a>
             </div>
             <div class="col-auto">
-               <span class="btn text-secondary text-end">@type.GetDescription()</span> 
+                <span class="btn text-secondary text-end">@type.GetDescription()</span>
             </div>
         </div>
     }
 </div>
+
+<script type="text/javascript">
+    function SongFilterButtonClick() {
+        var input = $("#filter-input-text");
+        if (input != undefined) {
+            var inputText = input[0].value;
+            SongFilter(inputText);
+        }
+    }
+    function SongFilter(inputText) {
+        var rows = $(".song-row").each(function(index, value){
+            if (inputText == undefined || inputText == "") {
+                value.style.display = "flex"; 
+            } else {
+                var rowText = value.innerText;
+                if (rowText.toLowerCase().indexOf(inputText.toLowerCase()) != -1){
+                    value.style.display = "flex";
+                } else {
+                    value.style.display = "none";
+                }
+            }
+        });
+    }
+</script>
