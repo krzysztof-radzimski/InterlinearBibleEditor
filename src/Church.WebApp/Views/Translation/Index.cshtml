@@ -53,7 +53,7 @@ else if (Model.Book.IsNullOrEmpty()) {
 
     <div class="container">
         <div class="row justify-content-center max-width-800">
-            @foreach (var book in Model.Translation.Books) {
+            @foreach (var book in Model.Translation.Books.OrderBy(x=>x.NumberOfBook)) {
                 var baseBook = book.BaseBook;
                 var bookTitle = baseBook.IsNotNull() ? baseBook.BookTitle : String.Empty;
                 if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !book.IsTranslated && Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) { continue; }
