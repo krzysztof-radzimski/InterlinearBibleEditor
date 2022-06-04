@@ -53,7 +53,7 @@ else if (Model.Book.IsNullOrEmpty()) {
 
     <div class="container">
         <div class="row justify-content-center max-width-800">
-            @foreach (var book in Model.Translation.Books.OrderBy(x=>x.NumberOfBook)) {
+            @foreach (var book in Model.Translation.Books.OrderBy(x => x.NumberOfBook)) {
                 var baseBook = book.BaseBook;
                 var bookTitle = baseBook.IsNotNull() ? baseBook.BookTitle : String.Empty;
                 if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !book.IsTranslated && Model.Translation.BookType == IBE.Data.Model.TheBookType.Bible) { continue; }
@@ -788,16 +788,6 @@ else {
                                         storyText = BibleTagController.GetExternalVerseHtml(storyText, Model);
                                         storyText = BibleTagController.GetInternalVerseListHtml(storyText, Model);
                                         storyText = BibleTagController.GetMultiChapterRangeHtml(storyText, Model);
-
-                                        @*var pattern = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+\-[0-9]+)\<\/x\>";
-                                            var pattern2 = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+(\s)?\:(\s)?[0-9]+\-[0-9]+)\<\/x\>";
-
-                                            storyText = System.Text.RegularExpressions.Regex.Replace(storyText, pattern, delegate (System.Text.RegularExpressions.Match m) {
-                                            return $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BookName} {m.Groups["num"].Value})";
-                                            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-                                            storyText = System.Text.RegularExpressions.Regex.Replace(storyText, pattern2, delegate (System.Text.RegularExpressions.Match m) {
-                                            return $"({Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BookName} {m.Groups["num"].Value})";
-                                            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);*@
                                     }
 
                                     if (book.BaseBook.Status.BiblePart == IBE.Data.Model.BiblePart.OldTestament) {
@@ -894,7 +884,7 @@ else {
                                 if (m.Value == "*******") { footNoteRefIndex = f7Index; }
                                 var footnoteTitleText = string.Empty;
                                 var footnoteTitle = footNotes.Where(x => x.Index == footNoteRefIndex).FirstOrDefault();
-                                if (footnoteTitle.IsNotNull()){
+                                if (footnoteTitle.IsNotNull()) {
                                     footnoteTitleText = footnoteTitle.Title.Replace("'", "”").Replace("\"", "”");
                                 }
                                 var result = $@"<a id=""ref{footNoteRefIndex}"" class=""footnote-ref text-decoration-none"" href=""#footNote{footNoteRefIndex}"" title=""{footnoteTitleText}"">{footNoteRefIndex}</a>";
@@ -1132,13 +1122,21 @@ else {
 
             }
 
-<script>
-    docReady(function () {
-        setTimeout(function () {
-            copyNav();
+
+
+@if (Model != null && Model.Book.IsNotNullOrEmpty() && Model.Chapter.IsNotNullOrEmpty() && chapter!=null && chapter.NumberOfVerses > 0) {
+    <script>
+        docReady(function () {
+            setTimeout(function () {
+                copyNav();
+            });
         });
-    });
-</script>
+    </script>
+}
+
+
+
+
         }
     }
 }
