@@ -1,0 +1,26 @@
+﻿@using DevExpress.Xpo
+@using IBE.Data.Model
+
+@model IEnumerable<string>
+@{
+    ViewData["Title"] = "Siglum nie zostało znalezione";
+}
+
+<h1>Siglum</h1>
+<p>Nie odnaleziono wersetu <b>@Model.FirstOrDefault()</b>!</p>
+@{
+    var session = new UnitOfWork();
+    var books = new XPQuery<BookBase>(session).ToList();
+    var baseBooks = books
+        .Where(x => x.StatusBookType == TheBookType.Bible)
+        .Select(x => new { x.NumberOfBook, x.BookShortcut, x.BookName });
+}
+
+<div class="container">
+    @foreach (var book in baseBooks) {
+        <div class="row p-1">
+            <div class="col-auto p-1 border-bottom fw-bold" style="min-width: 70px;">@book.BookShortcut</div>
+            <div class="col-auto p-1 border-bottom" style="min-width: 250px;">@book.BookName</div>
+        </div>
+    }
+</div>

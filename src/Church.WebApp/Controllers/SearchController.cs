@@ -49,11 +49,22 @@ namespace Church.WebApp.Controllers {
 
         [HttpPost]
         public IActionResult Index(string text) {
-            if (!String.IsNullOrEmpty(text) && text.Length > 3) {
+            if (text.IsNotNullOrEmpty() && text.Length > 3) {
                 var words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 return _Search(words, SearchRangeType.All);
             }
             return View();
+        }
+
+        public IActionResult Siglum(string text) {
+            if (text.IsNotNullOrEmpty() && text.Length > 0) {
+                var session = new UnitOfWork();
+                var url = BibleTag.GetRecognizedSiglumUrl(session, text);
+                if (url.IsNotNullOrEmpty()) {
+                   return Redirect(url);
+                }
+            }
+            return View(new string[] { text });
         }
 
         private IActionResult _Search(string[] words, SearchRangeType type) {

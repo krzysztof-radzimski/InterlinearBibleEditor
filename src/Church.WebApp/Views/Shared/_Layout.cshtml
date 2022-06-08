@@ -155,17 +155,25 @@
                                     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Secured" title="Zaloguj"><i class="fas fa-sign-in-alt"></i></a>
                                 }
                                 @if (isLocal || isDefault) {
-                                    <a class="nav-link" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sch=http&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=pl&_x_tr_pto=nui" title="English"><img src="~/img/uk.png" style="width: 19px; position: relative; top: -3px;"/></a>
-                                    
-                                    <a class="nav-link" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sl=pl&_x_tr_tl=uk&_x_tr_hl=pl&_x_tr_pto=wapp" title="Uкраїнський"><img src="~/img/ukraine.png" style="width: 19px; position: relative; top: -3px;"/></a>
+                                    <a class="nav-link" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sch=http&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=pl&_x_tr_pto=nui" title="English"><img src="~/img/uk.png" style="width: 19px; position: relative; top: -3px;" /></a>
+
+                                    <a class="nav-link" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sl=pl&_x_tr_tl=uk&_x_tr_hl=pl&_x_tr_pto=wapp" title="Uкраїнський"><img src="~/img/ukraine.png" style="width: 19px; position: relative; top: -3px;" /></a>
                                 }
                             </div>
                         </li>
                     </ul>
 
+                    <form class="d-flex" id="siglum-form" method="get" enctype="multipart/form-data" asp-controller="Search" asp-action="Siglum">
+                        <div class="input-group">
+                            <input id="siglum-input-text" name="text" class="form-control" type="text" placeholder="Przejdź do wersetu" aria-label="Przejdź do wersetu" />
+                            <button id="siglum-button" class="btn btn-outline-dark" type="submit">Przejdź</button>
+                        </div>
+                    </form>
+                    &nbsp;
                     <form class="d-flex" id="search-form" method="get" enctype="multipart/form-data" asp-controller="Search" asp-action="Index">
-                        <input id="search-input-text" name="text" class="form-control me-2" type="search" placeholder="Szukaj w Biblii" aria-label="Szukaj w Biblii" />
-                        <div class="btn-group">
+                        <div class="input-group">
+                        <input id="search-input-text" name="text" class="form-control" type="search" placeholder="Szukaj w Biblii" aria-label="Szukaj w Biblii" />
+                       
                             <button id="search-button" class="btn btn-outline-success" type="submit">Szukaj</button>
                             <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="visually-hidden">Toggle Dropdown</span>
@@ -176,6 +184,8 @@
                             </ul>
                         </div>
                     </form>
+
+
                 </div>
             </div>
         </nav>
