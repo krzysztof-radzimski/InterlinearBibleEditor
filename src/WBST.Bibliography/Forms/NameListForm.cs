@@ -40,8 +40,10 @@ namespace WBST.Bibliography.Forms {
         public NameListForm(BibliographyNameList nameLists, List<BibliographySource> sources = null) : this(sources) {
             NameList = nameLists;
 
-            grid.DataSource = nameLists.People;
-            view.BestFitColumns();
+            if (nameLists != null) {
+                grid.DataSource = nameLists.People;
+                view.BestFitColumns();
+            }
         }
 
         private void btnAdd_Click(object sender, EventArgs e) {

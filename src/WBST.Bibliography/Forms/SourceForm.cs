@@ -254,6 +254,18 @@ namespace WBST.Bibliography.Forms {
         }
 
         private void btnEditEditor_Click(object sender, EventArgs e) {
+            if (Source.Author == null) {
+                Source.Author = new BibliographyAuthor();
+            }
+            if (Source.Author.Editor == null) {
+                Source.Author.Editor = new Author() {
+                    Objects = new List<object>() {
+                        new BibliographyNameList() {
+                             People = new List<BibliographyPerson>()
+                        }
+                    }
+                };
+            }
             using (var dlg = new NameListForm(Source.Author.Editor.NamesList)) {
                 if (dlg.ShowDialog() == DialogResult.OK) {
                     txtEditor.Text = Source.Author.Editor.NamesList.ToString();
@@ -262,6 +274,18 @@ namespace WBST.Bibliography.Forms {
         }
 
         private void btnEditTranslator_Click(object sender, EventArgs e) {
+            if (Source.Author == null) {
+                Source.Author = new BibliographyAuthor();
+            }
+            if (Source.Author.Translator == null) {
+                Source.Author.Translator = new Author() {
+                    Objects = new List<object>() {
+                        new BibliographyNameList() {
+                             People = new List<BibliographyPerson>()
+                        }
+                    }
+                };
+            }
             using (var dlg = new NameListForm(Source.Author.Translator.NamesList)) {
                 if (dlg.ShowDialog() == DialogResult.OK) {
                     txtTranslator.Text = Source.Author.Translator.NamesList.ToString();
