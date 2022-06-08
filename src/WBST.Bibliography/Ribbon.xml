@@ -16,7 +16,8 @@
 					<button idMso="FootnoteInsert" size="large"/>
 					<button idMso="PasteTextOnly" size="large"/>
 					<button id="btnRemoveOrphans" imageMso="ReplaceDialog" onAction="OnAction" label="Usuń sierotki" size="large"/>
-
+					<button id="btnRecognizeSiglum" imageMso="HyperlinkInsert" onAction="OnAction" label="Linkuj siglum" size="large"/>
+					
 					<separator id="separator2" />
 
 					<gallery idMso="QuickStylesGallery" size="large"/>
