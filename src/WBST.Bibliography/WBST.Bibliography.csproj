@@ -201,6 +201,7 @@
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\ImportEPubController.cs" />
     <Compile Include="Controllers\ImportMobiController.cs" />
+    <Compile Include="Controllers\RecognizeSiglumAndInsertHiperlinkController.cs" />
     <Compile Include="Controllers\RemoveOrphansController.cs" />
     <Compile Include="Controls\BibliographyPaneControl.cs">
       <SubType>UserControl</SubType>

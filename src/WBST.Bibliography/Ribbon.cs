@@ -118,6 +118,10 @@ namespace WBST.Bibliography {
                     case "btnRemoveOrphans": {
                             using (var controller = new RemoveOrphansController()) { controller.Execute(); }
                             break; }
+                    case "btnRecognizeSiglum": {
+                            using (var controller = new RecognizeSiglumAndInsertHiperlinkController()) { controller.Execute(); }
+                            break;
+                        }
                 }
             }
         }

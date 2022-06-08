@@ -16,11 +16,14 @@ using IBE.Common.Extensions;
 using IBE.Data.Export.Controllers;
 using IBE.Data.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace Church.WebApp.Controllers {
     public class SearchController : Controller {
@@ -49,11 +52,22 @@ namespace Church.WebApp.Controllers {
 
         [HttpPost]
         public IActionResult Index(string text) {
-            if (!String.IsNullOrEmpty(text) && text.Length > 3) {
+            if (text.IsNotNullOrEmpty() && text.Length > 3) {
                 var words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 return _Search(words, SearchRangeType.All);
             }
             return View();
+        }
+
+        public IActionResult Siglum(string text) {
+            if (text.IsNotNullOrEmpty() && text.Length > 0) {
+                var session = new UnitOfWork();
+                var url = BibleTag.GetRecognizedSiglumUrl(session, text);
+                if (url.IsNotNullOrEmpty()) {
+                    return Redirect(url);
+                }
+            }
+            return View(new string[] { text });
         }
 
         private IActionResult _Search(string[] words, SearchRangeType type) {
@@ -142,6 +156,32 @@ namespace Church.WebApp.Controllers {
             }
 
             return View(model);
+        }
+    }
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class GetSiglumUrlController : Controller {
+        private readonly IBibleTagController BibleTag;
+        public GetSiglumUrlController(IBibleTagController bibleTag) {
+            BibleTag = bibleTag;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get() {
+            var qs = Request.QueryString;
+
+            if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 5) {
+                var text = HttpUtility.UrlDecode(qs.Value).RemoveAny("?q=");
+                if (text.IsNotNullOrEmpty() && text.Length > 0) {
+                    var session = new UnitOfWork();
+                    var url = BibleTag.GetRecognizedSiglumUrl(session, text);
+                    if (url.IsNotNullOrEmpty()) {
+                        return  Ok($"https://kosciol-jezusa.pl{url}");
+                    }
+                }
+            }
+            return NotFound();
         }
     }
 
