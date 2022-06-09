@@ -8,18 +8,39 @@
 
 <h1>Siglum</h1>
 <p>Nie odnaleziono wersetu <b>@Model.FirstOrDefault()</b>!</p>
+<p>
+    Siglum zapisujemy w formie:<br />
+    <pre>
+{skrót księgi} {numer rozdziału}:{numer wersetu} np. J 3:16<br />
+{skrót księgi} {numer rozdziału}:{numer wersetu}-{do wersetu} np. Mt 5:3-5<br />
+{skrót przekładu} {skrót księgi} {numer rozdziału}:{numer wersetu} np. UBG 1J 5:20
+    </pre>
+</p>
 @{
     var session = new UnitOfWork();
+    var translations = new XPQuery<Translation>(session)
+        .Where(x=>!x.Hidden && x.BookType == TheBookType.Bible)
+        .Select(x => new { Name = x.Name.Replace("+", "").Replace("'", ""), FirstNumber = x.Books.First().NumberOfBook, x.Description }).ToList();
     var books = new XPQuery<BookBase>(session).ToList();
     var baseBooks = books
         .Where(x => x.StatusBookType == TheBookType.Bible)
         .Select(x => new { x.NumberOfBook, x.BookShortcut, x.BookName });
 }
+<div class="container">
+    <p>
+        <span class="fw-bold">Skróty przekładów:</span>&nbsp;
+        @foreach (var translation in translations) {
+            <a href="/@translation.Name/@translation.FirstNumber/1" title="@translation.Description">@Html.Raw(translation.Name),</a>
+        }
+    </p>
+
+</div>
 
 <div class="container">
+    <p class="fw-bold">Skróty ksiąg</p>
     @foreach (var book in baseBooks) {
         <div class="row p-1">
-            <div class="col-auto p-1 border-bottom fw-bold" style="min-width: 70px;">@book.BookShortcut</div>
+            <div class="col-auto p-1 border-bottom fw-bold" style="min-width: 70px;"><a href="/BW/@book.NumberOfBook/1">@book.BookShortcut</a></div>
             <div class="col-auto p-1 border-bottom" style="min-width: 250px;">@book.BookName</div>
         </div>
     }

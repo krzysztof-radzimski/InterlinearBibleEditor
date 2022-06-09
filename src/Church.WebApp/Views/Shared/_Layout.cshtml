@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - @Configuration["PageTitle"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="icon" type="image/svg+xml" href="~/img/baptysci-logo.svg" />
 
@@ -149,10 +149,10 @@
                                 <a class="nav-link" href="https://www.facebook.com/koscioljezusa" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>&nbsp;&nbsp;
                                 <a class="nav-link" href="https://www.youtube.com/channel/UCD1go_K0JxyNkuss9mZ-8HQ" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>&nbsp;&nbsp;
                                 @if (User.Identity.IsAuthenticated) {
-                                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout" title="Wyloguj"><i class="fas fa-sign-out-alt"></i></a>
+                                    <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout" title="Wyloguj"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
                                 }
                                 else {
-                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Secured" title="Zaloguj"><i class="fas fa-sign-in-alt"></i></a>
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Secured" title="Zaloguj"><i class="fa-solid fa-arrow-right-to-bracket"></i></a>
                                 }
                                 @if (isLocal || isDefault) {
                                     <a class="nav-link" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sch=http&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=pl&_x_tr_pto=nui" title="English"><img src="~/img/uk.png" style="width: 19px; position: relative; top: -3px;" /></a>
@@ -166,7 +166,7 @@
                     <form class="d-flex" id="siglum-form" method="get" enctype="multipart/form-data" asp-controller="Search" asp-action="Siglum">
                         <div class="input-group">
                             <input id="siglum-input-text" name="text" class="form-control" type="text" placeholder="Przejdź do wersetu" aria-label="Przejdź do wersetu" />
-                            <button id="siglum-button" class="btn btn-outline-dark" type="submit">Przejdź</button>
+                            <button id="siglum-button" class="btn btn-outline-dark" type="submit"><i class="fa-solid fa-magnifying-glass-arrow-right"></i></button>
                         </div>
                     </form>
                     &nbsp;
@@ -174,7 +174,7 @@
                         <div class="input-group">
                         <input id="search-input-text" name="text" class="form-control" type="search" placeholder="Szukaj w Biblii" aria-label="Szukaj w Biblii" />
                        
-                            <button id="search-button" class="btn btn-outline-success" type="submit">Szukaj</button>
+                            <button id="search-button" class="btn btn-outline-success" type="submit"><i class="fa-brands fa-searchengin"></i></button>
                             <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="visually-hidden">Toggle Dropdown</span>
                             </button>
@@ -212,6 +212,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/BootstrapMenu.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -3,6 +3,7 @@ using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraRichEdit;
 using DevExpress.XtraRichEdit.Commands;
 using IBE.Common.Extensions;
+using IBE.Data.Export.Controllers;
 using IBE.Data.Model;
 using IBE.WindowsClient.Controllers;
 using System;
@@ -17,7 +18,7 @@ using System.Text.RegularExpressions;
 namespace IBE.WindowsClient {
     public partial class ArticleEditorForm : RibbonForm {
         public Article Article { get; private set; }
-
+        public IBibleTagController BibleTag { get; }
         public ArticleEditorForm() {
             InitializeComponent();
 
@@ -44,6 +45,32 @@ namespace IBE.WindowsClient {
             Text = "New article";
 
             editor.SpellChecker = MainForm.Instance.SpellChecker;
+
+            BibleTag = new BibleTagController();
+        }
+
+        private void ReplaceAllSiglum() {
+            var ranges = editor.Document.FindAll(new Regex(BibleTagController.SIGLUM_PATTERN_STRICT));
+            if (ranges.IsNotNull() && ranges.Length > 0) {
+                var dic = new System.Collections.Generic.Dictionary<DevExpress.XtraRichEdit.API.Native.DocumentRange, string>();
+                foreach (var range in ranges.OrderBy(x => x.Start).Reverse()) {
+                    var rangeText = editor.Document.GetText(range);
+                    if (rangeText.IsNotNullOrEmpty()) {
+                        var url = BibleTag.GetRecognizedSiglumUrl(Article.Session, rangeText);
+                        if (url.IsNotNullOrEmpty()) {
+                            dic.Add(range, url);
+                        }
+                    }
+                }
+
+                foreach (var item in dic) {
+                    var linkExists = editor.Document.Hyperlinks.Where(x => x.Range.Start <= item.Key.Start && x.Range.End >= item.Key.End).Any();
+                    if (!linkExists) {
+                        var link = editor.Document.Hyperlinks.Create(item.Key);
+                        link.NavigateUri = $"{item.Value}"; // https://kosciol-jezusa.pl
+                    }
+                }
+            }
         }
 
         private void AddQuoteStyle() {
@@ -167,6 +194,10 @@ namespace IBE.WindowsClient {
                     par.Style = style;
                 }
             }
+        }
+
+        private void btnReplaceAllSiglum_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            ReplaceAllSiglum();
         }
     }
 }

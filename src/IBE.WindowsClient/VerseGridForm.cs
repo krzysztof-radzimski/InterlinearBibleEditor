@@ -3,6 +3,7 @@ using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraEditors;
 using IBE.Common.Extensions;
 using IBE.Data.Export;
+using IBE.Data.Export.Controllers;
 using IBE.Data.Import.Greek;
 using IBE.Data.Model;
 using IBE.WindowsClient.Controls;
@@ -20,6 +21,7 @@ namespace IBE.WindowsClient {
         private Translation Translation = null;
         private GreekTransliterationController TransliterationController;
         public VerseGridControl VerseControl { get; private set; }
+        public IBibleTagController BibleTag { get; }
         public VerseGridForm() {
             InitializeComponent();
             this.Text = "Interlinear Bible Editor";
@@ -31,28 +33,11 @@ namespace IBE.WindowsClient {
 
             LoadBooks();
 
-            /*
-            var view = new XPView(Uow, typeof(BookBase)) {
-                CriteriaString = "[Status.Oid] = 1 OR [Status.Oid] = 2" // tylko kanoniczne
-            };
-            view.Properties.Add(new ViewProperty("NumberOfBook", SortDirection.None, "[NumberOfBook]", false, true));
-            view.Properties.Add(new ViewProperty("BookTitle", SortDirection.None, "[BookTitle]", false, true));
-
-            var list = new List<BookBaseInfo>();
-            foreach (ViewRecord item in view) {
-                list.Add(new BookBaseInfo() {
-                    NumberOfBook = item["NumberOfBook"].ToInt(),
-                    BookTitle = item["BookTitle"].ToString()
-                });
-            }
-
-            editBook.DataSource = list;
-            */
-
             VerseControl = new VerseGridControl() { Dock = DockStyle.Fill };
             pnlContent.Controls.Add(VerseControl);
 
             TransliterationController = new GreekTransliterationController();
+            BibleTag = new BibleTagController();
         }
 
         public VerseGridForm(Verse verse) {
@@ -530,7 +515,7 @@ namespace IBE.WindowsClient {
                                     verseWord.Save();
 
                                     continue;
-                                }                                
+                                }
                             }
 
                             var w = c.GetSourceWordWithoutBreathAndAccent(sourceWord, out var isUpper);
@@ -584,6 +569,12 @@ namespace IBE.WindowsClient {
             if (e.KeyCode == Keys.Enter) {
                 var text = txtIndex.EditValue.ToString();
                 var verse = new XPQuery<Verse>(Uow).Where(x => x.Index == text).FirstOrDefault();
+
+                if (verse.IsNull()) {
+                    if (!text.StartsWith("NPI ")) { text = $"NPI {text}"; }
+                    verse = BibleTag.GetRecognizedSiglumVerse(Uow, text);
+                }
+
                 if (verse.IsNotNull()) {
                     var verseNumber = verse.NumberOfVerse;
 
