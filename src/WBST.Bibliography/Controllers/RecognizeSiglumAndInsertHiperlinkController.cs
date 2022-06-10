@@ -2,9 +2,7 @@
 
 namespace WBST.Bibliography.Controllers {
     internal class RecognizeSiglumAndInsertHiperlinkController : IController<object> {
-        public void Dispose() {
-
-        }
+        public void Dispose() { }
 
         public object Execute() {
             var selection = Globals.ThisAddIn.Application.ActiveWindow.Selection;
