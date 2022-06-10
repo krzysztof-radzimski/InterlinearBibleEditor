@@ -65,7 +65,7 @@ namespace IBE.WindowsClient {
 
                 foreach (var item in dic) {
                     var links = editor.Document.Hyperlinks.Select(x => x.Range);
-                    var linkExists = links.Where(x => x.Start <= item.Key.Start && x.End >= item.Key.End).Any();
+                    var linkExists = links.Where(x => x.Start <= item.Key.Start && x.End >= item.Key.Start).Any();
                     if (!linkExists) {
                         var link = editor.Document.Hyperlinks.Create(item.Key);
                         link.NavigateUri = $"{item.Value}"; // https://kosciol-jezusa.pl
