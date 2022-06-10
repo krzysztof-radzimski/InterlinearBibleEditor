@@ -11,7 +11,8 @@
     color: red;
     padding: 2px;
 }
-.footnote-ref {   
+
+.footnote-ref {
     font-size: 80%;
     font-weight: bold;
     color: red;
@@ -295,6 +296,15 @@ hr.fancy-line {
     display: block;
 }
 
+#top-nav {
+    opacity: 0.97;
+}
+
+.menu-item-i {
+    display: inline-block;
+    width: 25px;
+}
+
 .quote {
     margin-left: 2em;
     font-size: 105% !important;
@@ -310,13 +320,11 @@ hr.fancy-line {
         font-size: 200%;
         position: absolute;
         left: -20px;
-        font-family: 'Font Awesome 5 Free';
     }
 
     .quote::after {
         content: close-quote;
         font-size: 200%;
-        font-family: 'Font Awesome 5 Free';
         position: absolute;
         bottom: -10px;
     }
@@ -330,14 +338,12 @@ hr.fancy-line {
         content: open-quote;
         font-size: 200%;
         position: absolute;
-        left: -20px;
-        font-family: 'Font Awesome 5 Free';
+        left: -5px;
     }
 
     .quote2::after {
         content: close-quote;
         font-size: 200%;
-        font-family: 'Font Awesome 5 Free';
         position: absolute;
         bottom: -20px;
     }
@@ -435,13 +441,6 @@ hr.fancy-line {
 }
 
 @media (max-width: 1126px) and (min-width: 991px) {
-    .navbar-brand img {
-        display: none;
-    }
-
-    .navbar-brand {
-        font-size: small;
-    }
 
     #WalicowLogo {
         max-width: 100%;
@@ -558,6 +557,12 @@ hr.fancy-line {
 @media only screen and (max-width: 995px) {
     .verse-interlinear-div {
         top: 47px;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .menu-item-a {
+        margin-left: 10px;
     }
 }
 
