@@ -32,8 +32,8 @@
 
     <div class="row shadow-lg" style="max-width: 1040px; margin: auto;">
         <div class="col p-4 d-flex flex-column position-static">
-            <div>
-                <a href="/articles" class="btn btn-success active d-inline-block text-decoration-none" title="Więcej artykułów"><i class="far fa-arrow-alt-circle-left"></i></a>
+            <div class="btn-group" style="max-width:150px;">
+                <a href="/articles" class="btn btn-success active d-inline-block text-decoration-none" title="Więcej artykułów" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
                 <span class="btn btn-light d-inline-block text-success fw-bold" role="button">@Model.Article.Type.GetDescription()</span>
             </div>
             <h3 class="mb-0">@Model.Article.Subject</h3>

@@ -7,8 +7,6 @@
 @inject IConfiguration Configuration
 @inject IBibleTagController BibleTagController
 @model TranslationControllerModel
-@using IBE.Common.Extensions
-@using Church.WebApp.Models
 
 @if (Model == null) {
     <h1>Nie przekazano nazwy przekładu</h1>
@@ -282,7 +280,7 @@ else {
             </button>
             <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuButtonBooks">
                 <div class="row" style="max-width: 350px; padding-left: 10px;">
-                    @foreach (var _book in Model.Translation.Books) {
+                    @foreach (var _book in Model.Translation.Books.OrderBy(x => x.NumberOfBook)) {
                         if (Model.Translation.Type == IBE.Data.Model.TranslationType.Interlinear && !_book.IsTranslated) { continue; }
                         var color = System.Drawing.ColorTranslator.FromHtml(_book.Color);
                         var _active = $"background-color: rgba({color.R}, {color.G}, {color.B}, 0.3); color: #000;";
@@ -510,7 +508,14 @@ else {
                             <ul class="list-group">
                                 @if (chapter.IsNotNull()) {
                                     foreach (var verse in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
-                                        var _verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+                                        var _verseText = verse.Text.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
+                                        try {
+                                            var verseElement = XElement.Parse($"<verse>{_verseText}</verse>");
+                                            verseElement.Elements().Where(x => x.Name.LocalName == "n").Remove();
+                                            _verseText = verseElement.ToString().Replace("<verse>", "").Replace("</verse>", "").Replace("*", "");
+                                        }
+                                        catch (Exception) { }
+
                                         _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
                                         <li class="list-group-item">
                                             <input class="form-check-input me-1" type="checkbox" value="@verse.NumberOfVerse" aria-label="Werset @verse.NumberOfVerse">
@@ -832,41 +837,70 @@ else {
 
                             text = System.Text.RegularExpressions.Regex.Replace(text, footNoteTextPattern, delegate (System.Text.RegularExpressions.Match m) {
                                 if (m.Groups != null && m.Groups.Count > 0) {
+
+                                    for (var i = 1; i < 8; i++) {
+                                        var groupName = $"f{i}";
+                                        if (m.Groups[groupName] != null && m.Groups[groupName].Success) {
+                                            var groupValue = m.Groups[groupName].Value;
+                                            if (groupValue.Contains("<x>")) {
+                                                groupValue = BibleTagController.GetInternalVerseRangeHtml(groupValue, Model);
+                                                groupValue = BibleTagController.GetInternalVerseHtml(groupValue, Model);
+                                                groupValue = BibleTagController.GetExternalVerseRangeHtml(groupValue, Model);
+                                                groupValue = BibleTagController.GetExternalVerseHtml(groupValue, Model);
+                                                groupValue = BibleTagController.GetInternalVerseListHtml(groupValue, Model);
+                                                groupValue = BibleTagController.GetMultiChapterRangeHtml(groupValue, Model);
+                                            }
+                                            footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups[groupName].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{groupValue}</p>" });
+                                            switch (i) {
+                                                case 1: { f1Index = footNoteIndex; break; }
+                                                case 2: { f2Index = footNoteIndex; break; }
+                                                case 3: { f3Index = footNoteIndex; break; }
+                                                case 4: { f4Index = footNoteIndex; break; }
+                                                case 5: { f5Index = footNoteIndex; break; }
+                                                case 6: { f6Index = footNoteIndex; break; }
+                                                case 7: { f7Index = footNoteIndex; break; }
+                                            }
+                                            footNoteIndex++;
+                                        }
+                                    }
+
+                                    /*
                                     if (m.Groups["f1"] != null && m.Groups["f1"].Success) {
-                                        footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f1"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f1"].Value}</p>" });
-                                        f1Index = footNoteIndex;
-                                        footNoteIndex++;
+                                    footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f1"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f1"].Value}</p>" });
+                                    f1Index = footNoteIndex;
+                                    footNoteIndex++;
                                     }
                                     if (m.Groups["f2"] != null && m.Groups["f2"].Success) {
-                                        footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f2"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f2"].Value}</p>" });
-                                        f2Index = footNoteIndex;
-                                        footNoteIndex++;
+                                    footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f2"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f2"].Value}</p>" });
+                                    f2Index = footNoteIndex;
+                                    footNoteIndex++;
                                     }
                                     if (m.Groups["f3"] != null && m.Groups["f3"].Success) {
-                                        footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f3"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f3"].Value}</p>" });
-                                        f3Index = footNoteIndex;
-                                        footNoteIndex++;
+                                    footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f3"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f3"].Value}</p>" });
+                                    f3Index = footNoteIndex;
+                                    footNoteIndex++;
                                     }
                                     if (m.Groups["f4"] != null && m.Groups["f4"].Success) {
-                                        footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f4"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f4"].Value}</p>" });
-                                        f4Index = footNoteIndex;
-                                        footNoteIndex++;
+                                    footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f4"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f4"].Value}</p>" });
+                                    f4Index = footNoteIndex;
+                                    footNoteIndex++;
                                     }
                                     if (m.Groups["f5"] != null && m.Groups["f5"].Success) {
-                                        footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f5"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f5"].Value}</p>" });
-                                        f5Index = footNoteIndex;
-                                        footNoteIndex++;
+                                    footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f5"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f5"].Value}</p>" });
+                                    f5Index = footNoteIndex;
+                                    footNoteIndex++;
                                     }
                                     if (m.Groups["f6"] != null && m.Groups["f6"].Success) {
-                                        footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f6"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f6"].Value}</p>" });
-                                        f6Index = footNoteIndex;
-                                        footNoteIndex++;
+                                    footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f6"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f6"].Value}</p>" });
+                                    f6Index = footNoteIndex;
+                                    footNoteIndex++;
                                     }
                                     if (m.Groups["f7"] != null && m.Groups["f7"].Success) {
-                                        footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f7"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f6"].Value}</p>" });
-                                        f7Index = footNoteIndex;
-                                        footNoteIndex++;
+                                    footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups["f7"].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{m.Groups["f6"].Value}</p>" });
+                                    f7Index = footNoteIndex;
+                                    footNoteIndex++;
                                     }
+                                    */
                                 }
 
                                 var result = String.Empty;
@@ -1125,13 +1159,13 @@ else {
 
 
 @if (Model != null && Model.Book.IsNotNullOrEmpty() && Model.Chapter.IsNotNullOrEmpty() && chapter!=null && chapter.NumberOfVerses > 0) {
-    <script>
-        docReady(function () {
-            setTimeout(function () {
-                copyNav();
-            });
+<script>
+    docReady(function () {
+        setTimeout(function () {
+            copyNav();
         });
-    </script>
+    });
+</script>
 }
 
 
