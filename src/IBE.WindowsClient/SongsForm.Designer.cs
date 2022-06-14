@@ -120,6 +120,7 @@
             this.gridView.Name = "gridView";
             this.gridView.OptionsBehavior.Editable = false;
             this.gridView.OptionsBehavior.ReadOnly = true;
+            this.gridView.OptionsFind.AlwaysVisible = true;
             this.gridView.OptionsView.ColumnAutoWidth = false;
             this.gridView.OptionsView.ShowIndicator = false;
             this.gridView.DoubleClick += new System.EventHandler(this.gridView_DoubleClick);
