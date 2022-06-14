@@ -479,6 +479,8 @@ namespace IBE.Data.Export.Controllers {
                         case "Jan": { bookShortcut = "J"; break; }
                         case "dza":
                         case "Dza": { bookShortcut = "Dz"; break; }
+                        case "rzym":
+                        case "Rzym":
                         case "rzm":
                         case "Rzm": { bookShortcut = "Rz"; break; }
                         case "1tym":
