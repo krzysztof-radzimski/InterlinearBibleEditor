@@ -766,7 +766,7 @@ namespace IBE.WindowsClient {
             this.tabTranslationContent.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
             this.tabTranslationContent.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabTranslationContent.Name = "tabTranslationContent";
-            this.tabTranslationContent.Size = new System.Drawing.Size(1754, 1399);
+            this.tabTranslationContent.Size = new System.Drawing.Size(1754, 1254);
             // 
             // sidePanel2
             // 
@@ -775,7 +775,7 @@ namespace IBE.WindowsClient {
             this.sidePanel2.Location = new System.Drawing.Point(516, 0);
             this.sidePanel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.sidePanel2.Name = "sidePanel2";
-            this.sidePanel2.Size = new System.Drawing.Size(1238, 1399);
+            this.sidePanel2.Size = new System.Drawing.Size(1238, 1254);
             this.sidePanel2.TabIndex = 1;
             this.sidePanel2.Text = "sidePanel2";
             // 
@@ -789,7 +789,7 @@ namespace IBE.WindowsClient {
             this.tabs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabs.Name = "tabs";
             this.tabs.SelectedTabPage = this.tabBook;
-            this.tabs.Size = new System.Drawing.Size(1238, 1399);
+            this.tabs.Size = new System.Drawing.Size(1238, 1254);
             this.tabs.TabIndex = 1;
             this.tabs.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.tabBook,
@@ -802,7 +802,7 @@ namespace IBE.WindowsClient {
             this.tabBook.Controls.Add(this.tableBook);
             this.tabBook.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabBook.Name = "tabBook";
-            this.tabBook.Size = new System.Drawing.Size(1236, 1370);
+            this.tabBook.Size = new System.Drawing.Size(1236, 1225);
             this.tabBook.Text = "Book";
             // 
             // tableBook
@@ -857,53 +857,53 @@ namespace IBE.WindowsClient {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tableBook.Size = new System.Drawing.Size(1236, 1370);
+            this.tableBook.Size = new System.Drawing.Size(1236, 1225);
             this.tableBook.TabIndex = 0;
             // 
             // txtBookNumberOfChapters
             // 
             this.tableBook.SetColumn(this.txtBookNumberOfChapters, 1);
-            this.txtBookNumberOfChapters.Location = new System.Drawing.Point(24, 267);
+            this.txtBookNumberOfChapters.Location = new System.Drawing.Point(218, 980);
             this.txtBookNumberOfChapters.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtBookNumberOfChapters.MenuManager = this.ribbonControl1;
             this.txtBookNumberOfChapters.Name = "txtBookNumberOfChapters";
             this.tableBook.SetRow(this.txtBookNumberOfChapters, 13);
-            this.txtBookNumberOfChapters.Size = new System.Drawing.Size(1208, 28);
+            this.txtBookNumberOfChapters.Size = new System.Drawing.Size(1014, 28);
             this.txtBookNumberOfChapters.TabIndex = 28;
             // 
             // labelControl33
             // 
             this.tableBook.SetColumn(this.labelControl33, 0);
-            this.labelControl33.Location = new System.Drawing.Point(4, 270);
+            this.labelControl33.Location = new System.Drawing.Point(4, 983);
             this.labelControl33.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl33.Name = "labelControl33";
             this.tableBook.SetRow(this.labelControl33, 13);
-            this.labelControl33.Size = new System.Drawing.Size(12, 21);
+            this.labelControl33.Size = new System.Drawing.Size(139, 21);
             this.labelControl33.TabIndex = 27;
             this.labelControl33.Text = "Number of chapters";
             // 
             // cbBookIsTranslated
             // 
             this.tableBook.SetColumn(this.cbBookIsTranslated, 1);
-            this.cbBookIsTranslated.Location = new System.Drawing.Point(24, 245);
+            this.cbBookIsTranslated.Location = new System.Drawing.Point(218, 950);
             this.cbBookIsTranslated.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbBookIsTranslated.MenuManager = this.ribbonControl1;
             this.cbBookIsTranslated.Name = "cbBookIsTranslated";
             this.cbBookIsTranslated.Properties.Caption = "";
             this.tableBook.SetRow(this.cbBookIsTranslated, 12);
-            this.cbBookIsTranslated.Size = new System.Drawing.Size(1208, 18);
+            this.cbBookIsTranslated.Size = new System.Drawing.Size(1014, 18);
             this.cbBookIsTranslated.TabIndex = 26;
             // 
             // labelControl31
             // 
             this.tableBook.SetColumn(this.labelControl31, 0);
-            this.labelControl31.Location = new System.Drawing.Point(4, 245);
+            this.labelControl31.Location = new System.Drawing.Point(4, 949);
             this.labelControl31.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl31.Name = "labelControl31";
             this.tableBook.SetRow(this.labelControl31, 12);
-            this.labelControl31.Size = new System.Drawing.Size(12, 10);
+            this.labelControl31.Size = new System.Drawing.Size(188, 21);
             this.labelControl31.TabIndex = 25;
             this.labelControl31.Text = "Interlinear text is translated";
             // 
@@ -913,12 +913,13 @@ namespace IBE.WindowsClient {
             this.tableBook.SetColumn(this.txtPreface, 1);
             this.txtPreface.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtPreface.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
-            this.txtPreface.Location = new System.Drawing.Point(24, 225);
+            this.txtPreface.Location = new System.Drawing.Point(218, 639);
             this.txtPreface.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPreface.MenuManager = this.ribbonControl1;
+            this.txtPreface.MinimumSize = new System.Drawing.Size(0, 300);
             this.txtPreface.Name = "txtPreface";
             this.tableBook.SetRow(this.txtPreface, 11);
-            this.txtPreface.Size = new System.Drawing.Size(1208, 10);
+            this.txtPreface.Size = new System.Drawing.Size(1014, 300);
             this.txtPreface.TabIndex = 12;
             // 
             // labelControl27
@@ -928,247 +929,250 @@ namespace IBE.WindowsClient {
             this.labelControl27.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.tableBook.SetColumn(this.labelControl27, 0);
             this.labelControl27.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelControl27.Location = new System.Drawing.Point(4, 225);
+            this.labelControl27.Location = new System.Drawing.Point(4, 639);
             this.labelControl27.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl27.Name = "labelControl27";
             this.tableBook.SetRow(this.labelControl27, 11);
-            this.labelControl27.Size = new System.Drawing.Size(12, 10);
+            this.labelControl27.Size = new System.Drawing.Size(206, 300);
             this.labelControl27.TabIndex = 10;
             this.labelControl27.Text = "Preface";
             // 
             // txtBaseBook
             // 
             this.tableBook.SetColumn(this.txtBaseBook, 1);
-            this.txtBaseBook.Location = new System.Drawing.Point(24, 205);
+            this.txtBaseBook.Location = new System.Drawing.Point(218, 601);
             this.txtBaseBook.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtBaseBook.Name = "txtBaseBook";
             this.txtBaseBook.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.tableBook.SetRow(this.txtBaseBook, 10);
-            this.txtBaseBook.Size = new System.Drawing.Size(1208, 28);
+            this.txtBaseBook.Size = new System.Drawing.Size(1014, 28);
             this.txtBaseBook.TabIndex = 11;
             this.txtBaseBook.EditValueChanged += new System.EventHandler(this.txtBaseBook_EditValueChanged);
             // 
             // labelControl26
             // 
             this.tableBook.SetColumn(this.labelControl26, 0);
-            this.labelControl26.Location = new System.Drawing.Point(0, 0);
+            this.labelControl26.Location = new System.Drawing.Point(4, 604);
             this.labelControl26.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl26.Name = "labelControl26";
             this.tableBook.SetRow(this.labelControl26, 10);
-            this.labelControl26.Size = new System.Drawing.Size(0, 0);
+            this.labelControl26.Size = new System.Drawing.Size(75, 21);
             this.labelControl26.TabIndex = 21;
             this.labelControl26.Text = "Base Book ";
             // 
             // txtSubject
             // 
             this.tableBook.SetColumn(this.txtSubject, 1);
-            this.txtSubject.Location = new System.Drawing.Point(24, 185);
+            this.txtSubject.Location = new System.Drawing.Point(218, 563);
             this.txtSubject.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtSubject.Name = "txtSubject";
             this.tableBook.SetRow(this.txtSubject, 9);
-            this.txtSubject.Size = new System.Drawing.Size(1208, 28);
+            this.txtSubject.Size = new System.Drawing.Size(1014, 28);
             this.txtSubject.TabIndex = 10;
             // 
             // labelControl25
             // 
             this.tableBook.SetColumn(this.labelControl25, 0);
-            this.labelControl25.Location = new System.Drawing.Point(0, 0);
+            this.labelControl25.Location = new System.Drawing.Point(4, 566);
             this.labelControl25.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl25.Name = "labelControl25";
             this.tableBook.SetRow(this.labelControl25, 9);
-            this.labelControl25.Size = new System.Drawing.Size(0, 0);
+            this.labelControl25.Size = new System.Drawing.Size(51, 21);
             this.labelControl25.TabIndex = 9;
             this.labelControl25.Text = "Subject";
             // 
             // txtPurpose
             // 
             this.tableBook.SetColumn(this.txtPurpose, 1);
-            this.txtPurpose.Location = new System.Drawing.Point(24, 165);
+            this.txtPurpose.Location = new System.Drawing.Point(218, 453);
             this.txtPurpose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtPurpose.MinimumSize = new System.Drawing.Size(0, 100);
             this.txtPurpose.Name = "txtPurpose";
             this.tableBook.SetRow(this.txtPurpose, 8);
-            this.txtPurpose.Size = new System.Drawing.Size(1208, 10);
+            this.txtPurpose.Size = new System.Drawing.Size(1014, 100);
             this.txtPurpose.TabIndex = 9;
             // 
             // labelControl24
             // 
             this.tableBook.SetColumn(this.labelControl24, 0);
-            this.labelControl24.Location = new System.Drawing.Point(4, 174);
+            this.labelControl24.Location = new System.Drawing.Point(4, 454);
             this.labelControl24.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl24.Name = "labelControl24";
             this.tableBook.SetRow(this.labelControl24, 8);
-            this.labelControl24.Size = new System.Drawing.Size(12, 1);
+            this.labelControl24.Size = new System.Drawing.Size(57, 21);
             this.labelControl24.TabIndex = 8;
             this.labelControl24.Text = "Purpose";
             // 
             // txtPlaceWhereBookWasWritten
             // 
             this.tableBook.SetColumn(this.txtPlaceWhereBookWasWritten, 1);
-            this.txtPlaceWhereBookWasWritten.Location = new System.Drawing.Point(24, 145);
+            this.txtPlaceWhereBookWasWritten.Location = new System.Drawing.Point(218, 415);
             this.txtPlaceWhereBookWasWritten.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtPlaceWhereBookWasWritten.Name = "txtPlaceWhereBookWasWritten";
             this.tableBook.SetRow(this.txtPlaceWhereBookWasWritten, 7);
-            this.txtPlaceWhereBookWasWritten.Size = new System.Drawing.Size(1208, 28);
+            this.txtPlaceWhereBookWasWritten.Size = new System.Drawing.Size(1014, 28);
             this.txtPlaceWhereBookWasWritten.TabIndex = 8;
             // 
             // labelControl23
             // 
             this.tableBook.SetColumn(this.labelControl23, 0);
-            this.labelControl23.Location = new System.Drawing.Point(0, 0);
+            this.labelControl23.Location = new System.Drawing.Point(4, 418);
             this.labelControl23.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl23.Name = "labelControl23";
             this.tableBook.SetRow(this.labelControl23, 7);
-            this.labelControl23.Size = new System.Drawing.Size(0, 0);
+            this.labelControl23.Size = new System.Drawing.Size(206, 21);
             this.labelControl23.TabIndex = 7;
             this.labelControl23.Text = "Place where book was written";
             // 
             // txtTimeOfWriting
             // 
             this.tableBook.SetColumn(this.txtTimeOfWriting, 1);
-            this.txtTimeOfWriting.Location = new System.Drawing.Point(24, 125);
+            this.txtTimeOfWriting.Location = new System.Drawing.Point(218, 305);
             this.txtTimeOfWriting.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtTimeOfWriting.MinimumSize = new System.Drawing.Size(0, 100);
             this.txtTimeOfWriting.Name = "txtTimeOfWriting";
             this.tableBook.SetRow(this.txtTimeOfWriting, 6);
-            this.txtTimeOfWriting.Size = new System.Drawing.Size(1208, 10);
+            this.txtTimeOfWriting.Size = new System.Drawing.Size(1014, 100);
             this.txtTimeOfWriting.TabIndex = 7;
             // 
             // labelControl22
             // 
             this.tableBook.SetColumn(this.labelControl22, 0);
-            this.labelControl22.Location = new System.Drawing.Point(4, 134);
+            this.labelControl22.Location = new System.Drawing.Point(4, 306);
             this.labelControl22.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl22.Name = "labelControl22";
             this.tableBook.SetRow(this.labelControl22, 6);
-            this.labelControl22.Size = new System.Drawing.Size(12, 1);
+            this.labelControl22.Size = new System.Drawing.Size(105, 21);
             this.labelControl22.TabIndex = 6;
             this.labelControl22.Text = "Time of writnig";
             // 
             // txtAuthorName
             // 
             this.tableBook.SetColumn(this.txtAuthorName, 1);
-            this.txtAuthorName.Location = new System.Drawing.Point(24, 105);
+            this.txtAuthorName.Location = new System.Drawing.Point(218, 195);
             this.txtAuthorName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtAuthorName.MinimumSize = new System.Drawing.Size(0, 100);
             this.txtAuthorName.Name = "txtAuthorName";
             this.tableBook.SetRow(this.txtAuthorName, 5);
-            this.txtAuthorName.Size = new System.Drawing.Size(1208, 10);
+            this.txtAuthorName.Size = new System.Drawing.Size(1014, 100);
             this.txtAuthorName.TabIndex = 6;
             // 
             // labelControl21
             // 
             this.tableBook.SetColumn(this.labelControl21, 0);
-            this.labelControl21.Location = new System.Drawing.Point(4, 114);
+            this.labelControl21.Location = new System.Drawing.Point(4, 196);
             this.labelControl21.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl21.Name = "labelControl21";
             this.tableBook.SetRow(this.labelControl21, 5);
-            this.labelControl21.Size = new System.Drawing.Size(12, 1);
+            this.labelControl21.Size = new System.Drawing.Size(94, 21);
             this.labelControl21.TabIndex = 24;
             this.labelControl21.Text = "Author Name";
             // 
             // txtBookColor
             // 
             this.tableBook.SetColumn(this.txtBookColor, 1);
-            this.txtBookColor.Location = new System.Drawing.Point(24, 85);
+            this.txtBookColor.Location = new System.Drawing.Point(218, 157);
             this.txtBookColor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtBookColor.Name = "txtBookColor";
             this.tableBook.SetRow(this.txtBookColor, 4);
-            this.txtBookColor.Size = new System.Drawing.Size(1208, 28);
+            this.txtBookColor.Size = new System.Drawing.Size(1014, 28);
             this.txtBookColor.TabIndex = 5;
             // 
             // labelControl20
             // 
             this.tableBook.SetColumn(this.labelControl20, 0);
-            this.labelControl20.Location = new System.Drawing.Point(0, 0);
+            this.labelControl20.Location = new System.Drawing.Point(4, 160);
             this.labelControl20.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl20.Name = "labelControl20";
             this.tableBook.SetRow(this.labelControl20, 4);
-            this.labelControl20.Size = new System.Drawing.Size(0, 0);
+            this.labelControl20.Size = new System.Drawing.Size(38, 21);
             this.labelControl20.TabIndex = 5;
             this.labelControl20.Text = "Color";
             // 
             // txtBookTitle
             // 
             this.tableBook.SetColumn(this.txtBookTitle, 1);
-            this.txtBookTitle.Location = new System.Drawing.Point(24, 65);
+            this.txtBookTitle.Location = new System.Drawing.Point(218, 119);
             this.txtBookTitle.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtBookTitle.Name = "txtBookTitle";
             this.tableBook.SetRow(this.txtBookTitle, 3);
-            this.txtBookTitle.Size = new System.Drawing.Size(1208, 28);
+            this.txtBookTitle.Size = new System.Drawing.Size(1014, 28);
             this.txtBookTitle.TabIndex = 4;
             // 
             // labelControl19
             // 
             this.tableBook.SetColumn(this.labelControl19, 0);
-            this.labelControl19.Location = new System.Drawing.Point(0, 0);
+            this.labelControl19.Location = new System.Drawing.Point(4, 122);
             this.labelControl19.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl19.Name = "labelControl19";
             this.tableBook.SetRow(this.labelControl19, 3);
-            this.labelControl19.Size = new System.Drawing.Size(0, 0);
+            this.labelControl19.Size = new System.Drawing.Size(68, 21);
             this.labelControl19.TabIndex = 4;
             this.labelControl19.Text = "Book Title";
             // 
             // txtBookName
             // 
             this.tableBook.SetColumn(this.txtBookName, 1);
-            this.txtBookName.Location = new System.Drawing.Point(24, 45);
+            this.txtBookName.Location = new System.Drawing.Point(218, 81);
             this.txtBookName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtBookName.Name = "txtBookName";
             this.tableBook.SetRow(this.txtBookName, 2);
-            this.txtBookName.Size = new System.Drawing.Size(1208, 28);
+            this.txtBookName.Size = new System.Drawing.Size(1014, 28);
             this.txtBookName.TabIndex = 3;
             // 
             // labelControl18
             // 
             this.tableBook.SetColumn(this.labelControl18, 0);
-            this.labelControl18.Location = new System.Drawing.Point(0, 0);
+            this.labelControl18.Location = new System.Drawing.Point(4, 84);
             this.labelControl18.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl18.Name = "labelControl18";
             this.tableBook.SetRow(this.labelControl18, 2);
-            this.labelControl18.Size = new System.Drawing.Size(0, 0);
+            this.labelControl18.Size = new System.Drawing.Size(84, 21);
             this.labelControl18.TabIndex = 4;
             this.labelControl18.Text = "Book Name:";
             // 
             // txtBookShortcut
             // 
             this.tableBook.SetColumn(this.txtBookShortcut, 1);
-            this.txtBookShortcut.Location = new System.Drawing.Point(24, 25);
+            this.txtBookShortcut.Location = new System.Drawing.Point(218, 43);
             this.txtBookShortcut.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtBookShortcut.MenuManager = this.ribbonControl1;
             this.txtBookShortcut.Name = "txtBookShortcut";
             this.tableBook.SetRow(this.txtBookShortcut, 1);
-            this.txtBookShortcut.Size = new System.Drawing.Size(1208, 28);
+            this.txtBookShortcut.Size = new System.Drawing.Size(1014, 28);
             this.txtBookShortcut.TabIndex = 3;
             // 
             // labelControl17
             // 
             this.tableBook.SetColumn(this.labelControl17, 0);
-            this.labelControl17.Location = new System.Drawing.Point(0, 0);
+            this.labelControl17.Location = new System.Drawing.Point(4, 46);
             this.labelControl17.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl17.Name = "labelControl17";
             this.tableBook.SetRow(this.labelControl17, 1);
-            this.labelControl17.Size = new System.Drawing.Size(0, 0);
+            this.labelControl17.Size = new System.Drawing.Size(101, 21);
             this.labelControl17.TabIndex = 2;
             this.labelControl17.Text = "Book Shortcut:";
             // 
             // txtNumberOfBook
             // 
             this.tableBook.SetColumn(this.txtNumberOfBook, 1);
-            this.txtNumberOfBook.Location = new System.Drawing.Point(24, 5);
+            this.txtNumberOfBook.Location = new System.Drawing.Point(218, 5);
             this.txtNumberOfBook.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtNumberOfBook.MenuManager = this.ribbonControl1;
             this.txtNumberOfBook.Name = "txtNumberOfBook";
             this.tableBook.SetRow(this.txtNumberOfBook, 0);
-            this.txtNumberOfBook.Size = new System.Drawing.Size(1208, 28);
+            this.txtNumberOfBook.Size = new System.Drawing.Size(1014, 28);
             this.txtNumberOfBook.TabIndex = 1;
             // 
             // labelControl16
             // 
             this.tableBook.SetColumn(this.labelControl16, 0);
-            this.labelControl16.Location = new System.Drawing.Point(0, 0);
+            this.labelControl16.Location = new System.Drawing.Point(4, 8);
             this.labelControl16.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl16.Name = "labelControl16";
             this.tableBook.SetRow(this.labelControl16, 0);
-            this.labelControl16.Size = new System.Drawing.Size(0, 0);
+            this.labelControl16.Size = new System.Drawing.Size(118, 21);
             this.labelControl16.TabIndex = 0;
             this.labelControl16.Text = "Number of Book:";
             // 
@@ -1177,7 +1181,7 @@ namespace IBE.WindowsClient {
             this.tabChapter.Controls.Add(this.tableChapter);
             this.tabChapter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabChapter.Name = "tabChapter";
-            this.tabChapter.Size = new System.Drawing.Size(1236, 1370);
+            this.tabChapter.Size = new System.Drawing.Size(1236, 1225);
             this.tabChapter.Text = "Chapter";
             // 
             // tableChapter
@@ -1197,76 +1201,76 @@ namespace IBE.WindowsClient {
             this.tableChapter.Name = "tableChapter";
             this.tableChapter.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tableChapter.Size = new System.Drawing.Size(1236, 1370);
+            this.tableChapter.Size = new System.Drawing.Size(1236, 1225);
             this.tableChapter.TabIndex = 0;
             // 
             // labelControl34
             // 
             this.tableChapter.SetColumn(this.labelControl34, 0);
-            this.labelControl34.Location = new System.Drawing.Point(4, 69);
+            this.labelControl34.Location = new System.Drawing.Point(4, 78);
             this.labelControl34.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl34.Name = "labelControl34";
             this.tableChapter.SetRow(this.labelControl34, 2);
-            this.labelControl34.Size = new System.Drawing.Size(12, 21);
+            this.labelControl34.Size = new System.Drawing.Size(124, 21);
             this.labelControl34.TabIndex = 5;
             this.labelControl34.Text = "Number of verses";
             // 
             // txtChapterNumberOfVerses
             // 
             this.tableChapter.SetColumn(this.txtChapterNumberOfVerses, 1);
-            this.txtChapterNumberOfVerses.Location = new System.Drawing.Point(24, 69);
+            this.txtChapterNumberOfVerses.Location = new System.Drawing.Point(200, 74);
             this.txtChapterNumberOfVerses.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtChapterNumberOfVerses.MenuManager = this.ribbonControl1;
             this.txtChapterNumberOfVerses.Name = "txtChapterNumberOfVerses";
             this.tableChapter.SetRow(this.txtChapterNumberOfVerses, 2);
-            this.txtChapterNumberOfVerses.Size = new System.Drawing.Size(1208, 28);
+            this.txtChapterNumberOfVerses.Size = new System.Drawing.Size(1032, 28);
             this.txtChapterNumberOfVerses.TabIndex = 4;
             // 
             // cbChapterIsTranslated
             // 
             this.tableChapter.SetColumn(this.cbChapterIsTranslated, 1);
-            this.cbChapterIsTranslated.Location = new System.Drawing.Point(24, 32);
+            this.cbChapterIsTranslated.Location = new System.Drawing.Point(200, 44);
             this.cbChapterIsTranslated.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbChapterIsTranslated.MenuManager = this.ribbonControl1;
             this.cbChapterIsTranslated.Name = "cbChapterIsTranslated";
             this.cbChapterIsTranslated.Properties.Caption = "";
             this.tableChapter.SetRow(this.cbChapterIsTranslated, 1);
-            this.cbChapterIsTranslated.Size = new System.Drawing.Size(1208, 18);
+            this.cbChapterIsTranslated.Size = new System.Drawing.Size(1032, 18);
             this.cbChapterIsTranslated.TabIndex = 3;
             // 
             // labelControl32
             // 
             this.tableChapter.SetColumn(this.labelControl32, 0);
-            this.labelControl32.Location = new System.Drawing.Point(4, 30);
+            this.labelControl32.Location = new System.Drawing.Point(4, 43);
             this.labelControl32.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl32.Name = "labelControl32";
             this.tableChapter.SetRow(this.labelControl32, 1);
-            this.labelControl32.Size = new System.Drawing.Size(12, 21);
+            this.labelControl32.Size = new System.Drawing.Size(188, 21);
             this.labelControl32.TabIndex = 2;
             this.labelControl32.Text = "Interlinear text is translated";
             // 
             // txtNumberOfChapter
             // 
             this.tableChapter.SetColumn(this.txtNumberOfChapter, 1);
-            this.txtNumberOfChapter.Location = new System.Drawing.Point(24, 5);
+            this.txtNumberOfChapter.Location = new System.Drawing.Point(200, 5);
             this.txtNumberOfChapter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtNumberOfChapter.MenuManager = this.ribbonControl1;
             this.txtNumberOfChapter.Name = "txtNumberOfChapter";
             this.tableChapter.SetRow(this.txtNumberOfChapter, 0);
-            this.txtNumberOfChapter.Size = new System.Drawing.Size(1208, 28);
+            this.txtNumberOfChapter.Size = new System.Drawing.Size(1032, 28);
             this.txtNumberOfChapter.TabIndex = 1;
             // 
             // labelControl28
             // 
             this.tableChapter.SetColumn(this.labelControl28, 0);
-            this.labelControl28.Location = new System.Drawing.Point(4, 5);
+            this.labelControl28.Location = new System.Drawing.Point(4, 8);
             this.labelControl28.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl28.Name = "labelControl28";
             this.tableChapter.SetRow(this.labelControl28, 0);
-            this.labelControl28.Size = new System.Drawing.Size(12, 10);
+            this.labelControl28.Size = new System.Drawing.Size(135, 21);
             this.labelControl28.TabIndex = 0;
             this.labelControl28.Text = "Number of Chapter";
             // 
@@ -1275,7 +1279,7 @@ namespace IBE.WindowsClient {
             this.tabVerse.Controls.Add(this.tableVerseControls);
             this.tabVerse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabVerse.Name = "tabVerse";
-            this.tabVerse.Size = new System.Drawing.Size(1236, 1370);
+            this.tabVerse.Size = new System.Drawing.Size(1236, 1225);
             this.tabVerse.Text = "Verse";
             // 
             // tableVerseControls
@@ -1298,66 +1302,66 @@ namespace IBE.WindowsClient {
             this.tableVerseControls.Name = "tableVerseControls";
             this.tableVerseControls.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
-            this.tableVerseControls.Size = new System.Drawing.Size(1236, 1370);
+            this.tableVerseControls.Size = new System.Drawing.Size(1236, 1225);
             this.tableVerseControls.TabIndex = 1;
             // 
             // txtSubtitleLevel2
             // 
             this.tableVerseControls.SetColumn(this.txtSubtitleLevel2, 1);
-            this.txtSubtitleLevel2.Location = new System.Drawing.Point(24, 69);
+            this.txtSubtitleLevel2.Location = new System.Drawing.Point(148, 74);
             this.txtSubtitleLevel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtSubtitleLevel2.MenuManager = this.ribbonControl1;
             this.txtSubtitleLevel2.Name = "txtSubtitleLevel2";
             this.tableVerseControls.SetRow(this.txtSubtitleLevel2, 2);
-            this.txtSubtitleLevel2.Size = new System.Drawing.Size(1208, 28);
+            this.txtSubtitleLevel2.Size = new System.Drawing.Size(1084, 28);
             this.txtSubtitleLevel2.TabIndex = 7;
             // 
             // txtSubtitleLevel1
             // 
             this.tableVerseControls.SetColumn(this.txtSubtitleLevel1, 1);
-            this.txtSubtitleLevel1.Location = new System.Drawing.Point(24, 27);
+            this.txtSubtitleLevel1.Location = new System.Drawing.Point(148, 36);
             this.txtSubtitleLevel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtSubtitleLevel1.MenuManager = this.ribbonControl1;
             this.txtSubtitleLevel1.Name = "txtSubtitleLevel1";
             this.tableVerseControls.SetRow(this.txtSubtitleLevel1, 1);
-            this.txtSubtitleLevel1.Size = new System.Drawing.Size(1208, 28);
+            this.txtSubtitleLevel1.Size = new System.Drawing.Size(1084, 28);
             this.txtSubtitleLevel1.TabIndex = 6;
             // 
             // labelControl37
             // 
             this.tableVerseControls.SetColumn(this.labelControl37, 0);
-            this.labelControl37.Location = new System.Drawing.Point(4, 69);
+            this.labelControl37.Location = new System.Drawing.Point(4, 84);
             this.labelControl37.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl37.Name = "labelControl37";
             this.tableVerseControls.SetRow(this.labelControl37, 2);
-            this.labelControl37.Size = new System.Drawing.Size(12, 21);
+            this.labelControl37.Size = new System.Drawing.Size(102, 18);
             this.labelControl37.TabIndex = 5;
             this.labelControl37.Text = "Subtitle level 2";
             // 
             // labelControl36
             // 
             this.tableVerseControls.SetColumn(this.labelControl36, 0);
-            this.labelControl36.Location = new System.Drawing.Point(4, 27);
+            this.labelControl36.Location = new System.Drawing.Point(4, 40);
             this.labelControl36.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl36.Name = "labelControl36";
             this.tableVerseControls.SetRow(this.labelControl36, 1);
-            this.labelControl36.Size = new System.Drawing.Size(12, 21);
+            this.labelControl36.Size = new System.Drawing.Size(102, 21);
             this.labelControl36.TabIndex = 4;
             this.labelControl36.Text = "Subtitle level 1";
             // 
             // txtNumberOfVerse
             // 
             this.tableVerseControls.SetColumn(this.txtNumberOfVerse, 1);
-            this.txtNumberOfVerse.Location = new System.Drawing.Point(24, 109);
+            this.txtNumberOfVerse.Location = new System.Drawing.Point(148, 112);
             this.txtNumberOfVerse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtNumberOfVerse.MenuManager = this.ribbonControl1;
             this.txtNumberOfVerse.Name = "txtNumberOfVerse";
             this.tableVerseControls.SetRow(this.txtNumberOfVerse, 3);
-            this.txtNumberOfVerse.Size = new System.Drawing.Size(1208, 28);
+            this.txtNumberOfVerse.Size = new System.Drawing.Size(1084, 28);
             this.txtNumberOfVerse.TabIndex = 3;
             // 
             // editor
@@ -1368,23 +1372,23 @@ namespace IBE.WindowsClient {
             this.tableVerseControls.SetColumnSpan(this.editor, 2);
             this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.editor.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
-            this.editor.Location = new System.Drawing.Point(4, 129);
+            this.editor.Location = new System.Drawing.Point(4, 150);
             this.editor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.editor.MenuManager = this.ribbonControl1;
             this.editor.Name = "editor";
             this.tableVerseControls.SetRow(this.editor, 4);
-            this.editor.Size = new System.Drawing.Size(1228, 1236);
+            this.editor.Size = new System.Drawing.Size(1228, 1070);
             this.editor.TabIndex = 0;
             this.editor.Views.SimpleView.ZoomFactor = 2F;
             // 
             // labelControl15
             // 
             this.tableVerseControls.SetColumn(this.labelControl15, 0);
-            this.labelControl15.Location = new System.Drawing.Point(4, 109);
+            this.labelControl15.Location = new System.Drawing.Point(4, 115);
             this.labelControl15.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl15.Name = "labelControl15";
             this.tableVerseControls.SetRow(this.labelControl15, 3);
-            this.labelControl15.Size = new System.Drawing.Size(12, 10);
+            this.labelControl15.Size = new System.Drawing.Size(61, 21);
             this.labelControl15.TabIndex = 2;
             this.labelControl15.Text = "Number:";
             // 
@@ -1395,20 +1399,20 @@ namespace IBE.WindowsClient {
             this.labelControl14.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl14.Name = "labelControl14";
             this.tableVerseControls.SetRow(this.labelControl14, 0);
-            this.labelControl14.Size = new System.Drawing.Size(12, 10);
+            this.labelControl14.Size = new System.Drawing.Size(136, 21);
             this.labelControl14.TabIndex = 1;
             this.labelControl14.Text = "Start from new line:";
             // 
             // cbStartFromNewLine
             // 
             this.tableVerseControls.SetColumn(this.cbStartFromNewLine, 1);
-            this.cbStartFromNewLine.Location = new System.Drawing.Point(24, 5);
+            this.cbStartFromNewLine.Location = new System.Drawing.Point(148, 6);
             this.cbStartFromNewLine.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbStartFromNewLine.MenuManager = this.ribbonControl1;
             this.cbStartFromNewLine.Name = "cbStartFromNewLine";
             this.cbStartFromNewLine.Properties.Caption = "";
             this.tableVerseControls.SetRow(this.cbStartFromNewLine, 0);
-            this.cbStartFromNewLine.Size = new System.Drawing.Size(1208, 18);
+            this.cbStartFromNewLine.Size = new System.Drawing.Size(1084, 18);
             this.cbStartFromNewLine.TabIndex = 0;
             // 
             // sidePanel1
@@ -1418,7 +1422,7 @@ namespace IBE.WindowsClient {
             this.sidePanel1.Location = new System.Drawing.Point(0, 0);
             this.sidePanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.sidePanel1.Name = "sidePanel1";
-            this.sidePanel1.Size = new System.Drawing.Size(516, 1399);
+            this.sidePanel1.Size = new System.Drawing.Size(516, 1254);
             this.sidePanel1.TabIndex = 0;
             this.sidePanel1.Text = "sidePanel1";
             // 
@@ -1435,7 +1439,7 @@ namespace IBE.WindowsClient {
             this.treeList.Name = "treeList";
             this.treeList.OptionsBehavior.Editable = false;
             this.treeList.OptionsView.ShowColumns = false;
-            this.treeList.Size = new System.Drawing.Size(515, 1399);
+            this.treeList.Size = new System.Drawing.Size(515, 1254);
             this.treeList.TabIndex = 0;
             this.treeList.TreeLevelWidth = 27;
             this.treeList.NodeChanged += new DevExpress.XtraTreeList.NodeChangedEventHandler(this.treeList_NodeChanged);

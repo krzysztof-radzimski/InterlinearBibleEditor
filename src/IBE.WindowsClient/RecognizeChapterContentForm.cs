@@ -19,11 +19,13 @@ namespace IBE.WindowsClient {
 
         public List<RecognizedChapter> GetRecognizedChapters() {
             var chapters = new List<RecognizedChapter>();
-            var patternChapter = @"ROZDZIAŁ\s[0-9]+\.";
+            var patternChapter = @"ROZDZIAŁ\s(?<nr>[0-9]+)\.";
             var resultChapters = Regex.Split(richEditControl.Text, patternChapter, RegexOptions.Multiline | RegexOptions.IgnoreCase);
             var numberOfChapter = 1;
             foreach (var resultChapter in resultChapters) {
                 if (resultChapter.IsNullOrWhiteSpace()) { continue; }
+                var recognizedNumber = 0;
+                if (Int32.TryParse(resultChapter, out recognizedNumber)) { numberOfChapter = recognizedNumber;  continue; }
                 chapters.Add(new RecognizedChapter {
                     Number = numberOfChapter,
                     Verses = GetRecognizedVerses(resultChapter.Trim())
