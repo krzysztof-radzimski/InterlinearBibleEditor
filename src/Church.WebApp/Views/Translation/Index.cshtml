@@ -72,7 +72,7 @@ else if (Model.Book.IsNullOrEmpty()) {
 
                 var pillHtml = $@"<span class=""badge bg-success rounded-pill"" style=""position: absolute; right: -10px; top: -15px"">{book.NumberOfChapters}</span>";
 
-                <div class="col p-2" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3);" title="@bookTitle">
+                <div class="col p-2 btn-book" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3);" title="@bookTitle">
                     <span style="position: relative;">
                         <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@bookTitle" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@Model.Translation.Name.Replace("'", "").Replace("+", "")" asp-route-book="@book.NumberOfBook" asp-route-chapter="@bookLinkChapterNumber">@Html.Raw(bookHtml)&nbsp;</a>@Html.Raw(pillHtml)
                     </span>
@@ -601,7 +601,7 @@ else {
                             }
                         }
 
-                        var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "background-color: #fffee3;" : " ";
+                        var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "background-color: #fffee34c;" : " ";
 
                         if (verse == chapter.Verses.First()) {
                             @Html.Raw(@"<div class=""row"">")
@@ -720,7 +720,7 @@ else {
                                         </div>
                                     }
                                     <div class="row"><div class="col text-success">@word.SourceWord</div></div>
-                                    <div class="row" style="color: #003A60;"><div class="col">@word.Transliteration</div></div>
+                                    <div class="row transliteration"><div class="col">@word.Transliteration</div></div>
                                     <div class="row @translationFontColor" style="@translationFontWeight position: relative; min-width: 70px; font-size: 120%;"><div class="col">@Html.Raw(translation)</div></div>
                                 </div>
                             </div>
@@ -975,7 +975,7 @@ else {
                         }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
 
-                        var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? " background-color: #fffee3;" : "";
+                        var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? " background-color: #fffee34c;" : "";
 
                         var __verseText = BibleTagController.CleanVerseText(verse.Text);
                         __verseText = System.Text.RegularExpressions.Regex.Replace(__verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
