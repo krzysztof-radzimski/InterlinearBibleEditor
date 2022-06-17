@@ -129,18 +129,13 @@ namespace Church.WebApp.Controllers {
                             .Replace("―", String.Empty)
                             .Replace("<n>", @"<span class=""text-muted"">")
                             .Replace("</n>", "</span>")
-                            .Replace("<J>", "<span style='color: darkred;'>")
+                            .Replace("<J>", @"<span class=""text-danger"">")
                             .Replace("</J>", "</span>");
-                    //var simpleText = verseText.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "");
                     var simpleText = BibleTag.GetVerseSimpleText(record["VerseText"].ToString(), index, baseBookShortcut);
                     var translationName = translation.Key;
-                    //if (translationName == "NPI" || translationName == "IPD") {
-                    //    simpleText = simpleText.Replace("―", "");
-                    //    verseText = verseText.Replace("―", "");
-                    //}
+                    
                     if (translationName == "PBD") { translationName = "SNPPD"; }
-                    //simpleText = System.Text.RegularExpressions.Regex.Replace(simpleText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
-                    //simpleText = $"{baseBookShortcut} {index.NumberOfChapter}:{record["NumberOfVerse"]} „{simpleText}” ({translationName})";
+                    
                     model.Add(new SearchItemModel() {
                         Book = index.NumberOfBook,
                         BookShortcut = baseBookShortcut,

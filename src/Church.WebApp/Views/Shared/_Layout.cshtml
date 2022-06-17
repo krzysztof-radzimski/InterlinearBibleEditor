@@ -163,14 +163,14 @@
                         </li>
                     </ul>
 
-                    <form class="d-flex" id="siglum-form" method="get" enctype="multipart/form-data" asp-controller="Search" asp-action="Siglum">
+                    <form class="d-flex" id="siglum-form" method="get" enctype="multipart/form-data" asp-controller="Search" asp-action="Siglum" autocomplete="off" spellcheck="false">
                         <div class="input-group">
                             <input id="siglum-input-text" name="text" class="form-control" type="text" placeholder="Przejdź do wersetu" aria-label="Przejdź do wersetu" />
                             <button id="siglum-button" class="btn btn-outline-dark" type="submit"><i class="fa-solid fa-magnifying-glass-arrow-right"></i></button>
                         </div>
                     </form>
                     &nbsp;
-                    <form class="d-flex" id="search-form" method="get" enctype="multipart/form-data" asp-controller="Search" asp-action="Index">
+                    <form class="d-flex" id="search-form" method="get" enctype="multipart/form-data" asp-controller="Search" asp-action="Index" spellcheck="false">
                         <div class="input-group">
                             <input id="search-input-text" name="text" class="form-control" type="search" placeholder="Szukaj w Biblii" aria-label="Szukaj w Biblii" />
                        

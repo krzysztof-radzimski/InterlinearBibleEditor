@@ -61,8 +61,10 @@
         <div class="tab-content" id="myTabContent">
             @foreach (var item in result) {
                 var _active = item == result.First() ? " active" : "";
+                var translationName = @item.First().TranslationName;
+                if (translationName == "PBD") { translationName = "SNPPD"; }
                 <div class="tab-pane shadow-sm p-3 mb-5 bg-body rounded fade@_active" id="@item.Key.ToLower()" role="tabpanel" aria-labelledby="@item.Key.ToLower()-tab">
-                    <h4>@item.First().TranslationName</h4>
+                    <h4>translationName</h4>
 
                     <div class="container">
                         <div class="row p-1">
