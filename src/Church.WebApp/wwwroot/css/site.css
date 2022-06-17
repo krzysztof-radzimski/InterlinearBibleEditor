@@ -656,7 +656,7 @@ img {
 
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: black !important;
+        background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
         background: url('../img/background-2021-dark.jpg') top center fixed;
         color: #C8C8C8;
     }
@@ -714,54 +714,72 @@ img {
         color: #747171 !important;
     }
 
-    .pill-white, .btn-light, .dropdown-menu, .my-dropdown {
+    .pill-white, .btn-light, .dropdown-menu, .my-dropdown, .accordion-item {
         background-color: #303030 !important;
         border-color: #303030 !important;
     }
-
+	
+	.accordion-button  {
+		background-color: #303030 !important;
+		border-color: #303030 !important;
+		color: #C8C8C8 !important;	
+	}
+	.tab-content>.tab-pane, .accordion-button:not(.collapsed) {
+		color: #C8C8C8 !important;
+		background-color: #303030 !important;
+	}
+	.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+		color: #C8C8C8;
+		background-color: #303030;
+		border-color: #303030;
+	}
+	.nav-tabs {
+		border-bottom: 1px solid #303030;
+	}
     .btn-light {
         color: #C8C8C8 !important;
     }
-
+     
     .btn-book a {
         color: rgba(0,0,0,0.5) !important;
     }
-
+     
         .btn-book a:hover {
             color: #FFF !important;
         }
-
+     
     .story, .story2 {
         text-shadow: none;
         background-image: none;
     }
-
+     
     .songbook, .song-img {
         background-image: url(../img/songbook-dark.png);
     }
-
+     
     .dropdown-item {
         color: #C8C8C8 !important;
     }
-
+     
         .dropdown-item:hover {
             background-color: rgba(0,0,0,0.5);
         }
-
+     
     #siglum-button {
         color: #C8C8C8 !important;
         border-color: #383838 !important;
     }
-
+     
     #top-nav {
         background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
     }
-
-    .text-danger {
+	 
+	.text-danger {
         color: #eeb4b4 !important;
     }
-
-    .navbar-toggler-icon {
+	 
+	.navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
     }
-}
+}    
+     
