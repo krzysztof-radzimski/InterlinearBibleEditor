@@ -107,7 +107,7 @@ namespace Church.WebApp.Controllers {
                                 .Replace("―", String.Empty)
                                 .Replace("<n>", @"<span class=""text-muted"">")
                                 .Replace("</n>", "</span>")
-                                .Replace("<J>", "<span style='color: darkred;'>")
+                                .Replace("<J>", @"<span class=""text-danger"">")
                                 .Replace("</J>", "</span>");
                         cvi.SimpleText = BibleTag.GetVerseSimpleText(text, cvi.Index, baseBookShortcut);
                     }
