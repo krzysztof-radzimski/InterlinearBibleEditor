@@ -49,7 +49,6 @@
     @using System.Linq;
     @using Church.WebApp.Models
     @{
-        //var bible = new XPQuery<BookBase>(new UnitOfWork()).ToList();
         var oldTestament = Model.Books.Where(x => x.StatusBookType == TheBookType.Bible && x.StatusCanonType == CanonType.Canon && x.StatusBiblePart == BiblePart.OldTestament).OrderBy(x => x.NumberOfBook);
         var newTestament = Model.Books.Where(x => x.StatusBookType == TheBookType.Bible && x.StatusCanonType == CanonType.Canon && x.StatusBiblePart == BiblePart.NewTestament).OrderBy(x => x.NumberOfBook);
     }

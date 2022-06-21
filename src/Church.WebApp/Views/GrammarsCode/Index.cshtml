@@ -15,11 +15,8 @@
 
     <div class="clearfix max-width-1000" style="min-height: 80vh;">
         <div class="row p-4">
+            <p class="fs-5 text-center shadow p-3 mb-5 bg-body rounded bible-img"></p>
             <h1><i class="fas fa-bible"></i> Kody gramatyczne</h1>
-            
-            <p class="fs-5 text-center shadow p-3 mb-3 rounded">
-                <img src="~/img/biblelink.jpg" style="width: 100%; max-height: 300px; " class="shadow-lg" />
-            </p>
             <div class="col d-flex flex-column position-static">
                 <div>
                     <strong class="d-inline-block mb-2 text-success pill-white">@Model.GrammarCodeVariant1</strong>
@@ -41,12 +38,14 @@
                         </div>
 
                         @foreach (var item in verses) {
-                            <div class="row p-1">
-                                <div class="col-auto p-1 border-bottom mw-10-per">@Html.Raw(item.Key)</div>
-                                <div class="col p-1 border-start border-bottom">@Html.Raw(item.Value.Replace("―", String.Empty).Replace(" <n>", @"<span class=""text-muted"">").Replace("</n>", "</span>"))</div>
-                            </div>
+                            var verseHtml = item.Value.Replace("―", String.Empty).Replace(" <n>", @"<span class=""text-muted"">").Replace("</n>", "</span>");
+                            if (verseHtml.IsNotNullOrWhiteSpace()) {
+                                <div class="row p-1">
+                                    <div class="col-auto p-1 border-bottom mw-10-per">@Html.Raw(item.Key)</div>
+                                    <div class="col p-1 border-start border-bottom">@Html.Raw(verseHtml)</div>
+                                </div>
+                            }
                         }
-
                     </div>
                 }
             }
