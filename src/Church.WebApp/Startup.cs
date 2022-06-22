@@ -31,9 +31,10 @@ namespace IBE.WebApp {
                     config.LogoutPath = "/Account/Logout";
                     config.ExpireTimeSpan = System.TimeSpan.FromDays(1);
                 });
+            services.AddMemoryCache();
             services.AddControllersWithViews();
             services.AddScoped<ITranslationInfoController, TranslationInfoController>();
-            services.AddScoped<IBibleTagController, BibleTagController>();
+            services.AddScoped<IBibleTagController, BibleTagController>();            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

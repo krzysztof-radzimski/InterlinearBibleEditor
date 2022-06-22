@@ -11,6 +11,7 @@
 
   ===================================================================================*/
 
+using Church.WebApp.Utils;
 using DevExpress.Xpo;
 using IBE.Common.Extensions;
 using IBE.Data.Export.Controllers;
@@ -30,9 +31,11 @@ namespace Church.WebApp.Controllers {
         private const string TYPE_QUERY = "&type=";
         private readonly ILogger<SearchController> Logger;
         private readonly IBibleTagController BibleTag;
-        public SearchController(ILogger<SearchController> logger, IBibleTagController bibleTag) {
+        private readonly ITranslationInfoController TranslationInfoController;
+        public SearchController(ILogger<SearchController> logger, IBibleTagController bibleTag, ITranslationInfoController translationInfoController) {
             Logger = logger;
             BibleTag = bibleTag;
+            TranslationInfoController = translationInfoController;
         }
 
         public IActionResult Index() {
@@ -73,7 +76,7 @@ namespace Church.WebApp.Controllers {
         private IActionResult _Search(string[] words, SearchRangeType type) {
             var session = new UnitOfWork();
             var view = new XPView(session, typeof(Verse));
-            var bookShortcuts = new XPQuery<BookBase>(session).Select(x => new KeyValuePair<int, string>(x.NumberOfBook, x.BookShortcut)).ToList();
+            var bookShortcuts = TranslationInfoController.GetBookBases(session).Select(x => new KeyValuePair<int, string>(x.NumberOfBook, x.BookShortcut)).ToList();
             var translationNames = new XPQuery<Translation>(session).Where(x => !x.Hidden).Select(x => new KeyValuePair<string, string>(x.Name.Replace("'", "").Replace("+", ""), x.Description)).ToList();
 
             var query = "Search?text=";
@@ -133,9 +136,9 @@ namespace Church.WebApp.Controllers {
                             .Replace("</J>", "</span>");
                     var simpleText = BibleTag.GetVerseSimpleText(record["VerseText"].ToString(), index, baseBookShortcut);
                     var translationName = translation.Key;
-                    
+
                     if (translationName == "PBD") { translationName = "SNPPD"; }
-                    
+
                     model.Add(new SearchItemModel() {
                         Book = index.NumberOfBook,
                         BookShortcut = baseBookShortcut,
@@ -172,7 +175,7 @@ namespace Church.WebApp.Controllers {
                     var session = new UnitOfWork();
                     var url = BibleTag.GetRecognizedSiglumUrl(session, text);
                     if (url.IsNotNullOrEmpty()) {
-                        return  Ok($"https://kosciol-jezusa.pl{url}");
+                        return Ok($"https://kosciol-jezusa.pl{url}");
                     }
                 }
             }

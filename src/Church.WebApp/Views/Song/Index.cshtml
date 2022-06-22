@@ -47,14 +47,12 @@
                     Wybierz inną
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook">
-                    @foreach (ViewRecord record in Model.Songs) {
-                        var number = record["Number"];
-                        var name = record["Name"];
-                        if (number.ToInt() == Model.Song.Number) {
-                            <li><span class="dropdown-item active">@number.@name</span></li>
+                    @foreach (var song in Model.Songs) {                        
+                        if (song.Number.ToInt() == Model.Song.Number) {
+                            <li><span class="dropdown-item active">@song.Number.@song.Name</span></li>
                         }
                         else {
-                            <li><a class="dropdown-item" href="/Song?id=@number">@number.@name</a></li>
+                            <li><a class="dropdown-item" href="/Song?id=@song.Number">@song.Number.@song.Name</a></li>
                         }
                     }
                 </ul>

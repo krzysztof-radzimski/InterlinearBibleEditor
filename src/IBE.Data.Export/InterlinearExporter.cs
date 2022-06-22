@@ -620,7 +620,7 @@ namespace IBE.Data.Export {
                     if (BibleTagController.IsNull()) { this.BibleTagController = new BibleTagController(); }
                     if (TranslateModel.IsNull()) {
                         var uow = word.Session as UnitOfWork;
-                        var books = new XPQuery<BookBase>(uow).ToList();
+                        var books = GetBookBases(uow);
                         TranslateModel = new TranslationControllerModel(translation,
                             word.ParentVerse.ParentChapter.ParentBook.NumberOfBook.ToString(),
                             word.ParentVerse.ParentChapter.NumberOfChapter.ToString(), null, books);
@@ -667,7 +667,7 @@ namespace IBE.Data.Export {
                 }
             }
         }
-
+      
         private string RepairImagesPath(string input) {
             input = System.Text.RegularExpressions.Regex.Replace(input, @"\<img src\=\""\/", $@"<img src=""{Host}/");
             return input;

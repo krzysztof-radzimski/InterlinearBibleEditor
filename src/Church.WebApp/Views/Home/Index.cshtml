@@ -5,23 +5,11 @@
 @using IBE.Common.Extensions
 @inject IConfiguration Configuration
 @model List<Church.WebApp.Controllers.ArticleInfo>
-
-@section HeaderScripts {
-<!-- social sharing metadata -->
-<meta property="og:title" content="@Configuration["PageTitle"]" />
-<meta property="og:description" content="Jesteśmy grupą chrześcijan, którzy pragną być kościołem Jezusa Chrystusa w Nowym Dworze Mazowieckim. Znikome znaczenie ma budynek kościelny czy przyjęty porządek nabożeństwa. Najważniejszy jest Bóg Ojciec, Syn i Duch Święty, Któremu należy się wszelka cześć, chwała i szacunek, którego czcimy i wielbimy. Ważny jest również człowiek, za którego nasz Pan oddał swoje życie i przelał bezcenną krew na krzyżu." />
-<meta property="og:image" content="http://@host/img/brama.jpg" />
-<meta property="og:url" content="http://@host" />"
-<meta property="og:type" content="page" />
-<meta property="og:locale" content="pl_PL" />
-}
-<div style="padding-top: 20px;" class="max-width-1000">    
+<div class="max-width-1000" style="padding-top: 20px;">
     @Html.Partial("~/Views/Shared/_Baner.cshtml")
-
     @if (Model.IsNotNull() && Model.Count > 0) {
         foreach (var item in Model) {
             var lead = item.Lead;
-
             <a href="../Article?id=@item.Id" class="list-group-item list-group-item-action m-0 border-0" aria-current="true" style="padding-left: 0; padding-right: 0;">
                 <div class="card bg-transparent m-0 p-0 shadow-lg">
                     <div class="row g-0 m-0">
@@ -43,11 +31,8 @@
         <div class="d-flex flex-row-reverse mt-3">
             <a href="../Articles" class="btn btn-secondary">Więcej...</a>
         </div>
-
         <br />
     }
-
-
     <div class="embed-responsive embed-responsive-16by9 shadow-lg">
         <iframe id="YouTubeFrame" width="560" height="600" src="https://www.youtube.com/embed/videoseries?list=PLUYRCCWSMh69waBP7LPvu_aAm8pkKL6Gh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
@@ -156,3 +141,25 @@
         05-100 Nowy Dwór Mazowiecki
     </p>
 </div>
+
+
+@section HeaderScripts {
+    <!-- social sharing metadata -->
+    <meta property="og:title" content="@Configuration["PageTitle"]" />
+    <meta property="og:description" content="Jesteśmy grupą chrześcijan, którzy pragną być kościołem Jezusa Chrystusa w Nowym Dworze Mazowieckim. Znikome znaczenie ma budynek kościelny czy przyjęty porządek nabożeństwa. Najważniejszy jest Bóg Ojciec, Syn i Duch Święty, Któremu należy się wszelka cześć, chwała i szacunek, którego czcimy i wielbimy. Ważny jest również człowiek, za którego nasz Pan oddał swoje życie i przelał bezcenną krew na krzyżu." />
+    <meta property="og:image" content="http://@host/img/brama.jpg" />
+    <meta property="og:url" content="http://@host" />"
+    <meta property="og:type" content="page" />
+    <meta property="og:locale" content="pl_PL" />
+}
+
+    @section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var first = document.body.firstChild;
+            if (first != null && first != undefined && first.nodeType == Node.TEXT_NODE) {
+                first.remove();
+            }
+        });
+    </script>
+}

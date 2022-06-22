@@ -6,6 +6,7 @@
 
 }
 @using System
+@using Church.WebApp.Controllers
 @using Church.WebApp.Models
 @using IBE.Common.Extensions
 @using DevExpress.Xpo;
@@ -13,7 +14,7 @@
 @using IBE.Data.Model;
 @inject IConfiguration Configuration
 
-@model XPView
+@model List<SongsInfo>
 
 @section HeaderScripts {
 <!-- social sharing metadata -->
@@ -37,17 +38,16 @@
         </div>
     </div>
 
-    @foreach (ViewRecord record in Model) {
-        var type = (SongGroupType)record["Type"];
+    @foreach (var song in Model) {       
         <div class="row song-row">
             <div class="col-auto" style="min-width: 70px;">
-                <a href="/Song?id=@record["Number"]" class="btn text-start fw-bold" role="button" aria-pressed="true">@record["Number"]</a>
+                <a href="/Song?id=@song.Number" class="btn text-start fw-bold" role="button" aria-pressed="true">@song.Number</a>
             </div>
             <div class="col">
-                <a href="/Song?id=@record["Number"]" class="btn text-primary text-start" role="button">@record["Name"]</a>
+                <a href="/Song?id=@song.Number" class="btn text-primary text-start" role="button">@song.Name</a>
             </div>
             <div class="col-auto">
-                <span class="btn text-secondary text-end">@type.GetDescription()</span>
+                <span class="btn text-secondary text-end">@song.Type.GetDescription()</span>
             </div>
         </div>
     }

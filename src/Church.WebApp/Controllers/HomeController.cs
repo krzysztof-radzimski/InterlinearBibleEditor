@@ -22,34 +22,35 @@ using System.Diagnostics;
 using System.Linq;
 using IBE.Common.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using Church.WebApp.Utils;
 
 namespace Church.WebApp.Controllers {
     public class HomeController : Controller {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger) {
-            _logger = logger;
+        private readonly ILogger<HomeController> Logger;
+        private readonly ITranslationInfoController TranslationInfoController;
+        public HomeController(ILogger<HomeController> logger, ITranslationInfoController translationInfoController) {
+            Logger = logger;
+            TranslationInfoController = translationInfoController;
         }
 
         public IActionResult Index() {
-            var articles = new XPQuery<Article>(new UnitOfWork()).Where(x => !x.Hidden).OrderByDescending(x => x.Date).Take(4);
-            var list = new List<ArticleInfo>();
-            foreach (var item in articles) {
-                list.Add(new ArticleInfo() {
-                    AuthorName = item.AuthorName,
-                    AuthorPicture = item.AuthorPicture.IsNotNull() ? Convert.ToBase64String(item.AuthorPicture) : String.Empty,
-                    Date = item.Date,
-                    Id = item.Oid,
-                    Lead = item.Lead,
-                    Subject = item.Subject,
-                    Type = item.Type.GetDescription()
-                });
-            }
-            return View(list);
+            return View(TranslationInfoController.GetLastFourArticles());
+            //var articles = new XPQuery<Article>(new UnitOfWork()).Where(x => !x.Hidden).OrderByDescending(x => x.Date).Take(4);
+            //var list = new List<ArticleInfo>();
+            //foreach (var item in articles) {
+            //    list.Add(new ArticleInfo() {
+            //        AuthorName = item.AuthorName,
+            //        AuthorPicture = item.AuthorPicture.IsNotNull() ? Convert.ToBase64String(item.AuthorPicture) : String.Empty,
+            //        Date = item.Date,
+            //        Id = item.Oid,
+            //        Lead = item.Lead,
+            //        Subject = item.Subject,
+            //        Type = item.Type.GetDescription()
+            //    });
+            //}
+            //return View(list);
         }
 
-        //[Route("/{controller}/{action}")]
-        //[Route("/{controller}/w-co-wierzymy")]
         public IActionResult WhatWeBelieve() {
             return View();
         }
@@ -73,7 +74,7 @@ namespace Church.WebApp.Controllers {
 
         public IActionResult AboutBible() {
             var uow = new UnitOfWork();
-            var books = new XPQuery<BookBase>(uow).ToList();
+            var books = TranslationInfoController.GetBookBases(uow);
             var translation = new XPQuery<Translation>(uow).Where(x => x.Name.Replace("'", "").Replace("+", "").ToLower() == "UBG18".ToLower()).FirstOrDefault();
             return View(new IBE.Data.Export.Model.TranslationControllerModel(translation, books: books));
         }

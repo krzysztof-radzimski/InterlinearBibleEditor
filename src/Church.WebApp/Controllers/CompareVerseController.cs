@@ -8,11 +8,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Church.WebApp.Utils;
 
 namespace Church.WebApp.Controllers {
     public class CompareVerseController : Controller {
         protected readonly IBibleTagController BibleTag;
-        public CompareVerseController(IBibleTagController bibleTagController) { BibleTag = bibleTagController; }
+        private readonly ITranslationInfoController TranslationInfoController;
+        public CompareVerseController(IBibleTagController bibleTagController, ITranslationInfoController translationInfoController) {
+            BibleTag = bibleTagController;
+            TranslationInfoController = translationInfoController;
+        }
         public IActionResult Index() {
             var qs = Request.QueryString;
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 3) {
@@ -35,20 +40,26 @@ namespace Church.WebApp.Controllers {
                 var baseBookShortcut = "";
                 var baseBookName = "";
                 var biblePart = BiblePart.None;
-                var viewBaseBook = new XPView(uow, typeof(BookBase)) {
-                    CriteriaString = $"NumberOfBook == {vi.NumberOfBook}"
-                };
-                viewBaseBook.Properties.Add(new ViewProperty("Oid", SortDirection.None, "[Oid]", false, true));
-                viewBaseBook.Properties.Add(new ViewProperty("BookShortcut", SortDirection.None, "[BookShortcut]", false, true));
-                viewBaseBook.Properties.Add(new ViewProperty("BookName", SortDirection.None, "[BookName]", false, true));
-                viewBaseBook.Properties.Add(new ViewProperty("BiblePart", SortDirection.None, "[Status.BiblePart]", false, true));
-                if (viewBaseBook.Count > 0) {
-                    foreach (ViewRecord item in viewBaseBook) {
-                        baseBookShortcut = item["BookShortcut"].ToString();
-                        baseBookName = item["BookName"].ToString();
-                        biblePart = (BiblePart)item["BiblePart"];
-                    }
+                //var viewBaseBook = new XPView(uow, typeof(BookBase)) {
+                //    CriteriaString = $"NumberOfBook == {vi.NumberOfBook}"
+                //};
+                var baseBook = TranslationInfoController.GetBookBases(uow).Where(x => x.NumberOfBook == vi.NumberOfBook).FirstOrDefault();
+                if (baseBook.IsNotNull()) {
+                    baseBookShortcut = baseBook.BookShortcut;
+                    baseBookName = baseBook.BookName;
+                    biblePart = baseBook.StatusBiblePart;
                 }
+                //viewBaseBook.Properties.Add(new ViewProperty("Oid", SortDirection.None, "[Oid]", false, true));
+                //viewBaseBook.Properties.Add(new ViewProperty("BookShortcut", SortDirection.None, "[BookShortcut]", false, true));
+                //viewBaseBook.Properties.Add(new ViewProperty("BookName", SortDirection.None, "[BookName]", false, true));
+                //viewBaseBook.Properties.Add(new ViewProperty("BiblePart", SortDirection.None, "[Status.BiblePart]", false, true));
+                //if (viewBaseBook.Count > 0) {
+                //    foreach (ViewRecord item in viewBaseBook) {
+                //        baseBookShortcut = item["BookShortcut"].ToString();
+                //        baseBookName = item["BookName"].ToString();
+                //        biblePart = (BiblePart)item["BiblePart"];
+                //    }
+                //}
 
                 var verses = new List<CompareVerseInfo>();
                 var result = new CompareVerseModel() {

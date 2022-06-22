@@ -1,4 +1,5 @@
-﻿using IBE.Common.Extensions;
+﻿using Church.WebApp.Utils;
+using IBE.Common.Extensions;
 using IBE.Data.Export;
 using IBE.Data.Export.Controllers;
 using Microsoft.AspNetCore.Http;
@@ -12,10 +13,12 @@ namespace Church.WebApp.Controllers {
     public abstract class DownloadCompareVerseController : Controller {
         protected readonly IConfiguration Configuration;
         protected readonly IBibleTagController BibleTag;
+        protected readonly ITranslationInfoController TranslationInfoController;
         protected abstract ExportSaveFormat Format { get; }
-        public DownloadCompareVerseController(IConfiguration configuration, IBibleTagController bibleTagController) {
+        public DownloadCompareVerseController(IConfiguration configuration, IBibleTagController bibleTagController, ITranslationInfoController translationInfoController) {
             Configuration = configuration;
             BibleTag = bibleTagController;
+            TranslationInfoController = translationInfoController;
         }
 
         [HttpGet]
@@ -48,7 +51,7 @@ namespace Church.WebApp.Controllers {
         }
 
         private async Task<CompareVerseModel> GetModel(QueryString qs) {
-            using (var controller = new CompareVerseController(BibleTag)) {
+            using (var controller = new CompareVerseController(BibleTag, TranslationInfoController)) {
                 return controller.GetModel(qs);
             }
         }
@@ -68,7 +71,7 @@ namespace Church.WebApp.Controllers {
     [Route("api/[controller]")]
     public class DownloadCompareVersePdfController : DownloadCompareVerseController {
         protected override ExportSaveFormat Format => ExportSaveFormat.Pdf;
-        public DownloadCompareVersePdfController(IConfiguration configuration, IBibleTagController bibleTagController) : base(configuration, bibleTagController) { }
+        public DownloadCompareVersePdfController(IConfiguration configuration, IBibleTagController bibleTagController, ITranslationInfoController translationInfoController) : base(configuration, bibleTagController, translationInfoController) { }
     }
 
 
@@ -76,6 +79,6 @@ namespace Church.WebApp.Controllers {
     [Route("api/[controller]")]
     public class DownloadCompareVerseDocxController : DownloadCompareVerseController {
         protected override ExportSaveFormat Format => ExportSaveFormat.Docx;
-        public DownloadCompareVerseDocxController(IConfiguration configuration, IBibleTagController bibleTagController) : base(configuration, bibleTagController) { }
+        public DownloadCompareVerseDocxController(IConfiguration configuration, IBibleTagController bibleTagController, ITranslationInfoController translationInfoController) : base(configuration, bibleTagController, translationInfoController) { }
     }
 }

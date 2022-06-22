@@ -16,18 +16,17 @@ using IBE.Data.Model;
 using System;
 using System.Collections.Generic;
 
-
 namespace IBE.Data.Export.Model {
     public class TranslationControllerModel {
         public Translation Translation { get; }
-        public List<BookBase> Books { get; }
+        public List<BookBaseInfo> Books { get; }
         public string Book { get; }
         public string Chapter { get; }
         public string Verse { get; }
         public int NTBookNumber { get; }
         public int LogosBookNumber { get; }
         public List<TranslationInfo> Translations { get; }
-        public TranslationControllerModel(Translation t, string book = null, string chapter = null, string verse = null, List<BookBase> books = null) {
+        public TranslationControllerModel(Translation t, string book = null, string chapter = null, string verse = null, List<BookBaseInfo> books = null) {
             Translation = t;
             Book = book;
             Chapter = chapter;
@@ -79,5 +78,22 @@ namespace IBE.Data.Export.Model {
 
             return r;
         }
+    }
+
+    public class BookBaseInfo {
+        public int NumberOfBook { get; set; }
+        public string BookShortcut { get; set; }
+        public string BookName { get; set; }
+        public string BookTitle { get; set; }
+        public string Color { get; set; }
+        public string TimeOfWriting { get; set; }
+        public string PlaceWhereBookWasWritten { get; set; }
+        public string Purpose { get; set; }
+        public string Subject { get; set; }
+        public string AuthorName { get; set; }
+        public string Preface { get; set; }
+        public BiblePart StatusBiblePart { get; set; }
+        public CanonType StatusCanonType { get; set; }
+        public TheBookType StatusBookType { get; set; }
     }
 }

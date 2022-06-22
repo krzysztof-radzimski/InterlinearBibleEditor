@@ -121,7 +121,6 @@ namespace Church.WebApp.Controllers {
     }
 
     public class ArticleInfo : ArticleInfoBase {
-
         public string Lead { get; set; }
         public string AuthorPicture { get; set; }
         public string Type { get; set; }

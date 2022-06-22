@@ -2,7 +2,10 @@
 using Aspose.Words.Drawing;
 using Aspose.Words.Loading;
 using Aspose.Words.Saving;
+using DevExpress.Xpo;
 using IBE.Common.Extensions;
+using IBE.Data.Export.Model;
+using IBE.Data.Model;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -137,6 +140,24 @@ namespace IBE.Data.Export {
                     OptimizeOutput = true
                 });
             }
+        }
+        protected List<BookBaseInfo> GetBookBases(UnitOfWork uow = null) {
+            var result = new List<BookBaseInfo>();
+            if (uow == null) { uow = new UnitOfWork(); }
+            var books = new XPQuery<BookBase>(uow).ToList();
+            foreach (var item in books) {
+                result.Add(new BookBaseInfo() {
+                    BookName = item.BookName,
+                    BookShortcut = item.BookShortcut,
+                    BookTitle = item.BookTitle,
+                    Color = item.Color,
+                    NumberOfBook = item.NumberOfBook,
+                    StatusBiblePart = item.StatusBiblePart,
+                    StatusBookType = item.StatusBookType,
+                    StatusCanonType = item.StatusCanonType
+                });
+            }
+            return result;
         }
 
         private void ResizeShapes(DocumentBuilder builder) {

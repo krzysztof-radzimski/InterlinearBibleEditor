@@ -12,6 +12,7 @@
   ===================================================================================*/
 
 using Church.WebApp.Models;
+using Church.WebApp.Utils;
 using DevExpress.Xpo;
 using IBE.Common.Extensions;
 using IBE.Data.Model;
@@ -20,6 +21,10 @@ using System.Linq;
 
 namespace Church.WebApp.Controllers {
     public class SongController : Controller {
+        private readonly ITranslationInfoController TranslationInfoController;
+        public SongController(ITranslationInfoController translationInfoController) {
+            TranslationInfoController = translationInfoController;
+        }
         public IActionResult Index() {
             var qs = Request.QueryString;
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 3) {
@@ -30,16 +35,15 @@ namespace Church.WebApp.Controllers {
                 var id = value.ToLower().Replace("?id=", "").Trim().ToInt();
                 var song = new XPQuery<Song>(new UnitOfWork()).Where(x => x.Number == id).FirstOrDefault();
                 if (song.IsNotNull()) {
+                    //var view = new XPView(song.Session, typeof(Song));
+                    //view.CriteriaString = $"([Number] < {song.Number + 10} ) AND ([Number] > {song.Number - 10})";
+                    //view.Properties.Add(new ViewProperty("Id", SortDirection.None, "[Oid]", false, true));
+                    //view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
+                    //view.Properties.Add(new ViewProperty("Number", SortDirection.Ascending, "[Number]", false, true));
 
-                    var view = new XPView(song.Session, typeof(Song));
-                    view.CriteriaString = $"([Number] < {song.Number + 10} ) AND ([Number] > {song.Number - 10})";
-                    view.Properties.Add(new ViewProperty("Id", SortDirection.None, "[Oid]", false, true));
-                    view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
-                    view.Properties.Add(new ViewProperty("Number", SortDirection.Ascending, "[Number]", false, true));
+                    var maxNumber = TranslationInfoController.GetSongs().Select(x => x.Number).Max();
 
-                    var maxNumber = new XPQuery<Song>(new UnitOfWork()).Select(x => x.Number).Max();
-
-                    var result = new SongControllerModel() { Song = song, Songs = view, MaxNumber = maxNumber };
+                    var result = new SongControllerModel() { Song = song, Songs = TranslationInfoController.GetSongs().Where(x=>x.Number < song.Number + 10 && x.Number > song.Number - 10), MaxNumber = maxNumber };
 
                     return View(result);
                 }
@@ -49,15 +53,22 @@ namespace Church.WebApp.Controllers {
     }
 
     public class SongsController : Controller {
+        private readonly ITranslationInfoController TranslationInfoController;
+        public SongsController(ITranslationInfoController translationInfoController) {
+            TranslationInfoController = translationInfoController;
+        }      
         public IActionResult Index() {
-            var view = new XPView(new UnitOfWork(), typeof(Song));
-            view.Properties.Add(new ViewProperty("Id", SortDirection.None, "[Oid]", false, true));
-            view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
-            view.Properties.Add(new ViewProperty("Signature", SortDirection.None, "[Signature]", false, true));
-            view.Properties.Add(new ViewProperty("BPM", SortDirection.None, "[BPM]", false, true));
-            view.Properties.Add(new ViewProperty("Number", SortDirection.Ascending, "[Number]", false, true));
-            view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
-            return View(view);
+            return View(TranslationInfoController.GetSongs());
+            //var view = new XPView(new UnitOfWork(), typeof(Song));
+            //view.Properties.Add(new ViewProperty("Id", SortDirection.None, "[Oid]", false, true));
+            //view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
+            //view.Properties.Add(new ViewProperty("Signature", SortDirection.None, "[Signature]", false, true));
+            //view.Properties.Add(new ViewProperty("BPM", SortDirection.None, "[BPM]", false, true));
+            //view.Properties.Add(new ViewProperty("Number", SortDirection.Ascending, "[Number]", false, true));
+            //view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+            //return View(view);
         }
     }
+
+   
 }

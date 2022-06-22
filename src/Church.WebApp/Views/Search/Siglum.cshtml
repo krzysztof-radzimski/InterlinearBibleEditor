@@ -1,6 +1,6 @@
 ﻿@using DevExpress.Xpo
 @using IBE.Data.Model
-
+@inject ITranslationInfoController TranslationInfoController
 @model IEnumerable<string>
 @{
     ViewData["Title"] = "Siglum nie zostało znalezione";
@@ -19,9 +19,9 @@
 @{
     var session = new UnitOfWork();
     var translations = new XPQuery<Translation>(session)
-        .Where(x=>!x.Hidden && x.BookType == TheBookType.Bible)
+        .Where(x => !x.Hidden && x.BookType == TheBookType.Bible)
         .Select(x => new { Name = x.Name.Replace("+", "").Replace("'", ""), FirstNumber = x.Books.First().NumberOfBook, x.Description }).ToList();
-    var books = new XPQuery<BookBase>(session).ToList();
+    var books = TranslationInfoController.GetBookBases(session);
     var baseBooks = books
         .Where(x => x.StatusBookType == TheBookType.Bible)
         .Select(x => new { x.NumberOfBook, x.BookShortcut, x.BookName });
