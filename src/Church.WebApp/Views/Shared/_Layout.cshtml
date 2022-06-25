@@ -179,8 +179,13 @@
                                 <span class="visually-hidden">Toggle Dropdown</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <button class="dropdown-item" type="submit" name="type" value="@Church.WebApp.Controllers.SearchRangeType.NewTestament.GetCategory()">Szukaj @Church.WebApp.Controllers.SearchRangeType.NewTestament.GetDescription() (Testamencie)</button>
-                                <button class="dropdown-item" type="submit" name="type" value="@Church.WebApp.Controllers.SearchRangeType.OldTestament.GetCategory()">Szukaj @Church.WebApp.Controllers.SearchRangeType.OldTestament.GetDescription() (Testamencie)</button>
+
+                                @foreach(Church.WebApp.Controllers.SearchRangeType rangeType in Enum.GetValues(typeof(Church.WebApp.Controllers.SearchRangeType))) {
+                                    <button class="dropdown-item" type="submit" name="type" value="@rangeType.GetCategory()">Szukaj @rangeType.GetDescription()</button>
+                                }
+
+                                @*<button class="dropdown-item" type="submit" name="type" value="@Church.WebApp.Controllers.SearchRangeType.NewTestament.GetCategory()">Szukaj @Church.WebApp.Controllers.SearchRangeType.NewTestament.GetDescription() (Testamencie)</button>
+                                <button class="dropdown-item" type="submit" name="type" value="@Church.WebApp.Controllers.SearchRangeType.OldTestament.GetCategory()">Szukaj @Church.WebApp.Controllers.SearchRangeType.OldTestament.GetDescription() (Testamencie)</button>*@
                             </ul>
                         </div>
                     </form>

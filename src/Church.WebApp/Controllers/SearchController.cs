@@ -44,8 +44,19 @@ namespace Church.WebApp.Controllers {
                 var queryString = Uri.UnescapeDataString(qs.Value);
                 SearchRangeType type = SearchRangeType.All;
                 if (queryString.Contains(TYPE_QUERY)) {
-                    type = queryString.Contains(TYPE_QUERY + SearchRangeType.NewTestament.GetCategory()) ? SearchRangeType.NewTestament : SearchRangeType.OldTestament;
-                    queryString = queryString.Replace(TYPE_QUERY + SearchRangeType.NewTestament.GetCategory(), "").Replace(TYPE_QUERY + SearchRangeType.OldTestament.GetCategory(), "");
+                    var t = queryString.Split('&', StringSplitOptions.RemoveEmptyEntries);
+                    if (t.Length > 1) {
+                        var t2 = t[1].Split('=', StringSplitOptions.RemoveEmptyEntries);
+                        if (t2.Length > 1) {
+                            type = t2[1].GetEnumByCategory<SearchRangeType>();
+                        }
+                    }
+                    var endIndex = queryString.IndexOf(TYPE_QUERY);
+                    if (endIndex != -1) {
+                        queryString = queryString.Substring(0,endIndex);
+                    }
+                    //type = queryString.Contains(TYPE_QUERY + SearchRangeType.NewTestament.GetCategory()) ? SearchRangeType.NewTestament : SearchRangeType.OldTestament;
+                    //queryString = queryString.Replace(TYPE_QUERY + SearchRangeType.NewTestament.GetCategory(), "").Replace(TYPE_QUERY + SearchRangeType.OldTestament.GetCategory(), "");
                 }
                 var words = queryString.Replace("?text=", "").Split('+', StringSplitOptions.RemoveEmptyEntries);
                 return _Search(words, type);
@@ -120,6 +131,9 @@ namespace Church.WebApp.Controllers {
                 if (_index.IsNotNull()) {
                     var index = new VerseIndex(_index.ToString());
                     if (type != SearchRangeType.All) {
+                        if (type == SearchRangeType.Psalms && index.NumberOfBook != 230) { continue; }
+                        if (type == SearchRangeType.Pentateuch && (index.NumberOfBook < 10 || index.NumberOfBook > 50)) { continue; }
+                        if (type == SearchRangeType.Gospel && (index.NumberOfBook < 470 || index.NumberOfBook > 500)) { continue; }
                         if (type == SearchRangeType.NewTestament && (index.NumberOfBook < 470 || index.NumberOfBook > 730)) { continue; }
                         if (type == SearchRangeType.OldTestament && index.NumberOfBook >= 470) { continue; }
                     }
@@ -209,11 +223,20 @@ namespace Church.WebApp.Controllers {
         [Description("Wszędzie")]
         [Category("")]
         All,
-        [Description("w Starym Przymierzu")]
+        [Description("w Starym Przymierzu (Testamencie)")]
         [Category("SP")]
         OldTestament,
-        [Description("w Nowym Przymierzu")]
+        [Description("w Nowym Przymierzu (Testamencie)")]
         [Category("NP")]
-        NewTestament
+        NewTestament,
+        [Description("w Piecioksięgu (Tora)")]
+        [Category("T")]
+        Pentateuch,
+        [Description("w Ewangeliach")]
+        [Category("E")]
+        Gospel,
+        [Description("w Psalmach")]
+        [Category("P")]
+        Psalms,
     }
 }
