@@ -22,11 +22,8 @@
                 </b>
             </span>
 
-            if (Model.SearchType == Church.WebApp.Controllers.SearchRangeType.NewTestament) {
-                <span> w Nowym Przymierzu. </span>
-            }
-            else if (Model.SearchType == Church.WebApp.Controllers.SearchRangeType.OldTestament) {
-                <span> w Starym Przymierzu. </span>
+            if (Model.SearchType != Church.WebApp.Controllers.SearchRangeType.All) {
+                <span> @Model.SearchType.GetDescription(). </span>
             }
             else {
                 <span>. </span>
