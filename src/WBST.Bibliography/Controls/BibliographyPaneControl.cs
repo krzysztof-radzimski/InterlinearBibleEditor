@@ -14,7 +14,12 @@ namespace WBST.Bibliography {
         public string Current { get; private set; }
         public Microsoft.Office.Interop.Word.Document Document { get; }
         public Controllers.IBibliographyController FootnoteController { get; }
-        private BibliographyPaneControl() { InitializeComponent(); }
+        private BibliographyPaneControl() {
+            InitializeComponent();
+            var lf = DevExpress.LookAndFeel.UserLookAndFeel.Default;
+            var style = DevExpress.LookAndFeel.SkinSvgPalette.WXICompact.Darkness;
+            lf.SetSkinStyle(style);
+        }
         public BibliographyPaneControl(Microsoft.Office.Interop.Word.Document document) : this() {
             this.Document = document;
             FootnoteController = new Controllers.BibliographyController(document);

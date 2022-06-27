@@ -33,6 +33,7 @@
             this.btnEditSource = new DevExpress.XtraBars.BarButtonItem();
             this.btnDeleteSource = new DevExpress.XtraBars.BarButtonItem();
             this.btnAppendBibliography = new DevExpress.XtraBars.BarButtonItem();
+            this.btnAppendBibliographyItem = new DevExpress.XtraBars.BarButtonItem();
             this.btnRefresh = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -40,8 +41,6 @@
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.grid = new DevExpress.XtraGrid.GridControl();
             this.view = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.defaultLookAndFeel1 = new DevExpress.LookAndFeel.DefaultLookAndFeel(this.components);
-            this.btnAppendBibliographyItem = new DevExpress.XtraBars.BarButtonItem();
             this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barManager)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
@@ -56,8 +55,9 @@
             this.standaloneBarDockControl1.Dock = System.Windows.Forms.DockStyle.Top;
             this.standaloneBarDockControl1.Location = new System.Drawing.Point(0, 0);
             this.standaloneBarDockControl1.Manager = this.barManager;
+            this.standaloneBarDockControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.standaloneBarDockControl1.Name = "standaloneBarDockControl1";
-            this.standaloneBarDockControl1.Size = new System.Drawing.Size(663, 26);
+            this.standaloneBarDockControl1.Size = new System.Drawing.Size(994, 30);
             this.standaloneBarDockControl1.Text = "standaloneBarDockControl1";
             // 
             // barManager
@@ -142,6 +142,14 @@
             this.btnAppendBibliography.Name = "btnAppendBibliography";
             this.btnAppendBibliography.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAppendBibliography_ItemClick);
             // 
+            // btnAppendBibliographyItem
+            // 
+            this.btnAppendBibliographyItem.Caption = "Wstaw pozycję bibliografi";
+            this.btnAppendBibliographyItem.Id = 6;
+            this.btnAppendBibliographyItem.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAppendBibliographyItem.ImageOptions.SvgImage")));
+            this.btnAppendBibliographyItem.Name = "btnAppendBibliographyItem";
+            this.btnAppendBibliographyItem.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAppendBibliographyItem_ItemClick);
+            // 
             // btnRefresh
             // 
             this.btnRefresh.Caption = "Odśwież";
@@ -156,15 +164,17 @@
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManager;
-            this.barDockControlTop.Size = new System.Drawing.Size(663, 0);
+            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.barDockControlTop.Size = new System.Drawing.Size(994, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 663);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 1071);
             this.barDockControlBottom.Manager = this.barManager;
-            this.barDockControlBottom.Size = new System.Drawing.Size(663, 0);
+            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.barDockControlBottom.Size = new System.Drawing.Size(994, 0);
             // 
             // barDockControlLeft
             // 
@@ -172,23 +182,27 @@
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
             this.barDockControlLeft.Manager = this.barManager;
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 663);
+            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 1071);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(663, 0);
+            this.barDockControlRight.Location = new System.Drawing.Point(994, 0);
             this.barDockControlRight.Manager = this.barManager;
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 663);
+            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 1071);
             // 
             // grid
             // 
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grid.Location = new System.Drawing.Point(0, 26);
+            this.grid.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.grid.Location = new System.Drawing.Point(0, 30);
             this.grid.MainView = this.view;
+            this.grid.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.grid.Name = "grid";
-            this.grid.Size = new System.Drawing.Size(663, 637);
+            this.grid.Size = new System.Drawing.Size(994, 1041);
             this.grid.TabIndex = 1;
             this.grid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.view});
@@ -196,6 +210,7 @@
             // view
             // 
             this.view.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.view.DetailHeight = 565;
             this.view.GridControl = this.grid;
             this.view.Name = "view";
             this.view.OptionsBehavior.Editable = false;
@@ -208,18 +223,6 @@
             this.view.PopupMenuShowing += new DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventHandler(this.view_PopupMenuShowing);
             this.view.DoubleClick += new System.EventHandler(this.view_DoubleClick);
             // 
-            // defaultLookAndFeel1
-            // 
-            this.defaultLookAndFeel1.LookAndFeel.SkinName = "Office 2019 Black";
-            // 
-            // btnAppendBibliographyItem
-            // 
-            this.btnAppendBibliographyItem.Caption = "Wstaw pozycję bibliografi";
-            this.btnAppendBibliographyItem.Id = 6;
-            this.btnAppendBibliographyItem.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAppendBibliographyItem.ImageOptions.SvgImage")));
-            this.btnAppendBibliographyItem.Name = "btnAppendBibliographyItem";
-            this.btnAppendBibliographyItem.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAppendBibliographyItem_ItemClick);
-            // 
             // popupMenu1
             // 
             this.popupMenu1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
@@ -231,7 +234,7 @@
             // 
             // BibliographyPaneControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.grid);
             this.Controls.Add(this.standaloneBarDockControl1);
@@ -239,8 +242,9 @@
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "BibliographyPaneControl";
-            this.Size = new System.Drawing.Size(663, 663);
+            this.Size = new System.Drawing.Size(994, 1071);
             ((System.ComponentModel.ISupportInitialize)(this.barManager)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.view)).EndInit();
@@ -262,7 +266,6 @@
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
-        private DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel1;
         private DevExpress.XtraBars.BarButtonItem btnAddSource;
         private DevExpress.XtraBars.BarButtonItem btnEditSource;
         private DevExpress.XtraBars.BarButtonItem btnDeleteSource;

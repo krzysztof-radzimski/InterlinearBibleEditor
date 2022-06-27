@@ -36,6 +36,7 @@ namespace IBE.WindowsClient {
             this.btnAncientDictionary = new DevExpress.XtraBars.BarButtonItem();
             this.btnImportUrlShortenersList = new DevExpress.XtraBars.BarButtonItem();
             this.btnSongs = new DevExpress.XtraBars.BarButtonItem();
+            this.btnUpdateVersesIndex = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
@@ -43,15 +44,14 @@ namespace IBE.WindowsClient {
             this.ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(this.components);
             this.spellChecker1 = new DevExpress.XtraSpellChecker.SpellChecker(this.components);
-            this.btnUpdateVersesIndex = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabbedMdiManager1)).BeginInit();
             this.SuspendLayout();
             // 
             // ribbonControl1
             // 
-            this.ribbonControl1.CommandLayout = DevExpress.XtraBars.Ribbon.CommandLayout.Simplified;
             this.ribbonControl1.DrawGroupCaptions = DevExpress.Utils.DefaultBoolean.False;
+            this.ribbonControl1.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(45, 48, 45, 48);
             this.ribbonControl1.ExpandCollapseItem.Id = 0;
             this.ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.ribbonControl1.ExpandCollapseItem,
@@ -67,9 +67,11 @@ namespace IBE.WindowsClient {
             this.btnSongs,
             this.btnUpdateVersesIndex});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
+            this.ribbonControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ribbonControl1.MaxItemId = 16;
             this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl1.Name = "ribbonControl1";
+            this.ribbonControl1.OptionsMenuMinWidth = 495;
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome,
             this.ribbonPage1});
@@ -78,7 +80,7 @@ namespace IBE.WindowsClient {
             this.ribbonControl1.ShowExpandCollapseButton = DevExpress.Utils.DefaultBoolean.False;
             this.ribbonControl1.ShowPageHeadersInFormCaption = DevExpress.Utils.DefaultBoolean.True;
             this.ribbonControl1.ShowQatLocationSelector = false;
-            this.ribbonControl1.Size = new System.Drawing.Size(1125, 67);
+            this.ribbonControl1.Size = new System.Drawing.Size(1688, 213);
             this.ribbonControl1.StatusBar = this.ribbonStatusBar1;
             // 
             // btnTranslations
@@ -153,6 +155,14 @@ namespace IBE.WindowsClient {
             this.btnSongs.Name = "btnSongs";
             this.btnSongs.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnSongs_ItemClick);
             // 
+            // btnUpdateVersesIndex
+            // 
+            this.btnUpdateVersesIndex.Caption = "Update Verses Index";
+            this.btnUpdateVersesIndex.Id = 15;
+            this.btnUpdateVersesIndex.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnUpdateVersesIndex.ImageOptions.SvgImage")));
+            this.btnUpdateVersesIndex.Name = "btnUpdateVersesIndex";
+            this.btnUpdateVersesIndex.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnUpdateVersesIndex_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -189,10 +199,11 @@ namespace IBE.WindowsClient {
             // 
             // ribbonStatusBar1
             // 
-            this.ribbonStatusBar1.Location = new System.Drawing.Point(0, 727);
+            this.ribbonStatusBar1.Location = new System.Drawing.Point(0, 1162);
+            this.ribbonStatusBar1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ribbonStatusBar1.Name = "ribbonStatusBar1";
             this.ribbonStatusBar1.Ribbon = this.ribbonControl1;
-            this.ribbonStatusBar1.Size = new System.Drawing.Size(1125, 20);
+            this.ribbonStatusBar1.Size = new System.Drawing.Size(1688, 45);
             // 
             // xtraTabbedMdiManager1
             // 
@@ -207,22 +218,15 @@ namespace IBE.WindowsClient {
             this.spellChecker1.ParentContainer = this;
             this.spellChecker1.SpellCheckMode = DevExpress.XtraSpellChecker.SpellCheckMode.AsYouType;
             // 
-            // btnUpdateVersesIndex
-            // 
-            this.btnUpdateVersesIndex.Caption = "Update Verses Index";
-            this.btnUpdateVersesIndex.Id = 15;
-            this.btnUpdateVersesIndex.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnUpdateVersesIndex.ImageOptions.SvgImage")));
-            this.btnUpdateVersesIndex.Name = "btnUpdateVersesIndex";
-            this.btnUpdateVersesIndex.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnUpdateVersesIndex_ItemClick);
-            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1125, 747);
+            this.ClientSize = new System.Drawing.Size(1688, 1207);
             this.Controls.Add(this.ribbonStatusBar1);
             this.Controls.Add(this.ribbonControl1);
             this.IsMdiContainer = true;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MainForm";
             this.Ribbon = this.ribbonControl1;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

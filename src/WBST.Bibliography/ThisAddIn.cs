@@ -38,6 +38,10 @@ namespace WBST.Bibliography {
             ((Word.ApplicationEvents4_Event)Application).NewDocument += ThisAddIn_NewDocument;
             var licPath = System.Configuration.ConfigurationManager.AppSettings["AsposeLic"];
             if (File.Exists(licPath)) { new Aspose.Words.License().SetLicense(licPath); }
+
+            var lf = DevExpress.LookAndFeel.UserLookAndFeel.Default;
+            var style = DevExpress.LookAndFeel.SkinSvgPalette.WXICompact.Darkness;
+            lf.SetSkinStyle(style);
         }
 
         private void ThisAddIn_NewDocument(Word.Document Doc) {

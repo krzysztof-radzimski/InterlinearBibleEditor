@@ -337,8 +337,8 @@ namespace IBE.WindowsClient.Controls {
                     }
                     else if (hi.Column.FieldName == "Number") {
                         var index = XtraInputBox.Show("Set word index:", "Word Index", word.Number);
-                        if (index != 0) {
-                            word.Number = index;
+                        if (index.HasValue) {
+                            word.Number = index.Value;
                             layoutView1.RefreshData();
                         }
                     }
