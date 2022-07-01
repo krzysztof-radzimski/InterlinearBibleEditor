@@ -56,6 +56,7 @@ namespace IBE.WindowsClient.Controls {
             this.tabStrongDictionary = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             this.tblStrong = new DevExpress.Utils.Layout.TablePanel();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.btnMoreBLB = new DevExpress.XtraEditors.SimpleButton();
             this.btnMoreStronsCodeInfo = new DevExpress.XtraEditors.SimpleButton();
             this.btnEditStrongsCode = new DevExpress.XtraEditors.SimpleButton();
             this.vwStrongLocal = new Microsoft.Web.WebView2.WinForms.WebView2();
@@ -69,7 +70,6 @@ namespace IBE.WindowsClient.Controls {
             this.txtStoryTextLevel1 = new DevExpress.XtraEditors.TextEdit();
             this.cbStartFromNewLine = new DevExpress.XtraEditors.CheckEdit();
             this.splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
-            this.btnMoreBLB = new DevExpress.XtraEditors.SimpleButton();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1)).BeginInit();
@@ -109,14 +109,16 @@ namespace IBE.WindowsClient.Controls {
             // gridControl
             // 
             this.gridControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridControl.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gridControl.Location = new System.Drawing.Point(0, 0);
             this.gridControl.MainView = this.layoutView1;
+            this.gridControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gridControl.Name = "gridControl";
             this.gridControl.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemCheckEdit1,
             this.repositoryItemCheckEdit2,
             this.repositoryItemMemoEdit1});
-            this.gridControl.Size = new System.Drawing.Size(1294, 450);
+            this.gridControl.Size = new System.Drawing.Size(1941, 731);
             this.gridControl.TabIndex = 0;
             this.gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.layoutView1});
@@ -129,7 +131,7 @@ namespace IBE.WindowsClient.Controls {
             this.layoutView1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.layoutView1.CardCaptionFormat = "Word {0} of {1}";
             this.layoutView1.CardHorzInterval = 20;
-            this.layoutView1.CardMinSize = new System.Drawing.Size(300, 20);
+            this.layoutView1.CardMinSize = new System.Drawing.Size(450, 32);
             this.layoutView1.CardVertInterval = 20;
             this.layoutView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.LayoutViewColumn[] {
             this.colNumber,
@@ -141,6 +143,7 @@ namespace IBE.WindowsClient.Controls {
             this.colCitation,
             this.colWordOfGod,
             this.colFootnote});
+            this.layoutView1.DetailHeight = 565;
             this.layoutView1.GridControl = this.gridControl;
             this.layoutView1.Name = "layoutView1";
             this.layoutView1.OptionsCustomization.AllowFilter = false;
@@ -168,15 +171,17 @@ namespace IBE.WindowsClient.Controls {
             this.colNumber.Caption = "Number";
             this.colNumber.FieldName = "Number";
             this.colNumber.LayoutViewField = this.layoutViewField_layoutViewColumn1;
+            this.colNumber.MinWidth = 30;
             this.colNumber.Name = "colNumber";
             this.colNumber.OptionsColumn.AllowEdit = false;
             this.colNumber.OptionsColumn.ReadOnly = true;
             this.colNumber.OptionsFilter.AllowAutoFilter = false;
             this.colNumber.OptionsFilter.AllowFilter = false;
+            this.colNumber.Width = 112;
             // 
             // layoutViewField_layoutViewColumn1
             // 
-            this.layoutViewField_layoutViewColumn1.EditorPreferredWidth = 10;
+            this.layoutViewField_layoutViewColumn1.EditorPreferredWidth = 15;
             this.layoutViewField_layoutViewColumn1.Location = new System.Drawing.Point(0, 0);
             this.layoutViewField_layoutViewColumn1.Name = "layoutViewField_layoutViewColumn1";
             this.layoutViewField_layoutViewColumn1.Size = new System.Drawing.Size(302, 22);
@@ -195,18 +200,20 @@ namespace IBE.WindowsClient.Controls {
             this.colStrongsCode.Caption = "Strong\'s Code";
             this.colStrongsCode.FieldName = "StrongsCode";
             this.colStrongsCode.LayoutViewField = this.layoutViewField_layoutViewColumn1_1;
+            this.colStrongsCode.MinWidth = 30;
             this.colStrongsCode.Name = "colStrongsCode";
             this.colStrongsCode.OptionsColumn.AllowEdit = false;
             this.colStrongsCode.OptionsColumn.ReadOnly = true;
             this.colStrongsCode.OptionsColumn.TabStop = false;
+            this.colStrongsCode.Width = 112;
             // 
             // layoutViewField_layoutViewColumn1_1
             // 
-            this.layoutViewField_layoutViewColumn1_1.EditorPreferredWidth = 10;
+            this.layoutViewField_layoutViewColumn1_1.EditorPreferredWidth = 15;
             this.layoutViewField_layoutViewColumn1_1.Location = new System.Drawing.Point(0, 22);
             this.layoutViewField_layoutViewColumn1_1.Name = "layoutViewField_layoutViewColumn1_1";
             this.layoutViewField_layoutViewColumn1_1.Size = new System.Drawing.Size(302, 22);
-            this.layoutViewField_layoutViewColumn1_1.TextSize = new System.Drawing.Size(79, 13);
+            this.layoutViewField_layoutViewColumn1_1.TextSize = new System.Drawing.Size(110, 21);
             // 
             // colGrammarCode
             // 
@@ -217,18 +224,20 @@ namespace IBE.WindowsClient.Controls {
             this.colGrammarCode.Caption = "Grammar Code";
             this.colGrammarCode.FieldName = "GrammarCode";
             this.colGrammarCode.LayoutViewField = this.layoutViewField_layoutViewColumn2;
+            this.colGrammarCode.MinWidth = 30;
             this.colGrammarCode.Name = "colGrammarCode";
             this.colGrammarCode.OptionsColumn.AllowEdit = false;
             this.colGrammarCode.OptionsColumn.ReadOnly = true;
             this.colGrammarCode.OptionsColumn.TabStop = false;
+            this.colGrammarCode.Width = 112;
             // 
             // layoutViewField_layoutViewColumn2
             // 
-            this.layoutViewField_layoutViewColumn2.EditorPreferredWidth = 10;
+            this.layoutViewField_layoutViewColumn2.EditorPreferredWidth = 15;
             this.layoutViewField_layoutViewColumn2.Location = new System.Drawing.Point(0, 44);
             this.layoutViewField_layoutViewColumn2.Name = "layoutViewField_layoutViewColumn2";
             this.layoutViewField_layoutViewColumn2.Size = new System.Drawing.Size(302, 22);
-            this.layoutViewField_layoutViewColumn2.TextSize = new System.Drawing.Size(79, 13);
+            this.layoutViewField_layoutViewColumn2.TextSize = new System.Drawing.Size(110, 21);
             // 
             // colSourceWord
             // 
@@ -241,14 +250,16 @@ namespace IBE.WindowsClient.Controls {
             this.colSourceWord.Caption = "SourceWord";
             this.colSourceWord.FieldName = "SourceWord";
             this.colSourceWord.LayoutViewField = this.layoutViewField_layoutViewColumn1_2;
+            this.colSourceWord.MinWidth = 30;
             this.colSourceWord.Name = "colSourceWord";
             this.colSourceWord.OptionsColumn.AllowEdit = false;
             this.colSourceWord.OptionsColumn.ReadOnly = true;
             this.colSourceWord.OptionsColumn.TabStop = false;
+            this.colSourceWord.Width = 112;
             // 
             // layoutViewField_layoutViewColumn1_2
             // 
-            this.layoutViewField_layoutViewColumn1_2.EditorPreferredWidth = 10;
+            this.layoutViewField_layoutViewColumn1_2.EditorPreferredWidth = 15;
             this.layoutViewField_layoutViewColumn1_2.Location = new System.Drawing.Point(0, 66);
             this.layoutViewField_layoutViewColumn1_2.Name = "layoutViewField_layoutViewColumn1_2";
             this.layoutViewField_layoutViewColumn1_2.Size = new System.Drawing.Size(302, 22);
@@ -264,14 +275,16 @@ namespace IBE.WindowsClient.Controls {
             this.colTransliterate.Caption = "Transliteration";
             this.colTransliterate.FieldName = "Transliteration";
             this.colTransliterate.LayoutViewField = this.layoutViewField_layoutViewColumn1_3;
+            this.colTransliterate.MinWidth = 30;
             this.colTransliterate.Name = "colTransliterate";
             this.colTransliterate.OptionsColumn.AllowEdit = false;
             this.colTransliterate.OptionsColumn.ReadOnly = true;
             this.colTransliterate.OptionsColumn.TabStop = false;
+            this.colTransliterate.Width = 112;
             // 
             // layoutViewField_layoutViewColumn1_3
             // 
-            this.layoutViewField_layoutViewColumn1_3.EditorPreferredWidth = 10;
+            this.layoutViewField_layoutViewColumn1_3.EditorPreferredWidth = 15;
             this.layoutViewField_layoutViewColumn1_3.Location = new System.Drawing.Point(0, 88);
             this.layoutViewField_layoutViewColumn1_3.Name = "layoutViewField_layoutViewColumn1_3";
             this.layoutViewField_layoutViewColumn1_3.Size = new System.Drawing.Size(302, 22);
@@ -289,13 +302,15 @@ namespace IBE.WindowsClient.Controls {
             this.colTranslation.Caption = "Translation";
             this.colTranslation.FieldName = "Translation";
             this.colTranslation.LayoutViewField = this.layoutViewField_layoutViewColumn1_4;
+            this.colTranslation.MinWidth = 30;
             this.colTranslation.Name = "colTranslation";
+            this.colTranslation.Width = 112;
             // 
             // layoutViewField_layoutViewColumn1_4
             // 
             this.layoutViewField_layoutViewColumn1_4.AppearanceItemCaption.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.layoutViewField_layoutViewColumn1_4.AppearanceItemCaption.Options.UseFont = true;
-            this.layoutViewField_layoutViewColumn1_4.EditorPreferredWidth = 10;
+            this.layoutViewField_layoutViewColumn1_4.EditorPreferredWidth = 15;
             this.layoutViewField_layoutViewColumn1_4.Location = new System.Drawing.Point(0, 110);
             this.layoutViewField_layoutViewColumn1_4.Name = "layoutViewField_layoutViewColumn1_4";
             this.layoutViewField_layoutViewColumn1_4.Size = new System.Drawing.Size(302, 18);
@@ -308,8 +323,10 @@ namespace IBE.WindowsClient.Controls {
             this.colCitation.ColumnEdit = this.repositoryItemCheckEdit1;
             this.colCitation.FieldName = "Citation";
             this.colCitation.LayoutViewField = this.layoutViewField_layoutViewColumn1_5;
+            this.colCitation.MinWidth = 30;
             this.colCitation.Name = "colCitation";
             this.colCitation.OptionsColumn.TabStop = false;
+            this.colCitation.Width = 112;
             // 
             // repositoryItemCheckEdit1
             // 
@@ -318,11 +335,11 @@ namespace IBE.WindowsClient.Controls {
             // 
             // layoutViewField_layoutViewColumn1_5
             // 
-            this.layoutViewField_layoutViewColumn1_5.EditorPreferredWidth = 10;
+            this.layoutViewField_layoutViewColumn1_5.EditorPreferredWidth = 15;
             this.layoutViewField_layoutViewColumn1_5.Location = new System.Drawing.Point(0, 128);
             this.layoutViewField_layoutViewColumn1_5.Name = "layoutViewField_layoutViewColumn1_5";
             this.layoutViewField_layoutViewColumn1_5.Size = new System.Drawing.Size(302, 20);
-            this.layoutViewField_layoutViewColumn1_5.TextSize = new System.Drawing.Size(79, 13);
+            this.layoutViewField_layoutViewColumn1_5.TextSize = new System.Drawing.Size(110, 21);
             // 
             // colWordOfGod
             // 
@@ -332,8 +349,10 @@ namespace IBE.WindowsClient.Controls {
             this.colWordOfGod.ColumnEdit = this.repositoryItemCheckEdit2;
             this.colWordOfGod.FieldName = "WordOfGod";
             this.colWordOfGod.LayoutViewField = this.layoutViewField_layoutViewColumn1_6;
+            this.colWordOfGod.MinWidth = 30;
             this.colWordOfGod.Name = "colWordOfGod";
             this.colWordOfGod.OptionsColumn.TabStop = false;
+            this.colWordOfGod.Width = 112;
             // 
             // repositoryItemCheckEdit2
             // 
@@ -342,11 +361,11 @@ namespace IBE.WindowsClient.Controls {
             // 
             // layoutViewField_layoutViewColumn1_6
             // 
-            this.layoutViewField_layoutViewColumn1_6.EditorPreferredWidth = 10;
+            this.layoutViewField_layoutViewColumn1_6.EditorPreferredWidth = 15;
             this.layoutViewField_layoutViewColumn1_6.Location = new System.Drawing.Point(0, 148);
             this.layoutViewField_layoutViewColumn1_6.Name = "layoutViewField_layoutViewColumn1_6";
             this.layoutViewField_layoutViewColumn1_6.Size = new System.Drawing.Size(302, 20);
-            this.layoutViewField_layoutViewColumn1_6.TextSize = new System.Drawing.Size(79, 13);
+            this.layoutViewField_layoutViewColumn1_6.TextSize = new System.Drawing.Size(110, 21);
             // 
             // colFootnote
             // 
@@ -358,8 +377,10 @@ namespace IBE.WindowsClient.Controls {
             this.colFootnote.ColumnEdit = this.repositoryItemMemoEdit1;
             this.colFootnote.FieldName = "Footnote";
             this.colFootnote.LayoutViewField = this.layoutViewField_layoutViewColumn1_7;
+            this.colFootnote.MinWidth = 30;
             this.colFootnote.Name = "colFootnote";
             this.colFootnote.OptionsColumn.TabStop = false;
+            this.colFootnote.Width = 112;
             // 
             // repositoryItemMemoEdit1
             // 
@@ -372,7 +393,7 @@ namespace IBE.WindowsClient.Controls {
             // 
             this.layoutViewField_layoutViewColumn1_7.AppearanceItemCaption.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.layoutViewField_layoutViewColumn1_7.AppearanceItemCaption.Options.UseFont = true;
-            this.layoutViewField_layoutViewColumn1_7.EditorPreferredWidth = 300;
+            this.layoutViewField_layoutViewColumn1_7.EditorPreferredWidth = 450;
             this.layoutViewField_layoutViewColumn1_7.Location = new System.Drawing.Point(0, 168);
             this.layoutViewField_layoutViewColumn1_7.Name = "layoutViewField_layoutViewColumn1_7";
             this.layoutViewField_layoutViewColumn1_7.Size = new System.Drawing.Size(302, 71);
@@ -401,16 +422,17 @@ namespace IBE.WindowsClient.Controls {
             this.tabPane.Controls.Add(this.tabGrammarCode);
             this.tabPane.Controls.Add(this.tabSettings);
             this.tabPane.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tabPane.Location = new System.Drawing.Point(0, 460);
+            this.tabPane.Location = new System.Drawing.Point(0, 743);
+            this.tabPane.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabPane.Name = "tabPane";
             this.tabPane.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tabVerseTranslations,
             this.tabStrongDictionary,
             this.tabGrammarCode,
             this.tabSettings});
-            this.tabPane.RegularSize = new System.Drawing.Size(1294, 250);
+            this.tabPane.RegularSize = new System.Drawing.Size(1941, 404);
             this.tabPane.SelectedPage = this.tabVerseTranslations;
-            this.tabPane.Size = new System.Drawing.Size(1294, 250);
+            this.tabPane.Size = new System.Drawing.Size(1941, 404);
             this.tabPane.TabIndex = 1;
             this.tabPane.TabStop = false;
             this.tabPane.Text = "tabPane1";
@@ -419,16 +441,19 @@ namespace IBE.WindowsClient.Controls {
             // 
             this.tabVerseTranslations.Caption = "Translations";
             this.tabVerseTranslations.Controls.Add(this.gridTranslations);
+            this.tabVerseTranslations.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabVerseTranslations.Name = "tabVerseTranslations";
-            this.tabVerseTranslations.Size = new System.Drawing.Size(1294, 225);
+            this.tabVerseTranslations.Size = new System.Drawing.Size(1941, 364);
             // 
             // gridTranslations
             // 
             this.gridTranslations.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridTranslations.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gridTranslations.Location = new System.Drawing.Point(0, 0);
             this.gridTranslations.MainView = this.viewTranslations;
+            this.gridTranslations.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gridTranslations.Name = "gridTranslations";
-            this.gridTranslations.Size = new System.Drawing.Size(1294, 225);
+            this.gridTranslations.Size = new System.Drawing.Size(1941, 364);
             this.gridTranslations.TabIndex = 0;
             this.gridTranslations.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.viewTranslations});
@@ -438,6 +463,7 @@ namespace IBE.WindowsClient.Controls {
             this.viewTranslations.Appearance.Row.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.viewTranslations.Appearance.Row.Options.UseFont = true;
             this.viewTranslations.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.viewTranslations.DetailHeight = 565;
             this.viewTranslations.GridControl = this.gridTranslations;
             this.viewTranslations.Name = "viewTranslations";
             this.viewTranslations.OptionsBehavior.Editable = false;
@@ -453,8 +479,9 @@ namespace IBE.WindowsClient.Controls {
             // 
             this.tabStrongDictionary.Caption = "Strong";
             this.tabStrongDictionary.Controls.Add(this.tblStrong);
+            this.tabStrongDictionary.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabStrongDictionary.Name = "tabStrongDictionary";
-            this.tabStrongDictionary.Size = new System.Drawing.Size(1294, 225);
+            this.tabStrongDictionary.Size = new System.Drawing.Size(1941, 363);
             // 
             // tblStrong
             // 
@@ -465,10 +492,11 @@ namespace IBE.WindowsClient.Controls {
             this.tblStrong.Controls.Add(this.vwStrongLocal);
             this.tblStrong.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tblStrong.Location = new System.Drawing.Point(0, 0);
+            this.tblStrong.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tblStrong.Name = "tblStrong";
             this.tblStrong.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F)});
-            this.tblStrong.Size = new System.Drawing.Size(1294, 225);
+            this.tblStrong.Size = new System.Drawing.Size(1941, 363);
             this.tblStrong.TabIndex = 0;
             // 
             // panelControl1
@@ -479,19 +507,33 @@ namespace IBE.WindowsClient.Controls {
             this.panelControl1.Controls.Add(this.btnMoreStronsCodeInfo);
             this.panelControl1.Controls.Add(this.btnEditStrongsCode);
             this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl1.Location = new System.Drawing.Point(3, 3);
+            this.panelControl1.Location = new System.Drawing.Point(4, 5);
+            this.panelControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panelControl1.Name = "panelControl1";
             this.tblStrong.SetRow(this.panelControl1, 0);
-            this.panelControl1.Size = new System.Drawing.Size(94, 219);
+            this.panelControl1.Size = new System.Drawing.Size(142, 353);
             this.panelControl1.TabIndex = 4;
+            // 
+            // btnMoreBLB
+            // 
+            this.btnMoreBLB.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnMoreBLB.ImageOptions.SvgImage")));
+            this.btnMoreBLB.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
+            this.btnMoreBLB.Location = new System.Drawing.Point(9, 103);
+            this.btnMoreBLB.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnMoreBLB.Name = "btnMoreBLB";
+            this.btnMoreBLB.Size = new System.Drawing.Size(128, 37);
+            this.btnMoreBLB.TabIndex = 2;
+            this.btnMoreBLB.Text = "More BLB";
+            this.btnMoreBLB.Click += new System.EventHandler(this.btnMoreBLB_Click);
             // 
             // btnMoreStronsCodeInfo
             // 
             this.btnMoreStronsCodeInfo.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnMoreStronsCodeInfo.ImageOptions.SvgImage")));
             this.btnMoreStronsCodeInfo.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
-            this.btnMoreStronsCodeInfo.Location = new System.Drawing.Point(6, 35);
+            this.btnMoreStronsCodeInfo.Location = new System.Drawing.Point(9, 57);
+            this.btnMoreStronsCodeInfo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnMoreStronsCodeInfo.Name = "btnMoreStronsCodeInfo";
-            this.btnMoreStronsCodeInfo.Size = new System.Drawing.Size(85, 23);
+            this.btnMoreStronsCodeInfo.Size = new System.Drawing.Size(128, 37);
             this.btnMoreStronsCodeInfo.TabIndex = 1;
             this.btnMoreStronsCodeInfo.Text = "More BH";
             this.btnMoreStronsCodeInfo.Click += new System.EventHandler(this.btnMoreStronsCodeInfo_Click);
@@ -500,9 +542,10 @@ namespace IBE.WindowsClient.Controls {
             // 
             this.btnEditStrongsCode.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnEditStrongsCode.ImageOptions.SvgImage")));
             this.btnEditStrongsCode.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
-            this.btnEditStrongsCode.Location = new System.Drawing.Point(6, 6);
+            this.btnEditStrongsCode.Location = new System.Drawing.Point(9, 10);
+            this.btnEditStrongsCode.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnEditStrongsCode.Name = "btnEditStrongsCode";
-            this.btnEditStrongsCode.Size = new System.Drawing.Size(85, 23);
+            this.btnEditStrongsCode.Size = new System.Drawing.Size(128, 37);
             this.btnEditStrongsCode.TabIndex = 0;
             this.btnEditStrongsCode.Text = "Edit";
             this.btnEditStrongsCode.Click += new System.EventHandler(this.btnEditStrongsCode_Click);
@@ -513,10 +556,11 @@ namespace IBE.WindowsClient.Controls {
             this.vwStrongLocal.CreationProperties = null;
             this.vwStrongLocal.DefaultBackgroundColor = System.Drawing.Color.Transparent;
             this.vwStrongLocal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vwStrongLocal.Location = new System.Drawing.Point(103, 3);
+            this.vwStrongLocal.Location = new System.Drawing.Point(154, 5);
+            this.vwStrongLocal.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.vwStrongLocal.Name = "vwStrongLocal";
             this.tblStrong.SetRow(this.vwStrongLocal, 0);
-            this.vwStrongLocal.Size = new System.Drawing.Size(1188, 219);
+            this.vwStrongLocal.Size = new System.Drawing.Size(1783, 353);
             this.vwStrongLocal.TabIndex = 3;
             this.vwStrongLocal.ZoomFactor = 1D;
             // 
@@ -524,8 +568,9 @@ namespace IBE.WindowsClient.Controls {
             // 
             this.tabGrammarCode.Caption = "Grammar Code";
             this.tabGrammarCode.Controls.Add(this.wbGrammarCodes);
+            this.tabGrammarCode.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabGrammarCode.Name = "tabGrammarCode";
-            this.tabGrammarCode.Size = new System.Drawing.Size(1294, 275);
+            this.tabGrammarCode.Size = new System.Drawing.Size(1941, 444);
             // 
             // wbGrammarCodes
             // 
@@ -533,8 +578,9 @@ namespace IBE.WindowsClient.Controls {
             this.wbGrammarCodes.DefaultBackgroundColor = System.Drawing.Color.White;
             this.wbGrammarCodes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.wbGrammarCodes.Location = new System.Drawing.Point(0, 0);
+            this.wbGrammarCodes.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.wbGrammarCodes.Name = "wbGrammarCodes";
-            this.wbGrammarCodes.Size = new System.Drawing.Size(1294, 275);
+            this.wbGrammarCodes.Size = new System.Drawing.Size(1941, 444);
             this.wbGrammarCodes.TabIndex = 1;
             this.wbGrammarCodes.ZoomFactor = 1D;
             // 
@@ -542,8 +588,9 @@ namespace IBE.WindowsClient.Controls {
             // 
             this.tabSettings.Caption = "Settings";
             this.tabSettings.Controls.Add(this.tablePanel1);
+            this.tabSettings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabSettings.Name = "tabSettings";
-            this.tabSettings.Size = new System.Drawing.Size(1294, 275);
+            this.tabSettings.Size = new System.Drawing.Size(1941, 444);
             // 
             // tablePanel1
             // 
@@ -557,6 +604,7 @@ namespace IBE.WindowsClient.Controls {
             this.tablePanel1.Controls.Add(this.cbStartFromNewLine);
             this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tablePanel1.Location = new System.Drawing.Point(0, 0);
+            this.tablePanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tablePanel1.Name = "tablePanel1";
             this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
@@ -569,86 +617,82 @@ namespace IBE.WindowsClient.Controls {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(1294, 275);
+            this.tablePanel1.Size = new System.Drawing.Size(1941, 444);
             this.tablePanel1.TabIndex = 3;
             // 
             // labelControl5
             // 
             this.tablePanel1.SetColumn(this.labelControl5, 1);
-            this.labelControl5.Location = new System.Drawing.Point(16, 66);
+            this.labelControl5.Location = new System.Drawing.Point(23, 70);
+            this.labelControl5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl5.Name = "labelControl5";
             this.tablePanel1.SetRow(this.labelControl5, 3);
-            this.labelControl5.Size = new System.Drawing.Size(91, 13);
+            this.labelControl5.Size = new System.Drawing.Size(126, 21);
             this.labelControl5.TabIndex = 3;
             this.labelControl5.Text = "Story title - level 2";
             // 
             // txtStoryTextLevel2
             // 
             this.tablePanel1.SetColumn(this.txtStoryTextLevel2, 1);
-            this.txtStoryTextLevel2.Location = new System.Drawing.Point(16, 89);
+            this.txtStoryTextLevel2.Location = new System.Drawing.Point(23, 108);
+            this.txtStoryTextLevel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtStoryTextLevel2.Name = "txtStoryTextLevel2";
             this.tablePanel1.SetRow(this.txtStoryTextLevel2, 4);
-            this.txtStoryTextLevel2.Size = new System.Drawing.Size(1275, 20);
+            this.txtStoryTextLevel2.Size = new System.Drawing.Size(1914, 30);
             this.txtStoryTextLevel2.TabIndex = 3;
             // 
             // labelControl4
             // 
             this.tablePanel1.SetColumn(this.labelControl4, 1);
-            this.labelControl4.Location = new System.Drawing.Point(16, 23);
+            this.labelControl4.Location = new System.Drawing.Point(23, 25);
+            this.labelControl4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.labelControl4.Name = "labelControl4";
             this.tablePanel1.SetRow(this.labelControl4, 1);
-            this.labelControl4.Size = new System.Drawing.Size(91, 13);
+            this.labelControl4.Size = new System.Drawing.Size(126, 10);
             this.labelControl4.TabIndex = 2;
             this.labelControl4.Text = "Story title - level 1";
             // 
             // txtStoryTextLevel1
             // 
             this.tablePanel1.SetColumn(this.txtStoryTextLevel1, 1);
-            this.txtStoryTextLevel1.Location = new System.Drawing.Point(16, 43);
+            this.txtStoryTextLevel1.Location = new System.Drawing.Point(23, 45);
+            this.txtStoryTextLevel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtStoryTextLevel1.Name = "txtStoryTextLevel1";
             this.tablePanel1.SetRow(this.txtStoryTextLevel1, 2);
-            this.txtStoryTextLevel1.Size = new System.Drawing.Size(1275, 20);
+            this.txtStoryTextLevel1.Size = new System.Drawing.Size(1914, 30);
             this.txtStoryTextLevel1.TabIndex = 1;
             // 
             // cbStartFromNewLine
             // 
             this.tablePanel1.SetColumn(this.cbStartFromNewLine, 1);
-            this.cbStartFromNewLine.Location = new System.Drawing.Point(16, 3);
+            this.cbStartFromNewLine.Location = new System.Drawing.Point(23, 5);
+            this.cbStartFromNewLine.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbStartFromNewLine.Name = "cbStartFromNewLine";
             this.cbStartFromNewLine.Properties.Caption = "Start from new line";
             this.tablePanel1.SetRow(this.cbStartFromNewLine, 0);
-            this.cbStartFromNewLine.Size = new System.Drawing.Size(1275, 18);
+            this.cbStartFromNewLine.Size = new System.Drawing.Size(1914, 25);
             this.cbStartFromNewLine.TabIndex = 0;
             // 
             // splitterControl1
             // 
             this.splitterControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitterControl1.Location = new System.Drawing.Point(0, 450);
+            this.splitterControl1.Location = new System.Drawing.Point(0, 731);
+            this.splitterControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.splitterControl1.Name = "splitterControl1";
-            this.splitterControl1.Size = new System.Drawing.Size(1294, 10);
+            this.splitterControl1.Size = new System.Drawing.Size(1941, 12);
             this.splitterControl1.TabIndex = 2;
             this.splitterControl1.TabStop = false;
             // 
-            // btnMoreBLB
-            // 
-            this.btnMoreBLB.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("simpleButton1.ImageOptions.SvgImage")));
-            this.btnMoreBLB.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
-            this.btnMoreBLB.Location = new System.Drawing.Point(6, 64);
-            this.btnMoreBLB.Name = "btnMoreBLB";
-            this.btnMoreBLB.Size = new System.Drawing.Size(85, 23);
-            this.btnMoreBLB.TabIndex = 2;
-            this.btnMoreBLB.Text = "More BLB";
-            this.btnMoreBLB.Click += new System.EventHandler(this.btnMoreBLB_Click);
-            // 
             // VerseGridControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.gridControl);
             this.Controls.Add(this.splitterControl1);
             this.Controls.Add(this.tabPane);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "VerseGridControl";
-            this.Size = new System.Drawing.Size(1294, 710);
+            this.Size = new System.Drawing.Size(1941, 1147);
             this.Load += new System.EventHandler(this.VerseGridControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutView1)).EndInit();

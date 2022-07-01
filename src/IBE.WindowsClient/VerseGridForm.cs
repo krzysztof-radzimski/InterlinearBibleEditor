@@ -620,7 +620,11 @@ namespace IBE.WindowsClient {
         }
 
         private void btnDeleteWord_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            //
+            if (VerseControl.IsNotNull()) {
+                if (XtraMessageBox.Show("Delete words", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                    VerseControl.DeleteWord();
+                }
+            }
         }
 
 

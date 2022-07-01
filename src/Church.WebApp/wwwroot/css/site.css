@@ -186,11 +186,16 @@ body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
     background-color: #eef6ff;
-    background: url('../img/background-2021.jpg?ID=5') top center fixed;
+    background-image: url('../img/background-2021.jpg?ID=5');
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	/*
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
+	*/
 }
 
 .footer {
@@ -639,12 +644,13 @@ img {
 }
 
 .baner-img {
-    padding: 10px;
+    margin-top: 50px;
     background-image: url('/img/baptysci-logo-wnd.png');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: contain;
-    width: 15%;
+    width: 150px;
+	height: 150px;
 }
 
 .bible-img {
@@ -662,7 +668,7 @@ img {
 
     body {
         background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
-        background: url('../img/background-2021-dark.jpg?ID=5') top center fixed;
+        background-image: url('../img/background-2021-dark.jpg?ID=5');
         color: #C8C8C8;
     }
 

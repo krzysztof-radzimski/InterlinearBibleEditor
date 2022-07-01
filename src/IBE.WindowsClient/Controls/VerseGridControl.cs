@@ -207,6 +207,21 @@ namespace IBE.WindowsClient.Controls {
             Words.Clear();
             LoadData(Verse, false);
         }
+        public void DeleteWord(VerseWord word = null) {
+            if (word == null) {
+                var _word = layoutView1.GetFocusedRow() as VerseWordInfo;
+                if (_word != null) {
+                    word = _word.Word;
+                    var dataSource = gridControl.DataSource as List<VerseWordInfo>;
+                    dataSource.Remove(_word);
+                }
+            }
+
+            if (word != null) {
+                Verse.Session.Delete(word);
+                layoutView1.RefreshData();
+            }
+        }
 
         public void RenumerateAll() {
             for (int i = 0; i < Words.Count; i++) {
