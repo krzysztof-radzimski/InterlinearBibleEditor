@@ -1,0 +1,853 @@
+@import url('https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+
+.card {
+    background-color: transparent;
+}
+
+.interlinear-footnote-ref {
+    position: absolute;
+    top: -8px;
+    font-size: 80%;
+    color: red;
+    padding: 2px;
+}
+
+.footnote-ref {
+    font-size: 80%;
+    font-weight: bold;
+    color: red;
+    vertical-align: super;
+    cursor: pointer;
+}
+
+
+.bible-content {
+    background-color: rgba(255,255,255,0.7);
+    min-height: 2024px;
+}
+
+.list-group-item {
+    background-color: transparent !important;
+}
+
+.pill-white {
+    border-radius: 10px;
+    background-color: white;
+    padding: 5px;
+    width: 100px;
+    text-align: center;
+}
+
+.pill-white-lg {
+    border-radius: 10px;
+    background-color: white;
+    padding: 5px;
+    text-align: center;
+}
+
+.story {
+    min-width: 90%;
+    background-image: url(../img/hr.png);
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
+    text-transform: uppercase;
+    font-size: 180% !important;
+}
+
+.story2 {
+    min-width: 90%;
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
+    font-size: 150% !important;
+}
+
+.white-shadow {
+    text-shadow: 1px 1px 4px rgba(255, 255, 255, 1);
+}
+
+.capital {
+    text-transform: uppercase;
+}
+
+.max-width-800 {
+    max-width: 800px;
+    margin: auto;
+}
+
+.max-width-900 {
+    max-width: 900px;
+    margin: auto;
+}
+
+.max-width-1000 {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.max-width-1040 {
+    max-width: 1040px;
+    margin: auto;
+}
+
+.mw-10-per {
+    min-width: 10%;
+}
+
+.mw-60-per {
+    min-width: 60%;
+}
+
+.mw-138 {
+    min-width: 138px;
+}
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    min-width: 150px;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.mw-100-per {
+    min-width: 100%;
+}
+
+.abbr-small {
+    font-size: 60%;
+}
+
+.chapter-shortcut {
+    max-width: 80px;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+
+    #article-cell {
+        min-height: 95%;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html, body {
+    font-family: Alegreya;
+    font-size: 110%;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: #eef6ff;
+    background-image: url('../img/background-2021.jpg?ID=5');
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	/*
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+	*/
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+
+figure {
+    background: -moz-radial-gradient(center, ellipse cover, rgba(69,72,77,0.1) 0%, rgba(181,182,184,0) 60%, rgba(255,255,255,0) 100%);
+    background: -webkit-radial-gradient(center, ellipse cover, rgba(69,72,77,0.1) 0%,rgba(181,182,184,0) 60%,rgba(255,255,255,0) 100%);
+    background: radial-gradient(ellipse at center, rgba(69,72,77,0.1) 0%,rgba(181,182,184,0) 60%,rgba(255,255,255,0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1a45484d', endColorstr='#00ffffff',GradientType=1 );
+}
+
+.bd-callout {
+    padding: 1.25rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid #e9ecef;
+    border-left-width: .25rem;
+    border-radius: .25rem;
+}
+
+.bd-callout-info {
+    border-left-color: #5bc0de;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 79vh;
+    overflow-x: hidden;
+    overflow-y:;
+}
+
+.bg-bible {
+    position: relative;
+}
+
+    .bg-bible:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.05;
+    }
+#baptysci-logo {
+    width: 30px;
+    height: 24px;
+    opacity: 0.7;
+}
+a:hover #baptysci-logo {
+    opacity: 1 !important;
+}
+
+.fs-90per {
+    font-size: 90%;
+}
+
+.fs-80per {
+    font-size: 80%;
+}
+
+.fs-70per {
+    font-size: 70%;
+}
+
+hr.fancy-line {
+    border: 0;
+    height: 1px;
+    position: relative;
+    margin: 0.5em 0; /* Keep other elements away from pseudo elements*/
+}
+
+    hr.fancy-line:before {
+        top: -0.5em;
+        height: 1em;
+    }
+
+    hr.fancy-line:after {
+        content: '';
+        height: 0.5em; /* half the height of :before */
+        top: 1px; /* height of hr*/
+    }
+
+    hr.fancy-line:before, hr.fancy-line:after {
+        content: '';
+        position: absolute;
+        width: 100%;
+    }
+
+    hr.fancy-line, hr.fancy-line:before {
+        background: -moz-radial-gradient(center, ellipse cover, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 75%);
+        background: -webkit-gradient(radial, center center, 0px, center center, 75%, color-stop(0%,rgba(0,0,0,0.5)), color-stop(75%,rgba(0,0,0,0)));
+        background: -webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,0.5) 0%,rgba(0,0,0,0) 75%);
+        background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%,rgba(0,0,0,0) 75%);
+    }
+
+#main-hr-line {
+    top: -53px;
+    display: block;
+}
+
+#top-nav {
+    opacity: 0.97;
+}
+
+.menu-item-i {
+    display: inline-block;
+    width: 25px;
+}
+
+.quote {
+    margin-left: 2em;
+    font-size: 105% !important;
+    position: relative;
+}
+
+    .quote span {
+        font-size: 110% !important;
+    }
+
+    .quote::before {
+        content: open-quote;
+        font-size: 200%;
+        position: absolute;
+        left: -20px;
+    }
+
+    .quote::after {
+        content: close-quote;
+        font-size: 200%;
+        position: absolute;
+        bottom: -10px;
+    }
+
+.quote2 {
+    font-size: 105% !important;
+    position: relative;
+}
+
+    .quote2::before {
+        content: open-quote;
+        font-size: 200%;
+        position: absolute;
+        left: -5px;
+    }
+
+    .quote2::after {
+        content: close-quote;
+        font-size: 200%;
+        position: absolute;
+        bottom: -20px;
+    }
+
+.embed-responsive {
+    position: relative;
+    display: block;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+    .embed-responsive .embed-responsive-item,
+    .embed-responsive iframe,
+    .embed-responsive embed,
+    .embed-responsive object,
+    .embed-responsive video {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+    }
+
+.embed-responsive-21by9 {
+    padding-bottom: 42.8571428571%;
+}
+
+.embed-responsive-16by9 {
+    padding-bottom: 56.25%;
+}
+
+.embed-responsive-4by3 {
+    padding-bottom: 75%;
+}
+
+.embed-responsive-1by1 {
+    padding-bottom: 100%;
+}
+
+#banner {
+    background-image: url('/img/flaga-ukrainy.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 300px;
+    width: 100%;
+}
+
+
+@media only screen and (max-width: 995px) {
+
+    #banner, #main-hr-line, .bible-img, #carouselExampleFade, #FacebookFrame, #WhatWeBelieveIcon {
+        display: none;
+    }
+
+    .dropdown-item {
+        white-space: normal !important;
+    }
+
+    #Brama {
+        width: 100% !important;
+    }
+
+    #WalicowLogo {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 991px) and (min-width: 768px) {
+    .col-md-8 {
+        width: 100% !important;
+    }
+
+    #WalicowLogo {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 1126px) and (min-width: 991px) {
+
+    #WalicowLogo {
+        max-width: 100%;
+    }
+}
+
+.verse-list-item {
+    text-overflow: ellipsis; /* IE, Safari (WebKit) */
+    overflow: hidden; /* don't show excess chars */
+    white-space: nowrap; /* force single line */
+    width: 50vw; /*This property playing a major role just showing the first 2 letter*/
+    display: inline-block;
+}
+
+.accordion-button {
+    color: #000 !important;
+    background-color: #fff !important;
+    font-weight: bold;
+}
+
+    .accordion-button:not(.collapsed) {
+        color: #000 !important;
+        background-color: #fff !important;
+    }
+
+.my-dropdown {
+    top: 33%;
+    left: calc(50vw - 265px);
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    width: 530px;
+    padding: .5rem 0;
+    margin: auto;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+
+@media only screen and (max-width: 1920px) {
+    .my-dropdown {
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .my-dropdown {
+    }
+}
+
+@media only screen and (max-width: 995px) {
+    .my-dropdown {
+        width: 550px;
+        left: calc(50vw - 275px);
+        top: 10%;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .my-dropdown {
+        width: 88%;
+        left: calc(50vw - 44%);
+        top: 10%;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .my-dropdown {
+        width: 88%;
+        left: calc(50vw - 44%);
+        top: 10%;
+    }
+}
+
+.verse-btn {
+    background-color: rgba(255,255,255,0.4) !important;
+    border: 0;
+    top: -3px;
+    left: -38px;
+}
+
+    .verse-btn:hover {
+        background-color: rgba(255,255,255,1) !important;
+    }
+
+.verse-interlinear-btn {
+    background-color: rgba(255,255,255,0.4) !important;
+    border: 2px solid transparent;
+    border-radius: 2px;
+}
+
+    .verse-interlinear-btn:hover {
+        background-color: lightyellow !important;
+        border: 2px solid lightyellow;
+        border-radius: 2px;
+    }
+
+.verse-interlinear-div {
+    left: -20px;
+    top: 56px;
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 1024px) {
+    .verse-interlinear-div {
+        top: 56px;
+    }
+}
+
+@media only screen and (max-width: 995px) {
+    .verse-interlinear-div {
+        top: 47px;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .menu-item-a {
+        margin-left: 10px;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .verse-interlinear-div {
+        top: 56px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .verse-interlinear-div {
+        top: 56px;
+    }
+}
+
+@media only screen and (max-width: 550px) {
+    .verse-interlinear-div {
+        top: 47px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .verse-interlinear-div {
+        top: 47px;
+    }
+}
+
+.bg-bible li {
+    font-size: 120%;
+}
+
+img {
+    max-width: 100%;
+}
+
+.interlinear-img {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    max-width: 90%;
+}
+
+#translation-introduction {
+    text-align: justify;
+    font-size: 1.1rem !important;
+}
+
+    #translation-introduction li {
+        font-size: 1.1rem !important;
+    }
+
+
+._2p3a {
+    width: 100% !important;
+}
+
+#FacebookFrame {
+    width: 100% !important;
+}
+
+    #FacebookFrame iframe {
+        width: 100% !important;
+    }
+
+    #FacebookFrame span:first-of-type {
+        width: 100% !important;
+    }
+
+.transliteration {
+    color: #003A60;
+}
+
+.songbook {
+    margin: auto;
+    display: block;
+    width: 100%;
+    background-image: url(../img/songbook-light.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+    height: 335px;
+}
+
+.song-img {
+    background-image: url('/img/songbook-light.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    max-width: 410px;
+    width: 35%;
+}
+
+.baner-img {
+    margin-top: 50px;
+    background-image: url('/img/baptysci-logo-wnd.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 150px;
+	height: 150px;
+}
+
+.bible-img {
+    background-image: url('/img/biblelink.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 300px;
+}
+/************************** DARK **********************************/
+@media (prefers-color-scheme: dark) {
+    html {
+        background-color: rgba(var(--bs-dark-rgb)) !important;
+    }
+
+    body {
+        background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
+        background-image: url('../img/background-2021-dark.jpg?ID=5');
+        color: #C8C8C8;
+    }
+
+    h1, h2, h3, h4, h5, .list-group-item {
+        color: #C8C8C8 !important;
+    }
+
+    .baner-img {
+        background-image: url('/img/baptysci-logo-wnd-white.png');
+    }
+
+    .page-link {
+        background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
+        color: #C8C8C8 !important;
+        border-color: #383838 !important;
+    }
+
+    a {
+        color: #ad9a73 !important;
+    }
+
+        a:hover {
+            color: #e1cb9d !important;
+        }
+
+    .text-muted {
+        color: #919191 !important;
+    }
+
+    .nav-link {
+        color: rgba(255,255,255,.55) !important;
+    }
+
+    .form-control {
+        background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
+        color: #C8C8C8 !important;
+        border-color: #383838 !important;
+    }
+
+    .navbar-light .navbar-brand, .text-dark, .text-primary {
+        color: #C8C8C8 !important;
+    }
+
+    .border {
+        border: 1px solid rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
+    }
+
+    .bg-body {
+        --bs-bg-opacity: 1;
+        background-color: #C8C8C8 !important;
+    }
+
+    .bible-content {
+        background-color: rgba(255,255,255,0.05);
+    }
+
+    .transliteration {
+        color: #747171 !important;
+    }
+
+    .pill-white, .dropdown-menu, .my-dropdown, .modal-content {
+        background-color: #303030 !important;
+        border-color: #303030 !important;
+    }
+
+    .btn-light, .btn-secondary {
+        background-color: #30303065 !important;
+        border-color: #303030 !important;
+    }
+
+        .btn-light:hover {
+            background-color: #87878765 !important;
+            border-color: #303030 !important;
+            color: #e1cb9d !important;
+        }
+
+    .verse-interlinear-btn {
+        background-color: #30303065 !important;
+        border: none !important;
+    }
+
+    .modal-header {
+        border-bottom: 1px solid #717171;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #717171;
+    }
+
+    .accordion-button, .accordion-button:not(.collapsed) {
+        background-color: #0000001d !important;
+        border-color: #303030 !important;
+        color: #C8C8C8 !important;
+    }
+
+        .tab-content > .tab-pane {
+            color: #C8C8C8 !important;
+            background-color: #3030303c !important;
+        }
+
+    .nav-tabs .nav-item.show .nav-link {
+        color: #C8C8C8;
+        background-color: #303030;
+        border-color: #303030;
+    }
+    .nav-tabs .nav-link.active {
+        color: #FFF !important;
+        background-color: #303030;
+        border-color: #303030;
+    }
+    .nav-tabs {
+        border-bottom: 1px solid #303030;
+    }
+
+    .btn-light {
+        color: #C8C8C8 !important;
+    }
+
+    .btn-book a {
+        color: rgba(0,0,0,0.5) !important;
+    }
+
+        .btn-book a:hover {
+            color: #FFF !important;
+        }
+
+    .story, .story2 {
+        text-shadow: none;
+        background-image: none;
+    }
+
+    .songbook, .song-img {
+        background-image: url(../img/songbook-dark.png);
+    }
+
+    .dropdown-item {
+        color: #C8C8C8 !important;
+    }
+
+        .dropdown-item:hover {
+            background-color: rgba(0,0,0,0.5);
+        }
+
+    #siglum-button {
+        color: #C8C8C8 !important;
+        border-color: #383838 !important;
+    }
+
+        #siglum-button:hover {
+            background-color: #383838 !important;
+        }
+
+    #top-nav {
+        background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
+    }
+
+    .text-danger {
+        color: #eeb4b4 !important;
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+
+    .btn-close {
+        color: #C8C8C8 !important;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FFF'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") !important;
+    }
+
+    #accordionExample, .accordion-item, .accordion-header {
+        background-color: #0000001d !important;
+    }
+
+    #google-maps-iframe, #WalicowLogo {
+        filter: invert(90%);
+    }
+}

@@ -1,0 +1,18 @@
+﻿@inject IConfiguration Configuration
+
+<div id="banner" class="fs-5 text-center shadow p-3 mb-3 rounded" onclick="location.href='/Home/Service';" style="cursor: pointer;">
+    <div class="row g-0 m-0">
+        <div class="col-auto baner-img">           
+        </div>
+        <div class="col">
+            <h1>@Configuration["PageTitle"]<br /><br /></h1>
+        </div>
+    </div>
+    <div class="row g-0 m-0" style="font-size: 120%;">
+
+        <div class="col"><b>Nabożeństwo:</b> Niedziela 11:00</div>
+    </div>
+    <div class="row g-0 m-0" style="font-size: 120%;">
+        <div class="col"><b>Grupa Biblijna:</b> Czwartek 17:30</div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "Zalogowany";
+}
+
+<div class="row " style="min-height: 80vh;">
+
+    <div class="col-md-6 p-4">
+        <h1><i class="fas fa-bible"></i> @ViewData["Title"]</h1>
+        <p>Witaj @User.Identity.Name.<br />Masz teraz dostęp do wszystkich przekładów. </p>
+    </div>
+
+
+    <ul class="p-4" style="background-image: url('/img/Bible1200.png'); background-position: center bottom; background-repeat: no-repeat; background-size: cover; min-height: 60vh; list-style-type: none; font-size: 120%; text-shadow: 1px 1px 1px rgb(167 167 167); ">
+        @{
+            var view = new XPView(new UnitOfWork(), typeof(Translation));
+            view.CriteriaString = "[BookType] = 1 AND [Hidden] = 0";
+            view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
+            view.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
+            view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+            view.Properties.Add(new ViewProperty("Catolic", SortDirection.None, "[Catolic]", false, true));
+            view.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
+            view.Properties.Add(new ViewProperty("OpenAccess", SortDirection.None, "[OpenAccess]", false, true));
+
+            var list = new List<TranslationInfo>();
+            foreach (ViewRecord item in view) {
+                list.Add(new TranslationInfo() {
+                    Type = (TranslationType)item["Type"],
+                    Name = item["Name"].ToString().Replace("'", ""),
+                    Description = item["Description"].ToString(),
+                    Catholic = (bool)item["Catolic"],
+                    Recommended = (bool)item["Recommended"],
+                    PasswordRequired = !((bool)item["OpenAccess"])
+                });
+            }
+            var first = true;
+
+            var types = Enum.GetValues(typeof(TranslationType)).OfType<TranslationType>().ToList().OrderBy(x => x.GetDescription());
+        }
+
+        @foreach (TranslationType type in types) {
+            if (list.Where(x => x.Type == type).Any()) {
+
+                if (first) {
+                    first = false;
+                }
+                else {
+                    <li><hr class="dropdown-divider"></li>
+                }
+
+                <li><h5 class="disabled">@type.GetDescription()</h5></li>
+
+                foreach (var item in list.Where(x => x.Type == type)) {
+                    var _name = item.Name.Replace("'", "").Replace("+", "");
+                    var _description = item.Description;
+                    var _catolicBadge = item.Catholic ? $@"<span class=""badge bg-secondary"" style=""text-shadow: none;"">katolicki</span>" : "";
+                    var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"" style=""text-shadow: none;"">zalecany</span>" : "";
+                    var _notrecommendedBadge = type == TranslationType.Dynamic ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"" style=""text-shadow: none;"">czytaj uważnie</span>" : "";
+                    
+                    <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)</a></li>
+
+                }
+
+                if (type == TranslationType.Interlinear) {
+                    <li><a class="dropdown-item" href="https://biblia.oblubienica.eu/">Oblubienica.eu - Ewangeliczny Przekład Interlinearny Biblii</a></li>
+                    <li><a class="dropdown-item" href="https://biblehub.com/interlinear/matthew/1.htm">BibleHub.com - Greek Interlinear Bible</a></li>
+                    <li><a class="dropdown-item" href="https://biblehub.com/interlinear/genesis/1.htm">BibleHub.com - Hebrew Interlinear Bible</a></li>
+                }
+            }
+        }
+
+        <li><br/><br /><br /></li>
+    </ul>
+</div>

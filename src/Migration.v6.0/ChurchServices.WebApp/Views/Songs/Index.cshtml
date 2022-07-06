@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Śpiewajmy dla Jezusa";
+
+    var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
+    var __path = this.Context.Request.Path;
+
+}
+@inject IConfiguration Configuration
+
+@model List<SongsInfo>
+
+@section HeaderScripts {
+<!-- social sharing metadata -->
+<meta property="og:title" content="@ViewData["Title"] - @Configuration["PageTitle"]" />
+<meta property="og:description" content="Śpiewnik zborowy Kościoła Chrześcijan Baptystów w Nowym Dworze Mazowieckim" />
+<meta property="og:image" content="@__host/img/TloSpiewnik.png" />
+<meta property="og:url" content="@__host/Songs" />
+<meta property="og:type" content="song" />
+<meta property="og:locale" content="pl_PL" />
+}
+
+<div class="max-width-1000" style="padding-top: 20px;">
+    <div style="text-align: center;">
+        <div class="songbook"></div>
+        <h1>@ViewData["Title"]</h1>
+        <h3>Śpiewnik zborowy</h3>
+       
+        <div class="d-flex" id="filter-form">
+            <input id="filter-input-text" name="text" class="form-control me-2" type="text" placeholder="Filtruj pieśni" aria-label="Filtruj pieśni" onkeyup="SongFilterButtonClick()" />
+            <button id="filter-button" class="btn btn-outline-success" type="button" onclick="SongFilterButtonClick()">Filtruj</button>
+        </div>
+    </div>
+
+    @foreach (var song in Model) {       
+        <div class="row song-row">
+            <div class="col-auto" style="min-width: 70px;">
+                <a href="/Song?id=@song.Number" class="btn text-start fw-bold" role="button" aria-pressed="true">@song.Number</a>
+            </div>
+            <div class="col">
+                <a href="/Song?id=@song.Number" class="btn text-primary text-start" role="button">@song.Name</a>
+            </div>
+            <div class="col-auto">
+                <span class="btn text-secondary text-end">@song.Type.GetDescription()</span>
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    function SongFilterButtonClick() {
+        var input = $("#filter-input-text");
+        if (input != undefined) {
+            var inputText = input[0].value;
+            SongFilter(inputText);
+        }
+    }
+    function SongFilter(inputText) {
+        var rows = $(".song-row").each(function(index, value){
+            if (inputText == undefined || inputText == "") {
+                value.style.display = "flex"; 
+            } else {
+                var rowText = value.innerText;
+                if (rowText.toLowerCase().indexOf(inputText.toLowerCase()) != -1){
+                    value.style.display = "flex";
+                } else {
+                    value.style.display = "none";
+                }
+            }
+        });
+    }
+</script>

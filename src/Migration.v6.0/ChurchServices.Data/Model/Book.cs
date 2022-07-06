@@ -1,0 +1,192 @@
+﻿/*=====================================================================================
+
+	Church Services
+	.NET Windows Forms Interlinear Bible wysiwyg desktop editor project and website.
+		
+    MIT License
+    https://github.com/krzysztof-radzimski/InterlinearBibleEditor/blob/main/LICENSE
+
+	Autor: 2009-2021 ITORG Krzysztof Radzimski
+	http://itorg.pl
+
+  ===================================================================================*/
+
+namespace ChurchServices.Data.Model {
+    public class Book : XPObject {
+        private int numberOfBook;
+        private string preface;
+        private string bookShortcut;
+        private string bookName;
+        private string authorName;
+        private string timeOfWriting;
+        private string placeWhereBookWasWritten;
+        private string purpose;
+        private string subject;
+        private int numberOfChapters;
+        private string color;
+        private Translation parentTranslation;
+        private BookBase bookBase;
+        private bool isTranslated;
+
+        [Association("BaseBooks")]
+        public BookBase BaseBook {
+            get { return bookBase; }
+            set { SetPropertyValue(nameof(BaseBook), ref bookBase, value); }
+        }
+
+        [Association("BookTranslations")]
+        public Translation ParentTranslation {
+            get { return parentTranslation; }
+            set { SetPropertyValue(nameof(ParentTranslation), ref parentTranslation, value); }
+        }
+
+        public int NumberOfBook {
+            get { return numberOfBook; }
+            set { SetPropertyValue(nameof(NumberOfBook), ref numberOfBook, value); }
+        }
+
+        public int NumberOfChapters {
+            get { return numberOfChapters; }
+            set { SetPropertyValue(nameof(NumberOfChapters), ref numberOfChapters, value); }
+        }
+
+        [Size(10)]
+        public string BookShortcut {
+            get { return bookShortcut; }
+            set { SetPropertyValue(nameof(BookShortcut), ref bookShortcut, value); }
+        }
+
+        [Size(100)]
+        public string BookName {
+            get { return bookName; }
+            set { SetPropertyValue(nameof(BookName), ref bookName, value); }
+        }
+
+        [Size(100)]
+        public string AuthorName {
+            get { return authorName; }
+            set { SetPropertyValue(nameof(AuthorName), ref authorName, value); }
+        }
+
+        /// <summary>
+        /// Czas spisania
+        /// </summary>
+        [Size(100)]
+        public string TimeOfWriting {
+            get { return timeOfWriting; }
+            set { SetPropertyValue(nameof(TimeOfWriting), ref timeOfWriting, value); }
+        }
+
+        /// <summary>
+        /// Miejsce spisania
+        /// </summary>
+        [Size(100)]
+        public string PlaceWhereBookWasWritten {
+            get { return placeWhereBookWasWritten; }
+            set { SetPropertyValue(nameof(PlaceWhereBookWasWritten), ref placeWhereBookWasWritten, value); }
+        }
+
+        /// <summary>
+        /// Cel napisania księgi
+        /// </summary>
+        [Size(500)]
+        public string Purpose {
+            get { return purpose; }
+            set { SetPropertyValue(nameof(Purpose), ref purpose, value); }
+        }
+
+        /// <summary>
+        /// Temat księgi
+        /// </summary>
+        [Size(200)]
+        public string Subject {
+            get { return subject; }
+            set { SetPropertyValue(nameof(Subject), ref subject, value); }
+        }
+
+        /// <summary>
+        /// Przedmowa
+        /// </summary>
+        [Size(SizeAttribute.Unlimited)]
+        public string Preface {
+            get { return preface; }
+            set { SetPropertyValue(nameof(Preface), ref preface, value); }
+        }
+
+        [Association("BookChapters")]
+        public XPCollection<Chapter> Chapters {
+            get { return GetCollection<Chapter>(nameof(Chapters)); }
+        }
+
+        public string Color {
+            get { return color; }
+            set { SetPropertyValue(nameof(Color), ref color, value); }
+        }
+
+        public bool IsTranslated {
+            get { return isTranslated; }
+            set { SetPropertyValue(nameof(IsTranslated), ref isTranslated, value); }
+        }
+
+        [NonPersistent] public bool IsNT => NumberOfBook >= 470 && NumberOfBook <= 730;
+
+        public Book(Session session) : base(session) { }
+
+        public override string ToString() {
+            return BookName;
+        }
+        public int GetNTBookNumber()
+        {
+            var book = this.NumberOfBook;
+            var r = 1;
+            for (int i = 470; i <= 730; i += 10)
+            {
+                if (i == book)
+                {
+                    return r;
+                }
+                r++;
+            }
+            return r;
+        }
+        public int GetLogosBookNumber()
+        {
+            var books = new XPQuery<BookBase>(this.Session).ToList();
+            var book = this.NumberOfBook;
+            var r = 1;
+            if (book < 470)
+            {
+                foreach (var item in books)
+                {
+                    if (item.NumberOfBook < 470)
+                    {
+                        if (book == item.NumberOfBook) { return r; }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    r++;
+                }
+            }
+            else
+            {
+                r = 61;
+                foreach (var item in books)
+                {
+                    if (item.NumberOfBook >= 470)
+                    {
+                        if (book == item.NumberOfBook) { return r; }
+                        r++;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            return r;
+        }
+    }
+}

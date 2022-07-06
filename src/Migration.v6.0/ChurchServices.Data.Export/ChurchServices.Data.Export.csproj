@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Aspose.Words" Version="21.12.0" />
+		<PackageReference Include="DevExpress.Xpo" Version="22.1.3" />
+		<PackageReference Include="LinqKit.Core" Version="1.2.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ChurchServices.Data\ChurchServices.Data.csproj" />
+		<ProjectReference Include="..\ChurchServices.Extensions\ChurchServices.Extensions.csproj" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<NoWarn>1701;1702;IDE0063;CA1416;</NoWarn>
+	</PropertyGroup>
+
+</Project>

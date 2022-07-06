@@ -1,0 +1,110 @@
+﻿@model SongControllerModel
+@{
+    ViewData["Title"] = Model.IsNotNull() ? Model.Song.Name : "Pieśń";
+
+    var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
+    var __path = this.Context.Request.Path;
+
+    var priorSong = Model.IsNotNull() && Model.Song.Number > 1 ? Model.Song.Number - 1 : 1;
+    var nextSong = Model.IsNotNull() && Model.Song.Number < Model.MaxNumber ? Model.Song.Number + 1 : Model.MaxNumber;
+
+}
+@inject IConfiguration Configuration
+
+
+
+@section HeaderScripts {
+    @if (Model.IsNotNull()) {
+<!-- social sharing metadata -->
+<meta property="og:title" content="@Model.Song.Name - @Configuration["PageTitle"]" />
+<meta property="og:description" content="@Model.Song.Name" />
+<meta property="og:image" content="@__host/img/TloSpiewnik.png" />
+<meta property="og:url" content="@__host/Song?id=@Model.Song.Oid" />
+<meta property="og:type" content="song" />
+<meta property="og:locale" content="pl_PL" />
+    }
+}
+
+@if (Model != null) {
+    <div class="row shadow-lg" style="max-width: 1040px; margin: auto;">
+        <div class="col p-4 d-flex flex-column position-static">
+            <div class="btn-group" style="max-width:150px;">
+                <a href="/Songs" class="btn btn-success active d-inline-block text-decoration-none" title="Więcej pieśni" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
+                <span class="btn btn-light d-inline-block text-success fw-bold" role="button">@Model.Song.Type.GetDescription()</span>
+            </div>
+            <h3 class="mb-0">@Model.Song.Number. @Model.Song.Name</h3>
+            <h4 class="mb-auto">Sygnatura:&nbsp;<b>@Model.Song.Signature</b> Tempo:&nbsp;<b>@Model.Song.BPM</b></h4>
+            <p class="mb-auto fst-italic"><b>Śpiewajmy dla Jezusa</b><br />Śpiewnik zborowy KChB w Nowym Dworze Mazowieckim</p>
+
+            <div class="btn-group" style="max-width: 415px;">
+                <a href="/Song?id=@priorSong" class="btn btn-primary d-inline-block" role="button" title="Poprzednia pieśń" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
+                <button class="btn btn-primary dropdown-toggle dropdown-toggle-split" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0;">
+                    Wybierz inną
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook">
+                    @foreach (var song in Model.Songs) {                        
+                        if (song.Number.ToInt() == Model.Song.Number) {
+                            <li><span class="dropdown-item active">@song.Number.@song.Name</span></li>
+                        }
+                        else {
+                            <li><a class="dropdown-item" href="/Song?id=@song.Number">@song.Number.@song.Name</a></li>
+                        }
+                    }
+                </ul>
+
+                <a href="/Song?id=@nextSong" class="btn btn-primary d-inline-block" role="button" title="Następna pieśń" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-auto d-none d-lg-block song-img" ></div>
+    </div>
+
+    <div style="max-width: 1025px; margin: auto; padding-top: 20px; font-size: 120%;">
+
+        @foreach (var item in Model.Song.GetParts()) {
+            <div class="row">
+                @if (item.Type == SongVerseType.Chorus) {
+                    <div class="col mt-3 quote2">
+                        @Html.Raw(item.Text)
+                        &nbsp;
+                    </div>
+                    <div class="col-auto mt-3 mw-138">
+                        @Html.Raw(item.Chords)
+                    </div>
+
+                }
+                else if (item.Type == SongVerseType.Default) {
+                    <div class="col mt-3">
+                        @Html.Raw(item.Text)
+                    </div>
+                    <div class="col-auto mt-3 mw-138">
+                        @Html.Raw(item.Chords)
+                    </div>
+                }
+                else if (item.Type == SongVerseType.Bridge) {
+                    <div class="col mt-3 fst-italic">
+                        @Html.Raw(item.Text)
+                    </div>
+                    <div class="col-auto mt-3 mw-138">
+                        @Html.Raw(item.Chords)
+                    </div>
+                }
+            </div>
+        }
+
+        @if (Model.Song.YouTube.IsNotNullOrEmpty()) {
+            <br />
+            <div class="embed-responsive embed-responsive-16by9 shadow-lg">
+                <iframe id="YouTubeFrame" width="560" height="600" src="@Model.Song.YouTube" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        }
+
+    </div>
+}
+else {
+    <div style="max-width: 1025px; margin: auto; padding-top: 20px;">
+        <h1>Brak danych do wyświetlenia</h1>
+        <p>Nie ma takiej pieśni w naszym śpiewniku</p>
+        <a href="/Songs" class="text-decoration-none" title="Więcej pieśni"><i class="far fa-arrow-alt-circle-left"></i> Pokaż listę pieśni</a>
+    </div>
+}

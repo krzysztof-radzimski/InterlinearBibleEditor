@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "Wyszukiwanie";
+
+}
+@model ChurchServices.WebApp.Controllers.SearchResultsModel
+
+@if (Model != null) {
+    <p>
+        @if (Model.Words != null && Model.Words.Count() > 0) {
+            <span>
+                Szukane słowa:
+                <b>
+                    @foreach (var word in Model.Words) {
+                        if (word != Model.Words.Last()) {
+                            @Html.Raw($"{word}, ")
+                        }
+                        else {
+                            @Html.Raw($"{word}")
+                        }
+                    }
+                </b>
+            </span>
+
+            if (Model.SearchType != ChurchServices.WebApp.Controllers.SearchRangeType.All) {
+                <span> @Model.SearchType.GetDescription(). </span>
+            }
+            else {
+                <span>. </span>
+            }
+            <br />
+            <span>Szukaj ponownie: </span>
+            foreach (var item in Model.Links) {
+                <a href="@item.Value">@item.Key</a>
+                if (item.Key != Model.Links.Last().Key) {
+                    <span> | </span>
+                }
+            }
+        }
+    </p>
+
+    @if (Model.Words != null && Model.Words.Count() > 0) {
+
+        var result = Model.GroupBy(x => x.Translation);
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            @foreach (var item in result) {
+                var _active = item == result.First() ? " active" : "";
+                var _true = item == result.First() ? "true" : "false";
+                var translationName = @item.First().TranslationName;
+                var translationSymbol = @item.Key;
+                if (translationSymbol == "PBD") { translationSymbol = "SNPPD"; }
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link@_active" id="@item.Key.ToLower()-tab" data-bs-toggle="tab" data-bs-target="#@item.Key.ToLower()" type="button" role="tab" aria-controls="@item.Key.ToLower()" aria-selected="@_true" title="@translationName">@translationSymbol</button>
+                </li>
+            }
+
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            @foreach (var item in result) {
+                var _active = item == result.First() ? " active" : "";
+                var translationName = @item.First().TranslationName;
+                <div class="tab-pane shadow-sm p-3 mb-5 bg-body rounded fade@_active" id="@item.Key.ToLower()" role="tabpanel" aria-labelledby="@item.Key.ToLower()-tab">
+                    <h4>@translationName</h4>
+
+                    <div class="container">
+                        <div class="row p-1">
+                            <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 8%; min-width: 50px;">Siglum</div>
+                            <div class="col fw-bold p-1 border-top border-bottom border-start">Treść</div>
+                            <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 5%; min-width: 50px;">&nbsp;</div>
+                            <div class="col-auto fw-bold p-1 border-top border-bottom" style="width: 5%; min-width: 50px;">&nbsp;</div>
+                        </div>
+
+                        @foreach (var verse in item) {
+                            var text = verse.VerseText;
+
+                            <div class="row p-1">
+                                <div class="col-auto p-1" style="width: 8%; font-size: 80%; min-width: 50px;">
+                                    <a href="../@verse.Translation/@verse.Book/@verse.Chapter/@verse.Verse" class="text-decoration-none" target="_blank">@verse.BookShortcut @verse.Chapter:@verse.Verse</a>
+                                </div>
+                                <div class="col p-1">
+                                    @Html.Raw(text)
+                                </div>
+                                <div class="col-auto p-1" style="width: 5%; min-width: 50px;">
+                                    <a class="dropdown-item" onclick="copyToClipboard3('@verse.SimpleText')" style="cursor: pointer;" title="Kopiuj treść @verse.BookShortcut @verse.Chapter:@verse.Verse"><i class="far fa-copy"></i></a>
+                                </div>
+                                <div class="col-auto p-1" style="width: 5%; min-width: 50px;">
+                                    <a class="dropdown-item" style="cursor: pointer;" title="Porównaj tłumaczeń @verse.BookShortcut @verse.Chapter:@verse.Verse" href="/CompareVerse?id=@verse.Index"><i class="fas fa-fish"></i></a>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            }
+        </div>
+
+    }
+}
+
+else {
+    <h4>Wyszukiwanie</h4>
+    <p>Brak wyników</p>
+}
+
+@section Scripts {
+
+<script>
+    docReady(function () {
+        setTimeout(function () {
+            var firstTabEl = document.querySelector('#myTab li:first-child button');
+            var firstTab = new bootstrap.Tab(firstTabEl);
+
+            firstTab.show();
+
+
+        }, 1000);
+    });
+</script>
+
+        }

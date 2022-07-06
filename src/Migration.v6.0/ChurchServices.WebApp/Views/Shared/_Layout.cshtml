@@ -1,0 +1,220 @@
+﻿@{
+    var callingUrl = this.Context.Request.Headers["Host"].ToString();
+    var isLocal = callingUrl.Contains("localhost");
+    var isDefault = callingUrl.Contains("jezusa.pl");
+}
+@inject IConfiguration Configuration
+@inject ITranslationInfoController TranslationsController
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - @Configuration["PageTitle"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="icon" type="image/svg+xml" href="~/img/baptysci-logo.svg" />
+    @RenderSection("HeaderScripts", required: false)
+</head>
+<body data-bs-spy="scroll" data-bs-target="#top-nav" data-bs-offset="0">
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v9.0" nonce="TGe91ewv"></script>
+   
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mb-5 shadow" id="top-nav">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img id="baptysci-logo" src="~/img/baptysci-logo.svg"/>KChB&nbsp;NDM</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div id="navbarText" class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 navbar-nav-scroll">
+                        <div class="btn-group" role="group" aria-label="Menu">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMain" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div style="display: inline-block; width: 25px;"><i class="fas fa-church" title="Menu"></i></div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMain">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Service"><div style="display: inline-block; width: 25px;"><i class="fas fa-church"></i></div> Nabożeństwa i grupy biblijne</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Articles" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="far fa-newspaper"></i></div> Nauczanie&nbsp;<span class="badge bg-success text-white">skrypty kazań</span></a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="WhatWeBelieve"><div style="display: inline-block; width: 25px;"><i class="fas fa-cross"></i></div> Wyznanie wiary</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="About"><div style="display: inline-block; width: 25px;"><i class="fas fa-user-friends"></i></div> O nas, kim jesteśmy</a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Songs" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-music"></i></div> Śpiewajmy dla Jezusa</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Camps" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-child"></i></div> Obozy dla dzieci i młodzieży</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="LeadersMaterials" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-book-reader"></i></div> Materiały dla liderów</a>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <li class="nav-item dropdown menu-item-a">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="menu-item-i"><i class="fas fa-bible" title="Biblia"></i></div> 
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark scrollable-menu" aria-labelledby="navbarDropdown" style="max-height: 67vh;">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="AboutBible"><div style="display: inline-block; width: 25px;"><i class="fas fa-bible"></i></div> O Biblii, czyli Piśmie Świętym Starego i Nowego Przymierza</a>
+                                </li>
+
+                                @{
+                                    var first = true;
+                                }
+
+                                @foreach (var groupName in TranslationsController.GetBibleTranslations()) {
+                                    if (groupName.Count == 0) { continue; }
+                                    if (first) {
+                                        first = false;
+                                    }
+                                    else {
+                                        <li><hr class="dropdown-divider"></li>
+                                    }
+
+                                    <li><h6 class="dropdown-header disabled">@groupName.Key</h6></li>
+
+                                    foreach (var item in groupName) {
+                                        var _name = item.Name.Replace("'", "").Replace("+", "");
+                                        var _description = item.Description;
+                                        var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm abbr-small"" title=""Przekład katolicki"">katolicki</abbr>" : "";
+                                        var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                                        var _notrecommendedBadge = item.TranslationType == TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm abbr-small"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
+                                        var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+                                        var _isUA = item.Language == Language.Ukrainian ? @"&nbsp;<img src=""/img/ukraine.png"" style=""width: 16px; "" />" : "";
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name"><b>@item.Name</b>&nbsp;<span class="fs-80per">@_description</span>&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)@Html.Raw(@_isUA)</a></li>
+                                    }
+
+                                    if (groupName.Key == TranslationType.Interlinear.GetDescription()) {
+                                        <li><a class="dropdown-item" href="https://biblia.oblubienica.eu/"><b>TRO+</b>&nbsp;<span class="fs-80per">Ewangeliczny Przekład Interlinearny Biblii-Oblubienica.eu</span></a></li>
+                                        <li><a class="dropdown-item" href="https://biblehub.com/interlinear/matthew/1.htm"><b>BHG+</b>&nbsp;<span class="fs-80per">BibleHub.com - Greek Interlinear Bible</span></a></li>
+                                        <li><a class="dropdown-item" href="https://biblehub.com/interlinear/genesis/1.htm"><b>BHH+</b>&nbsp;<span class="fs-80per">BibleHub.com - Hebrew Interlinear Bible</span></a></li>
+                                    }
+                                }
+                            </ul>
+                        </li>
+                        
+                        <li class="nav-item dropdown menu-item-a">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="menu-item-i"><i class="fas fa-book menu-item-i" title="Patrologia"></i></div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown2">
+                                @{
+                                    first = true;
+                                }
+
+                                @foreach (var groupName in TranslationsController.GetPatrologyTranslations()) {
+                                    if (groupName.Count == 0) { continue; }
+                                    if (first) {
+                                        first = false;
+                                    }
+                                    else {
+                                        <li><hr class="dropdown-divider"></li>
+                                    }
+
+                                    <li><h6 class="dropdown-header disabled">@groupName.Key</h6></li>
+
+                                    foreach (var item in groupName) {
+                                        var _name = item.Name.Replace("'", "").Replace("+", "");
+                                        var _description = item.Description;
+                                        var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm abbr-small"" title=""Przekład katolicki"">katolicki</abbr>" : "";
+                                        var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                                        var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+
+
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_loginRequired)</a></li>
+
+                                    }
+                                }
+                            </ul>
+                        </li>
+                        </div>
+
+                        <li class="nav-item">
+                            <div class="btn-group" role="group" aria-label="Przyciski">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" title="Polityka prywatności"><i class="fas fa-user-shield"></i></a>&nbsp;&nbsp;
+                                <a class="nav-link menu-item-a" href="https://m.me/koscioljezusa" target="_blank" title="Wyślij wiadomość"><i class="fab fa-facebook-messenger"></i></a>&nbsp;&nbsp;
+                                <a class="nav-link menu-item-a" href="https://www.facebook.com/koscioljezusa" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>&nbsp;&nbsp;
+                                <a class="nav-link menu-item-a" href="https://www.youtube.com/channel/UCD1go_K0JxyNkuss9mZ-8HQ" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>&nbsp;&nbsp;
+                                @if (User.Identity.IsAuthenticated) {
+                                    <a class="nav-link menu-item-a" asp-area="" asp-controller="Account" asp-action="Logout" title="Wyloguj"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+                                }
+                                else {
+                                    <a class="nav-link menu-item-a" asp-area="" asp-controller="Home" asp-action="Secured" title="Zaloguj"><i class="fa-solid fa-arrow-right-to-bracket"></i></a>
+                                }
+                                @if (isLocal || isDefault) {
+                                    <a class="nav-link menu-item-a" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sch=http&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=pl&_x_tr_pto=nui" title="English"><img src="~/img/uk.png" style="width: 19px; position: relative; top: -3px;" /></a>
+
+                                    <a class="nav-link menu-item-a" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sl=pl&_x_tr_tl=uk&_x_tr_hl=pl&_x_tr_pto=wapp" title="Uкраїнський"><img src="~/img/ukraine.png" style="width: 19px; position: relative; top: -3px;" /></a>
+                                }
+                            </div>
+                        </li>
+                    </ul>
+
+                    <form class="d-flex" id="siglum-form" method="get" enctype="multipart/form-data" asp-controller="Search" asp-action="Siglum" autocomplete="off" spellcheck="false">
+                        <div class="input-group">
+                            <input id="siglum-input-text" name="text" class="form-control" type="text" placeholder="Przejdź do wersetu" aria-label="Przejdź do wersetu" spellcheck="false" autocomplete="off"/>
+                            <button id="siglum-button" class="btn btn-outline-dark" type="submit"><i class="fa-solid fa-magnifying-glass-arrow-right"></i></button>
+                        </div>
+                    </form>
+                    &nbsp;
+                    <form class="d-flex" id="search-form" method="get" enctype="multipart/form-data" asp-controller="Search" asp-action="Index" spellcheck="false">
+                        <div class="input-group">
+                            <input id="search-input-text" name="text" class="form-control" type="search" placeholder="Szukaj w Biblii" aria-label="Szukaj w Biblii" />
+                       
+                            <button id="search-button" class="btn btn-outline-success" type="submit"><i class="fa-brands fa-searchengin"></i></button>
+                            <button class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+
+                                @foreach(SearchRangeType rangeType in Enum.GetValues(typeof(SearchRangeType))) {
+                                    <button class="dropdown-item" type="submit" name="type" value="@rangeType.GetCategory()">Szukaj @rangeType.GetDescription()</button>
+                                }
+                            </ul>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container" id="main-container">
+        <main role="main" class="card border-0 shadow mt-5">
+            @RenderSection("Main", false)
+            <div class="bg-bible">
+                <div class="card-body bible-content rounded" style="position: relative;">
+                    @RenderBody()
+                </div>
+            </div>
+        </main>
+
+        <div>&nbsp;</div>
+    </div>
+    <footer class="footer text-muted bg-dark text-center">
+        <div class="container" style="line-height: 1.4em; padding-top: 5px; padding-bottom: 5px; white-space: normal;">
+            &copy; @DateTime.Now.Year - <span title="@Configuration["PageTitle"]">KChB NDM</span> | <a class="link-secondary text-decoration-none" href="https://github.com/krzysztof-radzimski/InterlinearBibleEditor" title="Otwarty kod źródłowy niniejszej strony znajduje się w repozytorium GitHub"><i class="fab fa-github-square"></i> Open Source Project</a> | <a class="link-secondary text-decoration-none" href="~/home/privacy"><i class="fas fa-user-shield"></i> Polityka prywatności</a>
+        </div>
+    </footer>
+    
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/BootstrapMenu.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

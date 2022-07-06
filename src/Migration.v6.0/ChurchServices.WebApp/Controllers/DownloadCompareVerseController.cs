@@ -1,0 +1,86 @@
+﻿/*=====================================================================================
+
+	Church Services
+	.NET Windows Forms Interlinear Bible wysiwyg desktop editor project and website.
+		
+    MIT License
+    https://github.com/krzysztof-radzimski/InterlinearBibleEditor/blob/main/LICENSE
+
+	Autor: 2009-2021 ITORG Krzysztof Radzimski
+	http://itorg.pl
+
+  ===================================================================================*/
+
+namespace ChurchServices.WebApp.Controllers {
+    public abstract class DownloadCompareVerseController : Controller {
+        protected readonly IConfiguration Configuration;
+        protected readonly IBibleTagController BibleTag;
+        protected readonly ITranslationInfoController TranslationInfoController;
+        protected abstract ExportSaveFormat Format { get; }
+        public DownloadCompareVerseController(IConfiguration configuration, IBibleTagController bibleTagController, ITranslationInfoController translationInfoController) {
+            Configuration = configuration;
+            BibleTag = bibleTagController;
+            TranslationInfoController = translationInfoController;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get() {
+            var qs = Request.QueryString;
+            var model = await GetModel(qs);
+            if (model.IsNotNull()) {
+                Stream stream;
+                try {
+                    stream = await CreateStream(model);
+                }
+                catch (AuthException) {
+                    return new RedirectResult("/Account/Index?ReturnUrl=" + Request.Path + HttpUtility.UrlDecode(Request.QueryString.Value));
+                }
+                if (stream.IsNull()) { return NotFound(); }
+                return File(stream, Format.GetDescription(), Format.GetCategory());
+            }
+            return NotFound();
+        }
+
+        private async Task<Stream> CreateStream(CompareVerseModel model) {
+            var licData = await GetLicData();
+            var host = (this.Request.IsHttps ? "https://" : "http://") + this.Request.Host;
+            var result = new CompareVersesExporter(licData, host).Export(model, Format);
+            if (result.IsNotNull() && result.Length > 0) {
+                return new MemoryStream(result);
+            }
+
+            return default;
+        }
+
+        private async Task<CompareVerseModel> GetModel(QueryString qs) {
+            using (var controller = new CompareVerseController(BibleTag, TranslationInfoController)) {
+                return controller.GetModel(qs);
+            }
+        }
+
+        private async Task<byte[]> GetLicData() {
+            var licPath = Configuration["AsposeLic"];
+            var licInfo = new System.IO.FileInfo(licPath);
+
+            if (licInfo.Exists) {
+                return await System.IO.File.ReadAllBytesAsync(licPath);
+            }
+            return default;
+        }
+    }
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class DownloadCompareVersePdfController : DownloadCompareVerseController {
+        protected override ExportSaveFormat Format => ExportSaveFormat.Pdf;
+        public DownloadCompareVersePdfController(IConfiguration configuration, IBibleTagController bibleTagController, ITranslationInfoController translationInfoController) : base(configuration, bibleTagController, translationInfoController) { }
+    }
+
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class DownloadCompareVerseDocxController : DownloadCompareVerseController {
+        protected override ExportSaveFormat Format => ExportSaveFormat.Docx;
+        public DownloadCompareVerseDocxController(IConfiguration configuration, IBibleTagController bibleTagController, ITranslationInfoController translationInfoController) : base(configuration, bibleTagController, translationInfoController) { }
+    }
+}
