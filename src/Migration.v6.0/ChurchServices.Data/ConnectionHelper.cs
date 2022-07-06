@@ -16,6 +16,7 @@ using DevExpress.Xpo.DB;
 
 namespace ChurchServices.Data {
     public class ConnectionHelper {
+       
         readonly Type[] PersistentTypes = new Type[]{
             typeof(Book),
             typeof(BookStatus),
@@ -43,7 +44,7 @@ namespace ChurchServices.Data {
         }
 
         private IDataLayer CreateDataLayer(bool threadSafe, string connectionString = null) {
-            if (connectionString == null) {
+            if (connectionString == null) {                
                 connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
             }
             var dictionary = new DevExpress.Xpo.Metadata.ReflectionDictionary();

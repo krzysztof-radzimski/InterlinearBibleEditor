@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.6" />
+		<PackageReference Include="DotNetZip" Version="1.16.0" />
+		<PackageReference Include="Unidecode.NET" Version="2.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ChurchServices.Data\ChurchServices.Data.csproj" />
+		<ProjectReference Include="..\ChurchServices.Extensions\ChurchServices.Extensions.csproj" />
+	</ItemGroup>
+
+</Project>
