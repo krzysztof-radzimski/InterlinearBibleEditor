@@ -79,8 +79,8 @@ namespace ChurchServices.WinApp {
         }
 
         private void btnCopyDatabaseToWebFolder_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var path = "../../../../db/IBE.SQLite3";
-            var path2 = "../../../Church.WebApp/Data/IBE.SQLite3";
+            var path = "../../../../../../db/IBE.SQLite3";
+            var path2 = "../../../../ChurchServices.WebApp/Data/IBE.SQLite3";
             var info = new FileInfo(path);
             if (info.Exists) {
                 var info2 = new FileInfo(path2);
