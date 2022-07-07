@@ -18,9 +18,12 @@ namespace ChurchServices.WinApp {
             Instance = this;
             InitializeComponent();
             Text = "Church Services Content Manager";
-          
-           //IconOptions.SvgImage = new DevExpress.Utils.Svg.SvgImage(new MemoryStream(Properties.Resources.bible));
 
+            var imgData = Program.GetResource("bible.svg");
+            if (imgData != null) {
+                IconOptions.SvgImage = new DevExpress.Utils.Svg.SvgImage(new MemoryStream(imgData));
+            }
+            
             new ConnectionHelper().Connect();
             CreateSpellChecker();
         }
@@ -32,9 +35,9 @@ namespace ChurchServices.WinApp {
             var affPath = Path.Combine(dir, "pl_PL.aff");
             var alfPath = Path.Combine(dir, "PolishAlphabet.dat");
             var cusPath = Path.Combine(dir, "CustomPolish.dic");
-            if (!File.Exists(dicPath)) { File.WriteAllBytes(dicPath, Properties.Resources.pl_dic); }
-            if (!File.Exists(affPath)) { File.WriteAllBytes(affPath, Properties.Resources.pl_aff); }
-            if (!File.Exists(alfPath)) { File.WriteAllBytes(alfPath, Properties.Resources.PolishAlphabet); }
+            if (!File.Exists(dicPath)) { File.WriteAllBytes(dicPath, Program.GetResource("pl_PL.dat")); }
+            if (!File.Exists(affPath)) { File.WriteAllBytes(affPath, Program.GetResource("pl_PL.aff")); }
+            if (!File.Exists(alfPath)) { File.WriteAllBytes(alfPath, Program.GetResource("PolishAlphabet.dat")); }
 
             this.SpellChecker.Dictionaries.Add(new HunspellDictionary(dicPath, affPath, CultureInfo.CurrentCulture));
             this.SpellChecker.Dictionaries.Add(new SpellCheckerCustomDictionary() {

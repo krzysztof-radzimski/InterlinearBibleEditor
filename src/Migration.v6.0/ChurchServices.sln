@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChurchServices.WebApp.Switc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChurchServices.WinApp", "ChurchServices.WinApp\ChurchServices.WinApp.csproj", "{349C338A-3F18-42A5-AA32-9A55136BC147}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChurchServices.Data.Import", "ChurchServices.Data.Import\ChurchServices.Data.Import.csproj", "{B93EDB55-DBF0-4E8E-9299-5DF0F8E7D564}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChurchServices.Data.Import", "ChurchServices.Data.Import\ChurchServices.Data.Import.csproj", "{B93EDB55-DBF0-4E8E-9299-5DF0F8E7D564}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
