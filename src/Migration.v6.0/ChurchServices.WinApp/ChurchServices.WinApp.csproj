@@ -5,7 +5,7 @@
 		<Nullable>disable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Platforms>ANYCPU</Platforms>
+		<Platforms>AnyCPU;ARM64</Platforms>
 		<PackageIcon>bible.png</PackageIcon>
 		<NeutralLanguage>pl</NeutralLanguage>
 	</PropertyGroup>
