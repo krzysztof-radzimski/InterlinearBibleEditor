@@ -92,11 +92,12 @@ namespace ChurchServices.WebApp.Controllers {
             }
 
             var critera = String.Empty;
-            foreach (var word in words) {
+            var _words = words.Distinct();
+            foreach (var word in _words) {
 
                 critera += $"Contains(Lower([Text]),'{word.ToLower()}')";
 
-                if (word != words.Last()) {
+                if (word != _words.Last()) {
                     critera += " AND ";
                 }
             }
