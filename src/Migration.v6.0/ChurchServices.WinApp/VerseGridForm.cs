@@ -329,7 +329,7 @@ namespace ChurchServices.WinApp {
         private void btnOblubienicaEu_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             var currentControl = VerseControl;//this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
             if (currentControl.IsNotNull()) {
-                System.Diagnostics.Process.Start(currentControl.Verse.GetOblubienicaUrl());
+                System.Diagnostics.Process.Start("explorer.exe", currentControl.Verse.GetOblubienicaUrl());
             }
         }
 

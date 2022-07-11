@@ -539,7 +539,7 @@ namespace ChurchServices.WinApp.Controls {
             var strongsCode = btnMoreStronsCodeInfo.Tag as StrongCode;
             if (strongsCode.IsNotNull()) {
                 var url = $"https://biblehub.com/greek/{strongsCode.Code}.htm";
-                System.Diagnostics.Process.Start(url);
+                System.Diagnostics.Process.Start("explorer.exe", url);
             }
         }
 
@@ -547,7 +547,7 @@ namespace ChurchServices.WinApp.Controls {
             var strongsCode = btnMoreStronsCodeInfo.Tag as StrongCode;
             if (strongsCode.IsNotNull()) {
                 var url = $"https://www.blueletterbible.org/lexicon/g{strongsCode.Code}/nkjv/tr/0-1/";
-                System.Diagnostics.Process.Start(url);
+                System.Diagnostics.Process.Start("explorer.exe", url);
             }
         }
     }

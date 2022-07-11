@@ -496,6 +496,8 @@ namespace ChurchServices.Data.Export.Controllers {
                         case "2Tym": { bookShortcut = "2Tm"; break; }
                         case "efz":
                         case "Efz": { bookShortcut = "Ef"; break; }
+                        case "kl": { bookShortcut = "Kol"; break; }
+                        case "Kl": { bookShortcut = "Kol"; break; }
                         case "tyt":
                         case "Tyt": { bookShortcut = "Tt"; break; }
                         case "heb":

@@ -6,6 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <Platforms>AnyCPU;ARM64</Platforms>
+    <ApplicationIcon>switch.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="switch.ico" />
+  </ItemGroup>
 
 </Project>
