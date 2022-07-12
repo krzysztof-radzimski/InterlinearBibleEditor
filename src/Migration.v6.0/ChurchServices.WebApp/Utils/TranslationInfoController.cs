@@ -114,17 +114,29 @@ namespace ChurchServices.WebApp.Utils {
             if (lastFourArticles != null) {
                 return lastFourArticles;
             }
-            var articles = new XPQuery<Article>(new UnitOfWork()).Where(x => !x.Hidden).OrderByDescending(x => x.Date).Take(4);
+
+            var view = new XPView(new UnitOfWork(), typeof(Article)) {
+                TopReturnedRecords = 4,
+                CriteriaString = "[Hidden] = 0"
+            };
+            view.Properties.Add(new ViewProperty("AuthorName", SortDirection.None, "[AuthorName]", false, true));
+            view.Properties.Add(new ViewProperty("AuthorPicture", SortDirection.None, "[AuthorPicture]", false, true));
+            view.Properties.Add(new ViewProperty("Date", SortDirection.Descending, "[Date]", false, true));
+            view.Properties.Add(new ViewProperty("Oid", SortDirection.None, "[Oid]", false, true));
+            view.Properties.Add(new ViewProperty("Lead", SortDirection.None, "[Lead]", false, true));
+            view.Properties.Add(new ViewProperty("Subject", SortDirection.None, "[Subject]", false, true));
+            view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+            
             lastFourArticles = new List<ArticleInfo>();
-            foreach (var item in articles) {
+            foreach (ViewRecord item in view) {
                 lastFourArticles.Add(new ArticleInfo() {
-                    AuthorName = item.AuthorName,
-                    AuthorPicture = item.AuthorPicture.IsNotNull() ? Convert.ToBase64String(item.AuthorPicture) : String.Empty,
-                    Date = item.Date,
-                    Id = item.Oid,
-                    Lead = item.Lead,
-                    Subject = item.Subject,
-                    Type = item.Type.GetDescription()
+                    AuthorName = item["AuthorName"].ToString(),
+                    AuthorPicture = item["AuthorPicture"].IsNotNull() ? Convert.ToBase64String((byte[])item["AuthorPicture"]) : String.Empty,
+                    Date = Convert.ToDateTime( item["Date"].ToString()),
+                    Id = item["Oid"].ToInt(),
+                    Lead = item["Lead"].ToString(),
+                    Subject = item["Subject"].ToString(),
+                    Type = ((ArticleType)item["Type"]).GetDescription()
                 });
             }
             MemoryCache.Set(LASTFOURARTICLES, lastFourArticles);

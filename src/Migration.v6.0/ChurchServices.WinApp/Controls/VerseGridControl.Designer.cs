@@ -543,7 +543,7 @@ namespace ChurchServices.WinApp.Controls {
             // 
             this.wbGrammarCodes.AllowExternalDrop = true;
             this.wbGrammarCodes.CreationProperties = null;
-            this.wbGrammarCodes.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.wbGrammarCodes.DefaultBackgroundColor = System.Drawing.Color.Transparent;
             this.wbGrammarCodes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.wbGrammarCodes.Location = new System.Drawing.Point(0, 0);
             this.wbGrammarCodes.Name = "wbGrammarCodes";
@@ -588,17 +588,17 @@ namespace ChurchServices.WinApp.Controls {
             // labelControl5
             // 
             this.tablePanel1.SetColumn(this.labelControl5, 1);
-            this.labelControl5.Location = new System.Drawing.Point(16, 74);
+            this.labelControl5.Location = new System.Drawing.Point(16, 77);
             this.labelControl5.Name = "labelControl5";
             this.tablePanel1.SetRow(this.labelControl5, 3);
-            this.labelControl5.Size = new System.Drawing.Size(88, 10);
+            this.labelControl5.Size = new System.Drawing.Size(88, 13);
             this.labelControl5.TabIndex = 3;
             this.labelControl5.Text = "Story title - level 2";
             // 
             // txtStoryTextLevel2
             // 
             this.tablePanel1.SetColumn(this.txtStoryTextLevel2, 1);
-            this.txtStoryTextLevel2.Location = new System.Drawing.Point(16, 90);
+            this.txtStoryTextLevel2.Location = new System.Drawing.Point(16, 100);
             this.txtStoryTextLevel2.Name = "txtStoryTextLevel2";
             this.tablePanel1.SetRow(this.txtStoryTextLevel2, 4);
             this.txtStoryTextLevel2.Size = new System.Drawing.Size(1275, 20);

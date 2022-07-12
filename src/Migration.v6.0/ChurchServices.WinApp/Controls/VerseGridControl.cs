@@ -11,22 +11,16 @@
 
   ===================================================================================*/
 
+using ChurchServices.Data.Import.Greek;
+using ChurchServices.Data.Model;
+using ChurchServices.Extensions;
 using DevExpress.Xpo;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Layout;
 using DevExpress.XtraGrid.Views.Layout.ViewInfo;
-using DevExpress.XtraRichEdit.Services;
-using ChurchServices.Extensions;
-using ChurchServices.Data.Import.Greek;
-using ChurchServices.Data.Model;
-using ChurchServices.WinApp.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Win32;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ChurchServices.WinApp.Controls {
     public partial class VerseGridControl : XtraUserControl {
@@ -36,8 +30,62 @@ namespace ChurchServices.WinApp.Controls {
 
         public VerseGridControl() {
             InitializeComponent();
+            tabStrongDictionary.PageVisible = false;
+            tabGrammarCode.PageVisible = false;
             TransliterationController = new GreekTransliterationController();
+            SystemEvents.UserPreferenceChanged += SystemEvents_UserPreferenceChanged;
+            SetTheme();
         }
+
+        private void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e) {
+            if (e != null) {
+                if (e.Category == UserPreferenceCategory.General) {
+                    SetTheme();
+                }
+            }
+        }
+
+        private void SetTheme() {
+            if (MainForm.Instance.ThemeIsLight()) {
+                colStrongsCode.AppearanceCell.ForeColor = Color.DarkRed;
+                colStrongsCode.AppearanceHeader.ForeColor = Color.DarkRed;
+
+                colGrammarCode.AppearanceCell.ForeColor = Color.DarkMagenta;
+                colGrammarCode.AppearanceHeader.ForeColor = Color.DarkMagenta;
+
+                colSourceWord.AppearanceCell.ForeColor = Color.DarkSalmon;
+                colSourceWord.AppearanceHeader.ForeColor = Color.DarkSalmon;
+
+                colTransliterate.AppearanceCell.ForeColor = Color.DarkGreen;
+                colTransliterate.AppearanceHeader.ForeColor = Color.DarkGreen;
+
+                colTranslation.AppearanceCell.ForeColor = Color.Black;
+                colTranslation.AppearanceHeader.ForeColor = Color.Black;
+
+                colWordOfGod.AppearanceCell.ForeColor = Color.DarkRed;
+                colWordOfGod.AppearanceHeader.ForeColor = Color.DarkRed;
+            }
+            else {
+                colStrongsCode.AppearanceCell.ForeColor = Color.FromArgb(255, 128, 0);
+                colStrongsCode.AppearanceHeader.ForeColor = Color.FromArgb(255, 128, 0);
+
+                colGrammarCode.AppearanceCell.ForeColor = Color.FromArgb(255, 192, 255);
+                colGrammarCode.AppearanceHeader.ForeColor = Color.FromArgb(255, 192, 255);
+
+                colSourceWord.AppearanceCell.ForeColor = Color.Salmon;
+                colSourceWord.AppearanceHeader.ForeColor = Color.Salmon;
+
+                colTransliterate.AppearanceCell.ForeColor = Color.PaleGreen;
+                colTransliterate.AppearanceHeader.ForeColor = Color.PaleGreen;
+
+                colTranslation.AppearanceCell.ForeColor = Color.Gold;
+                colTranslation.AppearanceHeader.ForeColor = Color.Gold;
+
+                colWordOfGod.AppearanceCell.ForeColor = Color.FromArgb(255, 128, 0);
+                colWordOfGod.AppearanceHeader.ForeColor = Color.FromArgb(255, 128, 0);
+            }
+        }
+
         public VerseGridControl(Verse verse, bool loadOtherTranslations = true) : this() {
             LoadData(verse, loadOtherTranslations);
         }
@@ -322,6 +370,7 @@ namespace ChurchServices.WinApp.Controls {
                 var word = view.GetRow(hi.RowHandle) as VerseWordInfo;
                 if (word.IsNotNull()) {
                     if (hi.Column.FieldName == "StrongsCode") {
+                        tabStrongDictionary.PageVisible = true;
                         var value = word.StrongsCode.HasValue ? word.StrongsCode.Value.ToString() : String.Empty;
                         var strongCode = XtraInputBox.Show("Insert Strong's code:", "Strong Codes", value);
                         if (strongCode.IsNotNullOrEmpty()) {
@@ -333,6 +382,7 @@ namespace ChurchServices.WinApp.Controls {
                         }
                     }
                     else if (hi.Column.FieldName == "GrammarCode") {
+                        tabGrammarCode.PageVisible = true;
                         if (word.Word.GrammarCode.IsNotNull()) {
                             using (var dlg = new GrammarCodeFindDialog(word.Word.GrammarCode)) {
                                 if (dlg.ShowDialog() == DialogResult.OK && dlg.Selected.IsNotNull()) {
@@ -418,20 +468,45 @@ namespace ChurchServices.WinApp.Controls {
                         var gc = word.Word.GrammarCode;
                         if (gc.GrammarCodeDescription.IsNotNullOrEmpty()) {
                             var htmlString = $@"
-                                <!DOCTYPE html>
+    <!DOCTYPE html>
 
-                                <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
-                                <head>
-                                    <meta charset=""utf-8"" />
-                                    <title>Grammar code</title>
-                                </head>
-                                <body>
-                                <h2>{gc.GrammarCodeVariant1}</h2>
-                                <h3>{gc.ShortDefinition}</h3>
-                                <p>{gc.GrammarCodeDescription}</p>
-                                </body>
-                                </html>
-                                ";
+    <html lang=""en"" xmlns=""http://www.w3.org/1999/xhtml"">
+        <head>
+        <meta charset=""utf-8"" />
+        <title>Grammar code</title>
+        <style>
+            body {{
+                color: black;
+            }}
+            h2, h3 {{
+                margin:0; 
+                padding:0;
+            }}
+            a {{
+                color: darkblue;
+                text-decoration: none;
+            }}
+            a:hover {{
+                text-decoration: underline;
+            }}
+
+            @media (prefers-color-scheme: dark) {{ 
+                    body {{
+                        color: white;
+                    }}
+
+                    a {{
+                        color: yellow;   
+                    }}
+            }}
+        </style>
+    </head>
+    <body>
+        <h2>{gc.GrammarCodeVariant1}</h2>
+        <h3>{gc.ShortDefinition}</h3>
+        <p>{gc.GrammarCodeDescription}</p>
+    </body>
+</html>";
 
                             wbGrammarCodes.NavigateToString(htmlString);
                         }
@@ -478,7 +553,7 @@ namespace ChurchServices.WinApp.Controls {
             //
             codeHtml = Regex.Replace(codeHtml, @"href\=[\'\""]S\:G(?<nr>[0-9]+)[\'\""]", delegate (Match m) {
                 var nr = m.Groups["nr"].Value;
-                return $@"target=""_blank"" href=""https://biblehub.com/greek/{nr}.htm"""  ;
+                return $@"target=""_blank"" href=""https://biblehub.com/greek/{nr}.htm""";
             });
             if (codeHtml.StartsWith("\ufeff")) {
                 codeHtml = codeHtml.Substring(1);
@@ -492,19 +567,29 @@ namespace ChurchServices.WinApp.Controls {
     <title>Strongs code</title> 
     <style>
         body {{
-            color: white;
+            color: black;
         }}
         h2, h3 {{
             margin:0; 
             padding:0;
         }}
         a {{
-            color: yellow;
+            color: darkblue;
             text-decoration: none;
         }}
         a:hover {{
             text-decoration: underline;
         }}
+
+@media (prefers-color-scheme: dark) {{ 
+        body {{
+            color: white;
+        }}
+
+        a {{
+            color: yellow;   
+        }}
+}}
     </style>
 </head>
 <body>
@@ -550,5 +635,7 @@ namespace ChurchServices.WinApp.Controls {
                 System.Diagnostics.Process.Start("explorer.exe", url);
             }
         }
+
+
     }
 }

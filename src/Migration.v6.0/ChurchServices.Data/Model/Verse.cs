@@ -24,14 +24,16 @@ namespace ChurchServices.Data.Model {
          ADD 
             NumberOfBook INT GENERATED ALWAYS AS (substr(substr([Index], INSTR([Index],'.')+1), 0, INSTR(substr([Index], INSTR([Index],'.')+1),'.')))
         */
+        [FetchOnly]
         [Persistent("NumberOfBook")]
         private int numberOfBook;
-   
+
         /*
          ALTER TABLE Verse 
          ADD 
             TranslationName NVARCHAR(10) GENERATED ALWAYS AS (substr([Index], 0, INSTR([Index],'.')))         
         */
+        [FetchOnly]
         [Persistent("TranslationName")]
         private string translationName;
 

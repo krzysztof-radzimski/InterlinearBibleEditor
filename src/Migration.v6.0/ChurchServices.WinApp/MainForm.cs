@@ -9,6 +9,8 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
+using Microsoft.Win32;
+using DevExpress.LookAndFeel;
 
 namespace ChurchServices.WinApp {
     public partial class MainForm : RibbonForm {
@@ -26,6 +28,31 @@ namespace ChurchServices.WinApp {
             
             new ConnectionHelper().Connect();
             CreateSpellChecker();
+
+            SystemEvents.UserPreferenceChanged += SystemEvents_UserPreferenceChanged;
+            SetTheme();
+        }
+
+        private void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e) {
+            if (e != null) {
+                if (e.Category == UserPreferenceCategory.General) {
+                    SetTheme();
+                }
+            }
+        }
+        private void SetTheme() {
+            if (ThemeIsLight()) {
+                UserLookAndFeel.Default.SetSkinStyle(SkinSvgPalette.WXICompact.Calmness);
+            }
+            else {
+                UserLookAndFeel.Default.SetSkinStyle(SkinSvgPalette.WXICompact.Darkness);
+            }
+        }
+        public bool ThemeIsLight() {
+            RegistryKey registry =
+                Registry.CurrentUser.OpenSubKey(
+                    @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+            return (int)registry.GetValue("SystemUsesLightTheme") == 1;
         }
 
         private void CreateSpellChecker() {
