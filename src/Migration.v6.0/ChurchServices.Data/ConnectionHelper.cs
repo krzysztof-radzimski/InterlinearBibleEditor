@@ -49,7 +49,7 @@ namespace ChurchServices.Data {
             }
             var dictionary = new DevExpress.Xpo.Metadata.ReflectionDictionary();
             dictionary.GetDataStoreSchema(PersistentTypes);   // Pass all of your persistent object types to this method.
-            var autoCreateOption = AutoCreateOption.DatabaseAndSchema;  // Use AutoCreateOption.DatabaseAndSchema if the database or tables do not exist. Use AutoCreateOption.SchemaAlreadyExists if the database already exists.
+            var autoCreateOption = AutoCreateOption.SchemaAlreadyExists;  // Use AutoCreateOption.DatabaseAndSchema if the database or tables do not exist. Use AutoCreateOption.SchemaAlreadyExists if the database already exists.
             IDataStore provider = XpoDefault.GetConnectionProvider(connectionString, autoCreateOption);
             return threadSafe ? (IDataLayer)new ThreadSafeDataLayer(dictionary, provider) : new SimpleDataLayer(dictionary, provider);
         }

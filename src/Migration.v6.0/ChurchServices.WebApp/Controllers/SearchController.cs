@@ -91,22 +91,52 @@ namespace ChurchServices.WebApp.Controllers {
                 }
             }
 
-            var critera = String.Empty;
+            var criteria = String.Empty;
             var _words = words.Distinct();
+            if (_words.Count() == 0) {
+                return View(new SearchResultsModel() { SearchType = type, Links = dic });
+            }
+
             foreach (var word in _words) {
 
-                critera += $"Contains(Lower([Text]),'{word.ToLower()}')";
+                criteria += $"Contains(Lower([Text]),'{word.ToLower()}')";
 
                 if (word != _words.Last()) {
-                    critera += " AND ";
+                    criteria += " AND ";
                 }
             }
 
-            view.CriteriaString = critera.Trim();
+            switch (type) {
+                case SearchRangeType.Psalms: { criteria += " AND NumberOfBook = 230"; break; }
+                case SearchRangeType.PaulsLetters: {
+                        criteria += GetRangeCriteriaString(520, 640);
+                        break;
+                    }
+                case SearchRangeType.NewTestament: {
+                        criteria += GetRangeCriteriaString(470, 730);
+                        break;
+                    }
+                case SearchRangeType.Pentateuch: {
+                        criteria += GetRangeCriteriaString(10, 50);
+                        break;
+                    }
+                case SearchRangeType.OldTestament: {
+                        criteria += GetRangeCriteriaString(10, 460);
+                        break;
+                    }
+                case SearchRangeType.Gospel: {
+                        criteria += GetRangeCriteriaString(470, 500);
+                        break;
+                    }
+            }
+
+
+            view.CriteriaString = criteria.Trim();
 
             view.Properties.Add(new ViewProperty("NumberOfVerse", SortDirection.None, "[NumberOfVerse]", false, true));
             view.Properties.Add(new ViewProperty("VerseText", SortDirection.None, "[Text]", false, true));
             view.Properties.Add(new ViewProperty("Index", SortDirection.None, "[Index]", false, true));
+            view.Properties.Add(new ViewProperty("NumberOfBook", SortDirection.None, "[NumberOfBook]", false, true));
 
             var model = new SearchResultsModel(words) { SearchType = type, Links = dic };
 
@@ -114,13 +144,14 @@ namespace ChurchServices.WebApp.Controllers {
                 var _index = record["Index"];
                 if (_index.IsNotNull()) {
                     var index = new VerseIndex(_index.ToString());
-                    if (type != SearchRangeType.All) {
-                        if (type == SearchRangeType.Psalms && index.NumberOfBook != 230) { continue; }
-                        if (type == SearchRangeType.Pentateuch && (index.NumberOfBook < 10 || index.NumberOfBook > 50)) { continue; }
-                        if (type == SearchRangeType.Gospel && (index.NumberOfBook < 470 || index.NumberOfBook > 500)) { continue; }
-                        if (type == SearchRangeType.NewTestament && (index.NumberOfBook < 470 || index.NumberOfBook > 730)) { continue; }
-                        if (type == SearchRangeType.OldTestament && index.NumberOfBook >= 470) { continue; }
-                    }
+                    //if (type != SearchRangeType.All) {
+                    //    if (type == SearchRangeType.Psalms && index.NumberOfBook != 230) { continue; }
+                    //    if (type == SearchRangeType.Pentateuch && (index.NumberOfBook < 10 || index.NumberOfBook > 50)) { continue; }
+                    //    if (type == SearchRangeType.Gospel && (index.NumberOfBook < 470 || index.NumberOfBook > 500)) { continue; }
+                    //    if (type == SearchRangeType.NewTestament && (index.NumberOfBook < 470 || index.NumberOfBook > 730)) { continue; }
+                    //    if (type == SearchRangeType.OldTestament && index.NumberOfBook >= 470) { continue; }
+                    //    if (type == SearchRangeType.PaulsLetters && (index.NumberOfBook < 520 || index.NumberOfBook > 640)) { continue; }
+                    //}
                     var baseBookShortcut = bookShortcuts.Where(x => x.Key == index.NumberOfBook).Select(x => x.Value).FirstOrDefault();
                     var translation = translationNames.Where(x => x.Key == index.TranslationName).FirstOrDefault();
                     if (translation.IsNull() || translation.Key.IsNull()) { continue; }
@@ -153,14 +184,20 @@ namespace ChurchServices.WebApp.Controllers {
 
             return View(model);
         }
+
+        private string GetRangeCriteriaString(int start, int end) {
+            return $" AND ([NumberOfBook] Between ({start},{end}))";
+        }
     }
 
     [ApiController]
     [Route("api/[controller]")]
     public class GetSiglumUrlController : Controller {
         private readonly IBibleTagController BibleTag;
-        public GetSiglumUrlController(IBibleTagController bibleTag) {
+        private readonly IConfiguration Configuration;
+        public GetSiglumUrlController(IBibleTagController bibleTag, IConfiguration configuration) {
             BibleTag = bibleTag;
+            Configuration = configuration;
         }
 
         [HttpGet]
@@ -173,7 +210,7 @@ namespace ChurchServices.WebApp.Controllers {
                     var session = new UnitOfWork();
                     var url = BibleTag.GetRecognizedSiglumUrl(session, text);
                     if (url.IsNotNullOrEmpty()) {
-                        return Ok($"https://kosciol-jezusa.pl{url}");
+                        return Ok($"{Configuration["HostUrl"]}{url}");
                     }
                 }
             }
@@ -222,5 +259,8 @@ namespace ChurchServices.WebApp.Controllers {
         [Description("w Psalmach")]
         [Category("P")]
         Psalms,
+        [Description("w listach ap. Pawła")]
+        [Category("PL")]
+        PaulsLetters,
     }
 }

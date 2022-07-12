@@ -68,7 +68,7 @@ namespace ChurchServices.WinApp {
                     var linkExists = links.Where(x => x.Start <= item.Key.Start && x.End >= item.Key.Start).Any();
                     if (!linkExists) {
                         var link = editor.Document.Hyperlinks.Create(item.Key);
-                        link.NavigateUri = $"{item.Value}"; // https://kosciol-jezusa.pl
+                        link.NavigateUri = $"{item.Value}";
                     }
                 }
             }

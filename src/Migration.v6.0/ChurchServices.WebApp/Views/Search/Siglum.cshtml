@@ -1,19 +1,35 @@
 ﻿@inject ITranslationInfoController TranslationInfoController
+@inject IConfiguration Configuration
 @model IEnumerable<string>
 @{
-    ViewData["Title"] = "Siglum nie zostało znalezione";
+    ViewData["Title"] = "Schemat Siglum";
 }
 
-<h1>Siglum</h1>
-<p>Nie odnaleziono wersetu <b>@Model.FirstOrDefault()</b>!</p>
-<p>
-    Siglum zapisujemy w formie:<br />
+<h1>@ViewData["Title"]</h1>
+<div class="container">
+    @if (Model.FirstOrDefault() != null) {
+        ViewData["Title"] = "Siglum nie zostało znalezione";
+        <p>Nie odnaleziono wersetu <b>@Model.FirstOrDefault()</b>!</p>
+    }
+
+    <p>
+    <a href="https://pl.wikipedia.org/wiki/Siglum" target="_blank">Siglum</a> zapisujemy według zasad protestanckich jak poniżej:<br />
     <pre>
-{skrót księgi} {numer rozdziału}:{numer wersetu} np. J 3:16<br />
-{skrót księgi} {numer rozdziału}:{numer wersetu}-{do wersetu} np. Mt 5:3-5<br />
-{skrót przekładu} {skrót księgi} {numer rozdziału}:{numer wersetu} np. UBG 1J 5:20
+        {skrót księgi} {numer rozdziału}:{numer wersetu} np. J 3:16
+        {skrót księgi} {numer rozdziału}:{numer wersetu}-{do wersetu} np. Mt 5:3-5
+        {skrót przekładu} {skrót księgi} {numer rozdziału}:{numer wersetu} np. UBG 1J 5:20
     </pre>
-</p>
+    </p>
+
+    <p>
+    Schemat siglum można użyć w wywołaniu:
+    <pre>
+        @Configuration["HostUrl"]/Search/Siglum?text=Rz 12:9
+        @Configuration["HostUrl"]/Search/Siglum?text=Mat 5:5-9
+        @Configuration["HostUrl"]/Search/Siglum?text=UBG J 5:20
+    </pre>
+    </p>
+</div>
 @{
     var session = new UnitOfWork();
     var translations = new XPQuery<Translation>(session)

@@ -35,6 +35,17 @@
                     <span> | </span>
                 }
             }
+        } else {
+            <h1>Wyszukiwanie</h1>
+            <p>
+            <span>Brak wyników! Nie wskazano szukanego ciągu </span>
+            @if (Model.SearchType != ChurchServices.WebApp.Controllers.SearchRangeType.All) {
+                <span> @Model.SearchType.GetDescription().</span>
+            }
+            else {
+                <span>w całej Biblii.</span>
+            }
+            </p>
         }
     </p>
 
@@ -100,8 +111,8 @@
 }
 
 else {
-    <h4>Wyszukiwanie</h4>
-    <p>Brak wyników</p>
+    <h1>Wyszukiwanie</h1>
+    <p>Brak wyników!</p>
 }
 
 @section Scripts {

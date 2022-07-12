@@ -18,10 +18,7 @@
     <link rel="icon" type="image/svg+xml" href="~/img/baptysci-logo.svg" />
     @RenderSection("HeaderScripts", required: false)
 </head>
-<body data-bs-spy="scroll" data-bs-target="#top-nav" data-bs-offset="0">
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v9.0" nonce="TGe91ewv"></script>
-   
+<body data-bs-spy="scroll" data-bs-target="#top-nav" data-bs-offset="0">    
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mb-5 shadow" id="top-nav">
             <div class="container-fluid">
@@ -183,6 +180,9 @@
                                 @foreach(SearchRangeType rangeType in Enum.GetValues(typeof(SearchRangeType))) {
                                     <button class="dropdown-item" type="submit" name="type" value="@rangeType.GetCategory()">Szukaj @rangeType.GetDescription()</button>
                                 }
+
+                                  <li><hr class="dropdown-divider"></li>
+                                  <a class="nav-link menu-item-a" href="/Search/Siglum" title="Schemat siglów biblijnych"><i class="fa-solid fa-magnifying-glass-arrow-right"></i>&nbsp;Schemat Siglum</a>
                             </ul>
                         </div>
                     </form>
@@ -211,10 +211,13 @@
     
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/BootstrapMenu.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>    
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"></script>
     @RenderSection("Scripts", required: false)
+
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v9.0" nonce="TGe91ewv"></script>
+   
 </body>
 </html>

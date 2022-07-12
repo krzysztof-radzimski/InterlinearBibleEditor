@@ -19,6 +19,22 @@ namespace ChurchServices.Data.Model {
         private string index;
         private bool startFromNewLine;
 
+        /*
+         ALTER TABLE Verse 
+         ADD 
+            NumberOfBook INT GENERATED ALWAYS AS (substr(substr([Index], INSTR([Index],'.')+1), 0, INSTR(substr([Index], INSTR([Index],'.')+1),'.')))
+        */
+        [Persistent("NumberOfBook")]
+        private int numberOfBook;
+   
+        /*
+         ALTER TABLE Verse 
+         ADD 
+            TranslationName NVARCHAR(10) GENERATED ALWAYS AS (substr([Index], 0, INSTR([Index],'.')))         
+        */
+        [Persistent("TranslationName")]
+        private string translationName;
+
         public int NumberOfVerse {
             get { return numberOfVerse; }
             set { SetPropertyValue(nameof(NumberOfVerse), ref numberOfVerse, value); }
@@ -54,6 +70,12 @@ namespace ChurchServices.Data.Model {
             set { SetPropertyValue(nameof(Index), ref index, value); }
         }
 
+        [PersistentAlias("numberOfBook")]
+        public int NumberOfBook { get { return numberOfBook; } }
+
+        [PersistentAlias("translationName")]
+        public string TranslationName { get { return translationName; } }
+
 
         [NonPersistent]
         public Translation ParentTranslation {
@@ -73,7 +95,7 @@ namespace ChurchServices.Data.Model {
             var text = string.Empty;
             foreach (var item in VerseWords) {
                 text += item.SourceWord + " ";
-            }
+            } 
             return text.Trim();
         }
 
