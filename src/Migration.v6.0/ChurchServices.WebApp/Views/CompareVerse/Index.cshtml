@@ -53,7 +53,7 @@
 
                     var styles = "";
                     var selected = index.TranslationName == Model.Index.TranslationName;
-                    if (selected) { styles = @"style=""background-color: #fffee34c;"""; }
+                    if (selected) { styles = @"active-verse"; }
                     var translationName = item.TranslationName;
                     var translationDesc = item.TranslationDescription;
                     var translationType = item.TranslationType.GetDescription();
@@ -63,7 +63,7 @@
 
                     var link = $@"<a href=""/{index.TranslationName}/{index.NumberOfBook}/{index.NumberOfChapter}/{index.NumberOfVerse}"" class=""text-decoration-none"" title=""{translationDesc}"">{translationName}</a>";
 
-                    <div class="row p-1" @Html.Raw(styles)>
+                    <div class="row p-1 @styles">
                         <div class="col-auto p-1 border-bottom" style="width: 8%; font-size: 80%; min-width: 50px;">@Html.Raw(link)</div>
                         <div class="col-auto p-1 border-bottom border-start" style="width: 8%; font-size: 80%; min-width: 100px;">@translationType</div>
                         <div class="col-auto p-1 border-bottom border-start" style="width: 15%; font-size: 80%; min-width: 100px">@translationDesc</div>
