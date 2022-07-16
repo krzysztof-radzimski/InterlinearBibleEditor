@@ -627,6 +627,9 @@ img {
 .transliteration {
     color: #003A60;
 }
+.active-verse {
+    background-color: rgba(255, 254, 227, 0.4);
+}
 
 .songbook {
     margin: auto;
@@ -731,7 +734,11 @@ img {
     }
 
     .transliteration {
-        color: #747171 !important;
+        color: #7471A3 !important;
+    }
+
+    .active-verse {
+        background-color: rgba(255, 254, 227, 0.1);
     }
 
     .pill-white, .dropdown-menu, .my-dropdown, .modal-content {
