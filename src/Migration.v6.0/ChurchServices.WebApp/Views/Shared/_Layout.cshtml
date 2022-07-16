@@ -91,7 +91,7 @@
                                         var _notrecommendedBadge = item.TranslationType == TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm abbr-small"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
                                         var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
                                         var _isUA = item.Language == Language.Ukrainian ? @"&nbsp;<img src=""/img/ukraine.png"" style=""width: 16px; "" />" : "";
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name"><b>@item.Name</b>&nbsp;<span class="fs-80per">@_description</span>&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)@Html.Raw(@_isUA)</a></li>
+                                        <li><a class="dropdown-item" href="/@_name"><b>@item.Name</b>&nbsp;<span class="fs-80per">@_description</span>&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)@Html.Raw(@_isUA)</a></li>
                                     }
 
                                     if (groupName.Key == TranslationType.Interlinear.GetDescription()) {
@@ -131,7 +131,7 @@
                                         var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
 
 
-                                        <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_loginRequired)</a></li>
+                                        <li><a class="dropdown-item" href="/@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_loginRequired)</a></li>
 
                                     }
                                 }
@@ -152,9 +152,9 @@
                                     <a class="nav-link menu-item-a" asp-area="" asp-controller="Home" asp-action="Secured" title="Zaloguj"><i class="fa-solid fa-arrow-right-to-bracket"></i></a>
                                 }
                                 @if (isLocal || isDefault) {
-                                    <a class="nav-link menu-item-a" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sch=http&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=pl&_x_tr_pto=nui" title="English"><img src="~/img/uk.png" style="width: 19px; position: relative; top: -3px;" /></a>
+                                    <a class="nav-link menu-item-a" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sch=http&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=pl&_x_tr_pto=nui" title="English"><img src="~/img/uk.png" style="width: 19px; min-width: 19px; position: relative; top: -3px;" /></a>
 
-                                    <a class="nav-link menu-item-a" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sl=pl&_x_tr_tl=uk&_x_tr_hl=pl&_x_tr_pto=wapp" title="Uкраїнський"><img src="~/img/ukraine.png" style="width: 19px; position: relative; top: -3px;" /></a>
+                                    <a class="nav-link menu-item-a" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sl=pl&_x_tr_tl=uk&_x_tr_hl=pl&_x_tr_pto=wapp" title="Uкраїнський"><img src="~/img/ukraine.png" style="width: 19px; min-width: 19px; position: relative; top: -3px;" /></a>
                                 }
                             </div>
                         </li>

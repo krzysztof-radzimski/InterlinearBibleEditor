@@ -57,7 +57,7 @@
                     var _recommendedBadge = item.Recommended ? @"<span class=""badge bg-success text-white"" style=""text-shadow: none;"">zalecany</span>" : "";
                     var _notrecommendedBadge = type == TranslationType.Dynamic ? @"<span class=""badge bg-warning text-dark"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"" style=""text-shadow: none;"">czytaj uważnie</span>" : "";
                     
-                    <li><a class="dropdown-item" asp-area="" asp-controller="Translation" asp-action="Index" asp-route-translationName="@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)</a></li>
+                    <li><a class="dropdown-item" href="/@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)</a></li>
 
                 }
 
