@@ -181,7 +181,7 @@ namespace ChurchServices.WinApp {
             articleHtml = UpdateArticleHtml(articleHtml);
             File.WriteAllText(fileName, articleHtml, Encoding.UTF8);
             //editor.SaveDocument(fileName, XHtmlDocumentFormat.Id);
-            System.Diagnostics.Process.Start(fileName);
+            System.Diagnostics.Process.Start("explorer.exe", fileName);
         }
 
         private void btnQuote_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
@@ -199,6 +199,10 @@ namespace ChurchServices.WinApp {
 
         private void btnReplaceAllSiglum_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             ReplaceAllSiglum();
+        }
+
+        private void tablePanel1_Paint(object sender, PaintEventArgs e) {
+
         }
     }
 }

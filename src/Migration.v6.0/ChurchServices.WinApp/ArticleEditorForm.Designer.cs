@@ -131,6 +131,7 @@ namespace ChurchServices.WinApp {
             this.showNotesItem1 = new DevExpress.XtraRichEdit.UI.ShowNotesItem();
             this.btnSave = new DevExpress.XtraBars.BarButtonItem();
             this.btnQuote = new DevExpress.XtraBars.BarButtonItem();
+            this.btnReplaceAllSiglum = new DevExpress.XtraBars.BarButtonItem();
             this.homeRibbonPage1 = new DevExpress.XtraRichEdit.UI.HomeRibbonPage();
             this.clipboardRibbonPageGroup1 = new DevExpress.XtraRichEdit.UI.ClipboardRibbonPageGroup();
             this.fontRibbonPageGroup1 = new DevExpress.XtraRichEdit.UI.FontRibbonPageGroup();
@@ -159,7 +160,6 @@ namespace ChurchServices.WinApp {
             this.txtSubject = new DevExpress.XtraEditors.TextEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.sidePanel2 = new DevExpress.XtraEditors.SidePanel();
-            this.btnReplaceAllSiglum = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemFontEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemRichEditFontSizeEdit1)).BeginInit();
@@ -183,7 +183,6 @@ namespace ChurchServices.WinApp {
             // 
             // ribbonControl1
             // 
-            this.ribbonControl1.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(45, 48, 45, 48);
             this.ribbonControl1.ExpandCollapseItem.Id = 0;
             this.ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.ribbonControl1.ExpandCollapseItem,
@@ -286,10 +285,8 @@ namespace ChurchServices.WinApp {
             this.btnQuote,
             this.btnReplaceAllSiglum});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ribbonControl1.MaxItemId = 98;
             this.ribbonControl1.Name = "ribbonControl1";
-            this.ribbonControl1.OptionsMenuMinWidth = 495;
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.homeRibbonPage1,
             this.referencesRibbonPage1});
@@ -299,7 +296,7 @@ namespace ChurchServices.WinApp {
             this.ribbonControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemFontEdit1,
             this.repositoryItemRichEditFontSizeEdit1});
-            this.ribbonControl1.Size = new System.Drawing.Size(2018, 172);
+            this.ribbonControl1.Size = new System.Drawing.Size(1345, 158);
             // 
             // pasteItem1
             // 
@@ -363,7 +360,6 @@ namespace ChurchServices.WinApp {
             this.editor.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.editor.Location = new System.Drawing.Point(0, 0);
-            this.editor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.editor.MenuManager = this.ribbonControl1;
             this.editor.Name = "editor";
             this.editor.Options.Behavior.CreateNew = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
@@ -379,7 +375,7 @@ namespace ChurchServices.WinApp {
             this.editor.Options.DocumentCapabilities.OleObjects = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.DocumentCapabilities.Tables = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
             this.editor.Options.DocumentCapabilities.TrackChanges = DevExpress.XtraRichEdit.DocumentCapability.Disabled;
-            this.editor.Size = new System.Drawing.Size(1480, 1287);
+            this.editor.Size = new System.Drawing.Size(986, 745);
             this.editor.TabIndex = 1;
             // 
             // fontSizeIncreaseItem1
@@ -737,7 +733,7 @@ namespace ChurchServices.WinApp {
             this.galleryChangeStyleItem1.Gallery.ColumnCount = 10;
             this.galleryChangeStyleItem1.Gallery.Groups.AddRange(new DevExpress.XtraBars.Ribbon.GalleryItemGroup[] {
             galleryItemGroup1});
-            this.galleryChangeStyleItem1.Gallery.ImageSize = new System.Drawing.Size(97, 74);
+            this.galleryChangeStyleItem1.Gallery.ImageSize = new System.Drawing.Size(65, 46);
             this.galleryChangeStyleItem1.Id = 66;
             this.galleryChangeStyleItem1.Name = "galleryChangeStyleItem1";
             // 
@@ -932,6 +928,14 @@ namespace ChurchServices.WinApp {
             this.btnQuote.Name = "btnQuote";
             this.btnQuote.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnQuote_ItemClick);
             // 
+            // btnReplaceAllSiglum
+            // 
+            this.btnReplaceAllSiglum.Caption = "Replace all siglum";
+            this.btnReplaceAllSiglum.Id = 97;
+            this.btnReplaceAllSiglum.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnReplaceAllSiglum.ImageOptions.SvgImage")));
+            this.btnReplaceAllSiglum.Name = "btnReplaceAllSiglum";
+            this.btnReplaceAllSiglum.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnReplaceAllSiglum_ItemClick);
+            // 
             // homeRibbonPage1
             // 
             this.homeRibbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -1103,10 +1107,9 @@ namespace ChurchServices.WinApp {
             // 
             this.sidePanel1.Controls.Add(this.tabs);
             this.sidePanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.sidePanel1.Location = new System.Drawing.Point(1480, 172);
-            this.sidePanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.sidePanel1.Location = new System.Drawing.Point(986, 158);
             this.sidePanel1.Name = "sidePanel1";
-            this.sidePanel1.Size = new System.Drawing.Size(538, 1287);
+            this.sidePanel1.Size = new System.Drawing.Size(359, 745);
             this.sidePanel1.TabIndex = 3;
             // 
             // tabs
@@ -1114,13 +1117,12 @@ namespace ChurchServices.WinApp {
             this.tabs.Controls.Add(this.tabSettings);
             this.tabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabs.Location = new System.Drawing.Point(1, 0);
-            this.tabs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabs.Name = "tabs";
             this.tabs.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tabSettings});
-            this.tabs.RegularSize = new System.Drawing.Size(537, 1287);
+            this.tabs.RegularSize = new System.Drawing.Size(358, 745);
             this.tabs.SelectedPage = this.tabSettings;
-            this.tabs.Size = new System.Drawing.Size(537, 1287);
+            this.tabs.Size = new System.Drawing.Size(358, 745);
             this.tabs.TabIndex = 0;
             this.tabs.Text = "tabPane1";
             // 
@@ -1129,9 +1131,8 @@ namespace ChurchServices.WinApp {
             this.tabSettings.Caption = "Settings";
             this.tabSettings.Controls.Add(this.tablePanel1);
             this.tabSettings.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabSettings.ImageOptions.SvgImage")));
-            this.tabSettings.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabSettings.Name = "tabSettings";
-            this.tabSettings.Size = new System.Drawing.Size(537, 1243);
+            this.tabSettings.Size = new System.Drawing.Size(358, 702);
             // 
             // tablePanel1
             // 
@@ -1153,7 +1154,6 @@ namespace ChurchServices.WinApp {
             this.tablePanel1.Controls.Add(this.labelControl1);
             this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tablePanel1.Location = new System.Drawing.Point(0, 0);
-            this.tablePanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tablePanel1.Name = "tablePanel1";
             this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
@@ -1176,76 +1176,71 @@ namespace ChurchServices.WinApp {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(537, 1243);
+            this.tablePanel1.Size = new System.Drawing.Size(358, 702);
             this.tablePanel1.TabIndex = 0;
+            this.tablePanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tablePanel1_Paint);
             // 
             // cbHidden
             // 
             this.tablePanel1.SetColumn(this.cbHidden, 0);
-            this.cbHidden.Location = new System.Drawing.Point(4, 1045);
-            this.cbHidden.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cbHidden.Location = new System.Drawing.Point(3, 655);
             this.cbHidden.MenuManager = this.ribbonControl1;
             this.cbHidden.Name = "cbHidden";
             this.cbHidden.Properties.Caption = "Hidden";
             this.tablePanel1.SetRow(this.cbHidden, 13);
-            this.cbHidden.Size = new System.Drawing.Size(529, 25);
+            this.cbHidden.Size = new System.Drawing.Size(352, 20);
             this.cbHidden.TabIndex = 13;
             // 
             // txtAuthorPicture
             // 
             this.tablePanel1.SetColumn(this.txtAuthorPicture, 0);
-            this.txtAuthorPicture.Location = new System.Drawing.Point(4, 550);
-            this.txtAuthorPicture.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtAuthorPicture.Location = new System.Drawing.Point(3, 349);
             this.txtAuthorPicture.MenuManager = this.ribbonControl1;
             this.txtAuthorPicture.Name = "txtAuthorPicture";
             this.txtAuthorPicture.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             this.tablePanel1.SetRow(this.txtAuthorPicture, 12);
-            this.txtAuthorPicture.Size = new System.Drawing.Size(529, 485);
+            this.txtAuthorPicture.Size = new System.Drawing.Size(352, 300);
             this.txtAuthorPicture.TabIndex = 12;
             // 
             // labelControl6
             // 
             this.tablePanel1.SetColumn(this.labelControl6, 0);
-            this.labelControl6.Location = new System.Drawing.Point(4, 519);
-            this.labelControl6.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.labelControl6.Location = new System.Drawing.Point(3, 330);
             this.labelControl6.Name = "labelControl6";
             this.tablePanel1.SetRow(this.labelControl6, 11);
-            this.labelControl6.Size = new System.Drawing.Size(100, 21);
+            this.labelControl6.Size = new System.Drawing.Size(69, 13);
             this.labelControl6.TabIndex = 11;
             this.labelControl6.Text = "Author picture";
             // 
             // labelControl5
             // 
             this.tablePanel1.SetColumn(this.labelControl5, 0);
-            this.labelControl5.Location = new System.Drawing.Point(4, 450);
-            this.labelControl5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.labelControl5.Location = new System.Drawing.Point(3, 285);
             this.labelControl5.Name = "labelControl5";
             this.tablePanel1.SetRow(this.labelControl5, 9);
-            this.labelControl5.Size = new System.Drawing.Size(33, 21);
+            this.labelControl5.Size = new System.Drawing.Size(24, 13);
             this.labelControl5.TabIndex = 10;
             this.labelControl5.Text = "Type";
             // 
             // txtType
             // 
             this.tablePanel1.SetColumn(this.txtType, 0);
-            this.txtType.Location = new System.Drawing.Point(4, 481);
-            this.txtType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtType.Location = new System.Drawing.Point(3, 304);
             this.txtType.MenuManager = this.ribbonControl1;
             this.txtType.Name = "txtType";
             this.txtType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.tablePanel1.SetRow(this.txtType, 10);
-            this.txtType.Size = new System.Drawing.Size(529, 28);
+            this.txtType.Size = new System.Drawing.Size(352, 20);
             this.txtType.TabIndex = 9;
             // 
             // btnPreviewHtml
             // 
             this.tablePanel1.SetColumn(this.btnPreviewHtml, 0);
-            this.btnPreviewHtml.Location = new System.Drawing.Point(4, 408);
-            this.btnPreviewHtml.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnPreviewHtml.Location = new System.Drawing.Point(3, 259);
             this.btnPreviewHtml.Name = "btnPreviewHtml";
             this.tablePanel1.SetRow(this.btnPreviewHtml, 8);
-            this.btnPreviewHtml.Size = new System.Drawing.Size(529, 32);
+            this.btnPreviewHtml.Size = new System.Drawing.Size(352, 20);
             this.btnPreviewHtml.TabIndex = 8;
             this.btnPreviewHtml.Text = "HTML Preview";
             this.btnPreviewHtml.Click += new System.EventHandler(this.btnPreviewHtml_Click);
@@ -1253,46 +1248,42 @@ namespace ChurchServices.WinApp {
             // txtLead
             // 
             this.tablePanel1.SetColumn(this.txtLead, 0);
-            this.txtLead.Location = new System.Drawing.Point(4, 243);
-            this.txtLead.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtLead.Location = new System.Drawing.Point(3, 157);
             this.txtLead.MenuManager = this.ribbonControl1;
             this.txtLead.Name = "txtLead";
             this.txtLead.Properties.MaxLength = 1000;
             this.tablePanel1.SetRow(this.txtLead, 7);
-            this.txtLead.Size = new System.Drawing.Size(529, 155);
+            this.txtLead.Size = new System.Drawing.Size(352, 96);
             this.txtLead.TabIndex = 7;
             // 
             // labelControl4
             // 
             this.tablePanel1.SetColumn(this.labelControl4, 0);
-            this.labelControl4.Location = new System.Drawing.Point(4, 212);
-            this.labelControl4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.labelControl4.Location = new System.Drawing.Point(3, 138);
             this.labelControl4.Name = "labelControl4";
             this.tablePanel1.SetRow(this.labelControl4, 6);
-            this.labelControl4.Size = new System.Drawing.Size(33, 21);
+            this.labelControl4.Size = new System.Drawing.Size(23, 13);
             this.labelControl4.TabIndex = 6;
             this.labelControl4.Text = "Lead";
             // 
             // txtAuthor
             // 
             this.tablePanel1.SetColumn(this.txtAuthor, 0);
-            this.txtAuthor.Location = new System.Drawing.Point(4, 174);
-            this.txtAuthor.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtAuthor.Location = new System.Drawing.Point(3, 112);
             this.txtAuthor.MenuManager = this.ribbonControl1;
             this.txtAuthor.Name = "txtAuthor";
             this.txtAuthor.Properties.MaxLength = 100;
             this.tablePanel1.SetRow(this.txtAuthor, 5);
-            this.txtAuthor.Size = new System.Drawing.Size(529, 28);
+            this.txtAuthor.Size = new System.Drawing.Size(352, 20);
             this.txtAuthor.TabIndex = 5;
             // 
             // labelControl3
             // 
             this.tablePanel1.SetColumn(this.labelControl3, 0);
-            this.labelControl3.Location = new System.Drawing.Point(4, 143);
-            this.labelControl3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.labelControl3.Location = new System.Drawing.Point(3, 93);
             this.labelControl3.Name = "labelControl3";
             this.tablePanel1.SetRow(this.labelControl3, 4);
-            this.labelControl3.Size = new System.Drawing.Size(48, 21);
+            this.labelControl3.Size = new System.Drawing.Size(33, 13);
             this.labelControl3.TabIndex = 4;
             this.labelControl3.Text = "Author";
             // 
@@ -1300,8 +1291,7 @@ namespace ChurchServices.WinApp {
             // 
             this.tablePanel1.SetColumn(this.txtDate, 0);
             this.txtDate.EditValue = null;
-            this.txtDate.Location = new System.Drawing.Point(4, 105);
-            this.txtDate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtDate.Location = new System.Drawing.Point(3, 67);
             this.txtDate.MenuManager = this.ribbonControl1;
             this.txtDate.Name = "txtDate";
             this.txtDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1309,40 +1299,37 @@ namespace ChurchServices.WinApp {
             this.txtDate.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.tablePanel1.SetRow(this.txtDate, 3);
-            this.txtDate.Size = new System.Drawing.Size(529, 28);
+            this.txtDate.Size = new System.Drawing.Size(352, 20);
             this.txtDate.TabIndex = 3;
             // 
             // labelControl2
             // 
             this.tablePanel1.SetColumn(this.labelControl2, 0);
-            this.labelControl2.Location = new System.Drawing.Point(4, 74);
-            this.labelControl2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.labelControl2.Location = new System.Drawing.Point(3, 48);
             this.labelControl2.Name = "labelControl2";
             this.tablePanel1.SetRow(this.labelControl2, 2);
-            this.labelControl2.Size = new System.Drawing.Size(32, 21);
+            this.labelControl2.Size = new System.Drawing.Size(23, 13);
             this.labelControl2.TabIndex = 2;
             this.labelControl2.Text = "Date";
             // 
             // txtSubject
             // 
             this.tablePanel1.SetColumn(this.txtSubject, 0);
-            this.txtSubject.Location = new System.Drawing.Point(4, 36);
-            this.txtSubject.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtSubject.Location = new System.Drawing.Point(3, 22);
             this.txtSubject.MenuManager = this.ribbonControl1;
             this.txtSubject.Name = "txtSubject";
             this.txtSubject.Properties.MaxLength = 200;
             this.tablePanel1.SetRow(this.txtSubject, 1);
-            this.txtSubject.Size = new System.Drawing.Size(529, 28);
+            this.txtSubject.Size = new System.Drawing.Size(352, 20);
             this.txtSubject.TabIndex = 1;
             // 
             // labelControl1
             // 
             this.tablePanel1.SetColumn(this.labelControl1, 0);
-            this.labelControl1.Location = new System.Drawing.Point(4, 5);
-            this.labelControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.labelControl1.Location = new System.Drawing.Point(3, 3);
             this.labelControl1.Name = "labelControl1";
             this.tablePanel1.SetRow(this.labelControl1, 0);
-            this.labelControl1.Size = new System.Drawing.Size(51, 21);
+            this.labelControl1.Size = new System.Drawing.Size(36, 13);
             this.labelControl1.TabIndex = 0;
             this.labelControl1.Text = "Subject";
             // 
@@ -1350,30 +1337,20 @@ namespace ChurchServices.WinApp {
             // 
             this.sidePanel2.Controls.Add(this.editor);
             this.sidePanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sidePanel2.Location = new System.Drawing.Point(0, 172);
-            this.sidePanel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.sidePanel2.Location = new System.Drawing.Point(0, 158);
             this.sidePanel2.Name = "sidePanel2";
-            this.sidePanel2.Size = new System.Drawing.Size(1480, 1287);
+            this.sidePanel2.Size = new System.Drawing.Size(986, 745);
             this.sidePanel2.TabIndex = 4;
             this.sidePanel2.Text = "sidePanel2";
             // 
-            // btnReplaceAllSiglum
-            // 
-            this.btnReplaceAllSiglum.Caption = "Replace all siglum";
-            this.btnReplaceAllSiglum.Id = 97;
-            this.btnReplaceAllSiglum.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnReplaceAllSiglum.ImageOptions.SvgImage")));
-            this.btnReplaceAllSiglum.Name = "btnReplaceAllSiglum";
-            this.btnReplaceAllSiglum.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnReplaceAllSiglum_ItemClick);
-            // 
             // ArticleEditorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2018, 1459);
+            this.ClientSize = new System.Drawing.Size(1345, 903);
             this.Controls.Add(this.sidePanel2);
             this.Controls.Add(this.sidePanel1);
             this.Controls.Add(this.ribbonControl1);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ArticleEditorForm";
             this.Ribbon = this.ribbonControl1;
             this.Text = "ArticleEditorForm";

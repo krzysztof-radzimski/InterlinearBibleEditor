@@ -95,21 +95,39 @@ namespace ChurchServices.WinApp.Controllers {
             text = text.Replace("\v", "<br/>");
 
             if (!hyperlinkExporting) {
-                var span = @"<span style=""";
+                var span = @"<span";
+                var _class = @" class=""";
+                var style = @" style=""";
+                if (run.Script == CharacterFormattingScript.Superscript)
+                    style += "vertical-align: super; ";
+                if (run.Script == CharacterFormattingScript.Subscript)
+                    style += "vertical-align: sub; ";
                 if (run.FontBold)
-                    span += "font-weight: bold; ";
+                    style += "font-weight: bold; ";
                 if (run.FontItalic)
-                    span += "font-style: italic; ";
+                    style += "font-style: italic; ";
                 if (run.FontUnderlineType != UnderlineType.None)
-                    span += "text-decoration: underline; ";
+                    style += "text-decoration: underline; ";
                 if (run.FontStrikeoutType != StrikeoutType.None)
-                    span += "text-decoration: line-through; ";
-                if (run.ForeColorIndex != DevExpress.Office.Model.ColorModelInfoCache.EmptyColorIndex)
-                    span += $"color: #{ColorTranslator.ToHtml(DocumentModel.GetColor(run.ForeColorIndex))}; ";
-                if (run.DoubleFontSize != DocumentModel.DefaultCharacterProperties.DoubleFontSize)
-                    span += $"font-size: {Math.Min(run.DoubleFontSize, 39)}px; ";
+                    style += "text-decoration: line-through; ";
+                if (run.ForeColorIndex != DevExpress.Office.Model.ColorModelInfoCache.EmptyColorIndex) {
+                    var color = ColorTranslator.ToHtml(DocumentModel.GetColor(run.ForeColorIndex));
+                    if (color == "#FF0000") {
+                        _class += "text-danger";
+                    }
+                    else {
+                        span += $"color: {ColorTranslator.ToHtml(DocumentModel.GetColor(run.ForeColorIndex))}; ";
+                    }
+                }
+                //if (run.DoubleFontSize != DocumentModel.DefaultCharacterProperties.DoubleFontSize)
+                //    style += $"font-size: {Math.Min(run.DoubleFontSize, 39)}px; ";
 
-                span += $"\">{text}</span>";
+                style += @"""";
+                _class += @"""";
+
+                if (_class.Trim() != @"class=""""") { span += _class; }
+                if (_class.Trim() != @"style=""""") { span += style; }
+                span += $">{text}</span>";
                 DocumentContentWriter.Write(span);
             }
             else {
