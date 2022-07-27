@@ -1,16 +1,39 @@
-﻿@{
+﻿@model TranslationControllerModel
+@{
     ViewData["Title"] = "Biblia";
+    var hasFootnotes = false;
+    Book book = null;
+    Chapter chapter = null;
+    int chapterNumber = 0;
+    if (Model != null && Model.Book.IsNotNullOrEmpty()) {
+        book = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(Model.Book)).FirstOrDefault();
+        if (Model.Chapter.IsNotNullOrEmpty()) {
+            chapterNumber = Convert.ToInt32(Model.Chapter);
+            chapter = book.Chapters.Where(x => x.NumberOfChapter == chapterNumber).FirstOrDefault();
+
+            if (chapter.IsNotNull()) {
+                if (Model.Translation.Type == TranslationType.Interlinear) {
+                    hasFootnotes = chapter.Verses.Where(x => x.VerseWords.Count > 0 && x.VerseWords.Where(y => y.FootnoteText.IsNotNullOrEmpty()).Any()).Any();
+                }
+                else {
+                    hasFootnotes = chapter.Verses.Where(x => x.Text.Contains("<n>") && x.Text.Contains("*")).Any();
+                }
+            }
+        }
+    }
+
+    ViewData["ContainerClass"] = hasFootnotes ? "container-translation" : "";
     var selectedVerses = new List<int>();
     var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
     var __path = this.Context.Request.Path;
     var translationName = String.Empty;
+
 }
 @inject IConfiguration Configuration
 @inject IBibleTagController BibleTagController
-@model TranslationControllerModel
 
-@if (Model.IsNotNull() && Model.Translation.IsNotNull() && Model.Translation.Name.IsNotNullOrEmpty())
-{
+
+@if (Model.IsNotNull() && Model.Translation.IsNotNull() && Model.Translation.Name.IsNotNullOrEmpty()) {
     translationName = Model.Translation.Name.Replace("'", "").Replace("+", "");
 }
 
@@ -23,13 +46,13 @@ else if (Model.Translation.IsNull() || Model.Translation.Hidden) {
 else if (Model.Book.IsNullOrEmpty()) {
 
     @section HeaderScripts {
-<!-- social sharing metadata -->
-<meta property="og:title" content="@Model.Translation.Description - @Configuration["PageTitle"]" />
-<meta property="og:description" content="@Model.Translation.Description" />
-<meta property="og:image" content="@__host/img/biblelink.jpg" />
-<meta property="og:url" content="@__host@__path" />
-<meta property="og:type" content="article" />
-<meta property="og:locale" content="pl_PL" />
+    <!-- social sharing metadata -->
+    <meta property="og:title" content="@Model.Translation.Description - @Configuration["PageTitle"]" />
+    <meta property="og:description" content="@Model.Translation.Description" />
+    <meta property="og:image" content="@__host/img/biblelink.jpg" />
+    <meta property="og:url" content="@__host@__path" />
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="pl_PL" />
     }
 
     //
@@ -57,30 +80,30 @@ else if (Model.Book.IsNullOrEmpty()) {
 
     <div class="container">
         <div class="row justify-content-center max-width-800">
-            @foreach (var book in Model.Translation.Books.OrderBy(x => x.NumberOfBook)) {
-                var baseBook = book.BaseBook;
+            @foreach (var _book in Model.Translation.Books.OrderBy(x => x.NumberOfBook)) {
+                var baseBook = _book.BaseBook;
                 var bookTitle = baseBook.IsNotNull() ? baseBook.BookTitle : String.Empty;
-                if (Model.Translation.Type == TranslationType.Interlinear && !book.IsTranslated && Model.Translation.BookType == TheBookType.Bible) { continue; }
+                if (Model.Translation.Type == TranslationType.Interlinear && !_book.IsTranslated && Model.Translation.BookType == TheBookType.Bible) { continue; }
 
-                var color = System.Drawing.ColorTranslator.FromHtml(@book.Color);
-                var bookHtml = book.BookShortcut.Replace(" ", "&nbsp;");
+                var color = System.Drawing.ColorTranslator.FromHtml(@_book.Color);
+                var bookHtml = _book.BookShortcut.Replace(" ", "&nbsp;");
                 if (Model.Translation.Type == TranslationType.Interlinear && Model.Translation.BookType == TheBookType.Bible) {
-                    bookHtml = $"{book.BaseBook.BookShortcut}&nbsp;({bookHtml})";
+                    bookHtml = $"{_book.BaseBook.BookShortcut}&nbsp;({bookHtml})";
                 }
 
-                var bookLinkChapterNumber = book.Chapters.Min(x => x.NumberOfChapter);
+                var bookLinkChapterNumber = _book.Chapters.Min(x => x.NumberOfChapter);
                 if (Model.Translation.Type == TranslationType.Interlinear) {
-                    var translatedChapters = book.Chapters.Where(x => x.IsTranslated);
+                    var translatedChapters = _book.Chapters.Where(x => x.IsTranslated);
                     if (translatedChapters.Any()) {
                         bookLinkChapterNumber = translatedChapters.Min(x => x.NumberOfChapter);
                     }
                 }
 
-                var pillHtml = $@"<span class=""badge bg-success rounded-pill"" style=""position: absolute; right: -10px; top: -15px"">{book.NumberOfChapters}</span>";
+                var pillHtml = $@"<span class=""badge bg-success rounded-pill"" style=""position: absolute; right: -10px; top: -15px"">{_book.NumberOfChapters}</span>";
 
                 <div class="col p-2 btn-book" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3);" title="@bookTitle">
                     <span style="position: relative;">
-                        <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@bookTitle" href="/@translationName/@book.NumberOfBook/@bookLinkChapterNumber">@Html.Raw(bookHtml)&nbsp;</a>@Html.Raw(pillHtml)                      
+                        <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@bookTitle" href="/@translationName/@_book.NumberOfBook/@bookLinkChapterNumber">@Html.Raw(bookHtml)&nbsp;</a>@Html.Raw(pillHtml)
                     </span>
                 </div>
             }
@@ -124,7 +147,7 @@ else {
     //
     // Wyświetlanie treści rozdziałów poszczególnych ksiąg
     //
-    Book book = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(Model.Book)).FirstOrDefault();
+    //Book book = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(Model.Book)).FirstOrDefault();
     if (book.IsNotNull()) {
         var baseBook = book.BaseBook;
         var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : String.Empty;
@@ -299,7 +322,7 @@ else {
                         if (_book.BaseBook.Status.CanonType == CanonType.SecondCanon) {
                             _secondCanon = " text-warning bg-dark";
                         }
-                        <a class="col-auto chapter-shortcut dropdown-item@_secondCanon" href="/@translationName/@_book.NumberOfBook/1" title="@_book.BaseBook.BookTitle" style="@_active">@_book.BaseBook.BookShortcut</a>                        
+                        <a class="col-auto chapter-shortcut dropdown-item@_secondCanon" href="/@translationName/@_book.NumberOfBook/1" title="@_book.BaseBook.BookTitle" style="@_active">@_book.BaseBook.BookShortcut</a>
                     }
                 </div>
             </div>
@@ -358,12 +381,12 @@ else {
             }
             @Html.Raw(html.Trim())
         </h2>
-        var chapterNumber = Convert.ToInt32(Model.Chapter);
+        //var chapterNumber = Convert.ToInt32(Model.Chapter);
         if (chapterNumber == __chapterNumbers.First()) {
             if (bookName.IsNotNullOrEmpty()) {
                 var descExists = false;
 
-                <div class="lh-base fs-5" style="max-width: 1000px; margin: auto; text-align: justify; width: 100%;">
+                <div class="lh-base fs-5" style="max-width: 90%; margin: auto; text-align: justify; width: 100%;">
                     <div style=" display: table;">
                         @if (book.BaseBook.AuthorName.IsNotNullOrEmpty()) {
                             descExists = true;
@@ -478,7 +501,7 @@ else {
         }
 
 
-        var chapter = book.Chapters.Where(x => x.NumberOfChapter == chapterNumber).FirstOrDefault();
+        //var chapter = book.Chapters.Where(x => x.NumberOfChapter == chapterNumber).FirstOrDefault();
         var footNoteIndex = 1;
         var footNoteRefIndex = 0;
         var footNotes = new List<FootnoteInfo>();
@@ -494,7 +517,7 @@ else {
             }
         }
 
-        <div class="lh-base fs-6" style="max-width: 1000px; margin: auto; text-align: justify; position: relative;" id="chapterContent">
+        <div class="lh-base fs-6" id="chapterContent">
 
             @{
                 var __translationName = $"({Model.Translation.Name.Replace('\'', ' ')})";
@@ -502,7 +525,7 @@ else {
             }
 
             <!-- Modal -->
-    <div class="modal fade" id="copyVersesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="copyVersesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable" style="height: 90vh; width: 90vw; max-width:100%;">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -655,7 +678,7 @@ else {
                             }
                             if (footnoteText.IsNotNullOrEmpty()) {
                                 translation += $@"<a class=""text-decoration-none fw-bold interlinear-footnote-ref"" href=""#footNote{footNoteRefIndex}"" title=""{footnoteTextTitle}"" id=""ref{footNoteRefIndex}"">{footNoteRefIndex}</a>";
-                                footNotes.Add(new FootnoteInfo() { Index = footNoteRefIndex, Title = footnoteText, Html = $@"<p class=""mb-0""><a name=""footNote{footNoteRefIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteRefIndex}')""/><span style=""cursor: pointer;"" >{footNoteRefIndex}</a>)&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{footnoteText}</p>" });
+                                footNotes.Add(new FootnoteInfo() { Index = footNoteRefIndex, Title = footnoteText, Html = $@"<p><a class=""footnote-tag"" name=""footNote{footNoteRefIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteRefIndex}')""/>{footNoteRefIndex}</a>)&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{footnoteText}</p>" });
                                 footNoteRefIndex++;
                             }
 
@@ -672,7 +695,7 @@ else {
                                         //
                                         var chapterNumberString = Model.Translation.ChapterRomanNumbering ? chapter.NumberOfChapter.ArabicToRoman() : chapter.NumberOfChapter.ToString();
                                         <div class="position-absolute verse-interlinear-div" style="left: -20px; font-weight: bold;">
-                                            <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
+                                            <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse" class="verse-number-b"></a>
                                             <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold verse-interlinear-btn" role="button" data-bs-toggle="" aria-expanded="false" style="font-size: 120%;" onclick="showDopdownMenu(this, 'verseDropDownMenu_@verse.NumberOfVerse')">@verse.NumberOfVerse.</a>
                                             <ul id="verseDropDownMenu_@verse.NumberOfVerse" class="my-dropdown" aria-labelledby="verseMenu_@verse.NumberOfVerse" style="max-height: 85%; overflow: auto;">
                                                 <li><span class="dropdown-header fs-5 disabled">@bookShortcut @chapterNumberString:@verse.NumberOfVerse&nbsp;<button class="btn btn-danger float-end" type="button" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');">Zamknij</button></span></li>
@@ -737,12 +760,16 @@ else {
                     @Html.Raw("</div>")
 
                     @if (footNotes.Count > 0) {
-                        <hr style="max-width: 30%;" />
-                        <div id="footnotes" class="lh-sm fs-6" style="text-align: left">
-                            @foreach (var item in footNotes) {
-                                @Html.Raw(item.Html)
-                            }
-                        </div>
+                        @section Footnotes {                            
+                           
+                            <div id="footnotes" class=" container lh-sm fs-6">
+                                <div class="card-body bible-content rounded">
+                                    @foreach (var item in footNotes) {
+                                        @Html.Raw(item.Html)
+                                    }
+                                </div>
+                            </div>
+                        }
                     }
 
                 }
@@ -822,7 +849,7 @@ else {
 
                         var text = " " + verse.Text;
                         if (text.Contains("<n>") && text.Contains("*")) {
-                            var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\*\·";
+                            var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\·\…\d\–\?\־";
                             var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
                             var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
                             var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
@@ -855,7 +882,7 @@ else {
                                                 groupValue = BibleTagController.GetInternalVerseListHtml(groupValue, Model);
                                                 groupValue = BibleTagController.GetMultiChapterRangeHtml(groupValue, Model);
                                             }
-                                            footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups[groupName].Value, Html = $@"<p class=""mb-0""><a style=""cursor: pointer;"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{groupValue}</p>" });
+                                            footNotes.Add(new FootnoteInfo() { Index = footNoteIndex, Title = m.Groups[groupName].Value, Html = $@"<p><a class=""footnote-tag"" name=""footNote{footNoteIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteIndex}')"">{footNoteIndex})</a>&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{groupValue}</p>" });
                                             switch (i) {
                                                 case 1: { f1Index = footNoteIndex; break; }
                                                 case 2: { f2Index = footNoteIndex; break; }
@@ -950,7 +977,7 @@ else {
                         var clipboardShortText = $"{__verseText}";
 
                         <span id="span-verse-@verse.NumberOfVerse" class="lh-lg fs-5 @activeVerse" style="margin-inline-end: 15px; margin-inline-start: 15px;">
-                            <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse"></a>
+                            <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse" class="verse-number-a"></a>
                             <span id="verseText_@verse.NumberOfVerse" class="position-relative">
                                 <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold position-absolute verse-btn" role="button" data-bs-toggle="" aria-expanded="false" onclick="showDopdownMenu(this, 'verseDropDownMenu_@verse.NumberOfVerse')">@verse.NumberOfVerse.</a>&nbsp;&nbsp;<span id="verseMenuText_@verse.NumberOfVerse">@Html.Raw(text.Trim())</span>&nbsp;
                                 <ul id="verseDropDownMenu_@verse.NumberOfVerse" class="my-dropdown" aria-labelledby="verseMenu_@verse.NumberOfVerse" style="max-height: 85%; overflow: auto;">
@@ -979,12 +1006,15 @@ else {
                     }
 
                     @if (footNotes.Count > 0) {
-                        <hr style="max-width: 30%;" />
-                        <div id="footnotes" class="lh-sm fs-6" style="text-align: left">
-                            @foreach (var item in footNotes) {
-                                @Html.Raw(item.Html)
-                            }
+                        @section Footnotes {                        
+                        <div id="footnotes" class="container lh-sm fs-6">
+                            <div class="card-body bible-content rounded">
+                                @foreach (var item in footNotes) {
+                                    @Html.Raw(item.Html)
+                                }
+                            </div>
                         </div>
+                        }
                     }
 
                 }
@@ -1077,7 +1107,7 @@ else {
 
 
         @section HeaderScripts {
-            @if (Model.IsNotNull() && Model.Translation.IsNotNull()) {
+    @if (Model.IsNotNull() && Model.Translation.IsNotNull()) {
                 var __title = Model.Translation.Description;
 
                 @if (book.IsNotNull()) {
@@ -1092,52 +1122,43 @@ else {
 
                 __title += $" - {Configuration["PageTitle"]}";
 
-<!-- social sharing metadata -->
-<meta property="og:title" content="@__title" />
-<meta property="og:description" content="@Model.Translation.Description" />
-<meta property="og:image" content="@__host/img/biblelink.jpg" />
-<meta property="og:url" content="@__host@__path" />
-<meta property="og:type" content="article" />
-<meta property="og:locale" content="pl_PL" />
+                <!-- social sharing metadata -->
+                <meta property="og:title" content="@__title" />
+                <meta property="og:description" content="@Model.Translation.Description" />
+                <meta property="og:image" content="@__host/img/biblelink.jpg" />
+                <meta property="og:url" content="@__host@__path" />
+                <meta property="og:type" content="article" />
+                <meta property="og:locale" content="pl_PL" />
             }
         }
 
         @section Scripts  {
-            @if (!String.IsNullOrEmpty(Model.Verse)) {
 
-<script>
-    docReady(function () {
-        setTimeout(function () {
-            const topNavId = 'top-nav';
-            const topNav = document.getElementById(topNavId);
+    @if (!String.IsNullOrEmpty(Model.Verse)) {
 
-            const id = 'Verse_@selectedVerses.First()';
-            const yOffset = -((topNav.offsetHeight)+65); //-55;
-            const element = document.getElementById(id);
-            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-            window.scrollTo({ top: y, behavior: 'smooth' });
-        }, 1000);
-    });
-</script>
+                <script>
+                    docReady(function() {
+                        setTimeout(function() {
+                            const id = 'Verse_@selectedVerses.First()';
+                            document.getElementById(id).scrollIntoView();
+                        }, 1000);
+                    });
+                </script>
 
             }
 
+            @if (Model != null && Model.Book.IsNotNullOrEmpty() && Model.Chapter.IsNotNullOrEmpty() && chapter != null && chapter.NumberOfVerses > 0) {
+                <script>
+                    docReady(function() {
+                        setTimeout(function() {
+                            copyNav();
+                        });
+                    });
+                </script>
+            }
 
-
-@if (Model != null && Model.Book.IsNotNullOrEmpty() && Model.Chapter.IsNotNullOrEmpty() && chapter!=null && chapter.NumberOfVerses > 0) {
-<script>
-    docReady(function () {
-        setTimeout(function () {
-            copyNav();
-        });
-    });
-</script>
 }
 
 
-
-
-        }
     }
 }

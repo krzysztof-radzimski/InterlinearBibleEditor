@@ -1,5 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
 
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(var(--bs-light-rgb));
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+
 .card {
     background-color: transparent;
 }
@@ -19,7 +37,6 @@
     vertical-align: super;
     cursor: pointer;
 }
-
 
 .bible-content {
     background-color: rgba(255,255,255,0.7);
@@ -46,7 +63,7 @@
 }
 
 .story {
-    min-width: 90%;
+    min-width: 95%;
     background-image: url(../img/hr.png);
     background-position: center bottom;
     background-repeat: no-repeat;
@@ -57,7 +74,7 @@
 }
 
 .story2 {
-    min-width: 90%;
+    min-width: 95%;
     text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
     font-size: 150% !important;
 }
@@ -113,6 +130,10 @@ a.navbar-brand {
 a {
     color: #0366d6;
 }
+
+    a:hover {
+        color: #002c5e;
+    }
 
 .btn-primary {
     color: #fff;
@@ -188,10 +209,10 @@ body {
     margin-bottom: 60px;
     background-color: #eef6ff;
     background-image: url('../img/background-2021.jpg?ID=5');
-	background-position: top center;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	/*
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    /*
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -232,7 +253,6 @@ figure {
     height: auto;
     max-height: 79vh;
     overflow-x: hidden;
-    overflow-y:;
 }
 
 .bg-bible {
@@ -249,11 +269,13 @@ figure {
         height: 100%;
         opacity: 0.05;
     }
+
 #baptysci-logo {
     width: 30px;
     height: 24px;
     opacity: 0.7;
 }
+
 a:hover #baptysci-logo {
     opacity: 1 !important;
 }
@@ -627,6 +649,7 @@ img {
 .transliteration {
     color: #003A60;
 }
+
 .active-verse {
     background-color: rgba(255, 254, 227, 0.4);
 }
@@ -658,7 +681,7 @@ img {
     background-repeat: no-repeat;
     background-size: contain;
     width: 150px;
-	height: 150px;
+    height: 150px;
 }
 
 .bible-img {
@@ -668,8 +691,129 @@ img {
     background-size: cover;
     height: 300px;
 }
+
+.left-panel {
+    display: none;
+    width: 23%;
+    position: fixed;
+    right: 5px;
+    top: 60px;       
+}
+    .left-panel .bible-content {
+        min-height: 0;
+    }
+
+    .left-panel li {
+        list-style-type: none;
+    }
+
+        .left-panel li[type=h2] {
+            padding-left: 20px;
+        }
+
+        .left-panel li[type=h3] {
+            padding-left: 25px;
+        }
+
+        .left-panel li[type=h4] {
+            padding-left: 30px;
+        }
+
+        .left-panel li[type=h5] {
+            padding-left: 35px;
+        }
+
+        .left-panel li[type=h6] {
+            padding-left: 40px;
+        }
+
+    .left-panel a {
+        text-decoration: none;
+    }
+
+@media only screen and (min-width: 1830px) {
+    .left-panel {
+        display: block;
+    }
+}
+
+.article-width {
+    text-align: justify;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.footnote-tag {
+    cursor: pointer;
+    scroll-margin-top: 60px;
+}
+
+.card h1, h2, h3, h4, h5, h6 {
+    scroll-margin-top: 60px;
+}
+
+.verse-number-a {
+    scroll-margin-top: 65px;
+}
+
+.verse-number-b {
+    scroll-margin-top: 135px;
+}
+
+#chapterContent {
+    max-width: 1000px;
+    margin: auto;
+    text-align: justify;
+    position: relative;
+}
+
+#footnotes {
+    text-align: left;
+}
+
+    #footnotes .bible-content {
+        min-height: 0;
+    }
+
+    #footnotes p {
+        margin-bottom: 10px;
+    }
+
+@media only screen and (min-width: 1830px) {
+    #footnotes {
+        padding-left: 25px;
+        padding-right: 20px;
+        width: 25vw;
+        position: absolute;
+        left: 75vw;
+        top: 60px;
+        min-height: calc(100vh - 64px);
+        font-size: 90% !important;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .container-translation {
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+        width: 100%;
+        max-width: 75vw !important;
+    }
+
+    #chapterContent {
+        max-width: 90%;
+    }
+}
 /************************** DARK **********************************/
 @media (prefers-color-scheme: dark) {
+    ::-webkit-scrollbar-track {
+        background: rgba(var(--bs-dark-rgb));
+    }
+
     html {
         background-color: rgba(var(--bs-dark-rgb)) !important;
     }
@@ -776,21 +920,23 @@ img {
         color: #C8C8C8 !important;
     }
 
-        .tab-content > .tab-pane {
-            color: #C8C8C8 !important;
-            background-color: #3030303c !important;
-        }
+    .tab-content > .tab-pane {
+        color: #C8C8C8 !important;
+        background-color: #3030303c !important;
+    }
 
     .nav-tabs .nav-item.show .nav-link {
         color: #C8C8C8;
         background-color: #303030;
         border-color: #303030;
     }
+
     .nav-tabs .nav-link.active {
         color: #FFF !important;
         background-color: #303030;
         border-color: #303030;
     }
+
     .nav-tabs {
         border-bottom: 1px solid #303030;
     }

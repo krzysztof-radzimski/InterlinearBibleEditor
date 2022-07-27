@@ -1,13 +1,24 @@
-﻿@{
+﻿@model ArticleControllerModel
+@{
     ViewData["Title"] = "Artykuł";
-    
+
     var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
     var __path = this.Context.Request.Path;
 
-}
-@inject IConfiguration Configuration 
+    var document = new HtmlAgilityPack.HtmlDocument();
+    var html = $@"<!DOCTYPE html>
+<html>
+<body>
+	{Model.Article.Text}
+</body>
+</html> ";
+    document.LoadHtml(html);
+    var xpath = "//*[self::h1 or self::h2 or self::h3 or self::h4 or self::h5]";
+    var headings = document.DocumentNode.SelectNodes(xpath);
 
-@model ArticleControllerModel
+    ViewData["ContainerClass"] = headings != null && headings.Count > 0 ? "container-translation" : "";
+}
+@inject IConfiguration Configuration
 
 @section HeaderScripts {
     @if (Model.IsNotNull()) {
@@ -21,11 +32,33 @@
     }
 }
 
-@if (Model != null) {
+ @section Footnotes {
+      @if (headings != null && headings.Count > 0) {
+        <div class="left-panel container">
+            <div class="card-body bible-content rounded">
+                <ul>
+                    @foreach (var h in headings) {
+                        <li type="@h.Name">
+                            @if (h.Id.IsNotNullOrEmpty()) {
+                                @Html.Raw($@"<a href=""#{h.Id}"">")
+                            }
+                            @h.InnerText.Replace("&nbsp;", " ")
+                            @if (h.Id.IsNotNullOrEmpty()) {
+                                @Html.Raw("</a>")
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+ }
+
+    @if (Model != null) {
 
     ViewData["Title"] = @Model.Article.Subject;
 
-    <div class="row shadow-lg" style="max-width: 1040px; margin: auto;">
+    <div class="row shadow-lg article-width">
         <div class="col p-4 d-flex flex-column position-static">
             <div class="btn-group" style="max-width:150px;">
                 <a href="/articles" class="btn btn-success active d-inline-block text-decoration-none" title="Więcej artykułów" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
@@ -41,10 +74,10 @@
             <div class="col-auto d-none d-lg-block" style="background-image: url('data:image/png;base64, @Convert.ToBase64String(Model.Article.AuthorPicture)'); background-position: center center; background-repeat: no-repeat; background-size: cover; max-width: 350px; width: 40%;"></div>
         }
     </div>
-    <div style="text-align: justify; max-width: 900px; margin: auto;">
+    <div class="article-width">
         @{
             var text = Model.Article.Text;
-            
+
             // usuwam sierotki
             text = System.Text.RegularExpressions.Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
                 return " " + m.Value.Trim() + "&nbsp;";
@@ -53,9 +86,14 @@
 
         @Html.Raw(text)
     </div>
+
+
+
+
+
 }
 else {
-     <div style="max-width: 1025px; margin: auto; padding-top: 20px;">
+    <div style="max-width: 1025px; margin: auto; padding-top: 20px;">
         <h1>Brak danych do wyświetlenia</h1>
         <p>Nie ma artykułu lub kazania o takim identyfikatorze w naszej bazie</p>
         <a href="/Articles" class="text-decoration-none" title="Więcej artykułów"><i class="far fa-arrow-alt-circle-left"></i> Pokaż listę artykułów</a>

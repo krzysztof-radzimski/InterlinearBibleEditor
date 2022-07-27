@@ -191,7 +191,7 @@
             </div>
         </nav>
     </header>
-    <div class="container" id="main-container">
+    <div class="container @ViewData["ContainerClass"]" id="main-container">
         <main role="main" class="card border-0 shadow mt-5">
             @RenderSection("Main", false)
             <div class="bg-bible">
@@ -203,6 +203,7 @@
 
         <div>&nbsp;</div>
     </div>
+    @RenderSection("Footnotes", required: false)
     <footer class="footer text-muted bg-dark text-center">
         <div class="container" style="line-height: 1.4em; padding-top: 5px; padding-bottom: 5px; white-space: normal;">
             &copy; @DateTime.Now.Year - <span title="@Configuration["PageTitle"]">KChB NDM</span> | <a class="link-secondary text-decoration-none" href="https://github.com/krzysztof-radzimski/InterlinearBibleEditor" title="Otwarty kod źródłowy niniejszej strony znajduje się w repozytorium GitHub"><i class="fab fa-github-square"></i> Open Source Project</a> | <a class="link-secondary text-decoration-none" href="~/home/privacy"><i class="fas fa-user-shield"></i> Polityka prywatności</a>

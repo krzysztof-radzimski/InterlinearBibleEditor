@@ -1,4 +1,5 @@
-﻿using DevExpress.Office;
+﻿using ChurchServices.Extensions;
+using DevExpress.Office;
 using DevExpress.Office.Export;
 using DevExpress.Office.Internal;
 using DevExpress.Utils;
@@ -6,13 +7,8 @@ using DevExpress.XtraRichEdit;
 using DevExpress.XtraRichEdit.Export;
 using DevExpress.XtraRichEdit.Internal;
 using DevExpress.XtraRichEdit.Model;
-using ChurchServices.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -92,6 +88,7 @@ namespace ChurchServices.WinApp.Controllers {
 
         protected override void ExportTextRun(TextRun run) {
             string text = run.GetPlainText(PieceTable.TextBuffer);
+            text = text.Replace("\u00A0", "&nbsp;");
             text = text.Replace("\v", "<br/>");
 
             if (!hyperlinkExporting) {
@@ -235,7 +232,7 @@ namespace ChurchServices.WinApp.Controllers {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
                     }
-                    DocumentContentWriter.Write("<h1>");
+                    DocumentContentWriter.Write($@"<h1 id=""{Guid.NewGuid()}"">");
 
                 }
                 else if (IsStyle(paragraph.ParagraphStyle, "heading2")) {
@@ -243,28 +240,28 @@ namespace ChurchServices.WinApp.Controllers {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
                     }
-                    DocumentContentWriter.Write("<h2>");
+                    DocumentContentWriter.Write($@"<h2 id=""{Guid.NewGuid()}"">");
                 }
                 else if (IsStyle(paragraph.ParagraphStyle, "heading3")) {
                     if (inList) {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
                     }
-                    DocumentContentWriter.Write("<h3>");
+                    DocumentContentWriter.Write($@"<h3 id=""{Guid.NewGuid()}"">");
                 }
                 else if (IsStyle(paragraph.ParagraphStyle, "heading4")) {
                     if (inList) {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
                     }
-                    DocumentContentWriter.Write("<h4>");
+                    DocumentContentWriter.Write($@"<h4 id=""{Guid.NewGuid()}"">");
                 }
                 else if (IsStyle(paragraph.ParagraphStyle, "heading5")) {
                     if (inList) {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
                     }
-                    DocumentContentWriter.Write("<h5>");
+                    DocumentContentWriter.Write($@"<h5 id=""{Guid.NewGuid()}"">");
                 }
                 else if (IsStyle(paragraph.ParagraphStyle, "quote")) {
                     if (inList) {
