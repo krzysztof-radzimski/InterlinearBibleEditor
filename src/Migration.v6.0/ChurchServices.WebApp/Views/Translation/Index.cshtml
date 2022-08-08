@@ -355,7 +355,7 @@ else {
             </div>
         </div>
 
-        <h2 class="text-center p-2 max-width-800"><a class="text-decoration-none text-dark" href="/@translationName">@Model.Translation.Description</a></h2>
+        <h2 class="text-center p-2 max-width-800"><a class="text-decoration-none text-dark" href="/@translationName">@Model.Translation.Description</a><sup>*</sup></h2>
         <h2 class="text-center p-2 max-width-800 capital">
             @{
                 var html = string.Empty;
@@ -478,8 +478,8 @@ else {
                             </div>
                         }
                     </div>
-                    @if (descExists && Model.Translation.Name != "PBD" && Model.Translation.BookType != TheBookType.ChurchFathersLetter) {
-                        <p class="fs-70per"><br />* Opis księgi na podstawie <a href="http://feib.pl" target="_blank">Przekładu Dosłownego Pisma Świetego Starego i Nowego Przymierza EIB</a>.</p>
+                    @if (descExists && Model.Translation.BookType != TheBookType.ChurchFathersLetter) {
+                        <p class="fs-70per"><br />* Opis księgi zredagowany na bazie wstępów do <a href="http://feib.pl" target="_blank">Przekładu Dosłownego SNP EIB</a>.</p>
                     }
                 </div>
             }
@@ -849,7 +849,7 @@ else {
 
                         var text = " " + verse.Text;
                         if (text.Contains("<n>") && text.Contains("*")) {
-                            var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\·\…\d\–\?\־";
+                            var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\·\…\d\–\?\־\’\’\‘\#";
                             var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
                             var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
                             var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
@@ -1099,8 +1099,8 @@ else {
                 }
             </div>
             @if (Model.Translation.Type != TranslationType.Interlinear) {
-                <p class="fs-80per">
-                    * Prezentowane treści należą do ich właścicieli i&nbsp;wydawców. Tekst pobrany z&nbsp;udostępnionych zasobów programu <a href="https://mybible.zone/index-eng.php">MyBible</a> - <a href="https://www.ph4.org/b4_index.php">www.ph4.org</a>
+                <p class="fs-80per text-center">
+                    * Prezentowane treści należą do ich właścicieli i&nbsp;wydawców. Tekst pobrany z&nbsp;udostępnionych zasobów programu <a href="https://mybible.zone/en" target="_blank">MyBible</a>
                 </p>
             }
         </div>

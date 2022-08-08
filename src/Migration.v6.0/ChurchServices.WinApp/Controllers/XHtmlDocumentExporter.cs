@@ -277,7 +277,10 @@ namespace ChurchServices.WinApp.Controllers {
                     }
 
                     if (paragraph.Alignment == ParagraphAlignment.Center) {
-                        DocumentContentWriter.Write(@"<p class=""fs-5 mt-3"" style=""text-align: center"">");
+                        DocumentContentWriter.Write(@"<p class=""fs-5 mt-3"" style=""text-align: center;"">");
+                    }
+                    else if (paragraph.Alignment == ParagraphAlignment.Right) {
+                        DocumentContentWriter.Write(@"<p class=""fs-5 mt-3"" style=""text-align: right;"">");
                     }
                     else {
                         DocumentContentWriter.Write(@"<p class=""fs-5 mt-3"">");
