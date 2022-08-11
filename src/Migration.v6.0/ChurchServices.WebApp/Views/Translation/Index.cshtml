@@ -481,6 +481,23 @@ else {
                     @if (descExists && Model.Translation.BookType != TheBookType.ChurchFathersLetter) {
                         <p class="fs-70per"><br />* Opis księgi zredagowany na bazie wstępów do <a href="http://feib.pl" target="_blank">Przekładu Dosłownego SNP EIB</a>.</p>
                     }
+                    @if (book.BaseBook.Preface.IsNotNullOrEmpty()) {
+                            descExists = true;
+                            var __text = book.BaseBook.Preface;
+                            __text = BibleTagController.AppendNonBreakingSpaces(__text);
+
+                            __text = BibleTagController.GetInternalVerseRangeHtml(__text, Model);
+                            __text = BibleTagController.GetInternalVerseHtml(__text, Model);
+                            __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
+                            __text = BibleTagController.GetExternalVerseHtml(__text, Model);
+                            __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
+                            __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
+
+                            <div id="preface">
+                                <h2 style="text-align: center;">Wstęp</h2>
+                                @Html.Raw(__text)
+                            </div>
+                        }
                 </div>
             }
         }

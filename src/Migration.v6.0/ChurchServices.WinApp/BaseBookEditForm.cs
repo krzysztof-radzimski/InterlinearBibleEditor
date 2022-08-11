@@ -41,7 +41,7 @@ namespace ChurchServices.WinApp {
             var fileName = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".docx");
             txtPreface.SaveDocument(fileName, DocumentFormat.OpenXml);
             if (File.Exists(fileName)) {
-                Object.PrefaceData= File.ReadAllBytes(fileName);
+                Object.PrefaceData = File.ReadAllBytes(fileName);
                 try { File.Delete(fileName); } catch { }
             }
 

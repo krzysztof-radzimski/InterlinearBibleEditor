@@ -126,13 +126,13 @@ namespace ChurchServices.WebApp.Utils {
             view.Properties.Add(new ViewProperty("Lead", SortDirection.None, "[Lead]", false, true));
             view.Properties.Add(new ViewProperty("Subject", SortDirection.None, "[Subject]", false, true));
             view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
-            
+
             lastFourArticles = new List<ArticleInfo>();
             foreach (ViewRecord item in view) {
                 lastFourArticles.Add(new ArticleInfo() {
                     AuthorName = item["AuthorName"].ToString(),
                     AuthorPicture = item["AuthorPicture"].IsNotNull() ? Convert.ToBase64String((byte[])item["AuthorPicture"]) : String.Empty,
-                    Date = Convert.ToDateTime( item["Date"].ToString()),
+                    Date = Convert.ToDateTime(item["Date"].ToString()),
                     Id = item["Oid"].ToInt(),
                     Lead = item["Lead"].ToString(),
                     Subject = item["Subject"].ToString(),
@@ -202,12 +202,7 @@ namespace ChurchServices.WebApp.Utils {
             return result;
         }
         public TranslationControllerModel GetTranslationControllerModel(string translationName, string book = null, string chapter = null, string verse = null) {
-            //var key = $"{translationName}_{book}_{chapter}_{verse}";
             TranslationControllerModel result;
-            //MemoryCache.TryGetValue(key, out result);
-            //if (result != null) {
-            //    return result;
-            //}
 
             if (!String.IsNullOrEmpty(translationName)) {
                 var uow = new UnitOfWork();
@@ -218,7 +213,6 @@ namespace ChurchServices.WebApp.Utils {
                     var translation = new XPQuery<Translation>(uow).Where(x => x.Name.Replace("'", "").Replace("+", "").ToLower() == translationName.ToLower()).FirstOrDefault();
                     if (translation != null) {
                         result = new TranslationControllerModel(translation, books: books);
-                        //MemoryCache.Set(key, result);
                         return result;
                     }
                 }
@@ -226,27 +220,38 @@ namespace ChurchServices.WebApp.Utils {
                     var translation = new XPQuery<Translation>(uow).Where(x => x.Name.Replace("'", "").Replace("+", "").ToLower() == translationName.ToLower()).FirstOrDefault();
                     if (translation != null) {
                         result = new TranslationControllerModel(translation, book, chapter, verse, books);
-
-                        var view = new XPView(uow, typeof(Translation)) {
-                            CriteriaString = $"[Books][[NumberOfBook] = '{book}'] AND [Hidden] = 0"
-                        };
-                        view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
-                        view.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
-                        view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
-                        view.Properties.Add(new ViewProperty("Catholic", SortDirection.None, "[Catolic]", false, true));
-                        view.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
-                        view.Properties.Add(new ViewProperty("OpenAccess", SortDirection.None, "[OpenAccess]", false, true));
-                        foreach (ViewRecord item in view) {
-                            result.Translations.Add(new TranslationInfo() {
-                                Name = item["Name"].ToString(),
-                                Description = item["Description"].ToString(),
-                                Type = (TranslationType)item["Type"],
-                                Catholic = (bool)item["Catholic"],
-                                Recommended = (bool)item["Recommended"],
-                                PasswordRequired = !((bool)item["OpenAccess"])
-                            });
+                        List<TranslationInfo> translations;
+                        MemoryCache.TryGetValue($"{BIBLETRANSLATIONS}_{book}", out translations);
+                        if (translations != null) {
+                            result.Translations.AddRange(translations);
                         }
-                        //MemoryCache.Set(key, result);
+                        else {
+                            var view = new XPView(uow, typeof(Translation)) {
+                                CriteriaString = $"[Books][[NumberOfBook] = '{book}'] AND [Hidden] = 0"
+                            };
+                            view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
+                            view.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
+                            view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+                            view.Properties.Add(new ViewProperty("Catholic", SortDirection.None, "[Catolic]", false, true));
+                            view.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
+                            view.Properties.Add(new ViewProperty("OpenAccess", SortDirection.None, "[OpenAccess]", false, true));
+                            translations = new List<TranslationInfo>();
+                            foreach (ViewRecord item in view) {
+                                translations.Add(new TranslationInfo() {
+                                    Name = item["Name"].ToString(),
+                                    Description = item["Description"].ToString(),
+                                    Type = (TranslationType)item["Type"],
+                                    Catholic = (bool)item["Catholic"],
+                                    Recommended = (bool)item["Recommended"],
+                                    PasswordRequired = !((bool)item["OpenAccess"])
+                                });
+                            }
+                            if (translations.Count > 0) {
+                                result.Translations.AddRange(translations);
+                                MemoryCache.Set($"{BIBLETRANSLATIONS}_{book}", translations);
+                            }
+                        }
+
                         return result;
                     }
                 }
