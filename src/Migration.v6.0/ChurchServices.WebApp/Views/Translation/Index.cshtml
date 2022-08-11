@@ -1,6 +1,7 @@
 ﻿@model TranslationControllerModel
 @{
     ViewData["Title"] = "Biblia";
+    var toc = new List<(int Level, string Title, string Id)>();
     var hasFootnotes = false;
     Book book = null;
     Chapter chapter = null;
@@ -518,7 +519,6 @@ else {
         }
 
 
-        //var chapter = book.Chapters.Where(x => x.NumberOfChapter == chapterNumber).FirstOrDefault();
         var footNoteIndex = 1;
         var footNoteRefIndex = 0;
         var footNotes = new List<FootnoteInfo>();
@@ -634,13 +634,15 @@ else {
                             if (subtitles.Count() > 0) {
                                 <div class="col pb-3">&nbsp;</div>
                                 foreach (var story in subtitles) {
+                                    var tocId = Guid.NewGuid().ToString();
+                                    toc.Add((story.Level, story.Text, tocId));
                                     var storyText = story.Text;
 
                                     if (story.Level == 1) {
-                                        <div class="col w-100 fs-5 pb-3 p-2 fw-bold text-center story">@Html.Raw(storyText)</div>
+                                        <div class="col w-100 fs-5 pb-3 p-2 fw-bold text-center story"><a id="@tocId" class="smt-60"></a>@Html.Raw(storyText)</div>
                                     }
                                     else {
-                                        <div class="col w-100 fs-5 pb-3 p-2 fw-bold text-center story2">@Html.Raw(storyText)</div>
+                                        <div class="col w-100 fs-5 pb-3 p-2 fw-bold text-center story2"><a id="@tocId" class="smt-60"></a>@Html.Raw(storyText)</div>
                                     }
                                 }
                             }
@@ -776,14 +778,30 @@ else {
 
                     @Html.Raw("</div>")
 
-                    @if (footNotes.Count > 0) {
+                    @if (footNotes.Count > 0 || toc.Count>0) {
                         @section Footnotes {                            
                            
                             <div id="footnotes" class=" container lh-sm fs-6">
                                 <div class="card-body bible-content rounded">
-                                    @foreach (var item in footNotes) {
-                                        @Html.Raw(item.Html)
+                                    @if(toc.Count>0){
+                                        <h4>Spis treści</h4>
+                                        <ul>
+                                        @foreach (var item in toc)
+                                            {
+                                                var liItemType = $"h{item.Level}";
+                                                <li type="@liItemType">
+                                                 <a href="#@item.Id">@item.Title</a>
+                                             </li>
+                                        }
+                                        </ul>
                                     }
+                                    @if (footNotes.Count > 0) {
+                                        <h4>Przypisy</h4>
+                                        @foreach (var item in footNotes) {
+                                            @Html.Raw(item.Html)
+                                        }
+                                    }
+                                   
                                 </div>
                             </div>
                         }
@@ -849,12 +867,14 @@ else {
                                             return " JAHWE";
                                         });
                                     }
+                                    var tocId = Guid.NewGuid().ToString();
+                                    toc.Add((story.Level, storyText, tocId));
 
                                     if (story.Level == 1) {
-                                        <div class="w-100 fs-4 pb-3 p-4 fw-bold text-center story">@Html.Raw(storyText)</div>
+                                        <div class="w-100 fs-4 pb-3 p-4 fw-bold text-center story"><a id="@tocId" class="smt-60"></a>@Html.Raw(storyText)</div>
                                     }
                                     else {
-                                        <div class="w-100 fs-5 pb-3 p-4 fw-bold text-center story2">@Html.Raw(storyText)</div>
+                                        <div class="w-100 fs-5 pb-3 p-4 fw-bold text-center story2"><a id="@tocId" class="smt-60"></a>@Html.Raw(storyText)</div>
                                     }
                                 }
                             }
@@ -1022,14 +1042,31 @@ else {
 
                     }
 
-                    @if (footNotes.Count > 0) {
+                    @if (footNotes.Count > 0 || toc.Count>0) {
                         @section Footnotes {                        
                         <div id="footnotes" class="container lh-sm fs-6">
                             <div class="card-body bible-content rounded">
-                                @foreach (var item in footNotes) {
-                                    @Html.Raw(item.Html)
+                                @if(toc.Count>0){
+                                    <h4>Spis treści</h4>
+                                    <ul>
+                                    @foreach (var item in toc)
+                                    {
+                                         var liItemType = $"h{item.Level}";
+                                         <li type="@liItemType">
+                                              <a href="#@item.Id">@item.Title</a>
+                                         </li>
+                                    }
+                                    </ul>
                                 }
-                            </div>
+                                
+                                @if (footNotes.Count > 0) {
+                                    <h4>Przypisy</h4>
+                                    @foreach (var item in footNotes) {
+                                        @Html.Raw(item.Html)
+                                    }
+
+                                }
+                                </div>
                         </div>
                         }
                     }

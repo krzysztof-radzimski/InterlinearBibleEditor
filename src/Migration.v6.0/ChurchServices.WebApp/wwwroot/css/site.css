@@ -22,6 +22,10 @@
     background-color: transparent;
 }
 
+.smt-60 {
+    scroll-margin-top: 60px;
+}
+
 .interlinear-footnote-ref {
     position: absolute;
     top: -8px;
@@ -697,8 +701,9 @@ img {
     width: 23%;
     position: fixed;
     right: 5px;
-    top: 60px;       
+    top: 60px;
 }
+
     .left-panel .bible-content {
         min-height: 0;
     }
@@ -730,6 +735,36 @@ img {
     .left-panel a {
         text-decoration: none;
     }
+
+
+
+#footnotes li {
+    list-style-type: none;
+}
+
+    #footnotes li[type=h2] {
+        padding-left: 20px;
+    }
+
+    #footnotes li[type=h3] {
+        padding-left: 25px;
+    }
+
+    #footnotes li[type=h4] {
+        padding-left: 30px;
+    }
+
+    #footnotes li[type=h5] {
+        padding-left: 35px;
+    }
+
+    #footnotes li[type=h6] {
+        padding-left: 40px;
+    }
+
+#footnotes a {
+    text-decoration: none;
+}
 
 @media only screen and (min-width: 1830px) {
     .left-panel {
