@@ -3,6 +3,7 @@
     ViewData["Title"] = "Biblia";
     var toc = new List<(int Level, string Title, string Id)>();
     var hasFootnotes = false;
+    var hasToc = false;
     Book book = null;
     Chapter chapter = null;
     int chapterNumber = 0;
@@ -15,15 +16,17 @@
             if (chapter.IsNotNull()) {
                 if (Model.Translation.Type == TranslationType.Interlinear) {
                     hasFootnotes = chapter.Verses.Where(x => x.VerseWords.Count > 0 && x.VerseWords.Where(y => y.FootnoteText.IsNotNullOrEmpty()).Any()).Any();
+                    hasToc = chapter.Verses.Where(x => x.VerseWords.Where(y => y.FootnoteText.IsNotNullOrWhiteSpace()).Any()).Any();
                 }
                 else {
                     hasFootnotes = chapter.Verses.Where(x => x.Text.Contains("<n>") && x.Text.Contains("*")).Any();
+                    hasToc = chapter.Subtitles.Any();
                 }
             }
         }
     }
 
-    ViewData["ContainerClass"] = hasFootnotes ? "container-translation" : "";
+    ViewData["ContainerClass"] = hasFootnotes || hasToc ? "container-translation" : "";
     var selectedVerses = new List<int>();
     var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
     var __path = this.Context.Request.Path;
@@ -482,7 +485,7 @@ else {
                     @if (descExists && Model.Translation.BookType != TheBookType.ChurchFathersLetter) {
                         <p class="fs-70per"><br />* Opis księgi zredagowany na bazie wstępów do <a href="http://feib.pl" target="_blank">Przekładu Dosłownego SNP EIB</a>.</p>
                     }
-                    @if (book.BaseBook.Preface.IsNotNullOrEmpty()) {
+                    @if (book.BaseBook.Preface.IsNotNullOrEmpty() && book.BaseBook.Preface != "﻿<div><p class=\"fs-5 mt-3\"></p></div>") {
                             descExists = true;
                             var __text = book.BaseBook.Preface;
                             __text = BibleTagController.AppendNonBreakingSpaces(__text);
@@ -782,7 +785,7 @@ else {
                         @section Footnotes {                            
                            
                             <div id="footnotes" class=" container lh-sm fs-6">
-                                <div class="card-body bible-content rounded">
+                                <div class="card-body bible-content">
                                     @if(toc.Count>0){
                                         <h4>Spis treści</h4>
                                         <ul>
@@ -886,7 +889,7 @@ else {
 
                         var text = " " + verse.Text;
                         if (text.Contains("<n>") && text.Contains("*")) {
-                            var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\·\…\d\–\?\־\’\’\‘\#";
+                            var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\·\…\d\–\?\־\’\’\‘\#\᾽\…";
                             var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
                             var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
                             var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
@@ -894,7 +897,7 @@ else {
                             var f5 = $@"\[\*\*\*\*\*\s?(?<f5>[{footNoteTextPatternFragment}]+)\]";
                             var f6 = $@"\[\*\*\*\*\*\*\s?(?<f6>[{footNoteTextPatternFragment}]+)\]";
                             var f7 = $@"\[\*\*\*\*\*\*\*\s?(?<f7>[{footNoteTextPatternFragment}]+)\]";
-                            var footNoteTextPattern = $@"\<n\>{f1}(\s+)?({f2})?(\s+)?({f3})?(\s+)?({f4})?(\s+)?({f5})?(\s+)?({f6})?(\s+)?({f7})?(\s+)?\</n\>";
+                            var footNoteTextPattern = $@"\<n\>(\s+)?{f1}(\s+)?({f2})?(\s+)?({f3})?(\s+)?({f4})?(\s+)?({f5})?(\s+)?({f6})?(\s+)?({f7})?(\s+)?\</n\>";
 
                             var f1Index = 0;
                             var f2Index = 0;
@@ -1045,8 +1048,8 @@ else {
                     @if (footNotes.Count > 0 || toc.Count>0) {
                         @section Footnotes {                        
                         <div id="footnotes" class="container lh-sm fs-6">
-                            <div class="card-body bible-content rounded">
-                                @if(toc.Count>0){
+                            <div class="card-body bible-content">
+                                @if(toc.Count>0){  
                                     <h4>Spis treści</h4>
                                     <ul>
                                     @foreach (var item in toc)

@@ -44,7 +44,7 @@
 
 .bible-content {
     background-color: rgba(255,255,255,0.7);
-    min-height: 2024px;
+    min-height: calc(100vh - 150px);
 }
 
 .list-group-item {
@@ -209,29 +209,30 @@ html {
 }
 
 body {
-    /* Margin bottom by footer height */
     margin-bottom: 60px;
     background-color: #eef6ff;
     background-image: url('../img/background-2021.jpg?ID=5');
     background-position: top center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    /*
-    background-size: cover;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-	*/
 }
 
 .footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
     white-space: nowrap;
     line-height: 60px; /* Vertically center the text there */
 }
-
+    .footer .container {
+        line-height: 1.4em;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        white-space: normal;
+        background-color: rgba(255,255,255,0.05);
+        max-width: 600px;
+        border-radius: 1rem 1rem 0 0;
+    }
 
 figure {
     background: -moz-radial-gradient(center, ellipse cover, rgba(69,72,77,0.1) 0%, rgba(181,182,184,0) 60%, rgba(255,255,255,0) 100%);
@@ -430,9 +431,18 @@ hr.fancy-line {
     width: 100%;
 }
 
+#footnotes {
+    padding-bottom: 3rem;
+}
+    #footnotes .bible-content {
+        border-radius: 0 0 1rem 1rem;
+    }
+
+.left-panel .bible-content {
+    border-radius: 0 0 1rem 1rem;
+}
 
 @media only screen and (max-width: 995px) {
-
     #banner, #main-hr-line, .bible-img, #carouselExampleFade, #FacebookFrame, #WhatWeBelieveIcon {
         display: none;
     }

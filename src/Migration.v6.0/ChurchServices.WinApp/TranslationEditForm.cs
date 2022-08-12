@@ -55,6 +55,8 @@ namespace ChurchServices.WinApp {
             btnAddVerses.Enabled = false;
             btnRecognizeChapterContent.Enabled = false;
             btnRecognizeBookContent.Enabled = false;
+            btnAddNTag.Enabled = false;
+            mnuAddFootnoteText.Enabled = false;
 
             tabs.ShowTabHeader = DevExpress.Utils.DefaultBoolean.False;
         }
@@ -536,6 +538,8 @@ namespace ChurchServices.WinApp {
                         btnRecognizeChapterContent.Enabled = false;
                         btnRecognizeBookContent.Enabled = false;
                         tabs.Visible = false;
+                        btnAddNTag.Enabled = false;
+                        mnuAddFootnoteText.Enabled = false;
                     }
                     else if (_record.Type == IbeTreeItemType.Book) {
                         LoadBook(_record as IbeBookTreeItem);
@@ -627,6 +631,9 @@ namespace ChurchServices.WinApp {
                 btnRecognizeChapterContent.Enabled = false;
                 btnRecognizeBookContent.Enabled = false;
 
+                btnAddNTag.Enabled = true;
+                mnuAddFootnoteText.Enabled = true;
+
                 if (Object.Type == TranslationType.Interlinear && !e.IsNew) {
                     var v = new XPQuery<Verse>(Object.Session).Where(x => x.Oid == e.Tag.ToInt()).FirstOrDefault();
                     //var frm = new InterlinearEditorForm(v);
@@ -659,6 +666,9 @@ namespace ChurchServices.WinApp {
                 btnRecognizeBookContent.Enabled = false;
                 btnDeleteBook.Enabled = false;
 
+                btnAddNTag.Enabled = false;
+                mnuAddFootnoteText.Enabled = false;
+
                 tabs.SelectedTabPage = tabChapter;
                 tabs.Visible = true;
 
@@ -677,6 +687,9 @@ namespace ChurchServices.WinApp {
             btnAddVerses.Enabled = false;
             btnRecognizeChapterContent.Enabled = false;
             btnRecognizeBookContent.Enabled = true;
+
+            btnAddNTag.Enabled = false;
+            mnuAddFootnoteText.Enabled = false;
 
             tabs.SelectedTabPage = tabBook;
             tabs.Visible = true;
@@ -901,6 +914,18 @@ namespace ChurchServices.WinApp {
             }
         }
 
+        private void btnAddNTag_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            editor.Document.InsertText(editor.Document.CaretPosition, "<n> </n>");
+        }
+
+        private void btnFootnote_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var c = Convert.ToInt32(e.Item.Tag);
+            var stars = "";
+            for (int i = 0; i < c; i++) {
+                stars += "*";
+            }
+            editor.Document.InsertText(editor.Document.CaretPosition, $"[{stars} ]");
+        }
     }
 
     public enum IbeTreeItemType { Root, Book, Chapter, Verse }
