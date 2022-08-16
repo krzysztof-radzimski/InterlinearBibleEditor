@@ -57,7 +57,7 @@ namespace ChurchServices.WinApp.Controllers {
 
         public virtual void Export(Stream outputStream) {
             this.outputStream = outputStream;
-            using (StreamWriter streamWriter = new StreamWriter(outputStream, Encoding.UTF8)) {
+            using (var streamWriter = new StreamWriter(outputStream, Encoding.UTF8)) {
                 DocumentContentWriter = streamWriter;
 
                 DocumentContentWriter.Write("<div>");
@@ -86,6 +86,50 @@ namespace ChurchServices.WinApp.Controllers {
             }
         }
 
+        private string GetTextRunHtml(TextRun run, PieceTable pieceTable) {
+            string text = run.GetPlainText(pieceTable.TextBuffer);
+            text = text.Replace("\u00A0", "&nbsp;");
+            text = text.Replace("\v", "<br/>");
+
+            if (!hyperlinkExporting) {
+                var span = @"<span";
+                var _class = @" class=""";
+                var style = @" style=""";
+                if (run.Script == CharacterFormattingScript.Superscript)
+                    style += "vertical-align: super; ";
+                if (run.Script == CharacterFormattingScript.Subscript)
+                    style += "vertical-align: sub; ";
+                if (run.FontBold)
+                    style += "font-weight: bold; ";
+                if (run.FontItalic)
+                    style += "font-style: italic; ";
+                if (run.FontUnderlineType != UnderlineType.None)
+                    style += "text-decoration: underline; ";
+                if (run.FontStrikeoutType != StrikeoutType.None)
+                    style += "text-decoration: line-through; ";
+                if (run.ForeColorIndex != DevExpress.Office.Model.ColorModelInfoCache.EmptyColorIndex) {
+                    var color = ColorTranslator.ToHtml(DocumentModel.GetColor(run.ForeColorIndex));
+                    if (color == "#FF0000") {
+                        _class += "text-danger";
+                    }
+                    else {
+                        span += $"color: {ColorTranslator.ToHtml(DocumentModel.GetColor(run.ForeColorIndex))}; ";
+                    }
+                }
+
+                style += @"""";
+                _class += @"""";
+
+                if (_class.Trim() != @"class=""""") { span += _class; }
+                if (_class.Trim() != @"style=""""") { span += style; }
+                span += $">{text}</span>";
+                return span;
+            }
+            else {
+                return text;
+            }
+
+        }
         protected override void ExportTextRun(TextRun run) {
             string text = run.GetPlainText(PieceTable.TextBuffer);
             text = text.Replace("\u00A0", "&nbsp;");
@@ -116,9 +160,7 @@ namespace ChurchServices.WinApp.Controllers {
                         span += $"color: {ColorTranslator.ToHtml(DocumentModel.GetColor(run.ForeColorIndex))}; ";
                     }
                 }
-                //if (run.DoubleFontSize != DocumentModel.DefaultCharacterProperties.DoubleFontSize)
-                //    style += $"font-size: {Math.Min(run.DoubleFontSize, 39)}px; ";
-
+              
                 style += @"""";
                 _class += @"""";
 
@@ -187,8 +229,26 @@ namespace ChurchServices.WinApp.Controllers {
                 if (info.IsNotNull()) {
                     DocumentContentWriter.Write($"<a href=\"#footnote{info.Number}\" style=\"vertical-align: super; font-size: smaller;\">{info.NumberText})</a>");
 
-                    var text = info.Note.TextBuffer.ToString().Replace("#", "").Trim();
-                    footnotes.Add($"<a id=\"footnote{info.Number}\" name=\"footnote{info.Number}\"></a><span style=\"vertical-align: super; font-size: smaller;\">{info.NumberText}</span>&nbsp;{text}<br/>");
+                    var text = $"<a id=\"footnote{info.Number}\" name=\"footnote{info.Number}\"></a><span style=\"vertical-align: super; font-size: smaller;\">{info.NumberText}</span>"; ;
+                    var flag = false;
+                    foreach (var item in info.Note.Runs) {
+                        if (item.Type == RunType.FieldCodeStartRun) {
+                            flag = true;
+                            continue;
+                        }
+                        else if (item.Type == RunType.FieldCodeEndRun) {
+                            flag = false;
+                            continue;
+                        }
+                        else if (item.Type == RunType.TextRun) {
+                            if (flag) { continue; }
+                            text += GetTextRunHtml(item as TextRun, info.Note);
+                        }
+                    }
+                    footnotes.Add(text);
+                    footnotes.Add("<br/>");
+                    //var text = info.Note.TextBuffer.ToString().Replace("#", "").Trim();
+                    //footnotes.Add($"<a id=\"footnote{info.Number}\" name=\"footnote{info.Number}\"></a><span style=\"vertical-align: super; font-size: smaller;\">{info.NumberText}</span>&nbsp;{text}<br/>");
                 }
             }
         }

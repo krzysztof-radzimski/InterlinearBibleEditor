@@ -25,7 +25,7 @@ namespace ChurchServices.WinApp {
             if (imgData != null) {
                 IconOptions.SvgImage = new DevExpress.Utils.Svg.SvgImage(new MemoryStream(imgData));
             }
-            
+
             new ConnectionHelper().Connect();
             CreateSpellChecker();
 
@@ -77,14 +77,19 @@ namespace ChurchServices.WinApp {
         }
 
         private void btnTranslations_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var frm = new TranslationsForm();
-            frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
-            frm.MdiParent = this;
-            frm.Show();
+            var frm = GetForm<TranslationsForm>();
+            if (frm != null) {
+                frm.Activate();
+            }
+            else {
+                frm = new TranslationsForm();
+                frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
+                frm.MdiParent = this;
+                frm.Show();
+            }
         }
 
         private void btnInterlinearEditor_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            //var frm = new InterlinearEditorForm();
             var frm = new VerseGridForm();
             frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
             frm.MdiParent = this;
@@ -92,17 +97,29 @@ namespace ChurchServices.WinApp {
         }
 
         private void btnArticles_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var frm = new ArticlesForm();
-            frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
-            frm.MdiParent = this;
-            frm.Show();
+            var frm = GetForm<ArticlesForm>();
+            if (frm != null) {
+                frm.Activate();
+            }
+            else {
+                frm = new ArticlesForm();
+                frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
+                frm.MdiParent = this;
+                frm.Show();
+            }
         }
 
         private void btnBaseBooks_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var frm = new BaseBooksForm();
-            frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
-            frm.MdiParent = this;
-            frm.Show();
+            var frm = GetForm<BaseBooksForm>();
+            if (frm != null) {
+                frm.Activate();
+            }
+            else {
+                frm = new BaseBooksForm();
+                frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
+                frm.MdiParent = this;
+                frm.Show();
+            }
         }
 
         private void btnCopyDatabaseToWebFolder_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
@@ -118,17 +135,29 @@ namespace ChurchServices.WinApp {
         }
 
         private void btnStrongsCodes_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var frm = new StrongsCodesForm();
-            frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
-            frm.MdiParent = this;
-            frm.Show();
+            var frm = GetForm<StrongsCodesForm>();
+            if (frm != null) {
+                frm.Activate();
+            }
+            else {
+                frm = new StrongsCodesForm();
+                frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
+                frm.MdiParent = this;
+                frm.Show();
+            }
         }
 
         private void btnAncientDictionary_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var frm = new AncientDictionaryForm();
-            frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
-            frm.MdiParent = this;
-            frm.Show();
+            var frm = GetForm<AncientDictionaryForm>();
+            if (frm != null) {
+                frm.Activate();
+            }
+            else {
+                frm = new AncientDictionaryForm();
+                frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
+                frm.MdiParent = this;
+                frm.Show();
+            }
         }
 
         private void btnImportUrlShortenersList_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
@@ -155,10 +184,16 @@ namespace ChurchServices.WinApp {
         }
 
         private void btnSongs_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var frm = new SongsForm();
-            frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
-            frm.MdiParent = this;
-            frm.Show();
+            var frm = GetForm<SongsForm>();
+            if (frm != null) {
+                frm.Activate();
+            }
+            else {
+                frm = new SongsForm();
+                frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
+                frm.MdiParent = this;
+                frm.Show();
+            }
         }
 
         private void btnUpdateVersesIndex_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
@@ -171,6 +206,15 @@ namespace ChurchServices.WinApp {
                 item.Save();
             }
             uow.CommitChanges();
+        }
+
+        private T GetForm<T>() where T : class {
+            foreach (var form in MdiChildren) {
+                if (form.GetType().Name == typeof(T).Name) {
+                    return form as T;
+                }
+            }
+            return default;
         }
     }
 }

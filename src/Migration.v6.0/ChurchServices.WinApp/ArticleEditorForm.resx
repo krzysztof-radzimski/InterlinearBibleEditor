@@ -123,6 +123,26 @@
         aDUuNyAgIGgyLjFIMjZWNEwyMy4xLDYuOXoiIGNsYXNzPSJCbHVlIiAvPg0KICA8L2c+DQo8L3N2Zz4L
 </value>
   </data>
+  <data name="btnRemoveHostUrlFromHyperlinks.ImageOptions.SvgImage" type="DevExpress.Utils.Svg.SvgImage, DevExpress.Data.v22.1" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFlEZXZFeHByZXNzLkRhdGEudjIyLjEsIFZlcnNpb249MjIuMS4z
+        LjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjg4ZDE3NTRkNzAwZTQ5YQUBAAAAHURl
+        dkV4cHJlc3MuVXRpbHMuU3ZnLlN2Z0ltYWdlAQAAAAREYXRhBwICAAAACQMAAAAPAwAAAA0DAAAC77u/
+        PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4NCjxzdmcgeD0iMHB4IiB5PSIwcHgi
+        IHZpZXdCb3g9IjAgMCAxNiAxNiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcv
+        MjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWw6c3Bh
+        Y2U9InByZXNlcnZlIiBpZD0iVW5saW5rIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAx
+        NiAxNiI+DQogIDxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+CgkuQmxhY2t7ZmlsbDojNzI3MjcyO30KPC9z
+        dHlsZT4NCiAgPHBhdGggZD0iTTQuNSw1aC0yQzEuMSw1LDAsNi4yLDAsNy41UzEuMSwxMCwyLjUsMTBo
+        MkM1LjksMTAsNyw4LjksNyw3LjVTNS45LDUsNC41LDV6IE00LjUsOWgtMkMxLjYsOSwxLDguMywxLDcu
+        NSAgQzEsNi43LDEuNiw2LDIuNSw2aDJjMC43LDAsMS4yLDAuNCwxLjQsMUgzLjVDMy4zLDcsMyw3LjMs
+        Myw3LjVTMy4zLDgsMy41LDhoMi40QzUuNyw4LjYsNS4yLDksNC41LDl6IE0xMy41LDVoLTIgIEMxMC4x
+        LDUsOSw2LjIsOSw3LjVzMS4xLDIuNSwyLjUsMi41aDJjMS40LDAsMi41LTEuMSwyLjUtMi41UzE0Ljks
+        NSwxMy41LDV6IE0xMy41LDloLTJjLTAuNiwwLTEuMi0wLjQtMS40LTFoMi40ICBDMTIuOCw4LDEzLDcu
+        OCwxMyw3LjVTMTIuOCw3LDEyLjUsN2gtMi40YzAuMi0wLjYsMC44LTEsMS40LTFoMkMxNC40LDYsMTUs
+        Ni43LDE1LDcuNUMxNSw4LjMsMTQuNCw5LDEzLjUsOXoiIGNsYXNzPSJCbGFjayIgLz4NCjwvc3ZnPgs=
+</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="stylesRibbonPageGroup1.ImageOptions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

@@ -200,9 +200,12 @@ namespace ChurchServices.WinApp {
         private void btnReplaceAllSiglum_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             ReplaceAllSiglum();
         }
-
-        private void tablePanel1_Paint(object sender, PaintEventArgs e) {
-
+              
+        private void btnRemoveHostFromHyperlinks_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            var host = System.Configuration.ConfigurationManager.AppSettings["Host"];
+            foreach (var link in editor.Document.Hyperlinks) {
+                link.NavigateUri = link.NavigateUri.Replace(host, String.Empty);
+            }
         }
     }
 }

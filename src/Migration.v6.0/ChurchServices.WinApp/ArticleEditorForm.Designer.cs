@@ -25,12 +25,12 @@ namespace ChurchServices.WinApp {
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            DevExpress.XtraBars.Ribbon.GalleryItemGroup galleryItemGroup1 = new DevExpress.XtraBars.Ribbon.GalleryItemGroup();
-            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipTitleItem toolTipTitleItem1 = new DevExpress.Utils.ToolTipTitleItem();
-            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.XtraBars.Ribbon.GalleryItemGroup galleryItemGroup4 = new DevExpress.XtraBars.Ribbon.GalleryItemGroup();
+            DevExpress.Utils.SuperToolTip superToolTip4 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipTitleItem toolTipTitleItem4 = new DevExpress.Utils.ToolTipTitleItem();
+            DevExpress.Utils.ToolTipItem toolTipItem4 = new DevExpress.Utils.ToolTipItem();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ArticleEditorForm));
-            DevExpress.XtraBars.Ribbon.ReduceOperation reduceOperation1 = new DevExpress.XtraBars.Ribbon.ReduceOperation();
+            DevExpress.XtraBars.Ribbon.ReduceOperation reduceOperation4 = new DevExpress.XtraBars.Ribbon.ReduceOperation();
             this.ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
             this.pasteItem1 = new DevExpress.XtraRichEdit.UI.PasteItem();
             this.cutItem1 = new DevExpress.XtraRichEdit.UI.CutItem();
@@ -160,6 +160,7 @@ namespace ChurchServices.WinApp {
             this.txtSubject = new DevExpress.XtraEditors.TextEdit();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.sidePanel2 = new DevExpress.XtraEditors.SidePanel();
+            this.btnRemoveHostUrlFromHyperlinks = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemFontEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemRichEditFontSizeEdit1)).BeginInit();
@@ -283,9 +284,10 @@ namespace ChurchServices.WinApp {
             this.showNotesItem1,
             this.btnSave,
             this.btnQuote,
-            this.btnReplaceAllSiglum});
+            this.btnReplaceAllSiglum,
+            this.btnRemoveHostUrlFromHyperlinks});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 98;
+            this.ribbonControl1.MaxItemId = 99;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.homeRibbonPage1,
@@ -732,7 +734,7 @@ namespace ChurchServices.WinApp {
             // 
             this.galleryChangeStyleItem1.Gallery.ColumnCount = 10;
             this.galleryChangeStyleItem1.Gallery.Groups.AddRange(new DevExpress.XtraBars.Ribbon.GalleryItemGroup[] {
-            galleryItemGroup1});
+            galleryItemGroup4});
             this.galleryChangeStyleItem1.Gallery.ImageSize = new System.Drawing.Size(65, 46);
             this.galleryChangeStyleItem1.Id = 66;
             this.galleryChangeStyleItem1.Name = "galleryChangeStyleItem1";
@@ -898,11 +900,11 @@ namespace ChurchServices.WinApp {
             // 
             // navigationNotesItem1
             // 
-            toolTipTitleItem1.Text = "Next Footnote";
-            toolTipItem1.Text = "Jump to next footnote";
-            superToolTip1.Items.Add(toolTipTitleItem1);
-            superToolTip1.Items.Add(toolTipItem1);
-            this.navigationNotesItem1.DropDownSuperTip = superToolTip1;
+            toolTipTitleItem4.Text = "Next Footnote";
+            toolTipItem4.Text = "Jump to next footnote";
+            superToolTip4.Items.Add(toolTipTitleItem4);
+            superToolTip4.Items.Add(toolTipItem4);
+            this.navigationNotesItem1.DropDownSuperTip = superToolTip4;
             this.navigationNotesItem1.Id = 93;
             this.navigationNotesItem1.Name = "navigationNotesItem1";
             // 
@@ -945,12 +947,12 @@ namespace ChurchServices.WinApp {
             this.stylesRibbonPageGroup1,
             this.editingRibbonPageGroup1});
             this.homeRibbonPage1.Name = "homeRibbonPage1";
-            reduceOperation1.Behavior = DevExpress.XtraBars.Ribbon.ReduceOperationBehavior.UntilAvailable;
-            reduceOperation1.GroupName = null;
-            reduceOperation1.ItemLinkIndex = 0;
-            reduceOperation1.ItemLinksCount = 0;
-            reduceOperation1.Operation = DevExpress.XtraBars.Ribbon.ReduceOperationType.Gallery;
-            this.homeRibbonPage1.ReduceOperations.Add(reduceOperation1);
+            reduceOperation4.Behavior = DevExpress.XtraBars.Ribbon.ReduceOperationBehavior.UntilAvailable;
+            reduceOperation4.GroupName = null;
+            reduceOperation4.ItemLinkIndex = 0;
+            reduceOperation4.ItemLinksCount = 0;
+            reduceOperation4.Operation = DevExpress.XtraBars.Ribbon.ReduceOperationType.Gallery;
+            this.homeRibbonPage1.ReduceOperations.Add(reduceOperation4);
             // 
             // clipboardRibbonPageGroup1
             // 
@@ -1010,6 +1012,7 @@ namespace ChurchServices.WinApp {
             this.notesRibbonPageGroup1.ItemLinks.Add(this.insertEndnoteItem1);
             this.notesRibbonPageGroup1.ItemLinks.Add(this.navigationNotesItem1);
             this.notesRibbonPageGroup1.ItemLinks.Add(this.showNotesItem1);
+            this.notesRibbonPageGroup1.ItemLinks.Add(this.btnRemoveHostUrlFromHyperlinks);
             this.notesRibbonPageGroup1.Name = "notesRibbonPageGroup1";
             // 
             // richEditBarController1
@@ -1178,7 +1181,6 @@ namespace ChurchServices.WinApp {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
             this.tablePanel1.Size = new System.Drawing.Size(358, 702);
             this.tablePanel1.TabIndex = 0;
-            this.tablePanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tablePanel1_Paint);
             // 
             // cbHidden
             // 
@@ -1342,6 +1344,14 @@ namespace ChurchServices.WinApp {
             this.sidePanel2.Size = new System.Drawing.Size(986, 745);
             this.sidePanel2.TabIndex = 4;
             this.sidePanel2.Text = "sidePanel2";
+            // 
+            // btnRemoveHostUrlFromHyperlinks
+            // 
+            this.btnRemoveHostUrlFromHyperlinks.Caption = "Remove Host from Hyperlinks";
+            this.btnRemoveHostUrlFromHyperlinks.Id = 98;
+            this.btnRemoveHostUrlFromHyperlinks.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnRemoveHostUrlFromHyperlinks.ImageOptions.SvgImage")));
+            this.btnRemoveHostUrlFromHyperlinks.Name = "btnRemoveHostUrlFromHyperlinks";
+            this.btnRemoveHostUrlFromHyperlinks.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnRemoveHostFromHyperlinks_ItemClick);
             // 
             // ArticleEditorForm
             // 
@@ -1510,5 +1520,6 @@ namespace ChurchServices.WinApp {
         private DevExpress.XtraBars.BarButtonItem btnQuote;
         private DevExpress.XtraEditors.CheckEdit cbHidden;
         private DevExpress.XtraBars.BarButtonItem btnReplaceAllSiglum;
+        private DevExpress.XtraBars.BarButtonItem btnRemoveHostUrlFromHyperlinks;
     }
 }
