@@ -14,7 +14,7 @@
 namespace ChurchServices.WebApp.Models {
     public class SongControllerModel {
         public Song Song { get; set; }
-        public IEnumerable<SongsInfo> Songs { get; set; }
+        //public IEnumerable<SongsInfo> Songs { get; set; }
         public int MaxNumber { get; set; }
     }
 

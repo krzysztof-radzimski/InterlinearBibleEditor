@@ -28,7 +28,7 @@ namespace ChurchServices.WebApp.Controllers {
                 var song = new XPQuery<Song>(new UnitOfWork()).Where(x => x.Number == id).FirstOrDefault();
                 if (song.IsNotNull()) {
                     var maxNumber = TranslationInfoController.GetSongs().Select(x => x.Number).Max();
-                    var result = new SongControllerModel() { Song = song, Songs = TranslationInfoController.GetSongs().Where(x => x.Number < song.Number + 10 && x.Number > song.Number - 10), MaxNumber = maxNumber };
+                    var result = new SongControllerModel() { Song = song, MaxNumber = maxNumber };
                     return View(result);
                 }
             }

@@ -41,16 +41,18 @@
                 <button class="btn btn-light text-success dropdown-toggle dropdown-toggle-split" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0;">
                     Wybierz inną
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook">
-                    @foreach (var song in Model.Songs) {                        
-                        if (song.Number.ToInt() == Model.Song.Number) {
-                            <li><span class="dropdown-item active">@song.Number.@song.Name</span></li>
+                <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuDownloadBook">
+                    <div class="row" style="padding-left: 10px;">
+                    @for (int i = 1; i <= Model.MaxNumber; i++) {
+                        var _active = String.Empty;
+                        if (i == Model.Song.Number) {
+                            _active = " active";
                         }
-                        else {
-                            <li><a class="dropdown-item" href="/Song?id=@song.Number">@song.Number.@song.Name</a></li>
-                        }
+                        
+                        <a class="col-auto dropdown-item@_active" href="/Song?id=@i" style="width: auto;">@i</a>
                     }
-                </ul>
+                    </div>
+                </div>
 
                 <a href="/Song?id=@nextSong" class="btn btn-primary d-inline-block" role="button" title="Następna pieśń" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-right"></i></a>
             </div>

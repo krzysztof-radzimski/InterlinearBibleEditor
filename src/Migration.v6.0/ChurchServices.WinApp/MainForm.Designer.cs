@@ -175,6 +175,7 @@ namespace ChurchServices.WinApp {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnTranslations);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnInterlinearEditor);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnArticles);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnSongs);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnCopyDatabaseToWebFolder, true);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
@@ -188,7 +189,6 @@ namespace ChurchServices.WinApp {
             // 
             // ribbonPageGroup2
             // 
-            this.ribbonPageGroup2.ItemLinks.Add(this.btnSongs);
             this.ribbonPageGroup2.ItemLinks.Add(this.btnBaseBooks);
             this.ribbonPageGroup2.ItemLinks.Add(this.btnStrongsCodes);
             this.ribbonPageGroup2.ItemLinks.Add(this.btnAncientDictionary);
