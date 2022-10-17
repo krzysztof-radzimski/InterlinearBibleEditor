@@ -283,7 +283,29 @@ namespace ChurchServices.WinApp.Controls {
             }
             layoutView1.RefreshData();
         }
+        public void SetSelectedWordAsUncentrain(bool addBrakets = false) {
+            var e = layoutView1.GetFocusedRow() as VerseWordInfo;
+            if (e != null) {
+                if (addBrakets) {
+                    e.Translation = $"<n>[{e.Translation}]</n>";
+                }
+                else {
+                    e.Translation = $"<n>{e.Translation}</n>";
+                }
 
+            }
+        }
+        public void SetAllWordsAsUncentrain(bool addBrakets = false) {
+            foreach (var word in Words) {
+                if (addBrakets) {
+                    word.Translation = $"<n>[{word.Translation}]</n>";
+                }
+                else {
+                    word.Translation = $"<n>{word.Translation}</n>";
+                }
+            }
+            layoutView1.RefreshData();
+        }
         public class VerseWordInfo {
             [System.ComponentModel.Browsable(false), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] public VerseWord Word { get; }
 

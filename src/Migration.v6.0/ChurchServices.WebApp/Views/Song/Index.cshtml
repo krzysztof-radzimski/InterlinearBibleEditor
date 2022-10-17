@@ -32,7 +32,7 @@
                 <a href="/Songs" class="btn btn-success active d-inline-block text-decoration-none" title="Więcej pieśni" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
                 
                 <span class="btn btn-light d-inline-block text-success fw-bold" role="button" style="text-align: left;">@Model.Song.Number. @Model.Song.Name</span>
-                <span class="btn btn-light d-inline-block text-success" role="button" style="text-align: left;">Sygnatura:&nbsp;<b>@Model.Song.Signature</b> Tempo:&nbsp;<b>@Model.Song.BPM</b></span>
+                <span class="btn btn-light d-inline-block text-success" role="button" style="text-align: left;">Syg.:&nbsp;<b>@Model.Song.Signature</b> BPM:&nbsp;<b>@Model.Song.BPM</b></span>
                 <span class="btn btn-light d-inline-block text-success fw-bold" role="button" style="max-width: 120px;">@Model.Song.Type.GetDescription()</span>
             </div>
         
@@ -66,28 +66,28 @@
         @foreach (var item in Model.Song.GetParts()) {
             <div class="row">
                 @if (item.Type == SongVerseType.Chorus) {
-                    <div class="col mt-3 quote2">
+                    <div class="col mt-3 quote2 col-auto">
                         @Html.Raw(item.Text)
                         &nbsp;
                     </div>
-                    <div class="col-auto mt-3 mw-138">
+                    <div class="col-auto mt-3 mw-138 ml-6 fs-105-percent">
                         @Html.Raw(item.Chords)
                     </div>
 
                 }
                 else if (item.Type == SongVerseType.Default) {
-                    <div class="col mt-3">
+                    <div class="col mt-3 col-auto">
                         @Html.Raw(item.Text)
                     </div>
-                    <div class="col-auto mt-3 mw-138">
+                    <div class="col-auto mt-3 mw-138 ml-6">
                         @Html.Raw(item.Chords)
                     </div>
                 }
                 else if (item.Type == SongVerseType.Bridge) {
-                    <div class="col mt-3 fst-italic">
+                    <div class="col mt-3 fst-italic col-auto">
                         @Html.Raw(item.Text)
                     </div>
-                    <div class="col-auto mt-3 mw-138">
+                    <div class="col-auto mt-3 mw-138 ml-6">
                         @Html.Raw(item.Chords)
                     </div>
                 }
@@ -100,6 +100,9 @@
                 <iframe id="YouTubeFrame" width="560" height="600" src="@Model.Song.YouTube" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         }
+
+        <hr/>
+        <p class="small text-center">Śpiewnik zborowy Kościoła Chrześcijan Baptystów w Nowym Dworze Mazowieckim</p>
 
     </div>
 }

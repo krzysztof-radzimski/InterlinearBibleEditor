@@ -158,12 +158,12 @@ namespace ChurchServices.WebApp.Utils {
             songs = new List<SongsInfo>();
             foreach (ViewRecord record in view) {
                 songs.Add(new SongsInfo() {
-                    Type = (SongGroupType)record["Type"],
-                    BPM = record["BPM"].ToString(),
-                    Id = record["Id"].ToInt(),
-                    Name = record["Name"].ToString(),
-                    Number = record["Number"].ToInt(),
-                    Signature = record["Signature"].ToString()
+                    Type = record["Type"] != null ? (SongGroupType)record["Type"] : SongGroupType.Default,
+                    BPM = record["BPM"] != null ? record["BPM"].ToString() : String.Empty,
+                    Id = record["Id"] != null ? record["Id"].ToInt() : 0,
+                    Name = record["Name"] != null ? record["Name"].ToString() : String.Empty,
+                    Number = record["Number"] != null ? record["Number"].ToInt() : 0,
+                    Signature = record["Signature"] != null ? record["Signature"].ToString() : string.Empty
                 });
             }
             MemoryCache.Set(SONGS, songs);

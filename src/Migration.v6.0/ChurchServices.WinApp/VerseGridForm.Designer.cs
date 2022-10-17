@@ -44,6 +44,8 @@ namespace ChurchServices.WinApp {
             this.btnUpdateDictionary = new DevExpress.XtraBars.BarButtonItem();
             this.btnDeleteWord = new DevExpress.XtraBars.BarButtonItem();
             this.btnAutoTranslateVerse = new DevExpress.XtraBars.BarButtonItem();
+            this.btnMarkAllWordsAsUncentrain = new DevExpress.XtraBars.BarButtonItem();
+            this.btnMarkWordAsUncentrain = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.pnlTop = new DevExpress.XtraEditors.PanelControl();
@@ -90,13 +92,15 @@ namespace ChurchServices.WinApp {
             this.btnAutoTranslateChapter,
             this.btnUpdateDictionary,
             this.btnDeleteWord,
-            this.btnAutoTranslateVerse});
+            this.btnAutoTranslateVerse,
+            this.btnMarkAllWordsAsUncentrain,
+            this.btnMarkWordAsUncentrain});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 24;
+            this.ribbonControl1.MaxItemId = 26;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
-            this.ribbonControl1.Size = new System.Drawing.Size(1163, 130);
+            this.ribbonControl1.Size = new System.Drawing.Size(1286, 158);
             // 
             // btnSaveVerse
             // 
@@ -252,6 +256,22 @@ namespace ChurchServices.WinApp {
             this.btnAutoTranslateVerse.Name = "btnAutoTranslateVerse";
             this.btnAutoTranslateVerse.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAutoTranslateVerse_ItemClick);
             // 
+            // btnMarkAllWordsAsUncentrain
+            // 
+            this.btnMarkAllWordsAsUncentrain.Caption = "Mark all words as uncertain";
+            this.btnMarkAllWordsAsUncentrain.Id = 24;
+            this.btnMarkAllWordsAsUncentrain.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnMarkAllWordsAsUncentrain.ImageOptions.SvgImage")));
+            this.btnMarkAllWordsAsUncentrain.Name = "btnMarkAllWordsAsUncentrain";
+            this.btnMarkAllWordsAsUncentrain.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnMarkAllWordsAsUncentrain_ItemClick);
+            // 
+            // btnMarkWordAsUncentrain
+            // 
+            this.btnMarkWordAsUncentrain.Caption = "Mark selected word as uncertain";
+            this.btnMarkWordAsUncentrain.Id = 25;
+            this.btnMarkWordAsUncentrain.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnMarkWordAsUncentrain.ImageOptions.SvgImage")));
+            this.btnMarkWordAsUncentrain.Name = "btnMarkWordAsUncentrain";
+            this.btnMarkWordAsUncentrain.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnMarkWordAsUncentrain_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -270,6 +290,8 @@ namespace ChurchServices.WinApp {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnDeleteWord);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnRenumerateWords);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnSetAllAsJesusWords, true);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnMarkAllWordsAsUncentrain);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnMarkWordAsUncentrain);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnOblubienicaEu, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnLogosSeptuagint);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnExportChapterToPDF, true);
@@ -295,16 +317,16 @@ namespace ChurchServices.WinApp {
             this.pnlTop.Controls.Add(this.txtChapter);
             this.pnlTop.Controls.Add(this.txtVerse);
             this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlTop.Location = new System.Drawing.Point(0, 130);
+            this.pnlTop.Location = new System.Drawing.Point(0, 158);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(1163, 33);
+            this.pnlTop.Size = new System.Drawing.Size(1286, 33);
             this.pnlTop.TabIndex = 1;
             // 
             // lblVerseCount
             // 
             this.lblVerseCount.Location = new System.Drawing.Point(552, 10);
             this.lblVerseCount.Name = "lblVerseCount";
-            this.lblVerseCount.Size = new System.Drawing.Size(9, 13);
+            this.lblVerseCount.Size = new System.Drawing.Size(12, 13);
             this.lblVerseCount.TabIndex = 8;
             this.lblVerseCount.Text = "...";
             // 
@@ -320,7 +342,7 @@ namespace ChurchServices.WinApp {
             // 
             this.labelControl3.Location = new System.Drawing.Point(333, 10);
             this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(44, 13);
+            this.labelControl3.Size = new System.Drawing.Size(43, 13);
             this.labelControl3.TabIndex = 4;
             this.labelControl3.Text = "Chapter:";
             // 
@@ -328,7 +350,7 @@ namespace ChurchServices.WinApp {
             // 
             this.labelControl2.Location = new System.Drawing.Point(155, 10);
             this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(29, 13);
+            this.labelControl2.Size = new System.Drawing.Size(27, 13);
             this.labelControl2.TabIndex = 2;
             this.labelControl2.Text = "Book:";
             // 
@@ -345,7 +367,7 @@ namespace ChurchServices.WinApp {
             // 
             this.labelControl1.Location = new System.Drawing.Point(12, 10);
             this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(31, 13);
+            this.labelControl1.Size = new System.Drawing.Size(32, 13);
             this.labelControl1.TabIndex = 0;
             this.labelControl1.Text = "Index:";
             // 
@@ -392,16 +414,16 @@ namespace ChurchServices.WinApp {
             // 
             this.pnlContent.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlContent.Location = new System.Drawing.Point(0, 163);
+            this.pnlContent.Location = new System.Drawing.Point(0, 191);
             this.pnlContent.Name = "pnlContent";
-            this.pnlContent.Size = new System.Drawing.Size(1163, 482);
+            this.pnlContent.Size = new System.Drawing.Size(1286, 454);
             this.pnlContent.TabIndex = 3;
             // 
             // VerseGridForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1163, 645);
+            this.ClientSize = new System.Drawing.Size(1286, 645);
             this.Controls.Add(this.pnlContent);
             this.Controls.Add(this.pnlTop);
             this.Controls.Add(this.ribbonControl1);
@@ -456,5 +478,7 @@ namespace ChurchServices.WinApp {
         private DevExpress.XtraEditors.PanelControl pnlContent;
         private DevExpress.XtraEditors.LabelControl lblVerseCount;
         private DevExpress.XtraBars.BarButtonItem btnAutoTranslateVerse;
+        private DevExpress.XtraBars.BarButtonItem btnMarkAllWordsAsUncentrain;
+        private DevExpress.XtraBars.BarButtonItem btnMarkWordAsUncentrain;
     }
 }

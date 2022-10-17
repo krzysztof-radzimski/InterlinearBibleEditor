@@ -163,6 +163,13 @@ a {
     max-width: 80px;
 }
 
+.ml-3 {
+    margin-left: 1rem !important;
+}
+
+.ml-6 {
+    margin-left: 2rem !important;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
@@ -176,6 +183,12 @@ html {
 
     #article-cell {
         min-height: 95%;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 1829px) {
+    .container, .container-sm {
+        max-width: 100%;
     }
 }
 
@@ -219,18 +232,21 @@ body {
 
 .footer {
     position: fixed;
+    z-index: 100;
     bottom: 0;
     width: 100%;
     white-space: nowrap;
     line-height: 60px; /* Vertically center the text there */
+    background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity)) !important;
 }
+
     .footer .container {
         line-height: 1.4em;
         padding-top: 5px;
         padding-bottom: 5px;
         white-space: normal;
         background-color: rgba(255,255,255,0.05);
-        max-width: 600px;
+        max-width: 610px;
         border-radius: 1rem 1rem 0 0;
     }
 
@@ -342,6 +358,10 @@ hr.fancy-line {
     width: 25px;
 }
 
+.fs-105-percent {
+    font-size: 105% !important;
+}
+
 .quote {
     margin-left: 2em;
     font-size: 105% !important;
@@ -424,16 +444,16 @@ hr.fancy-line {
 }
 
 #banner {
-    background-image: url('/img/flaga-ukrainy.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    min-height: 300px;
+    border-radius: 0.5em;
     width: 100%;
+    margin-bottom: 1em;
+    cursor: pointer;
 }
 
 #footnotes {
     padding-bottom: 3rem;
 }
+
     #footnotes .bible-content {
         border-radius: 0 0 1rem 1rem;
     }
@@ -442,8 +462,24 @@ hr.fancy-line {
     border-radius: 0 0 1rem 1rem;
 }
 
+#github-lnk:after {
+    content: 'Otwarty kod zrodlowy';
+}
+#privacy-policy:after {
+    content: 'Polityka Prywatnosci';
+}
+
+@media (max-width: 700px) {
+    #privacy-policy:after {
+        content: ' ';
+    }
+    #github-lnk:after {
+        content: ' ';
+    }
+}
+
 @media only screen and (max-width: 995px) {
-    #banner, #main-hr-line, .bible-img, #carouselExampleFade, #FacebookFrame, #WhatWeBelieveIcon {
+    #main-hr-line, .bible-img, #carouselExampleFade, #FacebookFrame, #WhatWeBelieveIcon {
         display: none;
     }
 
@@ -1047,5 +1083,8 @@ img {
 
     #google-maps-iframe, #WalicowLogo {
         filter: invert(90%);
+    }
+    .footer {
+        background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
     }
 }

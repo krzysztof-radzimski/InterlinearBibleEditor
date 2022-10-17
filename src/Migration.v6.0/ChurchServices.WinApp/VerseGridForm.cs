@@ -489,7 +489,7 @@ namespace ChurchServices.WinApp {
                             var exactItem = dic.Where(x => x.Word == sourceWord.ToLower()).FirstOrDefault();
                             if (exactItem.IsNotNull()) {
                                 var translation = String.Empty;
-                                var _isUpper = System.Char.IsUpper(sourceWord[0]);
+                                var _isUpper = sourceWord.IsNotNullOrEmpty() ? Char.IsUpper(sourceWord[0]) : false;
                                 if (_isUpper && exactItem.Translation.IsNotNullOrEmpty() && exactItem.Translation.Length > 1) {
                                     translation = exactItem.Translation.Substring(0, 1).ToUpper() + exactItem.Translation.Substring(1).ToLower();
                                 }
@@ -627,6 +627,16 @@ namespace ChurchServices.WinApp {
             }
         }
 
+        private void btnMarkWordAsUncentrain_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            if (VerseControl.IsNotNull()) {
+                VerseControl.SetSelectedWordAsUncentrain(true);
+            }
+        }
 
+        private void btnMarkAllWordsAsUncentrain_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            if (VerseControl.IsNotNull()) {
+                VerseControl.SetAllWordsAsUncentrain(false  );
+            }
+        }
     }
 }

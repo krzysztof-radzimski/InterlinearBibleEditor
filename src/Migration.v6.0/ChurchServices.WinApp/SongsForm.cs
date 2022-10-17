@@ -52,12 +52,17 @@ namespace ChurchServices.WinApp {
         }
 
         private void btnAddSong_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            var song = new Song(Uow);
+            var song = new Song(Uow) {
+                Number = new XPQuery<Song>(Uow).Max(x => x.Number) + 1,
+            };
             using (var dlg = new SongEditorForm(song)) {
                 dlg.IconOptions.SvgImage = this.IconOptions.SvgImage;
                 if (dlg.ShowDialog() == DialogResult.OK) {
                     dlg.Save();
                     LoadData();
+                }
+                else {
+                    song.Delete();
                 }
             }
         }

@@ -47,10 +47,14 @@ namespace ChurchServices.WinApp {
             if (record.IsNotNull()) {
                 var article = new XPQuery<Article>(Uow).Where(x => x.Oid == record["Id"].ToInt()).FirstOrDefault();
                 if (article.IsNotNull()) {
-                    var frm = new ArticleEditorForm(article);
+                    gridView.ShowLoadingPanel();
+                
+                    var frm = new ArticleEditorForm(article);                  
                     frm.IconOptions.SvgImage = btnAddArticle.ImageOptions.SvgImage;
                     frm.MdiParent = this.MdiParent;
                     frm.Show();
+
+                    gridView.HideLoadingPanel();
                 }
             }
         }
