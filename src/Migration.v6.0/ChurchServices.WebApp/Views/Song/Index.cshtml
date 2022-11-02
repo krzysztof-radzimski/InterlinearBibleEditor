@@ -29,7 +29,7 @@
     <div class="row shadow-lg" style="max-width: 1040px; margin: auto;">
         <div class="col p-4 d-flex flex-column position-static">
             <div class="btn-group" >
-                <a href="/Songs" class="btn btn-success active d-inline-block text-decoration-none" title="Więcej pieśni" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
+                <a href="/Songs" class="btn btn-light active d-inline-block text-decoration-none" title="Więcej pieśni" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
                 
                 <span class="btn btn-light d-inline-block text-success fw-bold" role="button" style="text-align: left;">@Model.Song.Number. @Model.Song.Name</span>
                 <span class="btn btn-light d-inline-block text-success" role="button" style="text-align: left;">Syg.:&nbsp;<b>@Model.Song.Signature</b> BPM:&nbsp;<b>@Model.Song.BPM</b></span>
@@ -37,8 +37,8 @@
             </div>
         
             <div class="btn-group" >
-                <a href="/Song?id=@priorSong" class="btn btn-primary d-inline-block" role="button" title="Poprzednia pieśń" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
-                <button class="btn btn-light text-success dropdown-toggle dropdown-toggle-split" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0;">
+                <a href="/Song?id=@priorSong" class="btn btn-primary text-light d-inline-block" role="button" title="Poprzednia pieśń" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
+                <button class="btn btn-primary text-light dropdown-toggle dropdown-toggle-split" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0;">
                     Wybierz inną
                 </button>
                 <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuDownloadBook">
@@ -54,7 +54,7 @@
                     </div>
                 </div>
 
-                <a href="/Song?id=@nextSong" class="btn btn-primary d-inline-block" role="button" title="Następna pieśń" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-right"></i></a>
+                <a href="/Song?id=@nextSong" class="btn btn-primary text-light d-inline-block" role="button" title="Następna pieśń" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-right"></i></a>
             </div>
         </div>
 

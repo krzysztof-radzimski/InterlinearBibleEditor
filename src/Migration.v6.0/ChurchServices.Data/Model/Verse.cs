@@ -167,7 +167,7 @@ namespace ChurchServices.Data.Model {
                 simpleText = simpleText.Replace("―", "");
             }
             if (translation == "PBD") { translation = "SNPPD"; }
-            simpleText = System.Text.RegularExpressions.Regex.Replace(simpleText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
+            simpleText = Regex.Replace(simpleText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
             simpleText = $"{baseBookShortcut} {index.NumberOfChapter}:{index.NumberOfVerse} „{simpleText}” ({translation})";
             return simpleText;
         }

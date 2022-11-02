@@ -130,3 +130,7 @@ function scrollToFootnoteRef(id) {
         $e.get(0).scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
     }
 }
+
+/*
+ * https://nemecek.be/blog/156/how-to-copy-html-to-clipboard
+ */

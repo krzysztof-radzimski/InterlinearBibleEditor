@@ -486,22 +486,22 @@ else {
                         <p class="fs-70per"><br />* Opis księgi zredagowany na bazie wstępów do <a href="http://feib.pl" target="_blank">Przekładu Dosłownego SNP EIB</a>.</p>
                     }
                     @if (book.BaseBook.Preface.IsNotNullOrEmpty() && book.BaseBook.Preface != "﻿<div><p class=\"fs-5 mt-3\"></p></div>") {
-                            descExists = true;
-                            var __text = book.BaseBook.Preface;
-                            __text = BibleTagController.AppendNonBreakingSpaces(__text);
+                        descExists = true;
+                        var __text = book.BaseBook.Preface;
+                        __text = BibleTagController.AppendNonBreakingSpaces(__text);
 
-                            __text = BibleTagController.GetInternalVerseRangeHtml(__text, Model);
-                            __text = BibleTagController.GetInternalVerseHtml(__text, Model);
-                            __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
-                            __text = BibleTagController.GetExternalVerseHtml(__text, Model);
-                            __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
-                            __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
+                        __text = BibleTagController.GetInternalVerseRangeHtml(__text, Model);
+                        __text = BibleTagController.GetInternalVerseHtml(__text, Model);
+                        __text = BibleTagController.GetExternalVerseRangeHtml(__text, Model);
+                        __text = BibleTagController.GetExternalVerseHtml(__text, Model);
+                        __text = BibleTagController.GetInternalVerseListHtml(__text, Model);
+                        __text = BibleTagController.GetMultiChapterRangeHtml(__text, Model);
 
-                            <div id="preface">
-                                <h2 style="text-align: center;">Wstęp</h2>
-                                @Html.Raw(__text)
-                            </div>
-                        }
+                        <div id="preface">
+                            <h2 style="text-align: center;">Wstęp</h2>
+                            @Html.Raw(__text)
+                        </div>
+                    }
                 </div>
             }
         }
@@ -781,21 +781,20 @@ else {
 
                     @Html.Raw("</div>")
 
-                    @if (footNotes.Count > 0 || toc.Count>0) {
-                        @section Footnotes {                            
-                           
-                            <div id="footnotes" class=" container lh-sm fs-6">
-                                <div class="card-body bible-content">
-                                    @if(toc.Count>0){
+                    @if (footNotes.Count > 0 || toc.Count > 0) {
+                        @section Footnotes {
+
+        <div id="footnotes" class=" container lh-sm fs-6">
+            <div class="card-body bible-content">
+                                    @if (toc.Count > 0) {
                                         <h4>Spis treści</h4>
                                         <ul>
-                                        @foreach (var item in toc)
-                                            {
+                                            @foreach (var item in toc) {
                                                 var liItemType = $"h{item.Level}";
                                                 <li type="@liItemType">
-                                                 <a href="#@item.Id">@item.Title</a>
-                                             </li>
-                                        }
+                                                    <a href="#@item.Id">@item.Title</a>
+                                                </li>
+                                            }
                                         </ul>
                                     }
                                     @if (footNotes.Count > 0) {
@@ -804,10 +803,10 @@ else {
                                             @Html.Raw(item.Html)
                                         }
                                     }
-                                   
+
                                 </div>
                             </div>
-                        }
+    }
                     }
 
                 }
@@ -817,12 +816,51 @@ else {
                 else if (!Model.Translation.Hidden) {
                     var verses = chapter.Verses.OrderBy(x => x.NumberOfVerse);
                     var chapterString = book.NumberOfBook == 230 ? Model.Translation.ChapterPsalmString : book.BaseBook.BookName;
+                    var speecheloChapterText = @"[startSpeech v=Loud rate=""+20%"" p=Low startSpeech] [breathing] ";
+                    speecheloChapterText += bookTitle.Replace("III Księga", "Trzecia Księga")
+                    .Replace("II Księga", "Druga Księga")
+                    .Replace("I Księga", "Pierwsza Księga")
+                    .Replace("III List", "Trzeci List")
+                    .Replace("II List", "Drugi List")
+                    .Replace("I List", "Pierwszy List");
+                    speecheloChapterText += $". [breathing]Rozdział {chapter.NumberOfChapter}. ";
+                    var speecheloPart = 1;
+                    var speecheloPartLen = 18000;
                     var chapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {chapterString} {chapter.NumberOfChapter}. ";
                     foreach (var verse in verses) {
-                        var _verseText = BibleTagController.CleanVerseText(verse.Text);
+                        if (chapter.Subtitles.Any() && chapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).Any()) {
+                            speecheloChapterText += " [sPause sec=0.8 ePause] ";
+                            /*
+                            foreach (var subtitle in chapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).OrderBy(x => x.Level)) {
+                                var speechelosubtitleText = subtitle.Text.Replace(" X", " 10")
+                                                                         .Replace(" IX", " 9")
+                                                                         .Replace(" VIII", " 8")
+                                                                         .Replace(" VII", " 7")
+                                                                         .Replace(" VI", " 6")
+                                                                         .Replace(" V", " 5")
+                                                                         .Replace(" IV", " 4")
+                                                                         .Replace(" III", " 3")
+                                                                         .Replace(" II", " 2")
+                                                                         .Replace(" I", " 1");
+                                speecheloChapterText += $" [breathing]{speechelosubtitleText}. ";
+                            }
+                            */
+                        }
+
+                        var _verseText = BibleTagController.CleanVerseText(verse.Text, true);
                         _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
                         chapterText += $"{verse.NumberOfVerse}. {_verseText} ";
+                        speecheloChapterText += $" [breathing]{_verseText}";
+                        if (chapterText.Length > (speecheloPartLen*speecheloPart)) {
+                            speecheloChapterText += @$" [endSpeech] -------------------- Part {speecheloPart} -------------------- [startSpeech v=Loud rate=""+20%"" p=Low startSpeech]";
+                            speecheloPart++;
+                        }
                     }
+                    chapterText = Regex.Replace(chapterText, @"\s+", @" ");
+
+                    speecheloChapterText = Regex.Replace(speecheloChapterText, @"\s+", @" ");
+                    speecheloChapterText += " [endSpeech]";
+
                     <div class="dropdown d-grid gap-2 d-md-flex justify-content-center" style="width: auto;" id="divDownload">
                         <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
                             Pobierz księgę
@@ -839,6 +877,7 @@ else {
                             <li><a class="dropdown-item" href="/api/DownloadDefaultDocx?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-word"></i>&nbsp;Pobierz rozdział w formacie DOCX</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@chapterText')"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść rozdziału</a></li>
+                            <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@speecheloChapterText')"><i class="fa-solid fa-bullhorn" style="width:18px;"></i>&nbsp;Kopiuj treść rozdziału dla Speechelo</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#copyVersesModal"><i class="far fa-check-square" style="width:18px;"></i>&nbsp;Kopiuj wybrane wersety</a></li>
                         </ul>
@@ -1011,9 +1050,9 @@ else {
 
                         var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "active-verse" : "";
 
-                        var __verseText = BibleTagController.CleanVerseText(verse.Text);
+                        var __verseText = BibleTagController.CleanVerseText(verse.Text, true);
                         __verseText = System.Text.RegularExpressions.Regex.Replace(__verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
-                        var clipboardText = $"{book.BaseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse} „{__verseText}” ({Model.Translation.Name.Replace('\'', ' ')})";
+                        var clipboardText = $"{book.BaseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse} „{__verseText.Trim()}” ({Model.Translation.Name.Replace('\'', ' ')})";
                         var clipboardShortText = $"{__verseText}";
 
                         <span id="span-verse-@verse.NumberOfVerse" class="lh-lg fs-5 @activeVerse" style="margin-inline-end: 15px; margin-inline-start: 15px;">
@@ -1045,33 +1084,32 @@ else {
 
                     }
 
-                    @if (footNotes.Count > 0 || toc.Count>0) {
-                        @section Footnotes {                        
-                        <div id="footnotes" class="container lh-sm fs-6">
-                            <div class="card-body bible-content">
-                                @if(toc.Count>0){  
-                                    <h4>Spis treści</h4>
-                                    <ul>
-                                    @foreach (var item in toc)
-                                    {
-                                         var liItemType = $"h{item.Level}";
-                                         <li type="@liItemType">
-                                              <a href="#@item.Id">@item.Title</a>
-                                         </li>
-                                    }
-                                    </ul>
-                                }
-                                
-                                @if (footNotes.Count > 0) {
-                                    <h4>Przypisy</h4>
-                                    @foreach (var item in footNotes) {
-                                        @Html.Raw(item.Html)
+                    @if (footNotes.Count > 0 || toc.Count > 0) {
+                        @section Footnotes {
+        <div id="footnotes" class="container lh-sm fs-6">
+            <div class="card-body bible-content">
+                                    @if (toc.Count > 0) {
+                                        <h4>Spis treści</h4>
+                                        <ul>
+                                            @foreach (var item in toc) {
+                                                var liItemType = $"h{item.Level}";
+                                                <li type="@liItemType">
+                                                    <a href="#@item.Id">@item.Title</a>
+                                                </li>
+                                            }
+                                        </ul>
                                     }
 
-                                }
+                                    @if (footNotes.Count > 0) {
+                                        <h4>Przypisy</h4>
+                                        @foreach (var item in footNotes) {
+                                            @Html.Raw(item.Html)
+                                        }
+
+                                    }
                                 </div>
-                        </div>
-                        }
+                            </div>
+    }
                     }
 
                 }
@@ -1164,7 +1202,7 @@ else {
 
 
         @section HeaderScripts {
-    @if (Model.IsNotNull() && Model.Translation.IsNotNull()) {
+            @if (Model.IsNotNull() && Model.Translation.IsNotNull()) {
                 var __title = Model.Translation.Description;
 
                 @if (book.IsNotNull()) {
@@ -1191,11 +1229,11 @@ else {
 
         @section Scripts  {
 
-    @if (!String.IsNullOrEmpty(Model.Verse)) {
+            @if (!String.IsNullOrEmpty(Model.Verse)) {
 
                 <script>
-                    docReady(function() {
-                        setTimeout(function() {
+                    docReady(function () {
+                        setTimeout(function () {
                             const id = 'Verse_@selectedVerses.First()';
                             document.getElementById(id).scrollIntoView();
                         }, 1000);
@@ -1206,8 +1244,8 @@ else {
 
             @if (Model != null && Model.Book.IsNotNullOrEmpty() && Model.Chapter.IsNotNullOrEmpty() && chapter != null && chapter.NumberOfVerses > 0) {
                 <script>
-                    docReady(function() {
-                        setTimeout(function() {
+                    docReady(function () {
+                        setTimeout(function () {
                             copyNav();
                         });
                     });

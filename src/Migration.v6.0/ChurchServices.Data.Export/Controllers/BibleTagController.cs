@@ -22,10 +22,20 @@ namespace ChurchServices.Data.Export.Controllers {
 
             return text;
         }
-        public string CleanVerseText(string text) {
+        public string CleanVerseText(string text, bool removeFootnotes = false) {
             text = Regex.Replace(text, @"\<a\s+href\=[\""\'].+[\""\']\>(?<value>.+)\<\/a\>", delegate (Match m) {
                 return m.Groups["value"].Value;
             }, RegexOptions.IgnoreCase);
+
+            if (removeFootnotes) {
+                text = Regex.Replace(text, @"\[(\*)+(.)+\]", delegate (Match m) {
+                    return "";
+                }, RegexOptions.IgnoreCase);
+
+                text = text.Replace("*", "");
+                text = text.Replace("JHWH", "JAHWE");
+            }
+
             return text.Replace("</t>", "")
                        .Replace("<t>", "")
                        .Replace("<pb/>", "")

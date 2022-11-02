@@ -14,7 +14,7 @@
 namespace ChurchServices.Data.Export.Controllers {
     public interface IBibleTagController {
         string AppendNonBreakingSpaces(string text);
-        string CleanVerseText(string text);
+        string CleanVerseText(string text, bool removeFootnotes = false);
         string GetVerseSimpleText(string verseText, VerseIndex index, string baseBookShortcut);
 
         string GetInternalVerseRangeHtml(string input, TranslationControllerModel model);
