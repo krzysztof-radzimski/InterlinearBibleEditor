@@ -1,6 +1,6 @@
 ﻿@inject IConfiguration Configuration
 
 <picture onclick="window.location.href='/Home/Service'">
-    <source srcset="~/img/banner_dark.svg" media="(prefers-color-scheme: dark)" />
-    <img src="~/img/banner.svg" id="banner" class="shadow-lg"/>
+    <source srcset="~/img/banner_dark.svg?version=2" media="(prefers-color-scheme: dark)"/>
+    <img src="~/img/banner.svg" id="banner" class="shadow-lg" asp-append-version="true" />
 </picture>

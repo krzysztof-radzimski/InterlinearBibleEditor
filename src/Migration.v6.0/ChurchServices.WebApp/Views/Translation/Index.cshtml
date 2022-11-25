@@ -816,7 +816,7 @@ else {
                 else if (!Model.Translation.Hidden) {
                     var verses = chapter.Verses.OrderBy(x => x.NumberOfVerse);
                     var chapterString = book.NumberOfBook == 230 ? Model.Translation.ChapterPsalmString : book.BaseBook.BookName;
-                    var speecheloChapterText = @"[startSpeech v=Loud rate=""+20%"" p=Low startSpeech] [breathing] ";
+                    var speecheloChapterText = @"[startSpeech v=Loud startSpeech] [breathing] ";
                     speecheloChapterText += bookTitle.Replace("III Księga", "Trzecia Księga")
                     .Replace("II Księga", "Druga Księga")
                     .Replace("I Księga", "Pierwsza Księga")
@@ -829,22 +829,7 @@ else {
                     var chapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {chapterString} {chapter.NumberOfChapter}. ";
                     foreach (var verse in verses) {
                         if (chapter.Subtitles.Any() && chapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).Any()) {
-                            speecheloChapterText += " [sPause sec=0.8 ePause] ";
-                            /*
-                            foreach (var subtitle in chapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).OrderBy(x => x.Level)) {
-                                var speechelosubtitleText = subtitle.Text.Replace(" X", " 10")
-                                                                         .Replace(" IX", " 9")
-                                                                         .Replace(" VIII", " 8")
-                                                                         .Replace(" VII", " 7")
-                                                                         .Replace(" VI", " 6")
-                                                                         .Replace(" V", " 5")
-                                                                         .Replace(" IV", " 4")
-                                                                         .Replace(" III", " 3")
-                                                                         .Replace(" II", " 2")
-                                                                         .Replace(" I", " 1");
-                                speecheloChapterText += $" [breathing]{speechelosubtitleText}. ";
-                            }
-                            */
+                            speecheloChapterText += " [sPause sec=0.8 ePause] ";                          
                         }
 
                         var _verseText = BibleTagController.CleanVerseText(verse.Text, true);

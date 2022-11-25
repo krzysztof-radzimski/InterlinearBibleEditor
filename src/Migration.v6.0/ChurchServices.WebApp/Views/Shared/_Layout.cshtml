@@ -15,14 +15,14 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="icon" type="image/svg+xml" href="~/img/baptysci-logo.svg" />
+    <link rel="icon" type="image/svg+xml" href="~/img/baptysci-logo-2023.svg" asp-append-version="true" />
     @RenderSection("HeaderScripts", required: false)
 </head>
 <body data-bs-spy="scroll" data-bs-target="#top-nav" data-bs-offset="0">    
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mb-5 shadow" id="top-nav">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img id="baptysci-logo" src="~/img/baptysci-logo.svg"/>KChB&nbsp;NDM</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img id="baptysci-logo" src="~/img/baptysci-logo-2023.svg"/>KChB&nbsp;NDM</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -144,7 +144,7 @@
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" title="Polityka prywatności"><i class="fas fa-user-shield"></i></a>&nbsp;&nbsp;
                                 <a class="nav-link menu-item-a" href="https://m.me/koscioljezusa" target="_blank" title="Wyślij wiadomość"><i class="fab fa-facebook-messenger"></i></a>&nbsp;&nbsp;
                                 <a class="nav-link menu-item-a" href="https://www.facebook.com/koscioljezusa" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>&nbsp;&nbsp;
-                                <a class="nav-link menu-item-a" href="https://www.youtube.com/channel/UCD1go_K0JxyNkuss9mZ-8HQ" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>&nbsp;&nbsp;
+                                <a class="nav-link menu-item-a" href="https://www.youtube.com/@@baptysci-ndm" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>&nbsp;&nbsp;
                                 @if (User.Identity.IsAuthenticated) {
                                     <a class="nav-link menu-item-a" asp-area="" asp-controller="Account" asp-action="Logout" title="Wyloguj"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
                                 }

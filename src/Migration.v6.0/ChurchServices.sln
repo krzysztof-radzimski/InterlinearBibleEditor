@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChurchServices.WinApp", "Ch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChurchServices.Data.Import", "ChurchServices.Data.Import\ChurchServices.Data.Import.csproj", "{B93EDB55-DBF0-4E8E-9299-5DF0F8E7D564}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChurchServices.Data.Export.Tests", "ChurchServices.Data.Export.Tests\ChurchServices.Data.Export.Tests.csproj", "{83FF9611-4E72-49AF-B2AF-7038257A7E6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,14 @@ Global
 		{B93EDB55-DBF0-4E8E-9299-5DF0F8E7D564}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B93EDB55-DBF0-4E8E-9299-5DF0F8E7D564}.Release|ARM64.ActiveCfg = Release|Any CPU
 		{B93EDB55-DBF0-4E8E-9299-5DF0F8E7D564}.Release|ARM64.Build.0 = Release|Any CPU
+		{83FF9611-4E72-49AF-B2AF-7038257A7E6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83FF9611-4E72-49AF-B2AF-7038257A7E6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83FF9611-4E72-49AF-B2AF-7038257A7E6E}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{83FF9611-4E72-49AF-B2AF-7038257A7E6E}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{83FF9611-4E72-49AF-B2AF-7038257A7E6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83FF9611-4E72-49AF-B2AF-7038257A7E6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83FF9611-4E72-49AF-B2AF-7038257A7E6E}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{83FF9611-4E72-49AF-B2AF-7038257A7E6E}.Release|ARM64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

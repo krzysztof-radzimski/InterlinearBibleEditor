@@ -20,7 +20,7 @@ namespace ChurchServices.WebApp.Controllers {
             TranslationInfoController = translationInfoController;
         }
 
-        public IActionResult Index() {
+        public IActionResult Index() {  
             return View(TranslationInfoController.GetLastFourArticles());          
         }
 
