@@ -216,5 +216,19 @@ namespace ChurchServices.WinApp {
             }
             return default;
         }
+
+        private void ribbonControl1_Merge(object sender, RibbonMergeEventArgs e) {
+            RibbonControl parentRRibbon = sender as RibbonControl;
+            RibbonControl childRibbon = e.MergedChild;
+            parentRRibbon.StatusBar.MergeStatusBar(childRibbon.StatusBar);
+        }
+
+        private void ribbonControl1_UnMerge(object sender, RibbonMergeEventArgs e) {
+            try {
+                RibbonControl parentRRibbon = sender as RibbonControl;
+                parentRRibbon.StatusBar.UnMergeStatusBar();
+            }
+            catch { }
+        }
     }
 }

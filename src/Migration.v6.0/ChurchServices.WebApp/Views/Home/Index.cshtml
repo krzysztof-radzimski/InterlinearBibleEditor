@@ -7,6 +7,13 @@
 @model List<ChurchServices.WebApp.Controllers.ArticleInfo>
 <div class="max-width-1000" style="padding-top: 20px;">
     @Html.Partial("~/Views/Shared/_Baner.cshtml")
+
+
+    <img src="~/img/Course.svg" class="shadow-lg" style="border-radius: 0.5em; margin-bottom: 1em; cursor: pointer;" onclick="window.location.href='/Home/Course'" />
+    <div class="input-group" style="margin: auto; padding-bottom: 1em;">
+        <a class="btn btn-dark fs-4" style="margin: auto;" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSf1tpZL3XUfnvNo2GINhIvUgJpW_ThdM2yMg75iNdUoJP7Idw/viewform?vc=0&c=0&w=1&flr=0&usp=mail_form_link"><i class="fa-regular fa-paper-plane"></i>&nbsp;Wypełnij formularz i&nbsp;rozpocznij studium on-line</a>
+    </div>
+
     @if (Model.IsNotNull() && Model.Count > 0) {
         foreach (var item in Model) {
             var lead = item.Lead;

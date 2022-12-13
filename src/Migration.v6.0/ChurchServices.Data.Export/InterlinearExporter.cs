@@ -11,6 +11,8 @@
 
   ===================================================================================*/
 
+using ChurchServices.Data.Model;
+
 namespace ChurchServices.Data.Export {
     public class InterlinearExporter : BaseExporter {
         private int footNoteIndex = 1;
@@ -556,6 +558,7 @@ namespace ChurchServices.Data.Export {
             if (word.ParentVerse.ParentChapter.ParentBook.ParentTranslation.WithStrongs) {
                 builder.Font.Size = 6;
                 builder.Font.Bold = false;
+                builder.Font.Italic = false;
                 builder.Font.Color = Color.DarkBlue;
                 if (word.StrongCode.IsNotNull() && word.StrongCode.Topic.IsNotNullOrEmpty()) { builder.Write(word.StrongCode.Topic); } else { builder.Write("–"); }
                 builder.InsertBreak(BreakType.LineBreak);
@@ -563,6 +566,7 @@ namespace ChurchServices.Data.Export {
             if (word.ParentVerse.ParentChapter.ParentBook.ParentTranslation.WithGrammarCodes) {
                 builder.Font.Size = 6;
                 builder.Font.Bold = false;
+                builder.Font.Italic = false;
                 builder.Font.Color = Color.DarkBlue;
                 if (word.GrammarCode.IsNotNull() && word.GrammarCode.GrammarCodeVariant1.IsNotNullOrEmpty()) { builder.Write(word.GrammarCode.GrammarCodeVariant1); } else { builder.Write("–"); }
                 builder.InsertBreak(BreakType.LineBreak);
@@ -570,19 +574,20 @@ namespace ChurchServices.Data.Export {
 
             builder.Font.Size = 10;
             builder.Font.Bold = false;
+            builder.Font.Italic = false;
             builder.Font.Color = Color.DarkGreen;
             builder.Write(word.SourceWord);
             builder.InsertBreak(BreakType.LineBreak);
 
             builder.Font.Size = 9;
             builder.Font.Bold = false;
+            builder.Font.Italic = false;
             builder.Font.Color = Color.MidnightBlue;
             builder.Write(word.Transliteration);
             builder.InsertBreak(BreakType.LineBreak);
 
-            builder.Font.Size = 11;
-            builder.Font.Bold = word.Citation;
-            builder.Font.Color = word.WordOfJesus ? Color.DarkRed : Color.Black;
+            builder.Font.Size = 11;         
+            
             if (word.Translation.IsNotNull()) {
 
                 if (word.Translation.Contains("<n>")) {
@@ -590,10 +595,14 @@ namespace ChurchServices.Data.Export {
                     if (word.WordOfJesus) {
                         translation = $"<span style=\"color: #990000;\">{translation}</span>";
                     }
-
+                    if (word.Citation) {
+                        translation = $"<i>{translation}</i>";
+                    }
                     builder.InsertHtml(translation);
                 }
                 else {
+                    builder.Font.Italic = word.Citation;
+                    builder.Font.Color = word.WordOfJesus ? Color.DarkRed : Color.Black;
                     builder.Write(word.Translation);
                 }
             }
@@ -655,7 +664,10 @@ namespace ChurchServices.Data.Export {
                     footnote.Font.Bold = true;
 
                     builder.MoveTo(footnote.LastParagraph);
-                    builder.InsertHtml($"<sup style=\"font-size: 8pt;\">)</sup>&nbsp;<span style=\"font-size: 10pt;\">{footnoteText}</span>");
+                    builder.InsertHtml($"<sup>)</sup>&nbsp;{footnoteText}");
+                    foreach (Inline run in builder.CurrentParagraph.ChildNodes) {
+                        run.Font.Size = 8;
+                    }
                     builder.MoveTo(par);
                 }
             }

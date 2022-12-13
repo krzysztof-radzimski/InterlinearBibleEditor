@@ -13,6 +13,8 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using DevExpress.Xpo.Logger.Transport;
+using DevExpress.XtraSplashScreen;
 
 namespace ChurchServices.WinApp {
     public partial class VerseGridForm : RibbonForm {
@@ -193,8 +195,17 @@ namespace ChurchServices.WinApp {
                 if (verse.IsNotNull()) {
 
                     VerseControl.LoadData(verse, Translation.BookType == TheBookType.Bible);
-
-                    btnExportChapterToPDF.Enabled = btnExportChapterToWord.Enabled = btnExportBookToDocx.Enabled = btnExportBookToPdf.Enabled = btnNextVerse.Enabled = btnAutoTranslateChapter.Enabled = btnAutoTranslateVerse.Enabled = true;
+                    btnExportChapterToPdf.Enabled =
+                        btnExportChapterToPdfTables.Enabled =
+                        btnExportChapterToDocx.Enabled =
+                        btnExportChapterToDocxTables.Enabled =
+                        btnExportBookToDocx.Enabled =
+                        btnExportBookToDocxTables.Enabled =
+                        btnExportBookToPdf.Enabled =
+                        btnExportBookToPdfTables.Enabled =
+                        btnNextVerse.Enabled =
+                        btnAutoTranslateChapter.Enabled =
+                        btnAutoTranslateVerse.Enabled = true;
 
                     var allVerses = txtVerse.Properties.DataSource as List<int>;
                     if (allVerses.IsNotNull() && allVerses.Count > 0 && verseNumber == allVerses.Last()) {
@@ -333,18 +344,29 @@ namespace ChurchServices.WinApp {
             }
         }
 
-        private void btnExportChapterToPDF_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            Export(ExportSaveFormat.Pdf);
+        private void btnExportChapterToPdf_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            Export(ExportSaveFormat.Pdf, ExportMethodType.TextBoxes);
         }
-        private void btnExportChapterToWord_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            Export(ExportSaveFormat.Docx);
+        private void btnExportChapterToDocx_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            Export(ExportSaveFormat.Docx, ExportMethodType.TextBoxes);
+        }
+        private void btnExportChapterToPdfTables_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            Export(ExportSaveFormat.Pdf, ExportMethodType.Tables);
+        }
+        private void btnExportChapterToDocxTables_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            Export(ExportSaveFormat.Docx, ExportMethodType.Tables);
         }
 
-        private void Export(ExportSaveFormat format) {
-            var currentControl = VerseControl;//this.Controls.OfType<Control>().Where(x => x is VerseEditorControl).FirstOrDefault() as VerseEditorControl;
+        private void Export(ExportSaveFormat format, ExportMethodType method) {
+            var currentControl = VerseControl;
             if (currentControl.IsNotNull()) {
                 Chapter chapter = currentControl.Verse.ParentChapter;
                 if (chapter.IsNotNull()) {
+                    mnuExportChapter.Enabled = false;
+                    btnProgress.Visibility = DevExpress.XtraBars.BarItemVisibility.Always;
+                    Application.DoEvents();
+
+                    var host = System.Configuration.ConfigurationManager.AppSettings["Host"];
                     var licPath = System.Configuration.ConfigurationManager.AppSettings["AsposeLic"];
                     var licInfo = new System.IO.FileInfo(licPath);
                     byte[] licData = null;
@@ -352,15 +374,45 @@ namespace ChurchServices.WinApp {
                         licData = System.IO.File.ReadAllBytes(licPath);
                     }
                     var outputPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + (format == ExportSaveFormat.Docx ? ".docx" : ".pdf"));
-                    new InterlinearExporter(licData, "").Export(chapter, format, outputPath);
-                    if (File.Exists(outputPath)) { System.Diagnostics.Process.Start(outputPath); }
+                    var task = ExportInterlinearChapter(licData, host, chapter, format, method, outputPath);
+                    task.ContinueWith(t => {
+                        this.SafeInvoke(x => {
+                            x.btnProgress.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+                            x.mnuExportChapter.Enabled = true;
+                        });
+                        if (t.Exception != null) {
+                            this.SafeInvoke(x => {
+                                XtraMessageBox.Show(t.Exception.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            });
+                        }
+                        else if (outputPath != null && File.Exists(outputPath)) {
+                            this.SafeInvoke(x => {
+                                x.ProcessStart(outputPath);
+                            });
+                        }
+                    });
                 }
             }
         }
-        private void ExportBook(ExportSaveFormat format) {
+
+        private async Task ExportInterlinearChapter(byte[] licData, string host, Chapter chapter, ExportSaveFormat format, ExportMethodType method, string outputPath) {
+            if (method == ExportMethodType.TextBoxes) {
+                await Task.Run(() => { new InterlinearExporter(licData, host).Export(chapter, format, outputPath); });
+            }
+            else if (method == ExportMethodType.Tables) {
+                await Task.Run(() => { new InterlinearTableExporter(licData, host).ExportChapter(chapter, format, outputPath); });
+            }
+        }
+
+        private void ExportBook(ExportSaveFormat format, ExportMethodType method) {
             if (VerseControl.IsNotNull()) {
                 var book = VerseControl.Verse.ParentChapter.ParentBook;
                 if (book.IsNotNull()) {
+                    mnuExportBook.Enabled = false;
+                    btnProgress.Visibility = DevExpress.XtraBars.BarItemVisibility.Always;
+                    Application.DoEvents();
+
+                    var host = System.Configuration.ConfigurationManager.AppSettings["Host"];
                     var licPath = System.Configuration.ConfigurationManager.AppSettings["AsposeLic"];
                     var licInfo = new System.IO.FileInfo(licPath);
                     byte[] licData = null;
@@ -368,9 +420,33 @@ namespace ChurchServices.WinApp {
                         licData = System.IO.File.ReadAllBytes(licPath);
                     }
                     var outputPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + (format == ExportSaveFormat.Docx ? ".docx" : ".pdf"));
-                    new InterlinearExporter(licData, "").ExportBookTranslation(book, format, outputPath);
-                    if (File.Exists(outputPath)) { System.Diagnostics.Process.Start(outputPath); }
+                    var task = ExportInterlinearBook(licData, host, book, format, method, outputPath);
+                    task.ContinueWith(t => {
+                        this.SafeInvoke(x => {
+                            x.mnuExportBook.Enabled = true;
+                            x.btnProgress.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+                        });
+                        if (t.Exception != null) {
+                            this.SafeInvoke(x => {
+                                XtraMessageBox.Show(t.Exception.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            });
+                        }
+                        else if (outputPath != null && File.Exists(outputPath)) {
+                            this.SafeInvoke(x => {
+                                x.ProcessStart(outputPath);
+                            });
+                        }
+                    });
                 }
+            }
+        }
+
+        private async Task ExportInterlinearBook(byte[] licData, string host, Book book, ExportSaveFormat format, ExportMethodType method, string outputPath) {
+            if (method == ExportMethodType.TextBoxes) {
+                await Task.Run(() => { new InterlinearExporter(licData, host).ExportBookTranslation(book, format, outputPath); });
+            }
+            else if (method == ExportMethodType.Tables) {
+                await Task.Run(() => { new InterlinearTableExporter(licData, host).ExportBookTranslation(book, format, outputPath); });
             }
         }
 
@@ -381,12 +457,21 @@ namespace ChurchServices.WinApp {
         }
 
         private void btnExportBookToPdf_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            ExportBook(ExportSaveFormat.Pdf);
+            ExportBook(ExportSaveFormat.Pdf, ExportMethodType.TextBoxes);
         }
 
         private void btnExportBookToDocx_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
-            ExportBook(ExportSaveFormat.Docx);
+            ExportBook(ExportSaveFormat.Docx, ExportMethodType.TextBoxes);
         }
+
+        private void btnExportBookToDocxTables_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            ExportBook(ExportSaveFormat.Docx, ExportMethodType.Tables);
+        }
+
+        private void btnExportBookToPdfTables_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            ExportBook(ExportSaveFormat.Pdf, ExportMethodType.Tables);
+        }
+
         private void btnAutoTranslateVerse_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             if (XtraMessageBox.Show("Do you want to auto-translate this verse to Polish?", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
 
@@ -585,8 +670,17 @@ namespace ChurchServices.WinApp {
                     }
 
                     VerseControl.LoadData(verse, Translation.BookType == TheBookType.Bible);
-
-                    btnExportChapterToPDF.Enabled = btnExportChapterToWord.Enabled = btnExportBookToDocx.Enabled = btnExportBookToPdf.Enabled = btnNextVerse.Enabled = btnAutoTranslateChapter.Enabled = true;
+                    btnExportChapterToPdf.Enabled =
+                       btnExportChapterToPdfTables.Enabled =
+                       btnExportChapterToDocx.Enabled =
+                       btnExportChapterToDocxTables.Enabled =
+                       btnExportBookToDocx.Enabled =
+                       btnExportBookToDocxTables.Enabled =
+                       btnExportBookToPdf.Enabled =
+                       btnExportBookToPdfTables.Enabled =
+                       btnNextVerse.Enabled =
+                       btnAutoTranslateChapter.Enabled =
+                       btnAutoTranslateVerse.Enabled = true;
 
                     var allVerses = txtVerse.Properties.DataSource as List<int>;
                     if (allVerses.IsNotNull() && allVerses.Count > 0 && verseNumber == allVerses.Last()) {
@@ -635,8 +729,15 @@ namespace ChurchServices.WinApp {
 
         private void btnMarkAllWordsAsUncentrain_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             if (VerseControl.IsNotNull()) {
-                VerseControl.SetAllWordsAsUncentrain(false  );
+                VerseControl.SetAllWordsAsUncentrain(false);
             }
+        }
+
+        private void ProcessStart(string path) {
+            var process = new System.Diagnostics.Process();
+            process.StartInfo.FileName = path;
+            process.StartInfo.UseShellExecute = true;
+            process.Start();
         }
     }
 }

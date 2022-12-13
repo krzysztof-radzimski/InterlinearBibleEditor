@@ -82,6 +82,8 @@ namespace ChurchServices.WinApp {
             this.ribbonControl1.Size = new System.Drawing.Size(1125, 141);
             this.ribbonControl1.StatusBar = this.ribbonStatusBar1;
             this.ribbonControl1.Toolbar.ShowCustomizeItem = false;
+            this.ribbonControl1.Merge += new DevExpress.XtraBars.Ribbon.RibbonMergeEventHandler(this.ribbonControl1_Merge);
+            this.ribbonControl1.UnMerge += new DevExpress.XtraBars.Ribbon.RibbonMergeEventHandler(this.ribbonControl1_UnMerge);
             // 
             // btnTranslations
             // 
@@ -199,10 +201,10 @@ namespace ChurchServices.WinApp {
             // 
             // ribbonStatusBar1
             // 
-            this.ribbonStatusBar1.Location = new System.Drawing.Point(0, 723);
+            this.ribbonStatusBar1.Location = new System.Drawing.Point(0, 725);
             this.ribbonStatusBar1.Name = "ribbonStatusBar1";
             this.ribbonStatusBar1.Ribbon = this.ribbonControl1;
-            this.ribbonStatusBar1.Size = new System.Drawing.Size(1125, 24);
+            this.ribbonStatusBar1.Size = new System.Drawing.Size(1125, 22);
             // 
             // xtraTabbedMdiManager1
             // 

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 
@@ -19,6 +20,12 @@ namespace ChurchServices.WinApp {
                 }
             }
             return default;
+        }
+
+        public static void SafeInvoke<T>(this T isi, Action<T> call) where T : ISynchronizeInvoke {
+            if (isi.InvokeRequired) isi.BeginInvoke(call, new object[] { isi });
+            else
+                call(isi);
         }
     }
 }

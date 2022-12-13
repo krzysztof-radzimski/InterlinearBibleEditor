@@ -9,4 +9,9 @@ namespace ChurchServices.Data.Export {
         [Category("file.pdf")]
         Pdf
     }
+
+    public enum ExportMethodType {
+        TextBoxes,
+        Tables
+    }
 }

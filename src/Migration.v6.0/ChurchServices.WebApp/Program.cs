@@ -17,6 +17,7 @@ services.AddMemoryCache();
 services.AddControllersWithViews();
 services.AddScoped<ITranslationInfoController, TranslationInfoController>();
 services.AddScoped<IBibleTagController, BibleTagController>();
+
 // Add services to the container.
 services.AddControllersWithViews();
 

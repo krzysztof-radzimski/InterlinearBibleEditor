@@ -1,8 +1,8 @@
-﻿using Aspose.Words;
-using Aspose.Words.Layout;
+﻿using Aspose.Words.Layout;
 using Aspose.Words.Tables;
 using ChurchServices.Data.Export.Controllers;
 using ChurchServices.Data.Model;
+using DevExpress.XtraPrinting.Native;
 
 namespace ChurchServices.Data.Export {
     public class InterlinearTableExporter {
@@ -17,7 +17,15 @@ namespace ChurchServices.Data.Export {
         BibleTagController BibleTagController;
         TranslationControllerModel TranslateModel;
 
-        public InterlinearTableExporter() {
+        protected string Host { get; }
+
+        public InterlinearTableExporter(byte[] asposeLicense, string host) {
+            if (asposeLicense.IsNotNull()) {
+                new Aspose.Words.License().SetLicense(new MemoryStream(asposeLicense));
+            }
+
+            Host = host;
+
             var document = new Document();
 
             LayoutEnumerator = new(document);
@@ -99,7 +107,7 @@ namespace ChurchServices.Data.Export {
             DocumentBuilder.Font.NoProofing = true;
         }
 
-        public void ExportBook(Book book) {
+        public void ExportBookTranslation(Book book, ExportSaveFormat saveFormat, string outputPath, bool addFooter = true, bool addChapterHeaderAndFooter = true) {
             DocumentBuilder.ParagraphFormat.ClearFormatting();
             DocumentBuilder.ParagraphFormat.Style = DocumentBuilder.Document.Styles["Nagłówek 1"];
             DocumentBuilder.Write(book.BaseBook.BookTitle);
@@ -109,13 +117,17 @@ namespace ChurchServices.Data.Export {
             var chapters = book.Chapters.OrderBy(x => x.NumberOfChapter).ToList();
             foreach (var chapter in chapters) {
                 if (!chapter.IsTranslated) { continue; }
-                ExportChapter(chapter, false);
+                ExportChapter(chapter, addBookInfo: false, addFooter: false, addChapterHeaderAndFooter: false);
             }
 
             RemoveEmptyHeading();
-        }
 
-        public void ExportChapter(Chapter chapter, bool addBookInfo = true) {
+            if (addFooter) WriteFooter(book.ParentTranslation);
+            if (addChapterHeaderAndFooter) AddHeaderAndFooter(book);
+
+            Save(saveFormat, outputPath);
+        }
+        public void ExportChapter(Chapter chapter, ExportSaveFormat saveFormat = ExportSaveFormat.Docx, string outputPath = null, bool addBookInfo = true, bool addFooter = true, bool addChapterHeaderAndFooter = true) {
             if (chapter != null) {
                 DocumentBuilder.ParagraphFormat.ClearFormatting();
                 DocumentBuilder.Font.ClearFormatting();
@@ -133,7 +145,6 @@ namespace ChurchServices.Data.Export {
                 var subtitles = chapter.Subtitles.ToList();
                 foreach (var verse in verses) {
                     bool beginTable = AddSubtitles(chapter, subtitles, verse);
-
                     AddVerse(verse, beginTable);
                 }
 
@@ -142,10 +153,16 @@ namespace ChurchServices.Data.Export {
                 if (addBookInfo) {
                     RemoveEmptyHeading();
                 }
+
+                if (addFooter) WriteFooter(chapter.ParentTranslation);
+                if (addChapterHeaderAndFooter) AddHeaderAndFooter(chapter);
+
+                if (outputPath != null) {
+                    Save(saveFormat, outputPath);
+                }
             }
         }
-
-        public void ExportVerse(Verse verse, bool addBookInfo = true) {
+        public void ExportVerse(Verse verse, ExportSaveFormat saveFormat = ExportSaveFormat.Docx, string outputPath = null, bool addBookInfo = true, bool addFooter = true, bool addChapterHeaderAndFooter = true) {
             if (verse != null) {
                 var chapter = verse.ParentChapter;
                 DocumentBuilder.ParagraphFormat.ClearFormatting();
@@ -170,9 +187,73 @@ namespace ChurchServices.Data.Export {
                 if (addBookInfo) {
                     RemoveEmptyHeading();
                 }
+
+                if (addFooter) WriteFooter(chapter.ParentTranslation);
+                if (addChapterHeaderAndFooter) AddHeaderAndFooter(chapter);
+
+                if (outputPath != null) {
+                    Save(saveFormat, outputPath);
+                }
+            }
+        }
+        public void Save(ExportSaveFormat saveFormat, string outputPath) {
+            if (DocumentBuilder.Document != null) {
+                if (saveFormat == ExportSaveFormat.Docx) {
+                    DocumentBuilder.Document.Save(outputPath, SaveFormat.Docx);
+                }
+                else if (saveFormat == ExportSaveFormat.Pdf) {
+                    DocumentBuilder.Document.Save(outputPath, new PdfSaveOptions() {
+                        SaveFormat = SaveFormat.Pdf,
+                        AllowEmbeddingPostScriptFonts = true,
+                        ColorMode = ColorMode.Normal,
+                        Compliance = PdfCompliance.PdfA2a,
+                        CreateNoteHyperlinks = true,
+                        DisplayDocTitle = true,
+                        ExportDocumentStructure = true,
+                        JpegQuality = 100,
+                        OutlineOptions = { HeadingsOutlineLevels = 3, ExpandedOutlineLevels = 3, CreateOutlinesForHeadingsInTables = true, CreateMissingOutlineLevels = true },
+                        OptimizeOutput = true
+                    });
+                }
             }
         }
 
+        private void AddHeaderAndFooter(Book book) {
+            var bookTitle = book.BaseBook.BookTitle;
+            var translationName = book.ParentTranslation.Description;
+
+            DocumentBuilder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            DocumentBuilder.InsertHtml($"<div style=\"font-size: 9; text-align: left; width: 100%; border-bottom: solid 1px darkgray;\">{translationName}<br/>{bookTitle}</div>");
+
+            DocumentBuilder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            DocumentBuilder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Right;
+            DocumentBuilder.Font.Size = 9;
+            DocumentBuilder.Write("Strona ");
+            DocumentBuilder.InsertField("PAGE", null);
+            DocumentBuilder.Write(" z ");
+            DocumentBuilder.InsertField("NUMPAGES", null);
+        }
+        private void AddHeaderAndFooter(Chapter chapter) {
+            var chapterString = chapter.ParentBook.NumberOfBook == 230 ? chapter.ParentTranslation.ChapterPsalmString : chapter.ParentTranslation.ChapterString;
+            var chapterNumber = chapter.ParentTranslation.ChapterRomanNumbering ? chapter.NumberOfChapter.ArabicToRoman() : chapter.NumberOfChapter.ToString();
+            var bookTitle = chapter.ParentBook.BaseBook.BookTitle;
+            var translationName = chapter.ParentTranslation.Description;
+
+            DocumentBuilder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            DocumentBuilder.InsertHtml($"<div style=\"font-size: 9; text-align: left; width: 100%; border-bottom: solid 1px darkgray;\">{translationName}<br/>{bookTitle} {chapterString} {chapterNumber}</div>");
+
+            DocumentBuilder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            DocumentBuilder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Right;
+            DocumentBuilder.Font.Size = 9;
+            DocumentBuilder.Write("Strona ");
+            DocumentBuilder.InsertField("PAGE", null);
+            DocumentBuilder.Write(" z ");
+            DocumentBuilder.InsertField("NUMPAGES", null);
+        }
+        private void WriteFooter(Translation translation) {
+            DocumentBuilder.InsertParagraph();
+            DocumentBuilder.InsertHtml($"<div style=\"font-size: 11; text-align: left;\">{translation.DetailedInfo}</div>");
+        }
         private void RemoveEmptyHeading() {
             foreach (Paragraph par in DocumentBuilder.Document.LastSection.Body.Paragraphs) {
                 if ((par.ParagraphFormat.Style == DocumentBuilder.Document.Styles["Nagłówek 1"] ||
@@ -185,7 +266,6 @@ namespace ChurchServices.Data.Export {
                 }
             }
         }
-
         private bool AddSubtitles(Chapter chapter, List<Subtitle> subtitles, Verse verse) {
             var beginTable = false;
             if (subtitles.Count > 0 && subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse && x.Text.IsNotNullOrEmpty()).Any()) {
@@ -219,11 +299,7 @@ namespace ChurchServices.Data.Export {
                             return " JAHWE";
                         });
                     }
-
-                    //if (sub.Level == 1) {
-                    //    storyText = storyText.ToUpper();
-                    //}
-
+                    
                     var run = new Run(DocumentBuilder.Document) {
                         Text = storyText
                     };
@@ -237,7 +313,6 @@ namespace ChurchServices.Data.Export {
 
             return beginTable;
         }
-
         private void AddVerse(Verse verse, bool beginTable = false, bool addFootnotes = true) {
             if (verse != null) {
                 var previusTableWidth = GetLastTableSize(DocumentBuilder.Document);
@@ -313,13 +388,15 @@ namespace ChurchServices.Data.Export {
                         if (verseWord.WordOfJesus) {
                             translation = $"<span style=\"color: #990000;\">{translation}</span>";
                         }
+                        if (verseWord.Citation) {
+                            translation = $"<i>{translation}</i>";
+                        }
                         DocumentBuilder.InsertHtml(translation, HtmlInsertOptions.RemoveLastEmptyParagraph);
                         AddFootnotes(addFootnotes, verseWord);
                     }
                 }
             }
         }
-
         private void AddFootnotes(bool addFootnotes, VerseWord verseWord) {
             if (addFootnotes && verseWord.FootnoteText.IsNotNullOrEmpty()) {
                 var footnoteText = verseWord.FootnoteText;
@@ -354,12 +431,20 @@ namespace ChurchServices.Data.Export {
                         }
                     }
 
-                    footnoteText = BibleTagController.GetInternalVerseText(footnoteText, TranslateModel);
-                    footnoteText = BibleTagController.GetInternalVerseListText(footnoteText, TranslateModel);
-                    footnoteText = BibleTagController.GetInternalVerseRangeText(footnoteText, TranslateModel);
-                    footnoteText = BibleTagController.GetMultiChapterRangeText(footnoteText, TranslateModel);
-                    footnoteText = BibleTagController.GetExternalVerseText(footnoteText, TranslateModel);
-                    footnoteText = BibleTagController.GetExternalVerseRangeText(footnoteText, TranslateModel);
+                    //footnoteText = BibleTagController.GetInternalVerseText(footnoteText, TranslateModel);
+                    //footnoteText = BibleTagController.GetInternalVerseListText(footnoteText, TranslateModel);
+                    //footnoteText = BibleTagController.GetInternalVerseRangeText(footnoteText, TranslateModel);
+                    //footnoteText = BibleTagController.GetMultiChapterRangeText(footnoteText, TranslateModel);
+                    //footnoteText = BibleTagController.GetExternalVerseText(footnoteText, TranslateModel);
+                    //footnoteText = BibleTagController.GetExternalVerseRangeText(footnoteText, TranslateModel);
+                    footnoteText = BibleTagController.GetInternalVerseHtml(footnoteText, TranslateModel);
+                    footnoteText = BibleTagController.GetInternalVerseListHtml(footnoteText, TranslateModel);
+                    footnoteText = BibleTagController.GetInternalVerseRangeHtml(footnoteText, TranslateModel);
+                    footnoteText = BibleTagController.GetMultiChapterRangeHtml(footnoteText, TranslateModel);
+                    footnoteText = BibleTagController.GetExternalVerseHtml(footnoteText, TranslateModel);
+                    footnoteText = BibleTagController.GetExternalVerseRangeHtml(footnoteText, TranslateModel);
+                    footnoteText = RepairImagesPath(footnoteText);
+                    footnoteText = RepairHrefPath(footnoteText);
                     var par = DocumentBuilder.CurrentParagraph;
 
                     DocumentBuilder.Font.Size = 10;
@@ -374,7 +459,6 @@ namespace ChurchServices.Data.Export {
                 }
             }
         }
-
         private void EndTableAndAddNewParagraph() {
             if (TableIsOpened) {
                 DocumentBuilder.EndRow();
@@ -396,13 +480,6 @@ namespace ChurchServices.Data.Export {
             par.ParagraphFormat.SpaceBefore = 0;
 
         }
-
-        public void Save(string fileName) {
-            if (DocumentBuilder.Document != null) {
-                DocumentBuilder.Document.Save(fileName);
-            }
-        }
-
         private float GetLastTableSize(Document document) {
             var table = document.LastSection.Body.Tables != null && document.LastSection.Body.Tables.Count > 0 ? document.LastSection.Body.Tables.Last() as Table : null;
             if (table != null && table.FirstRow != null) {
@@ -430,7 +507,6 @@ namespace ChurchServices.Data.Export {
 
             return -1;
         }
-
         private List<BookBaseInfo> GetBookBases(UnitOfWork uow = null) {
             var result = new List<BookBaseInfo>();
             if (uow == null) { uow = new UnitOfWork(); }
@@ -449,91 +525,13 @@ namespace ChurchServices.Data.Export {
             }
             return result;
         }
-        /*
-        private float GetTextSize(VerseWord verseWord) {
-            if (verseWord != null) {
-                var withs = new List<float>();
-                if (verseWord.StrongCode != null) {
-                    withs.Add(GetTextSize(verseWord.StrongCode.Topic, 8F));
-                }
-                if (verseWord.GrammarCode != null) {
-                    withs.Add(GetTextSize(verseWord.GrammarCode.GrammarCodeVariant1, 8F));
-                }
-                if (verseWord.SourceWord != null) {
-                    withs.Add(GetTextSize(verseWord.SourceWord, 13F));
-                }
-                if (verseWord.Transliteration != null) {
-                    withs.Add(GetTextSize(verseWord.Transliteration, 13F));
-                }
-                if (verseWord.Translation != null) {
-                    withs.Add(GetTextSize(verseWord.Translation, 16F));
-                }
-
-                return withs.Max();
-            }
-            return 0;
+        private string RepairImagesPath(string input) {
+            input = Regex.Replace(input, @"\<img src\=\""\/", $@"<img src=""{Host}/");
+            return input;
         }
-
-        private float GetTextSize(string text, double fontSize, FontStyle style = FontStyle.Regular) {
-            var document = new Document();
-            document.FirstSection.PageSetup.DifferentFirstPageHeaderFooter = true;
-
-            document.FirstSection.PageSetup.PaperSize = PaperSize.A4;
-            document.FirstSection.PageSetup.Orientation = Orientation.Portrait;
-            document.FirstSection.PageSetup.TopMargin = (2.5F).CentimetersToPoints();
-            document.FirstSection.PageSetup.LeftMargin = (1.5F).CentimetersToPoints();
-            document.FirstSection.PageSetup.BottomMargin = (1.5F).CentimetersToPoints();
-            document.FirstSection.PageSetup.RightMargin = (1.5F).CentimetersToPoints();
-
-            var normalStyle = document.Styles[StyleIdentifier.Normal];
-            if (normalStyle.IsNotNull()) {
-                normalStyle.Font.Name = "Times New Roman";
-                normalStyle.Font.Size = 11;
-                normalStyle.ParagraphFormat.Alignment = ParagraphAlignment.Left;
-                normalStyle.Font.LocaleId = (int)EditingLanguage.Polish;
-                normalStyle.Font.NoProofing = true;
-            }
-
-            Paragraph paragraph;
-            if (document.FirstSection.Body.ChildNodes.Count > 0 && document.FirstSection.Body.ChildNodes[0].NodeType == NodeType.Paragraph) {
-                paragraph = document.FirstSection.Body.ChildNodes[0] as Paragraph;
-            }
-            else {
-                paragraph = new Paragraph(document);
-                document.FirstSection.Body.ChildNodes.Add(paragraph);
-            }
-
-            var run = new Run(document, text);
-            run.Font.Name = "Times New Roman";
-            run.Font.Size = fontSize;
-            run.Font.Bold = style == FontStyle.Bold;
-            run.Font.Italic = style == FontStyle.Italic;
-            paragraph.Runs.Add(run);
-
-            document.UpdatePageLayout();
-
-            LayoutEnumerator layoutEnumerator = new(document);
-            layoutEnumerator.MoveParent(LayoutEntityType.Page);
-            layoutEnumerator.Reset();
-            float width = 0;
-            TraverseLayoutForward(layoutEnumerator, 1, ref width);
-
-            return width;
+        private string RepairHrefPath(string input) {
+            input = Regex.Replace(input, @"\<a href\=\""\/", $@"<a href=""{Host}/");
+            return input;
         }
-
-        private void TraverseLayoutForward(LayoutEnumerator layoutEnumerator, int depth, ref float width) {
-            do {
-                if (layoutEnumerator.Type == LayoutEntityType.Span) {
-                    width += layoutEnumerator.Rectangle.Width;
-                }
-
-                if (layoutEnumerator.MoveFirstChild()) {
-                    TraverseLayoutForward(layoutEnumerator, depth + 1, ref width);
-                    layoutEnumerator.MoveParent();
-                }
-            } while (layoutEnumerator.MoveNext());
-        }
-        */
-
     }
 }

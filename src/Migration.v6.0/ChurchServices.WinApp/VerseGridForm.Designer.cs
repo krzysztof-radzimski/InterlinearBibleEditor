@@ -35,8 +35,8 @@ namespace ChurchServices.WinApp {
             this.btnRenumerateWords = new DevExpress.XtraBars.BarButtonItem();
             this.btnSetAllAsJesusWords = new DevExpress.XtraBars.BarButtonItem();
             this.btnOblubienicaEu = new DevExpress.XtraBars.BarButtonItem();
-            this.btnExportChapterToPDF = new DevExpress.XtraBars.BarButtonItem();
-            this.btnExportChapterToWord = new DevExpress.XtraBars.BarButtonItem();
+            this.btnExportChapterToPdf = new DevExpress.XtraBars.BarButtonItem();
+            this.btnExportChapterToDocx = new DevExpress.XtraBars.BarButtonItem();
             this.btnLogosSeptuagint = new DevExpress.XtraBars.BarButtonItem();
             this.btnExportBookToPdf = new DevExpress.XtraBars.BarButtonItem();
             this.btnExportBookToDocx = new DevExpress.XtraBars.BarButtonItem();
@@ -46,6 +46,12 @@ namespace ChurchServices.WinApp {
             this.btnAutoTranslateVerse = new DevExpress.XtraBars.BarButtonItem();
             this.btnMarkAllWordsAsUncentrain = new DevExpress.XtraBars.BarButtonItem();
             this.btnMarkWordAsUncentrain = new DevExpress.XtraBars.BarButtonItem();
+            this.mnuExportChapter = new DevExpress.XtraBars.BarSubItem();
+            this.btnExportChapterToDocxTables = new DevExpress.XtraBars.BarButtonItem();
+            this.btnExportChapterToPdfTables = new DevExpress.XtraBars.BarButtonItem();
+            this.mnuExportBook = new DevExpress.XtraBars.BarSubItem();
+            this.btnExportBookToDocxTables = new DevExpress.XtraBars.BarButtonItem();
+            this.btnExportBookToPdfTables = new DevExpress.XtraBars.BarButtonItem();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.pnlTop = new DevExpress.XtraEditors.PanelControl();
@@ -59,6 +65,10 @@ namespace ChurchServices.WinApp {
             this.txtChapter = new DevExpress.XtraEditors.LookUpEdit();
             this.txtVerse = new DevExpress.XtraEditors.LookUpEdit();
             this.pnlContent = new DevExpress.XtraEditors.PanelControl();
+            this.ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
+            this.repositoryItemProgressBar1 = new DevExpress.XtraEditors.Repository.RepositoryItemProgressBar();
+            this.btnProgress = new DevExpress.XtraBars.BarEditItem();
+            this.repositoryItemMarqueeProgressBar1 = new DevExpress.XtraEditors.Repository.RepositoryItemMarqueeProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlTop)).BeginInit();
             this.pnlTop.SuspendLayout();
@@ -67,6 +77,8 @@ namespace ChurchServices.WinApp {
             ((System.ComponentModel.ISupportInitialize)(this.txtChapter.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtVerse.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlContent)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemProgressBar1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMarqueeProgressBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // ribbonControl1
@@ -84,8 +96,8 @@ namespace ChurchServices.WinApp {
             this.btnRenumerateWords,
             this.btnSetAllAsJesusWords,
             this.btnOblubienicaEu,
-            this.btnExportChapterToPDF,
-            this.btnExportChapterToWord,
+            this.btnExportChapterToPdf,
+            this.btnExportChapterToDocx,
             this.btnLogosSeptuagint,
             this.btnExportBookToPdf,
             this.btnExportBookToDocx,
@@ -94,13 +106,24 @@ namespace ChurchServices.WinApp {
             this.btnDeleteWord,
             this.btnAutoTranslateVerse,
             this.btnMarkAllWordsAsUncentrain,
-            this.btnMarkWordAsUncentrain});
+            this.btnMarkWordAsUncentrain,
+            this.mnuExportChapter,
+            this.mnuExportBook,
+            this.btnExportBookToDocxTables,
+            this.btnExportBookToPdfTables,
+            this.btnExportChapterToDocxTables,
+            this.btnExportChapterToPdfTables,
+            this.btnProgress});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 26;
+            this.ribbonControl1.MaxItemId = 34;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
+            this.ribbonControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemProgressBar1,
+            this.repositoryItemMarqueeProgressBar1});
             this.ribbonControl1.Size = new System.Drawing.Size(1286, 158);
+            this.ribbonControl1.StatusBar = this.ribbonStatusBar1;
             // 
             // btnSaveVerse
             // 
@@ -177,23 +200,23 @@ namespace ChurchServices.WinApp {
             this.btnOblubienicaEu.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
             this.btnOblubienicaEu.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnOblubienicaEu_ItemClick);
             // 
-            // btnExportChapterToPDF
+            // btnExportChapterToPdf
             // 
-            this.btnExportChapterToPDF.Caption = "Export chapter";
-            this.btnExportChapterToPDF.Enabled = false;
-            this.btnExportChapterToPDF.Id = 14;
-            this.btnExportChapterToPDF.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportChapterToPDF.ImageOptions.SvgImage")));
-            this.btnExportChapterToPDF.Name = "btnExportChapterToPDF";
-            this.btnExportChapterToPDF.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportChapterToPDF_ItemClick);
+            this.btnExportChapterToPdf.Caption = "Export chapter (using text boxes)";
+            this.btnExportChapterToPdf.Enabled = false;
+            this.btnExportChapterToPdf.Id = 14;
+            this.btnExportChapterToPdf.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportChapterToPdf.ImageOptions.SvgImage")));
+            this.btnExportChapterToPdf.Name = "btnExportChapterToPdf";
+            this.btnExportChapterToPdf.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportChapterToPdf_ItemClick);
             // 
-            // btnExportChapterToWord
+            // btnExportChapterToDocx
             // 
-            this.btnExportChapterToWord.Caption = "Export chapter";
-            this.btnExportChapterToWord.Enabled = false;
-            this.btnExportChapterToWord.Id = 15;
-            this.btnExportChapterToWord.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportChapterToWord.ImageOptions.SvgImage")));
-            this.btnExportChapterToWord.Name = "btnExportChapterToWord";
-            this.btnExportChapterToWord.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportChapterToWord_ItemClick);
+            this.btnExportChapterToDocx.Caption = "Export chapter (using text boxes)";
+            this.btnExportChapterToDocx.Enabled = false;
+            this.btnExportChapterToDocx.Id = 15;
+            this.btnExportChapterToDocx.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportChapterToDocx.ImageOptions.SvgImage")));
+            this.btnExportChapterToDocx.Name = "btnExportChapterToDocx";
+            this.btnExportChapterToDocx.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportChapterToDocx_ItemClick);
             // 
             // btnLogosSeptuagint
             // 
@@ -206,7 +229,7 @@ namespace ChurchServices.WinApp {
             // 
             // btnExportBookToPdf
             // 
-            this.btnExportBookToPdf.Caption = "Export book";
+            this.btnExportBookToPdf.Caption = "Export book (using text boxes)";
             this.btnExportBookToPdf.Enabled = false;
             this.btnExportBookToPdf.Id = 17;
             this.btnExportBookToPdf.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportBookToPdf.ImageOptions.SvgImage")));
@@ -215,7 +238,7 @@ namespace ChurchServices.WinApp {
             // 
             // btnExportBookToDocx
             // 
-            this.btnExportBookToDocx.Caption = "Export book";
+            this.btnExportBookToDocx.Caption = "Export book (using text boxes)";
             this.btnExportBookToDocx.Enabled = false;
             this.btnExportBookToDocx.Id = 18;
             this.btnExportBookToDocx.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportBookToDocx.ImageOptions.SvgImage")));
@@ -272,6 +295,66 @@ namespace ChurchServices.WinApp {
             this.btnMarkWordAsUncentrain.Name = "btnMarkWordAsUncentrain";
             this.btnMarkWordAsUncentrain.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnMarkWordAsUncentrain_ItemClick);
             // 
+            // mnuExportChapter
+            // 
+            this.mnuExportChapter.Caption = "Export chapter";
+            this.mnuExportChapter.Id = 26;
+            this.mnuExportChapter.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("mnuExportChapter.ImageOptions.SvgImage")));
+            this.mnuExportChapter.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnExportChapterToDocx),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnExportChapterToPdf),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnExportChapterToDocxTables),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnExportChapterToPdfTables)});
+            this.mnuExportChapter.Name = "mnuExportChapter";
+            // 
+            // btnExportChapterToDocxTables
+            // 
+            this.btnExportChapterToDocxTables.Caption = "Export chapter (using tables)";
+            this.btnExportChapterToDocxTables.Enabled = false;
+            this.btnExportChapterToDocxTables.Id = 30;
+            this.btnExportChapterToDocxTables.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportChapterToDocxTables.ImageOptions.SvgImage")));
+            this.btnExportChapterToDocxTables.Name = "btnExportChapterToDocxTables";
+            this.btnExportChapterToDocxTables.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportChapterToDocxTables_ItemClick);
+            // 
+            // btnExportChapterToPdfTables
+            // 
+            this.btnExportChapterToPdfTables.Caption = "Export chapter (using tables)";
+            this.btnExportChapterToPdfTables.Enabled = false;
+            this.btnExportChapterToPdfTables.Id = 31;
+            this.btnExportChapterToPdfTables.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportChapterToPdfTables.ImageOptions.SvgImage")));
+            this.btnExportChapterToPdfTables.Name = "btnExportChapterToPdfTables";
+            this.btnExportChapterToPdfTables.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportChapterToPdfTables_ItemClick);
+            // 
+            // mnuExportBook
+            // 
+            this.mnuExportBook.Caption = "Export book";
+            this.mnuExportBook.Id = 27;
+            this.mnuExportBook.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("mnuExportBook.ImageOptions.SvgImage")));
+            this.mnuExportBook.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnExportBookToDocx),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnExportBookToPdf),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnExportBookToDocxTables),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnExportBookToPdfTables)});
+            this.mnuExportBook.Name = "mnuExportBook";
+            // 
+            // btnExportBookToDocxTables
+            // 
+            this.btnExportBookToDocxTables.Caption = "Export book (using tables)";
+            this.btnExportBookToDocxTables.Enabled = false;
+            this.btnExportBookToDocxTables.Id = 28;
+            this.btnExportBookToDocxTables.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportBookToDocxTables.ImageOptions.SvgImage")));
+            this.btnExportBookToDocxTables.Name = "btnExportBookToDocxTables";
+            this.btnExportBookToDocxTables.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportBookToDocxTables_ItemClick);
+            // 
+            // btnExportBookToPdfTables
+            // 
+            this.btnExportBookToPdfTables.Caption = "Export book (using tables)";
+            this.btnExportBookToPdfTables.Enabled = false;
+            this.btnExportBookToPdfTables.Id = 29;
+            this.btnExportBookToPdfTables.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportBookToPdfTables.ImageOptions.SvgImage")));
+            this.btnExportBookToPdfTables.Name = "btnExportBookToPdfTables";
+            this.btnExportBookToPdfTables.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportBookToPdfTables_ItemClick);
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -294,15 +377,12 @@ namespace ChurchServices.WinApp {
             this.ribbonPageGroup1.ItemLinks.Add(this.btnMarkWordAsUncentrain);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnOblubienicaEu, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnLogosSeptuagint);
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnExportChapterToPDF, true);
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnExportChapterToWord);
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnExportBookToPdf, true);
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnExportBookToDocx);
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnAutoTranslateChapter);
+            this.ribbonPageGroup1.ItemLinks.Add(this.mnuExportChapter, true);
+            this.ribbonPageGroup1.ItemLinks.Add(this.mnuExportBook);
+            this.ribbonPageGroup1.ItemLinks.Add(this.btnAutoTranslateChapter, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnAutoTranslateVerse);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnUpdateDictionary);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
-            this.ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
             // pnlTop
             // 
@@ -416,8 +496,33 @@ namespace ChurchServices.WinApp {
             this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContent.Location = new System.Drawing.Point(0, 191);
             this.pnlContent.Name = "pnlContent";
-            this.pnlContent.Size = new System.Drawing.Size(1286, 454);
+            this.pnlContent.Size = new System.Drawing.Size(1286, 432);
             this.pnlContent.TabIndex = 3;
+            // 
+            // ribbonStatusBar1
+            // 
+            this.ribbonStatusBar1.ItemLinks.Add(this.btnProgress);
+            this.ribbonStatusBar1.Location = new System.Drawing.Point(0, 623);
+            this.ribbonStatusBar1.Name = "ribbonStatusBar1";
+            this.ribbonStatusBar1.Ribbon = this.ribbonControl1;
+            this.ribbonStatusBar1.Size = new System.Drawing.Size(1286, 22);
+            // 
+            // repositoryItemProgressBar1
+            // 
+            this.repositoryItemProgressBar1.Name = "repositoryItemProgressBar1";
+            // 
+            // btnProgress
+            // 
+            this.btnProgress.Caption = "Please wait...";
+            this.btnProgress.Edit = this.repositoryItemMarqueeProgressBar1;
+            this.btnProgress.EditWidth = 200;
+            this.btnProgress.Id = 33;
+            this.btnProgress.Name = "btnProgress";
+            this.btnProgress.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+            // 
+            // repositoryItemMarqueeProgressBar1
+            // 
+            this.repositoryItemMarqueeProgressBar1.Name = "repositoryItemMarqueeProgressBar1";
             // 
             // VerseGridForm
             // 
@@ -425,10 +530,12 @@ namespace ChurchServices.WinApp {
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1286, 645);
             this.Controls.Add(this.pnlContent);
+            this.Controls.Add(this.ribbonStatusBar1);
             this.Controls.Add(this.pnlTop);
             this.Controls.Add(this.ribbonControl1);
             this.Name = "VerseGridForm";
             this.Ribbon = this.ribbonControl1;
+            this.StatusBar = this.ribbonStatusBar1;
             this.Text = "InterlinearEditorForm";
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlTop)).EndInit();
@@ -439,6 +546,8 @@ namespace ChurchServices.WinApp {
             ((System.ComponentModel.ISupportInitialize)(this.txtChapter.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtVerse.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlContent)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemProgressBar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMarqueeProgressBar1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -458,8 +567,8 @@ namespace ChurchServices.WinApp {
         private DevExpress.XtraBars.BarButtonItem btnRenumerateWords;
         private DevExpress.XtraBars.BarButtonItem btnSetAllAsJesusWords;
         private DevExpress.XtraBars.BarButtonItem btnOblubienicaEu;
-        private DevExpress.XtraBars.BarButtonItem btnExportChapterToPDF;
-        private DevExpress.XtraBars.BarButtonItem btnExportChapterToWord;
+        private DevExpress.XtraBars.BarButtonItem btnExportChapterToPdf;
+        private DevExpress.XtraBars.BarButtonItem btnExportChapterToDocx;
         private DevExpress.XtraBars.BarButtonItem btnLogosSeptuagint;
         private DevExpress.XtraBars.BarButtonItem btnExportBookToPdf;
         private DevExpress.XtraBars.BarButtonItem btnExportBookToDocx;
@@ -480,5 +589,15 @@ namespace ChurchServices.WinApp {
         private DevExpress.XtraBars.BarButtonItem btnAutoTranslateVerse;
         private DevExpress.XtraBars.BarButtonItem btnMarkAllWordsAsUncentrain;
         private DevExpress.XtraBars.BarButtonItem btnMarkWordAsUncentrain;
+        private DevExpress.XtraBars.BarSubItem mnuExportChapter;
+        private DevExpress.XtraBars.BarSubItem mnuExportBook;
+        private DevExpress.XtraBars.BarButtonItem btnExportBookToDocxTables;
+        private DevExpress.XtraBars.BarButtonItem btnExportBookToPdfTables;
+        private DevExpress.XtraBars.BarButtonItem btnExportChapterToDocxTables;
+        private DevExpress.XtraBars.BarButtonItem btnExportChapterToPdfTables;
+        private DevExpress.XtraBars.BarEditItem btnProgress;
+        private DevExpress.XtraEditors.Repository.RepositoryItemMarqueeProgressBar repositoryItemMarqueeProgressBar1;
+        private DevExpress.XtraEditors.Repository.RepositoryItemProgressBar repositoryItemProgressBar1;
+        private DevExpress.XtraBars.Ribbon.RibbonStatusBar ribbonStatusBar1;
     }
 }

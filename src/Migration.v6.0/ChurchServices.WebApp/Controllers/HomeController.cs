@@ -14,23 +14,26 @@
 namespace ChurchServices.WebApp.Controllers {
     public class HomeController : Controller {
         private readonly ILogger<HomeController> Logger;
+
         private readonly ITranslationInfoController TranslationInfoController;
         public HomeController(ILogger<HomeController> logger, ITranslationInfoController translationInfoController) {
             Logger = logger;
             TranslationInfoController = translationInfoController;
         }
 
-        public IActionResult Index() {  
-            return View(TranslationInfoController.GetLastFourArticles());          
+        public IActionResult Index() {
+            return View(TranslationInfoController.GetLastFourArticles());
         }
 
-        public IActionResult WhatWeBelieve() =>View();
+        public IActionResult WhatWeBelieve() => View();
 
         public IActionResult About() => View();
 
         public IActionResult Service() => View();
 
         public IActionResult Privacy() => View();
+
+        public IActionResult Course() => View();
 
         [Authorize]
         public IActionResult Secured() => View();
@@ -46,5 +49,5 @@ namespace ChurchServices.WebApp.Controllers {
         public IActionResult Error() {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-    }
+    }       
 }
