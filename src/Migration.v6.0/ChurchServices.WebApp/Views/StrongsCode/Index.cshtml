@@ -22,16 +22,16 @@
 }
 @if (Model != null) {
 
-    ViewData["Title"] = $"{@Model.Lang.GetCategory()}{@Model.Code}";
-    var link = $"https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs={Model.Lang.GetCategory()}{@Model.Code}&t=MGNT";
-
+    ViewData["Title"] = $"{@Model.Lang.GetCategory()}{Model.Code}";
+    var link = $"https://www.blueletterbible.org/lang/lexicon/lexicon.cfm?Strongs={Model.Lang.GetCategory()}{Model.Code}&t=MGNT";
+    var link2 = $"https://biblehub.com/{Model.Lang.ToString().ToLower()}/{Model.Code}.htm";
     <div class="clearfix max-width-1000" style="min-height: 80vh;">
         <div class="row p-4">
             <p class="fs-5 text-center shadow p-3 mb-3 rounded bible-img">
                 <span style="font-size: 200%;"><i class="fas fa-bible"></i> Słownik Stronga</span>
             </p>
-            
-            <div class="col d-flex flex-column position-static">
+
+            <div class="col d-flex flex-column position-static text-center">
                 <div>
                     @if (Model.Code - 1 > 0) {
                         <strong class="d-inline-block mb-2 text-success pill-white" style="width:auto;"><a href="/StrongsCode?id=@Model.Lang.GetCategory()@prev" class="text-decoration-none" title="Poprzednie hasło"><i class="far fa-arrow-alt-circle-left"></i></a></strong>
@@ -41,35 +41,82 @@
                         <strong class="d-inline-block mb-2 text-success pill-white" style="width:auto;"><a href="/StrongsCode?id=@Model.Lang.GetCategory()@next" class="text-decoration-none" title="Następne hasło"><i class="far fa-arrow-alt-circle-right"></i></a></strong>
                     }
                 </div>
-                <h3 class="mb-0">@Model.SourceWord</h3>
-                <p class="mb-auto">Język: <span class="fst-italic">@(Model.Lang == Language.Greek ? "grecki" : "hebrajski")</span></p>
-                <p class="mb-auto">Transliteracja: <span class="fst-italic">@Model.Transliteration</span></p>
-                <p class="mb-auto">Wymowa:  <span class="fst-italic">@Model.Pronunciation</span></p>
-                <p class="mb-auto">Definicja:  <span class="fst-italic">@Model.ShortDefinition</span></p>
 
-                <div class="mb-1">@Html.Raw(definition)</div>
-
-                <p><a href="@link" target="_blank">Więcej...</a></p>
+                <div class="container">
+                    <div class="row p-1">
+                        <div class="col p-1 border-bottom">
+                            <h3 class="mb-0">@Model.Lang.GetCategory()@Model.Code</h3>
+                        </div>
+                        <div class="col p-1 border-start border-bottom">
+                            <h3 class="mb-0">@Model.SourceWord</h3>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col p-1 border-bottom">
+                            Język:
+                        </div>
+                        <div class="col p-1 border-start border-bottom">
+                            <span class="fst-italic">@(Model.Lang == Language.Greek ? "grecki" : "hebrajski")</span>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col p-1 border-bottom">
+                            Transliteracja:
+                        </div>
+                        <div class="col p-1 border-start border-bottom">
+                            <span class="fst-italic">@Model.Transliteration</span>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col p-1 border-bottom">
+                            Wymowa:
+                        </div>
+                        <div class="col p-1 border-start border-bottom">
+                            <span class="fst-italic">@Model.Pronunciation</span>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col p-1 border-bottom">
+                            Definicja:
+                        </div>
+                        <div class="col p-1 border-start border-bottom">
+                            <span class="fst-italic">@Model.ShortDefinition</span>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="mb-1 text-lg-start">@Html.Raw(definition)</div>
+                <hr />
+                <p>Więcej w słowniku <a href="@link" target="_blank">Blue Letter Bible</a> lub <a href="@link2" target="_blank">Bible Hub</a></p>
             </div>
 
             @{
                 var verses = Model.GetVersesInfo();
                 if (verses.Count > 0) {
+                    var groups = verses.GroupBy(x => x.Index.TranslationName);
+                    foreach (var group in groups) {
+                        var translationName = group.Key;
+                        if (translationName == "NPI") { translationName = "Nowodworski Przekład Interlinearny"; }
+                        if (translationName == "TRO16") { translationName = "Interlinearny Przekład Oblubienicy"; }
+                        
+                        <p>&nbsp;</p>
+                        <h2>@translationName</h2>
 
-                    <div class="container">
-                        <div class="row p-1">
-                            <div class="col-auto fw-bold p-1 border-top border-bottom mw-10-per">Siglum</div>
-                            <div class="col fw-bold p-1 border-top border-bottom border-start">Treść</div>
-                        </div>
-
-                        @foreach (var item in verses) {
+                        <div class="container">
                             <div class="row p-1">
-                                <div class="col-auto p-1 border-bottom mw-10-per">@Html.Raw(item.Key)</div>
-                                <div class="col p-1 border-start border-bottom">@Html.Raw(item.Value.Replace("―", String.Empty).Replace(" < n>", @"<span class=""text-muted"">").Replace("</n>", "</span>"))</div>
+                                <div class="col-auto fw-bold p-1 border-top border-bottom mw-10-per">Siglum</div>
+                                <div class="col fw-bold p-1 border-top border-bottom border-start">Treść</div>
                             </div>
-                        }
 
-                    </div>
+                            @foreach (var item in group) {
+                                <div class="row p-1">
+                                    <div class="col-auto p-1 border-bottom mw-10-per">@Html.Raw(item.Siglum)</div>
+                                    <div class="col p-1 border-start border-bottom">@Html.Raw(item.Text.Replace("―", @"<span class=""text-muted"">―</span>").Replace("<n>", @"<span class=""text-muted"">").Replace("</n>", "</span>"))</div>
+                                </div>
+                            }
+
+                        </div>
+                    }
                 }
             }
         </div>

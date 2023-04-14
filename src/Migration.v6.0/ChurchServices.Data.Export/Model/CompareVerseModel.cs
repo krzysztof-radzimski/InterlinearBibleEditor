@@ -19,6 +19,7 @@ namespace ChurchServices.Data.Export.Model {
         public VerseIndex Index { get; set; }
         public List<CompareVerseInfo> Verses { get; set; }
         public bool LiteralOnly { get; set; }
+        public int LastVerseNumberOfChapter { get; set; }
 
         public string GetSiglum() {
             return $"{BookShortcut} {Index.NumberOfChapter}:{Index.NumberOfVerse}";

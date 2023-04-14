@@ -226,7 +226,9 @@ namespace ChurchServices.WinApp {
         private void ribbonControl1_UnMerge(object sender, RibbonMergeEventArgs e) {
             try {
                 RibbonControl parentRRibbon = sender as RibbonControl;
-                parentRRibbon.StatusBar.UnMergeStatusBar();
+                if (parentRRibbon != null && parentRRibbon.StatusBar != null) {
+                    parentRRibbon.StatusBar.UnMergeStatusBar();
+                }
             }
             catch { }
         }

@@ -408,6 +408,24 @@ namespace ChurchServices.Data.Export.Controllers {
             return default;
         }
 
+        public string GetRecognizedCompareUrl(Session session, string input) {
+            var siglum = RecognizeSiglum(input);
+            if (siglum != null && siglum.NumbersOfVerses != null && siglum.NumbersOfVerses.Count() > 0) {
+                var books = new XPQuery<BookBase>(session).ToList();
+                var baseBooks = books
+                    .Where(x => x.StatusBookType == TheBookType.Bible)
+                    .Select(x => new { x.NumberOfBook, x.BookShortcut, x.BookName });
+                var baseBook = baseBooks.Where(x => x.BookShortcut.ToLower() == siglum.BookShortcut.ToLower()).FirstOrDefault();
+                if (baseBook == null) {
+                    baseBook = baseBooks.Where(x => x.BookName.ToLower() == siglum.BookShortcut.ToLower()).FirstOrDefault();
+                }
+                if (baseBook != null) {
+                    return $"/CompareVerse?id={siglum.TranslationName}.{baseBook.NumberOfBook}.{siglum.NumberOfChapter}.{siglum.NumbersOfVerses.First()}";
+                }
+            }
+            return null;
+        }
+
         public string GetRecognizedSiglumUrl(Session session, string input) {
             var siglum = RecognizeSiglum(input);
             if (siglum != null) {
@@ -459,7 +477,7 @@ namespace ChurchServices.Data.Export.Controllers {
                         case "kapł":
                         case "3Moj":
                         case "Kapł": { bookShortcut = "Kpł"; break; }
-                        case "4moj":                        
+                        case "4moj":
                         case "4Moj": { bookShortcut = "Lb"; break; }
                         case "5moj":
                         case "5Moj": { bookShortcut = "Pwt"; break; }

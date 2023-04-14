@@ -11,6 +11,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using ChurchServices.Data.Export;
+using System.IO;
+using DevExpress.Utils.Win.Hook;
 
 namespace ChurchServices.WinApp {
     public partial class TranslationEditForm : RibbonForm {
@@ -57,7 +60,7 @@ namespace ChurchServices.WinApp {
             btnRecognizeBookContent.Enabled = false;
             btnAddNTag.Enabled = false;
             mnuAddFootnoteText.Enabled = false;
-
+            mnuExport.Enabled = false;
             tabs.ShowTabHeader = DevExpress.Utils.DefaultBoolean.False;
         }
 
@@ -146,7 +149,7 @@ namespace ChurchServices.WinApp {
 
                     foreach (var _item in item.Chapters.OrderBy(x => x.NumberOfChapter)) {
                         var chapter = new IbeChapterTreeItem() {
-                            ID = $"Chapter{ _item.Oid}",
+                            ID = $"Chapter{_item.Oid}",
                             ParentID = book.ID,
                             Number = _item.NumberOfChapter,
                             Text = _item.NumberOfChapter.ToString(),
@@ -264,13 +267,14 @@ namespace ChurchServices.WinApp {
                 if (item.IsNew) {
 
                     var parentBookItem = TreeItems.Where(x => x.ID == chapterItem.ParentID).FirstOrDefault() as IbeBookTreeItem;
-
+                    var parentBook = new XPQuery<Book>(uow).Where(x => x.Oid == parentBookItem.Tag).FirstOrDefault();
                     var chapter = new Chapter(uow) {
                         IsTranslated = chapterItem.IsTranslated,
                         NumberOfChapter = chapterItem.Number,
                         NumberOfVerses = chapterItem.NumberOfVerses,
-                        ParentBook = new XPQuery<Book>(uow).Where(x => x.Oid == parentBookItem.Tag).FirstOrDefault()
+                        ParentBook = parentBook
                     };
+                    chapter.Index = $"{parentBook.ParentTranslation.Name.Replace("'", "").Replace("+", "")}.{parentBook.NumberOfBook}.{chapter.NumberOfChapter}";
                     chapter.Save();
                     uow.CommitChanges();
                     uow.ReloadChangedObjects();
@@ -540,6 +544,7 @@ namespace ChurchServices.WinApp {
                         tabs.Visible = false;
                         btnAddNTag.Enabled = false;
                         mnuAddFootnoteText.Enabled = false;
+                        mnuExport.Enabled = false;
                     }
                     else if (_record.Type == IbeTreeItemType.Book) {
                         LoadBook(_record as IbeBookTreeItem);
@@ -633,6 +638,7 @@ namespace ChurchServices.WinApp {
 
                 btnAddNTag.Enabled = true;
                 mnuAddFootnoteText.Enabled = true;
+                mnuExport.Enabled = false;
 
                 if (Object.Type == TranslationType.Interlinear && !e.IsNew) {
                     var v = new XPQuery<Verse>(Object.Session).Where(x => x.Oid == e.Tag.ToInt()).FirstOrDefault();
@@ -668,6 +674,7 @@ namespace ChurchServices.WinApp {
 
                 btnAddNTag.Enabled = false;
                 mnuAddFootnoteText.Enabled = false;
+                mnuExport.Enabled = true;
 
                 tabs.SelectedTabPage = tabChapter;
                 tabs.Visible = true;
@@ -687,6 +694,7 @@ namespace ChurchServices.WinApp {
             btnAddVerses.Enabled = false;
             btnRecognizeChapterContent.Enabled = false;
             btnRecognizeBookContent.Enabled = true;
+            mnuExport.Enabled = true;
 
             btnAddNTag.Enabled = false;
             mnuAddFootnoteText.Enabled = false;
@@ -904,7 +912,7 @@ namespace ChurchServices.WinApp {
                                 chapter.NumberOfVerses = recognizedChapter.Verses.Select(x => x.Number).Max();
                             }
 
-                            
+
                             chapter.Changed = true;
                         }
                         treeList.RefreshDataSource();
@@ -926,6 +934,91 @@ namespace ChurchServices.WinApp {
             }
             editor.Document.InsertText(editor.Document.CaretPosition, $"[{stars} ]");
         }
+
+        private void btnExportItemToDocx_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            ExportItem(ExportSaveFormat.Docx);
+        }
+
+        private void btnExportItemToPdf_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+            ExportItem(ExportSaveFormat.Pdf);
+        }
+
+        private void ExportItem(ExportSaveFormat format) {
+            if (treeList.Selection.Count > 0) {
+                var node = treeList.Selection.FirstOrDefault();
+                if (node != null) {
+                    var value = treeList.GetDataRecordByNode(node) as IbeTreeItem;
+                    if (value != null) {
+                        ExportIbeTreeItem(value, format);
+                    }
+                }
+            }
+        }
+
+        private void ExportIbeTreeItem(IbeTreeItem item, ExportSaveFormat format) {
+            var host = System.Configuration.ConfigurationManager.AppSettings["Host"];
+            var licPath = System.Configuration.ConfigurationManager.AppSettings["AsposeLic"];
+            var licInfo = new System.IO.FileInfo(licPath);
+            byte[] licData = null;
+            if (licInfo.Exists) {
+                licData = System.IO.File.ReadAllBytes(licPath);
+            }
+            var outputPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + (format == ExportSaveFormat.Docx ? ".docx" : ".pdf"));
+            XPObject theObject = null;
+            if (item is IbeBookTreeItem) {
+                theObject = Object.Books.Where(x => x.Oid == item.Tag).FirstOrDefault();
+            }
+            else if (item is IbeChapterTreeItem) {
+                var parentBookItem = TreeItems.Where(x => x.ID == item.ParentID).FirstOrDefault() as IbeBookTreeItem;
+                var theBook = Object.Books.Where(x => x.Oid == parentBookItem.Tag).FirstOrDefault();
+                if (theBook != null) {
+                    theObject = theBook.Chapters.Where(x => x.Oid == item.Tag).FirstOrDefault();
+                }
+            }
+
+            if (theObject != null) {
+                mnuExport.Enabled = false;
+                btnProgress.Visibility = DevExpress.XtraBars.BarItemVisibility.Always;
+
+                var task = ExportObject(licData, host, theObject, format, outputPath);
+                task.ContinueWith(t => {
+                    this.SafeInvoke(x => {
+                        x.mnuExport.Enabled = true;
+                        x.btnProgress.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+                    });
+                    if (t.Exception != null) {
+                        this.SafeInvoke(x => {
+                            XtraMessageBox.Show(t.Exception.Message, "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        });
+                    }
+                    else if (outputPath != null && File.Exists(outputPath)) {
+                        this.SafeInvoke(x => {
+                            x.ProcessStart(outputPath);
+                        });
+                    }
+                });
+            }
+        }
+
+        private async Task ExportObject(byte[] licData, string host, XPObject theObject, ExportSaveFormat format, string outputPath) {
+            if (theObject is Chapter) {
+                Chapter chapter = theObject as Chapter;
+                await Task.Run(() => { new DefaultExporter(licData, host).Export(chapter, format, outputPath); });
+            }
+            else if (theObject is Book) {
+                Book book = theObject as Book;
+                await Task.Run(() => { new DefaultExporter(licData, host).Export(book, format, outputPath); });
+            }
+        }
+
+        private void ProcessStart(string path) {
+            var process = new System.Diagnostics.Process();
+            process.StartInfo.FileName = path;
+            process.StartInfo.UseShellExecute = true;
+            process.Start();
+        }
+
+        
     }
 
     public enum IbeTreeItemType { Root, Book, Chapter, Verse }

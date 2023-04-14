@@ -92,7 +92,8 @@ else if (Model.Book.IsNullOrEmpty()) {
                 var color = System.Drawing.ColorTranslator.FromHtml(@_book.Color);
                 var bookHtml = _book.BookShortcut.Replace(" ", "&nbsp;");
                 if (Model.Translation.Type == TranslationType.Interlinear && Model.Translation.BookType == TheBookType.Bible) {
-                    bookHtml = $"{_book.BaseBook.BookShortcut}&nbsp;({bookHtml})";
+                    if (bookHtml != _book.BaseBook.BookShortcut)
+                        bookHtml = $"{_book.BaseBook.BookShortcut}&nbsp;({bookHtml})";
                 }
 
                 var bookLinkChapterNumber = _book.Chapters.Min(x => x.NumberOfChapter);
@@ -151,11 +152,10 @@ else {
     //
     // Wyświetlanie treści rozdziałów poszczególnych ksiąg
     //
-    //Book book = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(Model.Book)).FirstOrDefault();
     if (book.IsNotNull()) {
         var baseBook = book.BaseBook;
         var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : String.Empty;
-        var bookName = baseBook.IsNotNull() ? baseBook.BookName : String.Empty;
+        var bookName = baseBook.IsNotNull() ? baseBook.BookName : String.Empty;      
         var bookTitle = baseBook.IsNotNull() ? baseBook.BookTitle : String.Empty;
         var bookStatus = baseBook.IsNotNull() ? baseBook.StatusBookType : TheBookType.Bible;
         var canonType = baseBook.IsNotNull() ? baseBook.StatusCanonType : CanonType.Canon;
@@ -247,7 +247,7 @@ else {
                             var _model_verse = Model.Verse.ToInt() == 0 ? 1 : Model.Verse.ToInt();
                             var url_oblubienica = $"https://biblia.oblubienica.eu/interlinearny/index/book/{Model.NTBookNumber}/chapter/{_model_chapter}/verse/{_model_verse}";
                             <li>
-                                <a class="dropdown-item" href="@url_oblubienica" target="_blank"><b>TRO+</b>&nbsp;<span class="fs-80per">Ewangeliczny Przekład Interlinearny Biblii - Oblubienica.eu</span></a>
+                                <a class="dropdown-item" href="@url_oblubienica" target="_blank"><b>TRO+</b>&nbsp;<span class="fs-80per">Oblubienica.eu - Ewangeliczny Przekład Interlinearny Biblii</span></a>
                             </li>
                         }
 
@@ -297,7 +297,7 @@ else {
                         var _model_verse = Model.Verse.ToInt() == 0 ? 1 : Model.Verse.ToInt();
                         var url_oblubienica = $"https://biblia.oblubienica.eu/interlinearny/index/book/{Model.NTBookNumber}/chapter/{_model_chapter}/verse/{_model_verse}";
                         <li>
-                            <a class="dropdown-item" href="@url_oblubienica" target="_blank">Ewangeliczny Przekład Interlinearny Biblii - Oblubienica.eu</a>
+                            <a class="dropdown-item" href="@url_oblubienica" target="_blank">Oblubienica.eu - Ewangeliczny Przekład Interlinearny Biblii</a>
                         </li>
 
                         var url_logo = $"https://app.logos.com/books/LLS%3AAPFTHTEXT/references/af.11.{_model_chapter}.{_model_verse}";
@@ -360,7 +360,7 @@ else {
         </div>
 
         <h2 class="text-center p-2 max-width-800"><a class="text-decoration-none text-dark" href="/@translationName">@Model.Translation.Description</a><sup>*</sup></h2>
-        <h2 class="text-center p-2 max-width-800 capital">
+        <h2 class="text-center p-2 max-width-800 capital" id="book-title-caption">
             @{
                 var html = string.Empty;
                 if (bookTitle.IsNotNullOrEmpty()) {
@@ -381,6 +381,10 @@ else {
                     else {
                         html = bookTitle;
                     }
+                }
+
+                if (bookTitle.ToLower().Replace(" św.", "").Replace("wg ", "") != book.BookName.ToLower().Replace(" św.", "").Replace("wg ", "") && !bookTitle.ToLower().Contains(book.BookName.ToLower())) {
+                    html += $@"<br/><span style=""font-size:80%"">({book.BookName})</span>";
                 }
             }
             @Html.Raw(html.Trim())
@@ -638,8 +642,22 @@ else {
                                 <div class="col pb-3">&nbsp;</div>
                                 foreach (var story in subtitles) {
                                     var tocId = Guid.NewGuid().ToString();
-                                    toc.Add((story.Level, story.Text, tocId));
+                                   
                                     var storyText = story.Text;
+
+                                     if (storyText.Contains("<x>")) {
+                                        var pattern = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+\-[0-9]+)\<\/x\>";
+                                        var pattern2 = @"\<x\>(?<book>[0-9]+)\s(?<num>[0-9]+(\s)?\:(\s)?[0-9]+\-[0-9]+)\<\/x\>";
+
+                                        storyText = Regex.Replace(storyText, pattern, delegate (Match m) {
+                                            return $"({verse.ParentTranslation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BookName} {m.Groups["num"].Value})";
+                                        }, RegexOptions.IgnoreCase);
+                                        storyText = Regex.Replace(storyText, pattern2, delegate (Match m) {
+                                            return $"({verse.ParentTranslation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(m.Groups["book"].Value)).First().BookName} {m.Groups["num"].Value})";
+                                        }, RegexOptions.IgnoreCase);
+                                    }
+
+                                    toc.Add((story.Level, storyText, tocId));
 
                                     if (story.Level == 1) {
                                         <div class="col w-100 fs-5 pb-3 p-2 fw-bold text-center story"><a id="@tocId" class="smt-60"></a>@Html.Raw(storyText)</div>
@@ -786,7 +804,7 @@ else {
 
         <div id="footnotes" class=" container lh-sm fs-6">
             <div class="card-body bible-content">
-                                    @if (toc.Count > 0) {
+                @if (toc.Count > 0) {
                                         <h4>Spis treści</h4>
                                         <ul>
                                             @foreach (var item in toc) {
@@ -829,14 +847,14 @@ else {
                     var chapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {chapterString} {chapter.NumberOfChapter}. ";
                     foreach (var verse in verses) {
                         if (chapter.Subtitles.Any() && chapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).Any()) {
-                            speecheloChapterText += " [sPause sec=0.8 ePause] ";                          
+                            speecheloChapterText += " [sPause sec=0.8 ePause] ";
                         }
 
                         var _verseText = BibleTagController.CleanVerseText(verse.Text, true);
                         _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
                         chapterText += $"{verse.NumberOfVerse}. {_verseText} ";
                         speecheloChapterText += $" [breathing]{_verseText}";
-                        if (chapterText.Length > (speecheloPartLen*speecheloPart)) {
+                        if (chapterText.Length > (speecheloPartLen * speecheloPart)) {
                             speecheloChapterText += @$" [endSpeech] -------------------- Part {speecheloPart} -------------------- [startSpeech v=Loud rate=""+20%"" p=Low startSpeech]";
                             speecheloPart++;
                         }
@@ -1073,7 +1091,7 @@ else {
                         @section Footnotes {
         <div id="footnotes" class="container lh-sm fs-6">
             <div class="card-body bible-content">
-                                    @if (toc.Count > 0) {
+                @if (toc.Count > 0) {
                                         <h4>Spis treści</h4>
                                         <ul>
                                             @foreach (var item in toc) {
@@ -1134,35 +1152,41 @@ else {
                 tableOfNumber.Add(chapter.NumberOfChapter + 3);
             }
 
+            if (book.NumberOfChapters > 1)
+            {
+                <nav aria-label="Page navigation example" id="chapterNav1">
+                    <ul class="pagination justify-content-center" style="margin-bottom: 0;">
+                        @if (chapter.NumberOfChapter - 1 > 0)
+                        {
+                            <li class="page-item@_disabledStart">
+                                <a class="page-link" aria-label="Poprzedni" href="/@translationName/@book.NumberOfBook/@(chapter.NumberOfChapter - 1)">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        }
 
-            <nav aria-label="Page navigation example" id="chapterNav1">
-                <ul class="pagination justify-content-center" style="margin-bottom: 0;">
-                    @if (chapter.NumberOfChapter - 1 > 0) {
-                        <li class="page-item@_disabledStart">
-                            <a class="page-link" aria-label="Poprzedni" href="/@translationName/@book.NumberOfBook/@(chapter.NumberOfChapter - 1)">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    }
+                        @foreach (var i in tableOfNumber)
+                        {
+                            var _active = i == chapter.NumberOfChapter ? " active" : "";
+                            var _activeTextColor = i == chapter.NumberOfChapter ? " text-light" : "text-dark";
+                            <li class="page-item@_active">
+                                <a class="page-link @_activeTextColor" href="/@translationName/@book.NumberOfBook/@i">@(
+                Model.Translation.ChapterRomanNumbering ? (i == 0 ? "P" : i.ArabicToRoman()) : i.ToString()
+                )</a>
+                            </li>
+                        }
 
-                    @foreach (var i in tableOfNumber) {
-                        var _active = i == chapter.NumberOfChapter ? " active" : "";
-                        var _activeTextColor = i == chapter.NumberOfChapter ? " text-light" : "text-dark";
-                        <li class="page-item@_active">
-                            <a class="page-link @_activeTextColor" href="/@translationName/@book.NumberOfBook/@i">@(Model.Translation.ChapterRomanNumbering ? (i == 0 ? "P" : i.ArabicToRoman()) : i.ToString())</a>
-                        </li>
-                    }
-
-                    @if (chapter.NumberOfChapter + 1 <= book.NumberOfChapters) {
-                        <li class="page-item">
-                            <a class="page-link@_disabledEnd" aria-label="Next" href="/@translationName/@book.NumberOfBook/@(chapter.NumberOfChapter + 1)">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    }
-                </ul>
+                        @if (chapter.NumberOfChapter + 1 <= book.NumberOfChapters)
+                        {
+                            <li class="page-item">
+                                <a class="page-link@_disabledEnd" aria-label="Next" href="/@translationName/@book.NumberOfBook/@(chapter.NumberOfChapter + 1)">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
             </nav>
-
+            }
         }
 
         <div class="lh-lg fs-6" style="text-align: justify; max-width: 1000px; margin: auto;">
@@ -1187,7 +1211,7 @@ else {
 
 
         @section HeaderScripts {
-            @if (Model.IsNotNull() && Model.Translation.IsNotNull()) {
+    @if (Model.IsNotNull() && Model.Translation.IsNotNull()) {
                 var __title = Model.Translation.Description;
 
                 @if (book.IsNotNull()) {
@@ -1214,7 +1238,7 @@ else {
 
         @section Scripts  {
 
-            @if (!String.IsNullOrEmpty(Model.Verse)) {
+    @if (!String.IsNullOrEmpty(Model.Verse)) {
 
                 <script>
                     docReady(function () {

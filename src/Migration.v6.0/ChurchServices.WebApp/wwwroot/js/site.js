@@ -80,7 +80,7 @@ function onModalSaveButtonClick(chapter, translation) {
                         stext += number;
                         count = 0;
                         nextSeq = true;
-                    } else if (count == 1) {                        
+                    } else if (count == 1) {
                         count = 0;
                         nextSeq = true;
                     }
@@ -106,9 +106,11 @@ function onModalSaveButtonClick(chapter, translation) {
 
 function copyNav() {
     var $nav = $('nav[id^="chapterNav"]:last');
-    var num = parseInt($nav.prop("id").match(/\d+/g), 10) + 1;
-    var $cloned = $nav.clone().prop('id', 'chapterNav' + num);
-    $("#divDownload").prepend($cloned);
+    if ($nav != null && $nav.length > 0) {
+        var num = parseInt($nav.prop("id").match(/\d+/g), 10) + 1;
+        var $cloned = $nav.clone().prop('id', 'chapterNav' + num);
+        $("#divDownload").prepend($cloned);
+    }
 }
 
 function showDopdownMenu(e, dropDownId) {

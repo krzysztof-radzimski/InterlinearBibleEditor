@@ -56,10 +56,19 @@ namespace ChurchServices.WebApp.Controllers {
             return View();
         }
 
-        public IActionResult Siglum(string text) {
+        public IActionResult Siglum(string text, string type) {            
             if (text.IsNotNullOrEmpty() && text.Length > 0) {
                 var session = new UnitOfWork();
-                var url = BibleTag.GetRecognizedSiglumUrl(session, text);
+                var url = string.Empty;
+
+                if (type.IsNotNullOrEmpty() && type == "compare") {
+                    url= BibleTag.GetRecognizedCompareUrl(session, text);
+                }
+
+                if (url.IsNullOrEmpty()){
+                    url = BibleTag.GetRecognizedSiglumUrl(session, text);
+                }
+
                 if (url.IsNotNullOrEmpty()) {
                     return Redirect(url);
                 }

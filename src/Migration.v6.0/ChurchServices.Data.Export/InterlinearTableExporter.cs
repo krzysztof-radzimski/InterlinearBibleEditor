@@ -364,7 +364,7 @@ namespace ChurchServices.Data.Export {
                         DocumentBuilder.Font.Color = Color.Brown;
                         DocumentBuilder.Writeln(verseWord.StrongCode.Topic);
                     }
-                    if (verseWord.GrammarCode != null) {
+                    if (verseWord.GrammarCode != null && verseWord.GrammarCode.GrammarCodeVariant1 != null) {
                         DocumentBuilder.Font.Size = 5F;
                         DocumentBuilder.Font.Color = Color.DarkGray;
                         DocumentBuilder.Writeln(verseWord.GrammarCode.GrammarCodeVariant1);

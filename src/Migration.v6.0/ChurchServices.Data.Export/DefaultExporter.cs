@@ -11,25 +11,33 @@
 
   ===================================================================================*/
 
+using ChurchServices.Data.Export.Controllers;
+
 namespace ChurchServices.Data.Export {
     public class DefaultExporter : BaseDefaultExporter {
         private int footNoteIndex = 1;
-        private DefaultExporter() : base() { }
+        private TranslationControllerModel TranslateModel;
+        private BibleTagController BibleTagController;
+        private DefaultExporter() : base() {
+
+        }
         public DefaultExporter(byte[] asposeLicense, string host) : base(asposeLicense, host) { }
 
         protected override void ExportVerse(Verse verse, ref Paragraph par, DocumentBuilder builder) {
-            var footNotes = new Dictionary<int, string>();
+            Initialize(verse);
+
+            var footNotes = new List<FootnoteIndexInfo>();
 
             var book = verse.ParentChapter.ParentBook;
             if (verse.ParentChapter.Subtitles.Count > 0) {
                 var subtitles = verse.ParentChapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).OrderBy(x => x.Level);
                 if (subtitles.Any()) {
-                    var _par = builder.InsertParagraph();
-                    _par.ParagraphFormat.Style = builder.Document.Styles["Nagłówek 3"];
-                    _par.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-                    _par.ParagraphFormat.KeepWithNext = true;
-
                     foreach (var subtitle in subtitles) {
+                        var _par = builder.InsertParagraph();
+                        _par.ParagraphFormat.Style = subtitle.Level == 1 ? builder.Document.Styles["Nagłówek 3"] : builder.Document.Styles["Nagłówek 4"];
+                        _par.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+                        _par.ParagraphFormat.KeepWithNext = true;
+
                         var storyText = subtitle.Text;
                         // <x>230 1-41</x>
                         if (storyText.Contains("<x>")) {
@@ -68,107 +76,131 @@ namespace ChurchServices.Data.Export {
 
 
             var text = " " + verse.Text;
-            if (text.Contains("<n>") && text.Contains("*")) {
-                var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!";
-                var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
-                var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
-                var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
-                var f4 = $@"\[\*\*\*\*\s?(?<f4>[{footNoteTextPatternFragment}]+)\]";
-                var f5 = $@"\[\*\*\*\*\*\s?(?<f4>[{footNoteTextPatternFragment}]+)\]";
-                var footNoteTextPattern = $@"\<n\>{f1}(\s+)?({f2})?(\s+)?({f3})?(\s+)?({f4})?(\s+)?({f5})?\</n\>";
 
-                text = Regex.Replace(text, footNoteTextPattern, delegate (Match m) {
+            // text contains footnotes
+            if (Regex.IsMatch(text, @"\<n\>(\s+)?\[\*")) {
+                var lastIndex = Regex.Matches(text, @"\<n\>(\s+)?\[\*").Last().Index;
+                var table = new string[] { text.Substring(0, lastIndex), text.Substring(lastIndex) };
+
+                var verseText = table[0].Trim();
+                var footnotesText = table[1].Trim();
+                var footNoteTextPattern = GetFootnotesPattern();
+                footnotesText = Regex.Replace(footnotesText, footNoteTextPattern, delegate (Match m) {
                     if (m.Groups != null && m.Groups.Count > 0) {
-                        if (m.Groups["f1"] != null && m.Groups["f1"].Success) {
-                            footNotes.Add(footNoteIndex, $@"{m.Groups["f1"].Value}");
-                            footNoteIndex++;
-                        }
-                        if (m.Groups["f2"] != null && m.Groups["f2"].Success) {
-                            footNotes.Add(footNoteIndex, $@"{m.Groups["f2"].Value}");
-                            footNoteIndex++;
-                        }
-                        if (m.Groups["f3"] != null && m.Groups["f3"].Success) {
-                            footNotes.Add(footNoteIndex, $@"{m.Groups["f3"].Value}");
-                            footNoteIndex++;
-                        }
-                        if (m.Groups["f4"] != null && m.Groups["f4"].Success) {
-                            footNotes.Add(footNoteIndex, $@"{m.Groups["f4"].Value}");
-                            footNoteIndex++;
-                        }
-                        if (m.Groups["f5"] != null && m.Groups["f5"].Success) {
-                            footNotes.Add(footNoteIndex, $@"{m.Groups["f5"].Value}</p>");
-                            footNoteIndex++;
+                        for (var i = 1; i < 8; i++) {
+                            var groupName = $"f{i}";
+                            if (m.Groups[groupName] != null && m.Groups[groupName].Success) {
+                                var groupValue = m.Groups[groupName].Value;
+                                if (groupValue.Contains("<x>")) {
+                                    groupValue = BibleTagController.GetInternalVerseRangeText(groupValue, TranslateModel);
+                                    groupValue = BibleTagController.GetInternalVerseText(groupValue, TranslateModel);
+                                    groupValue = BibleTagController.GetExternalVerseRangeText(groupValue, TranslateModel);
+                                    groupValue = BibleTagController.GetExternalVerseText(groupValue, TranslateModel);
+                                    groupValue = BibleTagController.GetInternalVerseListText(groupValue, TranslateModel);
+                                    groupValue = BibleTagController.GetMultiChapterRangeText(groupValue, TranslateModel);
+                                }
+                                footNotes.Add(new FootnoteIndexInfo() { Index = footNoteIndex, Value = groupValue, IndexInVerse = i });
+                                footNoteIndex++;
+                            }
                         }
                     }
 
                     var result = String.Empty;
                     return result;
                 }, RegexOptions.IgnoreCase);
+
+                builder.InsertHtml($"<b>{verse.NumberOfVerse}</b>.&nbsp;");
+                var fragments = Regex.Split(verseText, @"(\*)+").ToArray();
+                var numInVerse = 1;
+                for (int i = 0; i < fragments.Length; i++) {
+                    var fragment = fragments[i];
+                    if (Regex.IsMatch(fragment, @"(\*)+")) { continue; }
+                    if (footNotes.Count <= i) {
+                        fragment = FormatVerseText(fragment, book.BaseBook.Status.BiblePart);
+                        builder.InsertHtml($"{fragment}", HtmlInsertOptions.RemoveLastEmptyParagraph);
+                    }
+                    else {
+                        fragment = FormatVerseText(fragment, book.BaseBook.Status.BiblePart);
+                        builder.InsertHtml($"{fragment}", HtmlInsertOptions.RemoveLastEmptyParagraph);
+
+                        var footnoteText = footNotes.Where(x => x.IndexInVerse == numInVerse).FirstOrDefault();
+                        if (footnoteText != null) {
+                            var _par = builder.CurrentParagraph;
+                            builder.Font.Size = 10;
+                            var footnote = builder.InsertFootnote(FootnoteType.Footnote, "", $"{footnoteText.Index})");
+
+                            builder.MoveTo(footnote.LastParagraph);
+                            builder.InsertHtml($"&nbsp;{footnoteText.Value}");
+                            foreach (Inline run in builder.CurrentParagraph.ChildNodes) {
+                                run.Font.Size = 8;
+                            }
+                            builder.MoveTo(par);
+
+                            numInVerse++;
+                        }
+                    }
+                }
+                builder.Write(" ");
             }
+            else {
+                text = FormatVerseText(text, book.BaseBook.Status.BiblePart);
 
-            // Słowa Jezusa
-            text = text.Replace("<J>", @"<span style=""color: darkred;"">").Replace("</J>", "</span>");
+                builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Justify;
+                builder.CurrentParagraph.ParagraphFormat.LineSpacingRule = LineSpacingRule.Multiple;
+                builder.CurrentParagraph.ParagraphFormat.LineSpacing = 18;
 
-            // Elementy dodane
-            text = text.Replace("<n>", @"<span style=""color: darkgray;"">").Replace("</n>", "</span>");
+                builder.InsertHtml($"<b>{verse.NumberOfVerse}</b>.&nbsp;");
 
-            text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
-
-            // zamiana na imię Boże
-            if (book.BaseBook.Status.BiblePart == BiblePart.OldTestament) {
-                text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
-                    var prefix = m.Groups["prefix"].Value;
-                    return $"{prefix}JAHWE{m.Value.Last()}";
-                });
+                builder.InsertHtml($"{text}");
+                if (footNotes.Count > 0) {
+                    foreach (var item in footNotes) {
+                        builder.InsertFootnote(FootnoteType.Footnote, item.Value, $"{item.Index})");
+                    }
+                }
+                builder.Write(" ");
             }
-            if (book.BaseBook.Status.BiblePart == BiblePart.OldTestament) {
-                text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>JHWH)[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
-                    var prefix = m.Groups["prefix"].Value;
-                    return $"{prefix}JAHWE{m.Value.Last()}";
-                });
-            }
-            if (book.BaseBook.Status.BiblePart == BiblePart.OldTestament) {
-                text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(a)?(y)?(ie)?(ę)?(o)?)[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
-                    var prefix = m.Groups["prefix"].Value;
-                    return $"{prefix}JAHWE{m.Value.Last()}";
-                });
-            }
-            if (book.BaseBook.Status.BiblePart == BiblePart.NewTestament) {
-                text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(?<ending>(a)?(y)?(ie)?(ę)?(o)?))[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
-                    var prefix = m.Groups["prefix"].Value;
-                    var ending = m.Groups["ending"].Value;
-                    var root = "Pan";
-                    if (ending == "ie") { root += "u"; }
-                    if (ending == "o") { root += "ie"; }
-                    if (ending == "y" || ending == "ę") { root += "a"; }
-                    return $"{prefix}{root}{m.Value.Last()}";
-                });
-            }
-
-            // usuwam sierotki
-            text = Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (Match m) {
-                return " " + m.Value.Trim() + "&nbsp;";
-            }, RegexOptions.IgnoreCase);
-
-            // usuwam puste przypisy
-            text = Regex.Replace(text, @"\[[0-9]+\]", delegate (Match m) {
-                return String.Empty;
-            }, RegexOptions.IgnoreCase);
-
-
-            builder.CurrentParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Justify;
-            builder.CurrentParagraph.ParagraphFormat.LineSpacingRule = LineSpacingRule.Multiple;
-            builder.CurrentParagraph.ParagraphFormat.LineSpacing = 18;
-
-            builder.InsertHtml($"<b>{verse.NumberOfVerse}</b>.&nbsp;");
-
-            builder.InsertHtml($"{text}");
-            if (footNotes.Count > 0) {
-                foreach (var item in footNotes) {
-                    builder.InsertFootnote(FootnoteType.Footnote, item.Value, $"{item.Key})");
+        }
+       
+        private void Initialize(Verse verse) {
+            if (BibleTagController.IsNull()) { this.BibleTagController = new BibleTagController(); }
+            if (TranslateModel == null) {
+                var uow = verse.Session as UnitOfWork;
+                var books = GetBookBases(uow);
+                var translate = verse.ParentTranslation;
+                var numberOfChapter = verse.ParentChapter.NumberOfChapter.ToString();
+                var numberOfBook = verse.ParentChapter.ParentBook.NumberOfBook.ToString();
+                if (verse.ParentChapter.ParentBook.BaseBook.StatusBookType != TheBookType.Bible) {
+                    translate = new XPQuery<Translation>(uow).Where(x => x.Name == "BW").FirstOrDefault();
+                    numberOfChapter = "1";
+                    numberOfBook = "10";
+                }
+                TranslateModel = new TranslationControllerModel(translate, numberOfBook, numberOfChapter, null, books);
+                var view = new XPView(uow, typeof(Translation)) {
+                    CriteriaString = $"[Books][[NumberOfBook] = '{verse.ParentChapter.ParentBook.NumberOfBook}'] AND [Hidden] = 0"
+                };
+                view.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
+                view.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
+                view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+                view.Properties.Add(new ViewProperty("Catholic", SortDirection.None, "[Catolic]", false, true));
+                view.Properties.Add(new ViewProperty("Recommended", SortDirection.None, "[Recommended]", false, true));
+                view.Properties.Add(new ViewProperty("OpenAccess", SortDirection.None, "[OpenAccess]", false, true));
+                foreach (ViewRecord item in view) {
+                    TranslateModel.Translations.Add(new TranslationInfo() {
+                        Name = item["Name"].ToString(),
+                        Description = item["Description"].ToString(),
+                        Type = (TranslationType)item["Type"],
+                        Catholic = (bool)item["Catholic"],
+                        Recommended = (bool)item["Recommended"],
+                        PasswordRequired = !((bool)item["OpenAccess"])
+                    });
                 }
             }
-            builder.Write(" ");
         }
+    }
+
+    class FootnoteIndexInfo {
+        public int Index { get; set; }
+        public int IndexInVerse { get; set; }
+        public string Value { get; set; }
     }
 }

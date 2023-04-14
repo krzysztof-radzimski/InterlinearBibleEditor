@@ -18,6 +18,7 @@ namespace ChurchServices.Data.Model {
         private int numberOfVerses;
         private Book parentBook;
         private bool isTranslated;
+        private string index;
 
         public int NumberOfChapter {
             get { return numberOfChapter; }
@@ -54,10 +55,15 @@ namespace ChurchServices.Data.Model {
                 return default;
             }
         }
-        
+
         public bool IsTranslated {
             get { return isTranslated; }
             set { SetPropertyValue(nameof(IsTranslated), ref isTranslated, value); }
+        }
+
+        public string Index {
+            get { return index; }
+            set { SetPropertyValue(nameof(Index), ref index, value); }
         }
 
         public Chapter(Session session) : base(session) { }

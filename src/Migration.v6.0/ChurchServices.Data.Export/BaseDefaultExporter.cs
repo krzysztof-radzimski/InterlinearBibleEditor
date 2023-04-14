@@ -24,16 +24,18 @@ namespace ChurchServices.Data.Export {
 
             foreach (var book in translation.Books.OrderBy(x => x.NumberOfBook)) {
                 ExportBookName(book, builder);
-                var chapters = book.Chapters.Where(x => x.IsTranslated).OrderBy(x => x.NumberOfChapter).ToArray();
+                var chapters = book.Chapters.OrderBy(x => x.NumberOfChapter).ToArray();
                 foreach (var chapter in chapters) {
 
                     if (chapter == chapters.First()) { builder.InsertParagraph(); }
 
                     ExportChapterNumber(chapter, builder, false);
-
-                    var par = builder.InsertParagraph();
-                    par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
-                    par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+                    Paragraph par = null;
+                    if (chapter.Subtitles.Count == 0) {
+                        par = builder.InsertParagraph();
+                        par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
+                        par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+                    }
 
                     foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
                         ExportVerse(item, ref par, builder);
@@ -58,16 +60,15 @@ namespace ChurchServices.Data.Export {
 
             ExportBookName(book, builder);
 
-            var chapters = book.Chapters.Where(x => x.IsTranslated).OrderBy(x => x.NumberOfChapter).ToArray();
+            var chapters = book.Chapters.OrderBy(x => x.NumberOfChapter).ToArray();
             foreach (var chapter in chapters) {
-
-                if (chapter == chapters.First()) { builder.InsertParagraph(); }
-
                 ExportChapterNumber(chapter, builder, false);
-
-                var par = builder.InsertParagraph();
-                par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
-                par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+                Paragraph par = null;
+                if (chapter.Subtitles.Count == 0) {
+                    par = builder.InsertParagraph();
+                    par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
+                    par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+                }
 
                 foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
                     ExportVerse(item, ref par, builder);
@@ -99,9 +100,12 @@ namespace ChurchServices.Data.Export {
             foreach (var chapter in chapters) {
                 ExportChapterNumber(chapter, builder, false);
 
-                var par = builder.InsertParagraph();
-                par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
-                par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+                Paragraph par = null;
+                if (chapter.Subtitles.Count == 0) {
+                    par = builder.InsertParagraph();
+                    par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
+                    par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+                }
 
                 foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
                     ExportVerse(item, ref par, builder);
@@ -211,6 +215,9 @@ namespace ChurchServices.Data.Export {
             if (chapter.ParentBook.NumberOfChapters == 1) { return; }
 
             var par = builder.InsertParagraph();
+            builder.Font.ClearFormatting();
+            par.ParagraphFormat.ClearFormatting();
+
             par.ParagraphFormat.Style = builder.Document.Styles["Nagłówek 2"];
             par.ParagraphFormat.Alignment = ParagraphAlignment.Center;
             par.ParagraphFormat.KeepWithNext = true;

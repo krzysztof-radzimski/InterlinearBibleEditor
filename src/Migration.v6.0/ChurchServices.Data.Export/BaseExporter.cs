@@ -11,6 +11,8 @@
 
   ===================================================================================*/
 
+using System.Xml.Linq;
+
 namespace ChurchServices.Data.Export {
     public abstract class BaseExporter {
         protected System.Drawing.Graphics g;
@@ -70,6 +72,7 @@ namespace ChurchServices.Data.Export {
             h1.Font.Bold = true;
             h1.Font.Color = Color.Black;
             h1.Font.Italic = false;
+            h1.Font.Name = "Times New Roman";
             h1.ParagraphFormat.Alignment = ParagraphAlignment.Center;
             h1.ParagraphFormat.LineSpacing = 18;
             h1.ParagraphFormat.KeepWithNext = true;
@@ -80,17 +83,29 @@ namespace ChurchServices.Data.Export {
             h2.Font.Bold = true;
             h2.Font.Color = Color.Black;
             h2.Font.Italic = false;
+            h2.Font.Name = "Times New Roman";
             h2.ParagraphFormat.Alignment = ParagraphAlignment.Center;
             h2.ParagraphFormat.KeepWithNext = true;
 
             var h3 = document.Styles.Add(StyleType.Paragraph, "Nagłówek 3");
             h3.BaseStyleName = "Heading 3";
-            h3.Font.Size = 12;
+            h3.Font.Size = 13;
             h3.Font.Bold = true;
             h3.Font.Color = Color.Black;
             h3.Font.Italic = false;
+            h3.Font.Name = "Times New Roman";
             h3.ParagraphFormat.Alignment = ParagraphAlignment.Center;
             h3.ParagraphFormat.KeepWithNext = true;
+
+            var h4 = document.Styles.Add(StyleType.Paragraph, "Nagłówek 4");
+            h4.BaseStyleName = "Heading 4";
+            h4.Font.Size = 12;
+            h4.Font.Bold = true;
+            h4.Font.Color = Color.Black;
+            h4.Font.Italic = false;
+            h4.Font.Name = "Times New Roman";
+            h4.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            h4.ParagraphFormat.KeepWithNext = true;
 
             var builder = new DocumentBuilder(document);
             builder.Font.NoProofing = true;
@@ -203,6 +218,71 @@ namespace ChurchServices.Data.Export {
                 else
                     targetHeight = (targetWidth * (ratioWidth / ratioHeight));
             }
+        }
+
+        protected string GetFootnotesPattern() {
+            var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\·\…\d\–\?\־\’\’\‘\#\᾽\…";
+            var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
+            var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
+            var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
+            var f4 = $@"\[\*\*\*\*\s?(?<f4>[{footNoteTextPatternFragment}]+)\]";
+            var f5 = $@"\[\*\*\*\*\*\s?(?<f5>[{footNoteTextPatternFragment}]+)\]";
+            var f6 = $@"\[\*\*\*\*\*\*\s?(?<f6>[{footNoteTextPatternFragment}]+)\]";
+            var f7 = $@"\[\*\*\*\*\*\*\*\s?(?<f7>[{footNoteTextPatternFragment}]+)\]";
+            var footNoteTextPattern = $@"\<n\>(\s+)?{f1}(\s+)?({f2})?(\s+)?({f3})?(\s+)?({f4})?(\s+)?({f5})?(\s+)?({f6})?(\s+)?({f7})?(\s+)?\</n\>";
+            return footNoteTextPattern;
+        }
+
+        protected string FormatVerseText(string text, BiblePart biblePart) {
+            // God's words
+            text = text.Replace("<J>", @"<span style=""color: darkred;"">").Replace("</J>", "</span>");
+            // Added elements
+            text = text.Replace("<n>", @"<span style=""color: darkgray;"">").Replace("</n>", "</span>");
+            // Other formatting
+            text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
+
+            // change Lord and Jehova names to Jahwe.
+            if (biblePart == BiblePart.OldTestament) {
+                text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
+                    var prefix = m.Groups["prefix"].Value;
+                    return $"{prefix}JAHWE{m.Value.Last()}";
+                });
+            }
+            if (biblePart == BiblePart.OldTestament) {
+                text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>JHWH)[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
+                    var prefix = m.Groups["prefix"].Value;
+                    return $"{prefix}JAHWE{m.Value.Last()}";
+                });
+            }
+            if (biblePart == BiblePart.OldTestament) {
+                text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(a)?(y)?(ie)?(ę)?(o)?)[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
+                    var prefix = m.Groups["prefix"].Value;
+                    return $"{prefix}JAHWE{m.Value.Last()}";
+                });
+            }
+            if (biblePart == BiblePart.NewTestament) {
+                text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(?<ending>(a)?(y)?(ie)?(ę)?(o)?))[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
+                    var prefix = m.Groups["prefix"].Value;
+                    var ending = m.Groups["ending"].Value;
+                    var root = "Pan";
+                    if (ending == "ie") { root += "u"; }
+                    if (ending == "o") { root += "ie"; }
+                    if (ending == "y" || ending == "ę") { root += "a"; }
+                    return $"{prefix}{root}{m.Value.Last()}";
+                });
+            }
+
+            // remove orphans
+            text = Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (Match m) {
+                return " " + m.Value.Trim() + "&nbsp;";
+            }, RegexOptions.IgnoreCase);
+
+            // remove empty footnotes
+            text = Regex.Replace(text, @"\[[0-9]+\]", delegate (Match m) {
+                return String.Empty;
+            }, RegexOptions.IgnoreCase);
+
+            return text;
         }
     }
 }

@@ -39,17 +39,16 @@ namespace ChurchServices.Data {
             typeof(SongVerse)
         };
 
-        public void Connect(bool threadSafe = true, string connectionString = null) {
-            XpoDefault.DataLayer = CreateDataLayer(threadSafe, connectionString);
+        public void Connect(bool threadSafe = true, string connectionString = null, AutoCreateOption autoCreateOption = AutoCreateOption.SchemaAlreadyExists) {
+            XpoDefault.DataLayer = CreateDataLayer(threadSafe, connectionString, autoCreateOption);
         }
 
-        private IDataLayer CreateDataLayer(bool threadSafe, string connectionString = null) {
+        private IDataLayer CreateDataLayer(bool threadSafe, string connectionString = null, AutoCreateOption autoCreateOption = AutoCreateOption.SchemaAlreadyExists) {
             if (connectionString == null) {                
                 connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DB"].ConnectionString;
             }
             var dictionary = new DevExpress.Xpo.Metadata.ReflectionDictionary();
             dictionary.GetDataStoreSchema(PersistentTypes);   // Pass all of your persistent object types to this method.
-            var autoCreateOption = AutoCreateOption.SchemaAlreadyExists;  // Use AutoCreateOption.DatabaseAndSchema if the database or tables do not exist. Use AutoCreateOption.SchemaAlreadyExists if the database already exists.
             IDataStore provider = XpoDefault.GetConnectionProvider(connectionString, autoCreateOption);
             return threadSafe ? (IDataLayer)new ThreadSafeDataLayer(dictionary, provider) : new SimpleDataLayer(dictionary, provider);
         }

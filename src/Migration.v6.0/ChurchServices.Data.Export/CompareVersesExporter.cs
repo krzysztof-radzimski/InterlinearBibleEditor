@@ -89,95 +89,78 @@ namespace ChurchServices.Data.Export {
         private string GetVerseHtml(CompareVerseModel model, CompareVerseInfo verse, out Dictionary<int, string> notes) {
             notes = null;
             var footNotes = new Dictionary<int, string>();
-            //var book = verse.ParentChapter.ParentBook;
-
+          
             var text = " " + verse.Text;
             if (text.Contains("<n>") && text.Contains("*")) {
-                var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!";
-                var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
-                var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
-                var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
-                var f4 = $@"\[\*\*\*\*\s?(?<f4>[{footNoteTextPatternFragment}]+)\]";
-                var f5 = $@"\[\*\*\*\*\*\s?(?<f4>[{footNoteTextPatternFragment}]+)\]";
-                var footNoteTextPattern = $@"\<n\>{f1}(\s+)?({f2})?(\s+)?({f3})?(\s+)?({f4})?(\s+)?({f5})?\</n\>";
+                var footNoteTextPattern = GetFootnotesPattern();
 
-                text = System.Text.RegularExpressions.Regex.Replace(text, footNoteTextPattern, delegate (System.Text.RegularExpressions.Match m) {
+                text = Regex.Replace(text, footNoteTextPattern, delegate (Match m) {
                     if (m.Groups != null && m.Groups.Count > 0) {
-                        if (m.Groups["f1"] != null && m.Groups["f1"].Success) {
-                            footNotes.Add(footNoteIndex, $@"{m.Groups["f1"].Value}");
-                            footNoteIndex++;
-                        }
-                        if (m.Groups["f2"] != null && m.Groups["f2"].Success) {
-                            footNotes.Add(footNoteIndex, $@"{m.Groups["f2"].Value}");
-                            footNoteIndex++;
-                        }
-                        if (m.Groups["f3"] != null && m.Groups["f3"].Success) {
-                            footNotes.Add(footNoteIndex, $@"{m.Groups["f3"].Value}");
-                            footNoteIndex++;
-                        }
-                        if (m.Groups["f4"] != null && m.Groups["f4"].Success) {
-                            footNotes.Add(footNoteIndex, $@"{m.Groups["f4"].Value}");
-                            footNoteIndex++;
-                        }
-                        if (m.Groups["f5"] != null && m.Groups["f5"].Success) {
-                            footNotes.Add(footNoteIndex, $@"{m.Groups["f5"].Value}</p>");
-                            footNoteIndex++;
+                        for (var i = 1; i < 8; i++) {
+                            var groupName = $"f{i}";
+                            if (m.Groups[groupName] != null && m.Groups[groupName].Success) {
+                                var groupValue = m.Groups[groupName].Value;
+                                footNotes.Add(footNoteIndex, groupValue);
+                                footNoteIndex++;
+                            }
                         }
                     }
 
                     var result = String.Empty;
                     return result;
-                }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                }, RegexOptions.IgnoreCase);
             }
 
-            // Słowa Jezusa
-            text = text.Replace("<J>", @"<span style=""color: darkred;"">").Replace("</J>", "</span>");
+            text = FormatVerseText(text, model.Part);
 
-            // Elementy dodane
-            text = text.Replace("<n>", @"<span style=""color: darkgray;"">").Replace("</n>", "</span>");
+            //// Słowa Jezusa
+            //text = text.Replace("<J>", @"<span style=""color: darkred;"">").Replace("</J>", "</span>");
 
-            text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
+            //// Elementy dodane
+            //text = text.Replace("<n>", @"<span style=""color: darkgray;"">").Replace("</n>", "</span>");
 
-            // zamiana na imię Boże
-            if (model.Part == BiblePart.OldTestament) {
-                text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
-                    var prefix = m.Groups["prefix"].Value;
-                    return $"{prefix}JAHWE{m.Value.Last()}";
-                });
-            }
-            if (model.Part == BiblePart.OldTestament) {
-                text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>JHWH)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
-                    var prefix = m.Groups["prefix"].Value;
-                    return $"{prefix}JAHWE{m.Value.Last()}";
-                });
-            }
-            if (model.Part == BiblePart.OldTestament) {
-                text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(a)?(y)?(ie)?(ę)?(o)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
-                    var prefix = m.Groups["prefix"].Value;
-                    return $"{prefix}JAHWE{m.Value.Last()}";
-                });
-            }
-            if (model.Part == BiblePart.NewTestament) {
-                text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(?<ending>(a)?(y)?(ie)?(ę)?(o)?))[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
-                    var prefix = m.Groups["prefix"].Value;
-                    var ending = m.Groups["ending"].Value;
-                    var root = "Pan";
-                    if (ending == "ie") { root += "u"; }
-                    if (ending == "o") { root += "ie"; }
-                    if (ending == "y" || ending == "ę") { root += "a"; }
-                    return $"{prefix}{root}{m.Value.Last()}";
-                });
-            }
+            //text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
 
-            // usuwam sierotki
-            text = System.Text.RegularExpressions.Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-                return " " + m.Value.Trim() + "&nbsp;";
-            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            //// zamiana na imię Boże
+            //if (model.Part == BiblePart.OldTestament) {
+            //    text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
+            //        var prefix = m.Groups["prefix"].Value;
+            //        return $"{prefix}JAHWE{m.Value.Last()}";
+            //    });
+            //}
+            //if (model.Part == BiblePart.OldTestament) {
+            //    text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>JHWH)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
+            //        var prefix = m.Groups["prefix"].Value;
+            //        return $"{prefix}JAHWE{m.Value.Last()}";
+            //    });
+            //}
+            //if (model.Part == BiblePart.OldTestament) {
+            //    text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(a)?(y)?(ie)?(ę)?(o)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
+            //        var prefix = m.Groups["prefix"].Value;
+            //        return $"{prefix}JAHWE{m.Value.Last()}";
+            //    });
+            //}
+            //if (model.Part == BiblePart.NewTestament) {
+            //    text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(?<ending>(a)?(y)?(ie)?(ę)?(o)?))[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
+            //        var prefix = m.Groups["prefix"].Value;
+            //        var ending = m.Groups["ending"].Value;
+            //        var root = "Pan";
+            //        if (ending == "ie") { root += "u"; }
+            //        if (ending == "o") { root += "ie"; }
+            //        if (ending == "y" || ending == "ę") { root += "a"; }
+            //        return $"{prefix}{root}{m.Value.Last()}";
+            //    });
+            //}
 
-            // usuwam puste przypisy
-            text = System.Text.RegularExpressions.Regex.Replace(text, @"\[[0-9]+\]", delegate (System.Text.RegularExpressions.Match m) {
-                return String.Empty;
-            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            //// usuwam sierotki
+            //text = System.Text.RegularExpressions.Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+            //    return " " + m.Value.Trim() + "&nbsp;";
+            //}, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+            //// usuwam puste przypisy
+            //text = System.Text.RegularExpressions.Regex.Replace(text, @"\[[0-9]+\]", delegate (System.Text.RegularExpressions.Match m) {
+            //    return String.Empty;
+            //}, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
             notes = footNotes;
             return text;

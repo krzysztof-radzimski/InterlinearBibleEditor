@@ -15,13 +15,14 @@
 		<PackageReference Include="coverlet.collector" Version="3.1.2" />
 
 		<PackageReference Include="Aspose.Words" Version="22.3.0" />
-		<PackageReference Include="DevExpress.Xpo" Version="22.1.5" />
+		<PackageReference Include="DevExpress.Xpo" Version="22.2.3" />
 		<PackageReference Include="LinqKit.Core" Version="1.2.2" />
 		<PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.6" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\ChurchServices.Data.Export\ChurchServices.Data.Export.csproj" />
+		<ProjectReference Include="..\ChurchServices.Data.Import\ChurchServices.Data.Import.csproj" />
 		<ProjectReference Include="..\ChurchServices.Data\ChurchServices.Data.csproj" />
 		<ProjectReference Include="..\ChurchServices.Extensions\ChurchServices.Extensions.csproj" />
 	</ItemGroup>

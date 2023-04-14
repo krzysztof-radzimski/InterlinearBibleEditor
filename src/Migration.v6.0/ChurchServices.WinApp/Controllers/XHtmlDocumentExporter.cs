@@ -47,7 +47,7 @@ namespace ChurchServices.WinApp.Controllers {
         bool inList = false;
         List<string> footnotes = new List<string>();
         List<string> endnotes = new List<string>();
-
+        
         protected XHtmlDocumentExporterOptions Options { get { return options; } }
         protected internal StreamWriter DocumentContentWriter { get { return documentContentWriter; } set { documentContentWriter = value; } }
 
@@ -55,7 +55,7 @@ namespace ChurchServices.WinApp.Controllers {
            : base(documentModel) {
             Guard.ArgumentNotNull(options, "options");
             this.options = options;
-        }
+           }
 
         public virtual void Export(Stream outputStream) {
             this.outputStream = outputStream;
@@ -87,8 +87,8 @@ namespace ChurchServices.WinApp.Controllers {
                 streamWriter.Flush();
             }
         }
-        private string GetTextRunText(TextRun run, PieceTable pieceTable) {
-            string text = run.GetPlainText(pieceTable.TextBuffer);
+
+        private string GetTextRunText(TextRun run, string text) {
             text = text.Replace("\u00A0", " ");
             text = text.Replace("\v", " ");
             if (!hyperlinkExporting) {
@@ -99,8 +99,21 @@ namespace ChurchServices.WinApp.Controllers {
                 return text;
             }
         }
-        private string GetTextRunHtml(TextRun run, PieceTable pieceTable) {
+        private string GetTextRunText(TextRun run, PieceTable pieceTable) {
             string text = run.GetPlainText(pieceTable.TextBuffer);
+            return GetTextRunText(run, text);
+            //text = text.Replace("\u00A0", " ");
+            //text = text.Replace("\v", " ");
+            //if (!hyperlinkExporting) {
+            //    return text;
+            //}
+            //else {
+            //    if (text.StartsWith("HYPERLINK")) { return String.Empty; }
+            //    return text;
+            //}
+        }
+
+        private string GetTextRunHtml(TextRun run, string text) {
             text = text.Replace("\u00A0", "&nbsp;");
             text = text.Replace("\v", "<br/>");
 
@@ -142,6 +155,52 @@ namespace ChurchServices.WinApp.Controllers {
                 if (text.StartsWith("HYPERLINK")) { return String.Empty; }
                 return text;
             }
+        }
+
+        private string GetTextRunHtml(TextRun run, PieceTable pieceTable) {
+            string text = run.GetPlainText(pieceTable.TextBuffer);
+            return GetTextRunHtml(run, text);
+            //text = text.Replace("\u00A0", "&nbsp;");
+            //text = text.Replace("\v", "<br/>");
+
+            //if (!hyperlinkExporting) {
+            //    var span = @"<span";
+            //    var _class = @" class=""";
+            //    var style = @" style=""";
+            //    if (run.Script == CharacterFormattingScript.Superscript)
+            //        style += "vertical-align: super; ";
+            //    if (run.Script == CharacterFormattingScript.Subscript)
+            //        style += "vertical-align: sub; ";
+            //    if (run.FontBold)
+            //        style += "font-weight: bold; ";
+            //    if (run.FontItalic)
+            //        style += "font-style: italic; ";
+            //    if (run.FontUnderlineType != UnderlineType.None)
+            //        style += "text-decoration: underline; ";
+            //    if (run.FontStrikeoutType != StrikeoutType.None)
+            //        style += "text-decoration: line-through; ";
+            //    if (run.ForeColorIndex != DevExpress.Office.Model.ColorModelInfoCache.EmptyColorIndex) {
+            //        var color = ColorTranslator.ToHtml(DocumentModel.GetColor(run.ForeColorIndex));
+            //        if (color == "#FF0000") {
+            //            _class += "text-danger";
+            //        }
+            //        else {
+            //            style += $"color: {ColorTranslator.ToHtml(DocumentModel.GetColor(run.ForeColorIndex)).ToLower()}; ";
+            //        }
+            //    }
+
+            //    style += @"""";
+            //    _class += @"""";
+
+            //    if (_class.Trim().Replace(" ", "") != @"class=""""") { span += _class; }
+            //    if (_class.Trim().Replace(" ", "") != @"style=""""") { span += style; }
+            //    span += $">{text}</span>";
+            //    return span;
+            //}
+            //else {
+            //    if (text.StartsWith("HYPERLINK")) { return String.Empty; }
+            //    return text;
+            //}
 
         }
         protected override void ExportTextRun(TextRun run) {
@@ -171,7 +230,7 @@ namespace ChurchServices.WinApp.Controllers {
                         _class += "text-danger";
                     }
                     else {
-                        span += $"color: {ColorTranslator.ToHtml(DocumentModel.GetColor(run.ForeColorIndex))}; ";
+                        style += $"color: {ColorTranslator.ToHtml(DocumentModel.GetColor(run.ForeColorIndex))}; ";
                     }
                 }
 
@@ -243,7 +302,8 @@ namespace ChurchServices.WinApp.Controllers {
                 var info = dynMethod.Invoke(this, new object[] { run }) as FootNoteExportInfo;
                 if (info.IsNotNull()) {
                     var titleText = "";
-                    
+                    var hiperlinkText = "";
+
                     var text = $"<a id=\"footnote{info.Number}\" class=\"footnote-tag text-decoration-none\" name=\"footnote{info.Number}\" onclick=\"scrollToFootnoteRef('ref-fn-{info.Number}')\"><span style=\"vertical-align: super; font-size: smaller;\">{info.NumberText})</span></a>"; ;
                     var flag = false;
                     foreach (var item in info.Note.Runs) {
@@ -253,6 +313,7 @@ namespace ChurchServices.WinApp.Controllers {
                                 flag = true;
                             }
                             else {
+                                hiperlinkText = "";
                                 var target = hyperlinkInfo.Target != null ? $" target=\"{hyperlinkInfo.Target}\"" : "";
                                 text += $"<a href=\"{hyperlinkInfo.NavigateUri}\" {target}>";
                                 hyperlinkExporting = true;
@@ -265,16 +326,35 @@ namespace ChurchServices.WinApp.Controllers {
                                 flag = false;
                             }
                             else {
-                                text += "</a>";
+                                if (hiperlinkText.IsNotNullOrEmpty()) {
+                                    text += "</a>";
+                                }
                                 hyperlinkExporting = false;
                             }
                             continue;
                         }
                         else if (item.Type == RunType.TextRun) {
                             if (flag) { continue; }
-                            titleText += GetTextRunText(item as TextRun, info.Note);
-                            text += GetTextRunHtml(item as TextRun, info.Note);
+                            var _run = item as TextRun;
+                            
+                            var _text = _run.GetPlainText(info.Note.TextBuffer);
+                            titleText += GetTextRunText(_run, _text);
+
+                            if (_run.CharacterStyle != null && _run.CharacterStyle.LocalizedStyleName == "Hyperlink") {
+                                hiperlinkText += GetTextRunText(_run, _text);
+                            } else {
+                                if (hiperlinkText.IsNotNullOrEmpty()) {
+                                    text += $"{hiperlinkText}</a>";
+                                    hiperlinkText = "";
+                                }
+                                text += GetTextRunHtml(_run, _text);
+                            }
                         }
+                    }
+
+                    if (hiperlinkText.IsNotNullOrEmpty()) {
+                        text += $"{hiperlinkText}</a>";
+                        hiperlinkText = "";
                     }
 
                     var footnoteRef = $"<a id=\"ref-fn-{info.Number}\" href=\"#footnote{info.Number}\" style=\"vertical-align: super; font-size: smaller;\" title=\"{titleText.Trim()}\">{info.NumberText})</a>";
@@ -282,7 +362,7 @@ namespace ChurchServices.WinApp.Controllers {
 
                     try {
                         if (text.Contains("<a href")) {
-                            var xml = XElement.Parse($"<span>{text.Replace("&nbsp;","<nbsp/>")}</span>", LoadOptions.PreserveWhitespace);
+                            var xml = XElement.Parse($"<span>{text.Replace("&nbsp;", "<nbsp/>")}</span>", LoadOptions.PreserveWhitespace);
                             if (xml.Elements().Where(x => x.Name.LocalName == "a" && x.Value.IsNullOrEmpty()).Any()) {
                                 var _start = false;
                                 XElement _a = null; ;

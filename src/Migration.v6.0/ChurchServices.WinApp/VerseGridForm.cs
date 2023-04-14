@@ -97,18 +97,31 @@ namespace ChurchServices.WinApp {
             txtIndex_KeyUp(txtIndex, new KeyEventArgs(Keys.Enter));
         }
 
-        private void LoadBooks() {
+        private void LoadBooks(Translation translation = null) {
+            if (translation == null) { translation = Translation; }
             var view = new XPView(Uow, typeof(BookBase)) {
-                CriteriaString = $"[Status.BookType] = {(int)Translation.BookType}"
+                CriteriaString = $"[Status.BookType] = {(int)translation.BookType}"
             };
             view.Properties.Add(new ViewProperty("NumberOfBook", SortDirection.None, "[NumberOfBook]", false, true));
             view.Properties.Add(new ViewProperty("BookTitle", SortDirection.None, "[BookTitle]", false, true));
 
+            var view2 = new XPView(Uow, typeof(Book)) {
+                CriteriaString = $"[ParentTranslation.Oid] = {translation.Oid}"
+            };
+            view2.Properties.Add(new ViewProperty("NumberOfBook", SortDirection.None, "[NumberOfBook]", false, true));
+            var numberOfBooks = new List<int>();
+            foreach (ViewRecord item in view2) {
+                numberOfBooks.Add(item["NumberOfBook"].ToInt());
+            }
+
             var list = new List<BookBaseInfo>();
             foreach (ViewRecord item in view) {
+                var numberOfBook = item["NumberOfBook"].ToInt();
+                if (!numberOfBooks.Contains(numberOfBook)) { continue; }
+                var bookTitle = item["BookTitle"].ToString();
                 list.Add(new BookBaseInfo() {
-                    NumberOfBook = item["NumberOfBook"].ToInt(),
-                    BookTitle = item["BookTitle"].ToString()
+                    NumberOfBook = numberOfBook,
+                    BookTitle = bookTitle
                 });
             }
             txtBooks.Properties.DataSource = list;
@@ -443,7 +456,7 @@ namespace ChurchServices.WinApp {
 
         private async Task ExportInterlinearBook(byte[] licData, string host, Book book, ExportSaveFormat format, ExportMethodType method, string outputPath) {
             if (method == ExportMethodType.TextBoxes) {
-                await Task.Run(() => { new InterlinearExporter(licData, host).ExportBookTranslation(book, format, outputPath); });
+                await Task.Run(() => { new InterlinearExporter(licData, host).Export(book, format, outputPath); });
             }
             else if (method == ExportMethodType.Tables) {
                 await Task.Run(() => { new InterlinearTableExporter(licData, host).ExportBookTranslation(book, format, outputPath); });
@@ -452,7 +465,7 @@ namespace ChurchServices.WinApp {
 
         private void btnLogosSeptuagint_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             if (VerseControl.IsNotNull()) {
-                System.Diagnostics.Process.Start(VerseControl.Verse.GetLogosSeptuagintUrl());
+                System.Diagnostics.Process.Start("explorer.exe", VerseControl.Verse.GetLogosSeptuagintUrl());
             }
         }
 
@@ -695,6 +708,12 @@ namespace ChurchServices.WinApp {
                     btnLogosSeptuagint.Visibility = book.NumberOfBook < 470 ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
 
                     var bookInfo = (txtBooks.Properties.DataSource as List<BookBaseInfo>).Where(x => x.NumberOfBook == book.NumberOfBook).FirstOrDefault();
+                    if (bookInfo == null) {
+                        this.Translation = verse.ParentTranslation;
+                        NAME = Translation.Name;
+                        LoadBooks();
+                        bookInfo = (txtBooks.Properties.DataSource as List<BookBaseInfo>).Where(x => x.NumberOfBook == book.NumberOfBook).FirstOrDefault();
+                    }
                     txtBooks.EditValue = bookInfo;
 
                     Application.DoEvents();

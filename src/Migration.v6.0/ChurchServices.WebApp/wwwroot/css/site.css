@@ -17,9 +17,20 @@
         background: #555;
     }
 
-
 .card {
     background-color: transparent;
+}
+
+.text-gradient-church-service {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 170%;
+    background: -webkit-linear-gradient(300deg, #ED2C32 20%, #11b1ee 60%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-box-decoration-break: clone;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .smt-60 {
@@ -352,6 +363,13 @@ hr.fancy-line {
 #top-nav {
     opacity: 0.97;
 }
+
+.topnav-button {
+    border-color: #ced4da !important;
+}
+    .topnav-button:hover {
+        background-color: #ced4da41 !important;
+    }
 
 .menu-item-i {
     display: inline-block;
@@ -1051,12 +1069,12 @@ img {
             background-color: rgba(0,0,0,0.5);
         }
 
-    #siglum-button {
+    .topnav-button {
         color: #C8C8C8 !important;
         border-color: #383838 !important;
     }
 
-        #siglum-button:hover {
+        .topnav-button:hover {
             background-color: #383838 !important;
         }
 

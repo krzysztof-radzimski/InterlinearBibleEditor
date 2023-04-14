@@ -41,6 +41,7 @@ namespace ChurchServices.Data.Export.Controllers {
 
         Verse GetRecognizedSiglumVerse(Session session, string input);
         string GetRecognizedSiglumUrl(Session session, string input);
+        string GetRecognizedCompareUrl(Session session, string input);
         SiglumModel RecognizeSiglum(string input);
     }
 }

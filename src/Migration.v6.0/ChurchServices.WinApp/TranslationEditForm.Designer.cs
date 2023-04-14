@@ -56,8 +56,14 @@ namespace ChurchServices.WinApp {
             this.btnFootnote5 = new DevExpress.XtraBars.BarButtonItem();
             this.btnFootnote6 = new DevExpress.XtraBars.BarButtonItem();
             this.btnFootnote7 = new DevExpress.XtraBars.BarButtonItem();
+            this.mnuExport = new DevExpress.XtraBars.BarSubItem();
+            this.btnExportItemToDocx = new DevExpress.XtraBars.BarButtonItem();
+            this.btnExportItemToPdf = new DevExpress.XtraBars.BarButtonItem();
+            this.btnProgress = new DevExpress.XtraBars.BarEditItem();
+            this.repositoryItemMarqueeProgressBar1 = new DevExpress.XtraEditors.Repository.RepositoryItemMarqueeProgressBar();
             this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.labelControl35 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl30 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl29 = new DevExpress.XtraEditors.LabelControl();
@@ -139,6 +145,7 @@ namespace ChurchServices.WinApp {
             this.tablePanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cbHidden.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMarqueeProgressBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbWithStrongs.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbWithGrammarCodes.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbOpenAccess.Properties)).BeginInit();
@@ -233,7 +240,7 @@ namespace ChurchServices.WinApp {
             // labelControl5
             // 
             this.tablePanel1.SetColumn(this.labelControl5, 0);
-            this.labelControl5.Location = new System.Drawing.Point(3, 110);
+            this.labelControl5.Location = new System.Drawing.Point(3, 109);
             this.labelControl5.Name = "labelControl5";
             this.tablePanel1.SetRow(this.labelControl5, 4);
             this.labelControl5.Size = new System.Drawing.Size(104, 13);
@@ -243,7 +250,7 @@ namespace ChurchServices.WinApp {
             // labelControl6
             // 
             this.tablePanel1.SetColumn(this.labelControl6, 0);
-            this.labelControl6.Location = new System.Drawing.Point(3, 136);
+            this.labelControl6.Location = new System.Drawing.Point(3, 133);
             this.labelControl6.Name = "labelControl6";
             this.tablePanel1.SetRow(this.labelControl6, 5);
             this.labelControl6.Size = new System.Drawing.Size(133, 13);
@@ -253,7 +260,7 @@ namespace ChurchServices.WinApp {
             // labelControl7
             // 
             this.tablePanel1.SetColumn(this.labelControl7, 0);
-            this.labelControl7.Location = new System.Drawing.Point(3, 292);
+            this.labelControl7.Location = new System.Drawing.Point(3, 278);
             this.labelControl7.Name = "labelControl7";
             this.tablePanel1.SetRow(this.labelControl7, 11);
             this.labelControl7.Size = new System.Drawing.Size(69, 13);
@@ -263,7 +270,7 @@ namespace ChurchServices.WinApp {
             // labelControl8
             // 
             this.tablePanel1.SetColumn(this.labelControl8, 0);
-            this.labelControl8.Location = new System.Drawing.Point(3, 318);
+            this.labelControl8.Location = new System.Drawing.Point(3, 304);
             this.labelControl8.Name = "labelControl8";
             this.tablePanel1.SetRow(this.labelControl8, 12);
             this.labelControl8.Size = new System.Drawing.Size(99, 13);
@@ -273,7 +280,7 @@ namespace ChurchServices.WinApp {
             // labelControl9
             // 
             this.tablePanel1.SetColumn(this.labelControl9, 0);
-            this.labelControl9.Location = new System.Drawing.Point(3, 434);
+            this.labelControl9.Location = new System.Drawing.Point(3, 420);
             this.labelControl9.Name = "labelControl9";
             this.tablePanel1.SetRow(this.labelControl9, 13);
             this.labelControl9.Size = new System.Drawing.Size(59, 13);
@@ -283,7 +290,7 @@ namespace ChurchServices.WinApp {
             // labelControl10
             // 
             this.tablePanel1.SetColumn(this.labelControl10, 0);
-            this.labelControl10.Location = new System.Drawing.Point(3, 640);
+            this.labelControl10.Location = new System.Drawing.Point(3, 626);
             this.labelControl10.Name = "labelControl10";
             this.tablePanel1.SetRow(this.labelControl10, 14);
             this.labelControl10.Size = new System.Drawing.Size(101, 13);
@@ -350,18 +357,18 @@ namespace ChurchServices.WinApp {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(1169, 712);
+            this.tablePanel1.Size = new System.Drawing.Size(1169, 824);
             this.tablePanel1.TabIndex = 0;
             // 
             // cbHidden
             // 
             this.tablePanel1.SetColumn(this.cbHidden, 1);
-            this.cbHidden.Location = new System.Drawing.Point(142, 263);
+            this.cbHidden.Location = new System.Drawing.Point(142, 251);
             this.cbHidden.MenuManager = this.ribbonControl1;
             this.cbHidden.Name = "cbHidden";
             this.cbHidden.Properties.Caption = "";
             this.tablePanel1.SetRow(this.cbHidden, 10);
-            this.cbHidden.Size = new System.Drawing.Size(547, 20);
+            this.cbHidden.Size = new System.Drawing.Size(547, 18);
             this.cbHidden.TabIndex = 32;
             // 
             // ribbonControl1
@@ -387,13 +394,20 @@ namespace ChurchServices.WinApp {
             this.btnFootnote4,
             this.btnFootnote5,
             this.btnFootnote6,
-            this.btnFootnote7});
+            this.btnFootnote7,
+            this.mnuExport,
+            this.btnExportItemToDocx,
+            this.btnExportItemToPdf,
+            this.btnProgress});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 19;
+            this.ribbonControl1.MaxItemId = 23;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.rpHome});
+            this.ribbonControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemMarqueeProgressBar1});
             this.ribbonControl1.Size = new System.Drawing.Size(1169, 158);
+            this.ribbonControl1.StatusBar = this.ribbonStatusBar1;
             // 
             // btnSave
             // 
@@ -552,6 +566,46 @@ namespace ChurchServices.WinApp {
             this.btnFootnote7.Tag = "7";
             this.btnFootnote7.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnFootnote_ItemClick);
             // 
+            // mnuExport
+            // 
+            this.mnuExport.Caption = "Export";
+            this.mnuExport.Enabled = false;
+            this.mnuExport.Id = 19;
+            this.mnuExport.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("mnuExport.ImageOptions.SvgImage")));
+            this.mnuExport.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnExportItemToDocx),
+            new DevExpress.XtraBars.LinkPersistInfo(this.btnExportItemToPdf)});
+            this.mnuExport.Name = "mnuExport";
+            // 
+            // btnExportItemToDocx
+            // 
+            this.btnExportItemToDocx.Caption = "Export";
+            this.btnExportItemToDocx.Id = 20;
+            this.btnExportItemToDocx.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportItemToDocx.ImageOptions.SvgImage")));
+            this.btnExportItemToDocx.Name = "btnExportItemToDocx";
+            this.btnExportItemToDocx.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportItemToDocx_ItemClick);
+            // 
+            // btnExportItemToPdf
+            // 
+            this.btnExportItemToPdf.Caption = "Export";
+            this.btnExportItemToPdf.Id = 21;
+            this.btnExportItemToPdf.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnExportItemToPdf.ImageOptions.SvgImage")));
+            this.btnExportItemToPdf.Name = "btnExportItemToPdf";
+            this.btnExportItemToPdf.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnExportItemToPdf_ItemClick);
+            // 
+            // btnProgress
+            // 
+            this.btnProgress.Caption = "Please wait...";
+            this.btnProgress.Edit = this.repositoryItemMarqueeProgressBar1;
+            this.btnProgress.EditWidth = 200;
+            this.btnProgress.Id = 22;
+            this.btnProgress.Name = "btnProgress";
+            this.btnProgress.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
+            // 
+            // repositoryItemMarqueeProgressBar1
+            // 
+            this.repositoryItemMarqueeProgressBar1.Name = "repositoryItemMarqueeProgressBar1";
+            // 
             // rpHome
             // 
             this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -562,6 +616,7 @@ namespace ChurchServices.WinApp {
             // ribbonPageGroup1
             // 
             this.ribbonPageGroup1.ItemLinks.Add(this.btnSave, true);
+            this.ribbonPageGroup1.ItemLinks.Add(this.mnuExport);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnAddBook, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnDeleteBook);
             this.ribbonPageGroup1.ItemLinks.Add(this.btnAddChapter, true);
@@ -575,10 +630,18 @@ namespace ChurchServices.WinApp {
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             this.ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
+            // ribbonStatusBar1
+            // 
+            this.ribbonStatusBar1.ItemLinks.Add(this.btnProgress);
+            this.ribbonStatusBar1.Location = new System.Drawing.Point(0, 1022);
+            this.ribbonStatusBar1.Name = "ribbonStatusBar1";
+            this.ribbonStatusBar1.Ribbon = this.ribbonControl1;
+            this.ribbonStatusBar1.Size = new System.Drawing.Size(1169, 22);
+            // 
             // labelControl35
             // 
             this.tablePanel1.SetColumn(this.labelControl35, 0);
-            this.labelControl35.Location = new System.Drawing.Point(3, 266);
+            this.labelControl35.Location = new System.Drawing.Point(3, 253);
             this.labelControl35.Name = "labelControl35";
             this.tablePanel1.SetRow(this.labelControl35, 10);
             this.labelControl35.Size = new System.Drawing.Size(61, 13);
@@ -588,7 +651,7 @@ namespace ChurchServices.WinApp {
             // labelControl30
             // 
             this.tablePanel1.SetColumn(this.labelControl30, 0);
-            this.labelControl30.Location = new System.Drawing.Point(3, 214);
+            this.labelControl30.Location = new System.Drawing.Point(3, 205);
             this.labelControl30.Name = "labelControl30";
             this.tablePanel1.SetRow(this.labelControl30, 8);
             this.labelControl30.Size = new System.Drawing.Size(101, 13);
@@ -598,7 +661,7 @@ namespace ChurchServices.WinApp {
             // labelControl29
             // 
             this.tablePanel1.SetColumn(this.labelControl29, 0);
-            this.labelControl29.Location = new System.Drawing.Point(3, 240);
+            this.labelControl29.Location = new System.Drawing.Point(3, 229);
             this.labelControl29.Name = "labelControl29";
             this.tablePanel1.SetRow(this.labelControl29, 9);
             this.labelControl29.Size = new System.Drawing.Size(112, 13);
@@ -608,29 +671,29 @@ namespace ChurchServices.WinApp {
             // cbWithStrongs
             // 
             this.tablePanel1.SetColumn(this.cbWithStrongs, 1);
-            this.cbWithStrongs.Location = new System.Drawing.Point(142, 211);
+            this.cbWithStrongs.Location = new System.Drawing.Point(142, 203);
             this.cbWithStrongs.MenuManager = this.ribbonControl1;
             this.cbWithStrongs.Name = "cbWithStrongs";
             this.cbWithStrongs.Properties.Caption = "";
             this.tablePanel1.SetRow(this.cbWithStrongs, 8);
-            this.cbWithStrongs.Size = new System.Drawing.Size(547, 20);
+            this.cbWithStrongs.Size = new System.Drawing.Size(547, 18);
             this.cbWithStrongs.TabIndex = 28;
             // 
             // cbWithGrammarCodes
             // 
             this.tablePanel1.SetColumn(this.cbWithGrammarCodes, 1);
-            this.cbWithGrammarCodes.Location = new System.Drawing.Point(142, 237);
+            this.cbWithGrammarCodes.Location = new System.Drawing.Point(142, 227);
             this.cbWithGrammarCodes.MenuManager = this.ribbonControl1;
             this.cbWithGrammarCodes.Name = "cbWithGrammarCodes";
             this.cbWithGrammarCodes.Properties.Caption = "";
             this.tablePanel1.SetRow(this.cbWithGrammarCodes, 9);
-            this.cbWithGrammarCodes.Size = new System.Drawing.Size(547, 20);
+            this.cbWithGrammarCodes.Size = new System.Drawing.Size(547, 18);
             this.cbWithGrammarCodes.TabIndex = 27;
             // 
             // labelControl13
             // 
             this.tablePanel1.SetColumn(this.labelControl13, 0);
-            this.labelControl13.Location = new System.Drawing.Point(3, 188);
+            this.labelControl13.Location = new System.Drawing.Point(3, 181);
             this.labelControl13.Name = "labelControl13";
             this.tablePanel1.SetRow(this.labelControl13, 7);
             this.labelControl13.Size = new System.Drawing.Size(62, 13);
@@ -640,29 +703,29 @@ namespace ChurchServices.WinApp {
             // cbOpenAccess
             // 
             this.tablePanel1.SetColumn(this.cbOpenAccess, 1);
-            this.cbOpenAccess.Location = new System.Drawing.Point(142, 185);
+            this.cbOpenAccess.Location = new System.Drawing.Point(142, 179);
             this.cbOpenAccess.MenuManager = this.ribbonControl1;
             this.cbOpenAccess.Name = "cbOpenAccess";
             this.cbOpenAccess.Properties.Caption = "";
             this.tablePanel1.SetRow(this.cbOpenAccess, 7);
-            this.cbOpenAccess.Size = new System.Drawing.Size(547, 20);
+            this.cbOpenAccess.Size = new System.Drawing.Size(547, 18);
             this.cbOpenAccess.TabIndex = 25;
             // 
             // cbChapterRomanNumbering
             // 
             this.tablePanel1.SetColumn(this.cbChapterRomanNumbering, 1);
-            this.cbChapterRomanNumbering.Location = new System.Drawing.Point(142, 159);
+            this.cbChapterRomanNumbering.Location = new System.Drawing.Point(142, 155);
             this.cbChapterRomanNumbering.MenuManager = this.ribbonControl1;
             this.cbChapterRomanNumbering.Name = "cbChapterRomanNumbering";
             this.cbChapterRomanNumbering.Properties.Caption = "";
             this.tablePanel1.SetRow(this.cbChapterRomanNumbering, 6);
-            this.cbChapterRomanNumbering.Size = new System.Drawing.Size(547, 20);
+            this.cbChapterRomanNumbering.Size = new System.Drawing.Size(547, 18);
             this.cbChapterRomanNumbering.TabIndex = 6;
             // 
             // labelControl12
             // 
             this.tablePanel1.SetColumn(this.labelControl12, 0);
-            this.labelControl12.Location = new System.Drawing.Point(3, 162);
+            this.labelControl12.Location = new System.Drawing.Point(3, 157);
             this.labelControl12.Name = "labelControl12";
             this.tablePanel1.SetRow(this.labelControl12, 6);
             this.labelControl12.Size = new System.Drawing.Size(129, 13);
@@ -674,7 +737,7 @@ namespace ChurchServices.WinApp {
             this.txtDetailedInfo.ActiveViewType = DevExpress.XtraRichEdit.RichEditViewType.Simple;
             this.tablePanel1.SetColumn(this.txtDetailedInfo, 1);
             this.txtDetailedInfo.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
-            this.txtDetailedInfo.Location = new System.Drawing.Point(142, 547);
+            this.txtDetailedInfo.Location = new System.Drawing.Point(142, 533);
             this.txtDetailedInfo.MenuManager = this.ribbonControl1;
             this.txtDetailedInfo.Name = "txtDetailedInfo";
             this.tablePanel1.SetRow(this.txtDetailedInfo, 14);
@@ -686,7 +749,7 @@ namespace ChurchServices.WinApp {
             this.txtIntroduction.ActiveViewType = DevExpress.XtraRichEdit.RichEditViewType.Simple;
             this.tablePanel1.SetColumn(this.txtIntroduction, 1);
             this.txtIntroduction.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
-            this.txtIntroduction.Location = new System.Drawing.Point(142, 341);
+            this.txtIntroduction.Location = new System.Drawing.Point(142, 327);
             this.txtIntroduction.MenuManager = this.ribbonControl1;
             this.txtIntroduction.Name = "txtIntroduction";
             this.tablePanel1.SetRow(this.txtIntroduction, 13);
@@ -696,7 +759,7 @@ namespace ChurchServices.WinApp {
             // txtBookType
             // 
             this.tablePanel1.SetColumn(this.txtBookType, 1);
-            this.txtBookType.Location = new System.Drawing.Point(142, 753);
+            this.txtBookType.Location = new System.Drawing.Point(142, 739);
             this.txtBookType.Name = "txtBookType";
             this.txtBookType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -707,7 +770,7 @@ namespace ChurchServices.WinApp {
             // labelControl11
             // 
             this.tablePanel1.SetColumn(this.labelControl11, 0);
-            this.labelControl11.Location = new System.Drawing.Point(3, 756);
+            this.labelControl11.Location = new System.Drawing.Point(3, 742);
             this.labelControl11.Name = "labelControl11";
             this.tablePanel1.SetRow(this.labelControl11, 15);
             this.labelControl11.Size = new System.Drawing.Size(48, 13);
@@ -717,7 +780,7 @@ namespace ChurchServices.WinApp {
             // txtChapterPsalmString
             // 
             this.tablePanel1.SetColumn(this.txtChapterPsalmString, 1);
-            this.txtChapterPsalmString.Location = new System.Drawing.Point(142, 315);
+            this.txtChapterPsalmString.Location = new System.Drawing.Point(142, 301);
             this.txtChapterPsalmString.Name = "txtChapterPsalmString";
             this.tablePanel1.SetRow(this.txtChapterPsalmString, 12);
             this.txtChapterPsalmString.Size = new System.Drawing.Size(547, 20);
@@ -726,7 +789,7 @@ namespace ChurchServices.WinApp {
             // txtChapterString
             // 
             this.tablePanel1.SetColumn(this.txtChapterString, 1);
-            this.txtChapterString.Location = new System.Drawing.Point(142, 289);
+            this.txtChapterString.Location = new System.Drawing.Point(142, 275);
             this.txtChapterString.Name = "txtChapterString";
             this.tablePanel1.SetRow(this.txtChapterString, 11);
             this.txtChapterString.Size = new System.Drawing.Size(547, 20);
@@ -735,11 +798,11 @@ namespace ChurchServices.WinApp {
             // cbIsRecommended
             // 
             this.tablePanel1.SetColumn(this.cbIsRecommended, 1);
-            this.cbIsRecommended.Location = new System.Drawing.Point(142, 133);
+            this.cbIsRecommended.Location = new System.Drawing.Point(142, 131);
             this.cbIsRecommended.Name = "cbIsRecommended";
             this.cbIsRecommended.Properties.Caption = "";
             this.tablePanel1.SetRow(this.cbIsRecommended, 5);
-            this.cbIsRecommended.Size = new System.Drawing.Size(547, 20);
+            this.cbIsRecommended.Size = new System.Drawing.Size(547, 18);
             this.cbIsRecommended.TabIndex = 5;
             // 
             // cbIsCatholic
@@ -749,7 +812,7 @@ namespace ChurchServices.WinApp {
             this.cbIsCatholic.Name = "cbIsCatholic";
             this.cbIsCatholic.Properties.Caption = "";
             this.tablePanel1.SetRow(this.cbIsCatholic, 4);
-            this.cbIsCatholic.Size = new System.Drawing.Size(547, 20);
+            this.cbIsCatholic.Size = new System.Drawing.Size(547, 18);
             this.cbIsCatholic.TabIndex = 4;
             // 
             // txtType
@@ -805,9 +868,9 @@ namespace ChurchServices.WinApp {
             this.tabPane1.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
             this.tabTranslationInfo,
             this.tabTranslationContent});
-            this.tabPane1.RegularSize = new System.Drawing.Size(1169, 745);
+            this.tabPane1.RegularSize = new System.Drawing.Size(1169, 864);
             this.tabPane1.SelectedPage = this.tabTranslationInfo;
-            this.tabPane1.Size = new System.Drawing.Size(1169, 745);
+            this.tabPane1.Size = new System.Drawing.Size(1169, 864);
             this.tabPane1.TabIndex = 3;
             this.tabPane1.Text = "tabPane1";
             // 
@@ -818,7 +881,7 @@ namespace ChurchServices.WinApp {
             this.tabTranslationInfo.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabTranslationInfo.ImageOptions.SvgImage")));
             this.tabTranslationInfo.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
             this.tabTranslationInfo.Name = "tabTranslationInfo";
-            this.tabTranslationInfo.Size = new System.Drawing.Size(1169, 712);
+            this.tabTranslationInfo.Size = new System.Drawing.Size(1169, 824);
             // 
             // tabTranslationContent
             // 
@@ -828,7 +891,7 @@ namespace ChurchServices.WinApp {
             this.tabTranslationContent.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("tabTranslationContent.ImageOptions.SvgImage")));
             this.tabTranslationContent.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
             this.tabTranslationContent.Name = "tabTranslationContent";
-            this.tabTranslationContent.Size = new System.Drawing.Size(1169, 712);
+            this.tabTranslationContent.Size = new System.Drawing.Size(1169, 705);
             // 
             // sidePanel2
             // 
@@ -836,7 +899,7 @@ namespace ChurchServices.WinApp {
             this.sidePanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sidePanel2.Location = new System.Drawing.Point(344, 0);
             this.sidePanel2.Name = "sidePanel2";
-            this.sidePanel2.Size = new System.Drawing.Size(825, 712);
+            this.sidePanel2.Size = new System.Drawing.Size(825, 705);
             this.sidePanel2.TabIndex = 1;
             this.sidePanel2.Text = "sidePanel2";
             // 
@@ -849,7 +912,7 @@ namespace ChurchServices.WinApp {
             this.tabs.Location = new System.Drawing.Point(0, 0);
             this.tabs.Name = "tabs";
             this.tabs.SelectedTabPage = this.tabBook;
-            this.tabs.Size = new System.Drawing.Size(825, 712);
+            this.tabs.Size = new System.Drawing.Size(825, 705);
             this.tabs.TabIndex = 1;
             this.tabs.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] {
             this.tabBook,
@@ -861,7 +924,7 @@ namespace ChurchServices.WinApp {
             // 
             this.tabBook.Controls.Add(this.tableBook);
             this.tabBook.Name = "tabBook";
-            this.tabBook.Size = new System.Drawing.Size(823, 687);
+            this.tabBook.Size = new System.Drawing.Size(823, 682);
             this.tabBook.Text = "Book";
             // 
             // tableBook
@@ -917,13 +980,13 @@ namespace ChurchServices.WinApp {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tableBook.Size = new System.Drawing.Size(823, 687);
+            this.tableBook.Size = new System.Drawing.Size(823, 682);
             this.tableBook.TabIndex = 0;
             // 
             // txtBookNumberOfChapters
             // 
             this.tableBook.SetColumn(this.txtBookNumberOfChapters, 1);
-            this.txtBookNumberOfChapters.Location = new System.Drawing.Point(152, 633);
+            this.txtBookNumberOfChapters.Location = new System.Drawing.Point(152, 631);
             this.txtBookNumberOfChapters.MenuManager = this.ribbonControl1;
             this.txtBookNumberOfChapters.Name = "txtBookNumberOfChapters";
             this.tableBook.SetRow(this.txtBookNumberOfChapters, 13);
@@ -933,7 +996,7 @@ namespace ChurchServices.WinApp {
             // labelControl33
             // 
             this.tableBook.SetColumn(this.labelControl33, 0);
-            this.labelControl33.Location = new System.Drawing.Point(3, 636);
+            this.labelControl33.Location = new System.Drawing.Point(3, 631);
             this.labelControl33.Name = "labelControl33";
             this.tableBook.SetRow(this.labelControl33, 13);
             this.labelControl33.Size = new System.Drawing.Size(95, 13);
@@ -948,13 +1011,13 @@ namespace ChurchServices.WinApp {
             this.cbBookIsTranslated.Name = "cbBookIsTranslated";
             this.cbBookIsTranslated.Properties.Caption = "";
             this.tableBook.SetRow(this.cbBookIsTranslated, 12);
-            this.cbBookIsTranslated.Size = new System.Drawing.Size(668, 20);
+            this.cbBookIsTranslated.Size = new System.Drawing.Size(668, 18);
             this.cbBookIsTranslated.TabIndex = 26;
             // 
             // labelControl31
             // 
             this.tableBook.SetColumn(this.labelControl31, 0);
-            this.labelControl31.Location = new System.Drawing.Point(3, 610);
+            this.labelControl31.Location = new System.Drawing.Point(3, 609);
             this.labelControl31.Name = "labelControl31";
             this.tableBook.SetRow(this.labelControl31, 12);
             this.labelControl31.Size = new System.Drawing.Size(135, 13);
@@ -1004,7 +1067,7 @@ namespace ChurchServices.WinApp {
             // labelControl26
             // 
             this.tableBook.SetColumn(this.labelControl26, 0);
-            this.labelControl26.Location = new System.Drawing.Point(3, 392);
+            this.labelControl26.Location = new System.Drawing.Point(3, 389);
             this.labelControl26.Name = "labelControl26";
             this.tableBook.SetRow(this.labelControl26, 10);
             this.labelControl26.Size = new System.Drawing.Size(52, 13);
@@ -1023,7 +1086,7 @@ namespace ChurchServices.WinApp {
             // labelControl25
             // 
             this.tableBook.SetColumn(this.labelControl25, 0);
-            this.labelControl25.Location = new System.Drawing.Point(3, 366);
+            this.labelControl25.Location = new System.Drawing.Point(3, 363);
             this.labelControl25.Name = "labelControl25";
             this.tableBook.SetRow(this.labelControl25, 9);
             this.labelControl25.Size = new System.Drawing.Size(36, 13);
@@ -1043,7 +1106,7 @@ namespace ChurchServices.WinApp {
             // labelControl24
             // 
             this.tableBook.SetColumn(this.labelControl24, 0);
-            this.labelControl24.Location = new System.Drawing.Point(3, 296);
+            this.labelControl24.Location = new System.Drawing.Point(3, 295);
             this.labelControl24.Name = "labelControl24";
             this.tableBook.SetRow(this.labelControl24, 8);
             this.labelControl24.Size = new System.Drawing.Size(39, 13);
@@ -1062,7 +1125,7 @@ namespace ChurchServices.WinApp {
             // labelControl23
             // 
             this.tableBook.SetColumn(this.labelControl23, 0);
-            this.labelControl23.Location = new System.Drawing.Point(3, 272);
+            this.labelControl23.Location = new System.Drawing.Point(3, 269);
             this.labelControl23.Name = "labelControl23";
             this.tableBook.SetRow(this.labelControl23, 7);
             this.labelControl23.Size = new System.Drawing.Size(143, 13);
@@ -1082,7 +1145,7 @@ namespace ChurchServices.WinApp {
             // labelControl22
             // 
             this.tableBook.SetColumn(this.labelControl22, 0);
-            this.labelControl22.Location = new System.Drawing.Point(3, 202);
+            this.labelControl22.Location = new System.Drawing.Point(3, 201);
             this.labelControl22.Name = "labelControl22";
             this.tableBook.SetRow(this.labelControl22, 6);
             this.labelControl22.Size = new System.Drawing.Size(70, 13);
@@ -1102,7 +1165,7 @@ namespace ChurchServices.WinApp {
             // labelControl21
             // 
             this.tableBook.SetColumn(this.labelControl21, 0);
-            this.labelControl21.Location = new System.Drawing.Point(3, 134);
+            this.labelControl21.Location = new System.Drawing.Point(3, 133);
             this.labelControl21.Name = "labelControl21";
             this.tableBook.SetRow(this.labelControl21, 5);
             this.labelControl21.Size = new System.Drawing.Size(63, 13);
@@ -1121,7 +1184,7 @@ namespace ChurchServices.WinApp {
             // labelControl20
             // 
             this.tableBook.SetColumn(this.labelControl20, 0);
-            this.labelControl20.Location = new System.Drawing.Point(3, 110);
+            this.labelControl20.Location = new System.Drawing.Point(3, 107);
             this.labelControl20.Name = "labelControl20";
             this.tableBook.SetRow(this.labelControl20, 4);
             this.labelControl20.Size = new System.Drawing.Size(25, 13);
@@ -1140,7 +1203,7 @@ namespace ChurchServices.WinApp {
             // labelControl19
             // 
             this.tableBook.SetColumn(this.labelControl19, 0);
-            this.labelControl19.Location = new System.Drawing.Point(3, 84);
+            this.labelControl19.Location = new System.Drawing.Point(3, 81);
             this.labelControl19.Name = "labelControl19";
             this.tableBook.SetRow(this.labelControl19, 3);
             this.labelControl19.Size = new System.Drawing.Size(46, 13);
@@ -1159,7 +1222,7 @@ namespace ChurchServices.WinApp {
             // labelControl18
             // 
             this.tableBook.SetColumn(this.labelControl18, 0);
-            this.labelControl18.Location = new System.Drawing.Point(3, 58);
+            this.labelControl18.Location = new System.Drawing.Point(3, 55);
             this.labelControl18.Name = "labelControl18";
             this.tableBook.SetRow(this.labelControl18, 2);
             this.labelControl18.Size = new System.Drawing.Size(57, 13);
@@ -1179,7 +1242,7 @@ namespace ChurchServices.WinApp {
             // labelControl17
             // 
             this.tableBook.SetColumn(this.labelControl17, 0);
-            this.labelControl17.Location = new System.Drawing.Point(3, 32);
+            this.labelControl17.Location = new System.Drawing.Point(3, 29);
             this.labelControl17.Name = "labelControl17";
             this.tableBook.SetRow(this.labelControl17, 1);
             this.labelControl17.Size = new System.Drawing.Size(71, 13);
@@ -1199,7 +1262,7 @@ namespace ChurchServices.WinApp {
             // labelControl16
             // 
             this.tableBook.SetColumn(this.labelControl16, 0);
-            this.labelControl16.Location = new System.Drawing.Point(3, 6);
+            this.labelControl16.Location = new System.Drawing.Point(3, 3);
             this.labelControl16.Name = "labelControl16";
             this.tableBook.SetRow(this.labelControl16, 0);
             this.labelControl16.Size = new System.Drawing.Size(80, 13);
@@ -1210,7 +1273,7 @@ namespace ChurchServices.WinApp {
             // 
             this.tabChapter.Controls.Add(this.tableChapter);
             this.tabChapter.Name = "tabChapter";
-            this.tabChapter.Size = new System.Drawing.Size(823, 687);
+            this.tabChapter.Size = new System.Drawing.Size(823, 682);
             this.tabChapter.Text = "Chapter";
             // 
             // tableChapter
@@ -1232,13 +1295,13 @@ namespace ChurchServices.WinApp {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tableChapter.Size = new System.Drawing.Size(823, 687);
+            this.tableChapter.Size = new System.Drawing.Size(823, 682);
             this.tableChapter.TabIndex = 0;
             // 
             // labelControl34
             // 
             this.tableChapter.SetColumn(this.labelControl34, 0);
-            this.labelControl34.Location = new System.Drawing.Point(3, 55);
+            this.labelControl34.Location = new System.Drawing.Point(3, 53);
             this.labelControl34.Name = "labelControl34";
             this.tableChapter.SetRow(this.labelControl34, 2);
             this.labelControl34.Size = new System.Drawing.Size(85, 13);
@@ -1248,7 +1311,7 @@ namespace ChurchServices.WinApp {
             // txtChapterNumberOfVerses
             // 
             this.tableChapter.SetColumn(this.txtChapterNumberOfVerses, 1);
-            this.txtChapterNumberOfVerses.Location = new System.Drawing.Point(144, 55);
+            this.txtChapterNumberOfVerses.Location = new System.Drawing.Point(144, 53);
             this.txtChapterNumberOfVerses.MenuManager = this.ribbonControl1;
             this.txtChapterNumberOfVerses.Name = "txtChapterNumberOfVerses";
             this.tableChapter.SetRow(this.txtChapterNumberOfVerses, 2);
@@ -1263,13 +1326,13 @@ namespace ChurchServices.WinApp {
             this.cbChapterIsTranslated.Name = "cbChapterIsTranslated";
             this.cbChapterIsTranslated.Properties.Caption = "";
             this.tableChapter.SetRow(this.cbChapterIsTranslated, 1);
-            this.cbChapterIsTranslated.Size = new System.Drawing.Size(676, 20);
+            this.cbChapterIsTranslated.Size = new System.Drawing.Size(676, 18);
             this.cbChapterIsTranslated.TabIndex = 3;
             // 
             // labelControl32
             // 
             this.tableChapter.SetColumn(this.labelControl32, 0);
-            this.labelControl32.Location = new System.Drawing.Point(3, 32);
+            this.labelControl32.Location = new System.Drawing.Point(3, 31);
             this.labelControl32.Name = "labelControl32";
             this.tableChapter.SetRow(this.labelControl32, 1);
             this.labelControl32.Size = new System.Drawing.Size(135, 13);
@@ -1300,7 +1363,7 @@ namespace ChurchServices.WinApp {
             // 
             this.tabVerse.Controls.Add(this.tableVerseControls);
             this.tabVerse.Name = "tabVerse";
-            this.tabVerse.Size = new System.Drawing.Size(823, 687);
+            this.tabVerse.Size = new System.Drawing.Size(823, 682);
             this.tabVerse.Text = "Verse";
             // 
             // tableVerseControls
@@ -1326,13 +1389,13 @@ namespace ChurchServices.WinApp {
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
             new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
-            this.tableVerseControls.Size = new System.Drawing.Size(823, 687);
+            this.tableVerseControls.Size = new System.Drawing.Size(823, 682);
             this.tableVerseControls.TabIndex = 1;
             // 
             // txtSubtitleLevel2
             // 
             this.tableVerseControls.SetColumn(this.txtSubtitleLevel2, 1);
-            this.txtSubtitleLevel2.Location = new System.Drawing.Point(104, 55);
+            this.txtSubtitleLevel2.Location = new System.Drawing.Point(104, 53);
             this.txtSubtitleLevel2.MenuManager = this.ribbonControl1;
             this.txtSubtitleLevel2.Name = "txtSubtitleLevel2";
             this.tableVerseControls.SetRow(this.txtSubtitleLevel2, 2);
@@ -1342,7 +1405,7 @@ namespace ChurchServices.WinApp {
             // txtSubtitleLevel1
             // 
             this.tableVerseControls.SetColumn(this.txtSubtitleLevel1, 1);
-            this.txtSubtitleLevel1.Location = new System.Drawing.Point(104, 29);
+            this.txtSubtitleLevel1.Location = new System.Drawing.Point(104, 27);
             this.txtSubtitleLevel1.MenuManager = this.ribbonControl1;
             this.txtSubtitleLevel1.Name = "txtSubtitleLevel1";
             this.tableVerseControls.SetRow(this.txtSubtitleLevel1, 1);
@@ -1352,7 +1415,7 @@ namespace ChurchServices.WinApp {
             // labelControl37
             // 
             this.tableVerseControls.SetColumn(this.labelControl37, 0);
-            this.labelControl37.Location = new System.Drawing.Point(3, 55);
+            this.labelControl37.Location = new System.Drawing.Point(3, 53);
             this.labelControl37.Name = "labelControl37";
             this.tableVerseControls.SetRow(this.labelControl37, 2);
             this.labelControl37.Size = new System.Drawing.Size(70, 13);
@@ -1362,7 +1425,7 @@ namespace ChurchServices.WinApp {
             // labelControl36
             // 
             this.tableVerseControls.SetColumn(this.labelControl36, 0);
-            this.labelControl36.Location = new System.Drawing.Point(3, 29);
+            this.labelControl36.Location = new System.Drawing.Point(3, 27);
             this.labelControl36.Name = "labelControl36";
             this.tableVerseControls.SetRow(this.labelControl36, 1);
             this.labelControl36.Size = new System.Drawing.Size(70, 13);
@@ -1372,7 +1435,7 @@ namespace ChurchServices.WinApp {
             // txtNumberOfVerse
             // 
             this.tableVerseControls.SetColumn(this.txtNumberOfVerse, 1);
-            this.txtNumberOfVerse.Location = new System.Drawing.Point(104, 81);
+            this.txtNumberOfVerse.Location = new System.Drawing.Point(104, 79);
             this.txtNumberOfVerse.MenuManager = this.ribbonControl1;
             this.txtNumberOfVerse.Name = "txtNumberOfVerse";
             this.tableVerseControls.SetRow(this.txtNumberOfVerse, 3);
@@ -1387,17 +1450,17 @@ namespace ChurchServices.WinApp {
             this.tableVerseControls.SetColumnSpan(this.editor, 2);
             this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.editor.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
-            this.editor.Location = new System.Drawing.Point(3, 107);
+            this.editor.Location = new System.Drawing.Point(3, 105);
             this.editor.MenuManager = this.ribbonControl1;
             this.editor.Name = "editor";
             this.tableVerseControls.SetRow(this.editor, 4);
-            this.editor.Size = new System.Drawing.Size(817, 577);
+            this.editor.Size = new System.Drawing.Size(817, 574);
             this.editor.TabIndex = 0;
             // 
             // labelControl15
             // 
             this.tableVerseControls.SetColumn(this.labelControl15, 0);
-            this.labelControl15.Location = new System.Drawing.Point(3, 81);
+            this.labelControl15.Location = new System.Drawing.Point(3, 79);
             this.labelControl15.Name = "labelControl15";
             this.tableVerseControls.SetRow(this.labelControl15, 3);
             this.labelControl15.Size = new System.Drawing.Size(41, 13);
@@ -1407,7 +1470,7 @@ namespace ChurchServices.WinApp {
             // labelControl14
             // 
             this.tableVerseControls.SetColumn(this.labelControl14, 0);
-            this.labelControl14.Location = new System.Drawing.Point(3, 6);
+            this.labelControl14.Location = new System.Drawing.Point(3, 5);
             this.labelControl14.Name = "labelControl14";
             this.tableVerseControls.SetRow(this.labelControl14, 0);
             this.labelControl14.Size = new System.Drawing.Size(95, 13);
@@ -1422,7 +1485,7 @@ namespace ChurchServices.WinApp {
             this.cbStartFromNewLine.Name = "cbStartFromNewLine";
             this.cbStartFromNewLine.Properties.Caption = "";
             this.tableVerseControls.SetRow(this.cbStartFromNewLine, 0);
-            this.cbStartFromNewLine.Size = new System.Drawing.Size(716, 20);
+            this.cbStartFromNewLine.Size = new System.Drawing.Size(716, 18);
             this.cbStartFromNewLine.TabIndex = 0;
             // 
             // sidePanel1
@@ -1431,7 +1494,7 @@ namespace ChurchServices.WinApp {
             this.sidePanel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.sidePanel1.Location = new System.Drawing.Point(0, 0);
             this.sidePanel1.Name = "sidePanel1";
-            this.sidePanel1.Size = new System.Drawing.Size(344, 712);
+            this.sidePanel1.Size = new System.Drawing.Size(344, 705);
             this.sidePanel1.TabIndex = 0;
             this.sidePanel1.Text = "sidePanel1";
             // 
@@ -1444,7 +1507,7 @@ namespace ChurchServices.WinApp {
             this.treeList.Name = "treeList";
             this.treeList.OptionsBehavior.Editable = false;
             this.treeList.OptionsView.ShowColumns = false;
-            this.treeList.Size = new System.Drawing.Size(343, 712);
+            this.treeList.Size = new System.Drawing.Size(343, 705);
             this.treeList.TabIndex = 0;
             this.treeList.NodeChanged += new DevExpress.XtraTreeList.NodeChangedEventHandler(this.treeList_NodeChanged);
             this.treeList.FocusedNodeChanged += new DevExpress.XtraTreeList.FocusedNodeChangedEventHandler(this.TreeListFocusedNodeChanged);
@@ -1453,18 +1516,21 @@ namespace ChurchServices.WinApp {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1169, 903);
+            this.ClientSize = new System.Drawing.Size(1169, 1044);
             this.Controls.Add(this.tabPane1);
+            this.Controls.Add(this.ribbonStatusBar1);
             this.Controls.Add(this.ribbonControl1);
             this.IconOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("TranslationEditForm.IconOptions.SvgImage")));
             this.Name = "TranslationEditForm";
             this.Ribbon = this.ribbonControl1;
+            this.StatusBar = this.ribbonStatusBar1;
             this.Text = "TranslationEditForm";
             ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
             this.tablePanel1.ResumeLayout(false);
             this.tablePanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cbHidden.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMarqueeProgressBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbWithStrongs.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbWithGrammarCodes.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbOpenAccess.Properties)).EndInit();
@@ -1636,5 +1702,11 @@ namespace ChurchServices.WinApp {
         private DevExpress.XtraBars.BarButtonItem btnFootnote5;
         private DevExpress.XtraBars.BarButtonItem btnFootnote6;
         private DevExpress.XtraBars.BarButtonItem btnFootnote7;
+        private DevExpress.XtraBars.BarSubItem mnuExport;
+        private DevExpress.XtraBars.BarButtonItem btnExportItemToDocx;
+        private DevExpress.XtraBars.BarButtonItem btnExportItemToPdf;
+        private DevExpress.XtraBars.Ribbon.RibbonStatusBar ribbonStatusBar1;
+        private DevExpress.XtraBars.BarEditItem btnProgress;
+        private DevExpress.XtraEditors.Repository.RepositoryItemMarqueeProgressBar repositoryItemMarqueeProgressBar1;
     }
 }

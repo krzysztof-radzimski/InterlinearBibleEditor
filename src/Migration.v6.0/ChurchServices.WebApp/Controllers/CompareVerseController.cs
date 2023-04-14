@@ -11,6 +11,8 @@
 
   ===================================================================================*/
 
+using System.Xml.Linq;
+
 namespace ChurchServices.WebApp.Controllers {
     public class CompareVerseController : Controller {
         protected readonly IBibleTagController BibleTag;
@@ -47,7 +49,7 @@ namespace ChurchServices.WebApp.Controllers {
                     baseBookName = baseBook.BookName;
                     biblePart = baseBook.StatusBiblePart;
                 }
-                
+
                 var verses = new List<CompareVerseInfo>();
                 var result = new CompareVerseModel() {
                     Index = vi,
@@ -58,6 +60,14 @@ namespace ChurchServices.WebApp.Controllers {
                     LiteralOnly = literalOnly
                 };
 
+                var viewChapter = new XPView(uow, typeof(Chapter)) {
+                    CriteriaString = $"[Index] = '{vi.TranslationName}.{vi.NumberOfBook}.{vi.NumberOfChapter}'"
+                };
+                viewChapter.Properties.Add(new ViewProperty("NumberOfVerses", SortDirection.None, "[NumberOfVerses]", false, true));
+                foreach (ViewRecord item in viewChapter) {
+                    result.LastVerseNumberOfChapter = item["NumberOfVerses"].ToInt();
+                    break;
+                }
 
                 var criteriaString = "[Hidden] = 0";
                 if (literalOnly) {

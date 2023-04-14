@@ -1,6 +1,4 @@
 ﻿using ChurchServices.Extensions;
-using System;
-using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace ChurchServices.Data.Import.Greek {
@@ -69,5 +67,12 @@ namespace ChurchServices.Data.Import.Greek {
         public void Dispose() {
 
         }
+    }
+
+    public class TroBookInfo {
+        public int NumberOfBook { get; set; }
+        public string ShortName { get; set; }
+        public string LongName { get; set; }
+        public string BookColor { get; set; }
     }
 }

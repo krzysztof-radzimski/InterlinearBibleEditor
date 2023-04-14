@@ -76,8 +76,8 @@ namespace ChurchServices.Data.Model {
 
         public StrongCode(Session session) : base(session) { }
 
-        public IReadOnlyCollection<KeyValuePair<string, string>> GetVersesInfo() {
-            var result = new Dictionary<string, string>();
+        public IReadOnlyCollection<StrongVerseInfo> GetVersesInfo() {
+            var result = new List<StrongVerseInfo>();
             var bookShortcuts = new XPQuery<BookBase>(this.Session).Select(x => new KeyValuePair<int, string>(x.NumberOfBook, x.BookShortcut)).ToList();
             var verses = new List<int>();
             var words = VerseWords.Where(x => x.Translation.IsNotNullOrEmpty());
@@ -92,13 +92,24 @@ namespace ChurchServices.Data.Model {
                     var siglum = $@"<a href=""/{index.TranslationName}/{index.NumberOfBook}/{index.NumberOfChapter}/{index.NumberOfVerse}"" target=""_blank"" class=""text-decoration-none"">{baseBookShortcut} {index.NumberOfChapter}:{index.NumberOfVerse}</a>";
                     var text = word.ParentVerse.Text.Replace(word.Translation, $"<mark>{word.Translation}</mark>");
 
-                    result.Add(siglum, text);
+                    result.Add(new StrongVerseInfo(siglum, text, index));
 
                     verses.Add(word.ParentVerse.Oid);
                 }
 
             }
             return result;
+        }
+    }
+
+    public class StrongVerseInfo {
+        public string Siglum { get; set; }
+        public string Text { get; set; }
+        public VerseIndex Index { get; set; }
+        public StrongVerseInfo(string siglum, string text, VerseIndex index) {
+            Siglum = siglum;
+            Text = text;
+            Index = index;
         }
     }
 }
