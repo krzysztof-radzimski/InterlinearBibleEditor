@@ -710,12 +710,12 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
                     {
                         var ch = 10;
                         var verseItem = Neh.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{ch}.1").FirstOrDefault();
-                        var objects = new List<object> { 
+                        var objects = new List<object> {
                             new XElement(XName.Get(VERSE, verseItem.Name.NamespaceName),
                                 new XAttribute(START_ID, $"{book}.9.38"),
                                 new XAttribute(OSIS_ID, $"{book}.9.38"))
                         };
-                        while (verseItem.NextNode!=null) {
+                        while (verseItem.NextNode != null) {
                             if (verseItem.NextNode is XElement && (verseItem.NextNode as XElement).Name.LocalName == VERSE) { break; }
                             if (verseItem.NextNode is XElement && (verseItem.NextNode as XElement).Name.LocalName == NOTE) {
                                 (verseItem.NextNode as XElement).Attribute(OSIS_ID).Value = (verseItem.NextNode as XElement).Attribute(OSIS_ID).Value.Replace($"{book}.{ch}.1", $"{book}.9.38");
@@ -752,6 +752,196 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
                             }
                             vn++;
                         }
+                    }
+
+
+
+
+
+
+                    book = "Mic";
+                    var Mic = (xml.FirstNode as XElement).Elements().Where(x => x.Name.LocalName == DIV && x.Attribute(OSIS_ID).Value == book).FirstOrDefault();
+                    if (Mic != null) {
+                        var ch = 5;
+                        var vn = 15;
+                        for (int i = vn-1; i >0; i--) {
+                            var items = Mic.Descendants().Where(x => (x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"{book}.{ch}.{i}") || (x.Name.LocalName == NOTE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"{book}.{ch}.{i}!")));
+                            foreach (var item in items) {
+                                if (item.Attribute(OSIS_ID) != null) {
+                                    item.Add(new XAttribute(OLD_ID, item.Attribute(OSIS_ID).Value));
+                                }
+                                if (item.Name.LocalName == VERSE && item.Attribute(OSIS_ID) != null) {
+                                    item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}";
+                                }
+                                else if (item.Name.LocalName == NOTE && item.Attribute(OSIS_ID) != null) {
+                                    item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}!note.{item.Attribute("n").Value}";
+                                }
+                                if (item.Attribute(START_ID) != null) { item.Attribute(START_ID).Value = $"{book}.{ch}.{vn}"; }
+                                if (item.Attribute(END_ID) != null) { item.Attribute(END_ID).Value = $"{book}.{ch}.{vn}"; }
+                                if (item.Name.LocalName == NOTE && item.Attribute(REF_ID) != null) { item.Attribute(REF_ID).Value = $"{book}.{ch}.{vn}"; }
+
+                            }
+                            vn--;
+                        }
+
+                        var verseItem = Mic.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.4.14").FirstOrDefault();
+                        var objects = new List<object>{
+                            new XElement(XName.Get(VERSE, Mic.Name.NamespaceName),
+                                new XAttribute(START_ID, $"{book}.{ch}.1"),
+                                new XAttribute(OSIS_ID, $"{book}.{ch}.1")),
+                            verseItem.NextNode,
+                            new XElement(XName.Get(VERSE, verseItem.Name.NamespaceName),
+                                new XAttribute(END_ID, $"{book}.{ch}.1"),
+                                new XAttribute(OSIS_ID, $"{book}.{ch}.1"))
+                        };
+                        verseItem.NextNode.Remove();
+                        Mic.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"{book}.4.14").Remove();
+                        var ch5 = Mic.Descendants().Where(x => x.Name.LocalName == CHAPTER && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.5").FirstOrDefault();
+                        ch5.AddAfterSelf(objects);
+                    }
+
+                    book = "Nah";
+                    var Nah = (xml.FirstNode as XElement).Elements().Where(x => x.Name.LocalName == DIV && x.Attribute(OSIS_ID).Value == book).FirstOrDefault();
+                    if (Nah != null) {
+                        var ch = 2;
+                        var objects = new List<object>{
+                            new XElement(XName.Get(VERSE, Nah.Name.NamespaceName),
+                                new XAttribute(START_ID, $"{book}.1.15"),
+                                new XAttribute(OSIS_ID, $"{book}.1.15"))
+                        };
+                        var verseItem = Nah.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{ch}.1").FirstOrDefault();
+                        while (verseItem.NextNode != null) {
+                            if (verseItem.NextNode is XElement && (verseItem.NextNode as XElement).Name.LocalName == VERSE) { break; }
+                            if (verseItem.NextNode is XElement && (verseItem.NextNode as XElement).Name.LocalName == NOTE) {
+                                (verseItem.NextNode as XElement).Attribute(OSIS_ID).Value = (verseItem.NextNode as XElement).Attribute(OSIS_ID).Value.Replace($"{book}.{ch}.1", $"{book}.1.15");
+                                (verseItem.NextNode as XElement).Attribute(REF_ID).Value = (verseItem.NextNode as XElement).Attribute(REF_ID).Value.Replace($"{book}.{ch}.1", $"{book}.1.15");
+                            }
+                            objects.Add(verseItem.NextNode);
+                            verseItem.NextNode.Remove();
+                        }
+                        objects.Add(new XElement(XName.Get(VERSE, verseItem.Name.NamespaceName),
+                              new XAttribute(END_ID, $"{book}.1.15"),
+                              new XAttribute(OSIS_ID, $"{book}.1.15")));
+
+                        var prevItem = Nah.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == $"{book}.1.14").FirstOrDefault();
+                        prevItem.AddAfterSelf(objects);
+                        Nah.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"{book}.{ch}.1").Remove();
+
+                        var vn = 1;
+                        for (int i = 2; i < 41; i++) {
+                            var items = Nah.Descendants().Where(x => (x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"{book}.{ch}.{i}") || (x.Name.LocalName == NOTE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"{book}.{ch}.{i}!")));
+                            foreach (var item in items) {
+                                if (item.Attribute(OSIS_ID) != null) {
+                                    item.Add(new XAttribute(OLD_ID, item.Attribute(OSIS_ID).Value));
+                                }
+                                if (item.Name.LocalName == VERSE && item.Attribute(OSIS_ID) != null) {
+                                    item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}";
+                                }
+                                else if (item.Name.LocalName == NOTE && item.Attribute(OSIS_ID) != null) {
+                                    item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}!note.{item.Attribute("n").Value}";
+                                }
+                                if (item.Attribute(START_ID) != null) { item.Attribute(START_ID).Value = $"{book}.{ch}.{vn}"; }
+                                if (item.Attribute(END_ID) != null) { item.Attribute(END_ID).Value = $"{book}.{ch}.{vn}"; }
+                                if (item.Name.LocalName == NOTE && item.Attribute(REF_ID) != null) { item.Attribute(REF_ID).Value = $"{book}.{ch}.{vn}"; }
+
+                            }
+                            vn++;
+                        }
+                    }
+
+                    book = "Zech";
+                    var Zech = (xml.FirstNode as XElement).Elements().Where(x => x.Name.LocalName == DIV && x.Attribute(OSIS_ID).Value == book).FirstOrDefault();
+                    if (Zech != null) {
+                        var vn = 18;
+                        var ch = 1;
+                        for (int i = 1; i < 5; i++) {
+                            var items = Zech.Descendants().Where(x => (x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"{book}.2.{i}") || (x.Name.LocalName == NOTE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"{book}.2.{i}!")));
+                            foreach (var item in items) {
+                                if (item.Attribute(OSIS_ID) != null) {
+                                    item.Add(new XAttribute(OLD_ID, item.Attribute(OSIS_ID).Value));
+                                }
+                                if (item.Name.LocalName == VERSE && item.Attribute(OSIS_ID) != null) {
+                                    item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}";
+                                }
+                                else if (item.Name.LocalName == NOTE && item.Attribute(OSIS_ID) != null) {
+                                    item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}!note.{item.Attribute("n").Value}";
+                                }
+                                if (item.Attribute(START_ID) != null) { item.Attribute(START_ID).Value = $"{book}.{ch}.{vn}"; }
+                                if (item.Attribute(END_ID) != null) { item.Attribute(END_ID).Value = $"{book}.{ch}.{vn}"; }
+                                if (item.Name.LocalName == NOTE && item.Attribute(REF_ID) != null) { item.Attribute(REF_ID).Value = $"{book}.{ch}.{vn}"; }
+
+                            }
+                            vn++;
+                        }
+
+                        ch = 2;
+                        vn = 1;
+                        for (int i = 5; i < 18; i++) {
+                            var items = Zech.Descendants().Where(x => (x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"{book}.{ch}.{i}") || (x.Name.LocalName == NOTE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"{book}.{ch}.{i}!")));
+                            foreach (var item in items) {
+                                if (item.Attribute(OSIS_ID) != null) {
+                                    item.Add(new XAttribute(OLD_ID, item.Attribute(OSIS_ID).Value));
+                                }
+                                if (item.Name.LocalName == VERSE && item.Attribute(OSIS_ID) != null) {
+                                    item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}";
+                                }
+                                else if (item.Name.LocalName == NOTE && item.Attribute(OSIS_ID) != null) {
+                                    item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}!note.{item.Attribute("n").Value}";
+                                }
+                                if (item.Attribute(START_ID) != null) { item.Attribute(START_ID).Value = $"{book}.{ch}.{vn}"; }
+                                if (item.Attribute(END_ID) != null) { item.Attribute(END_ID).Value = $"{book}.{ch}.{vn}"; }
+                                if (item.Name.LocalName == NOTE && item.Attribute(REF_ID) != null) { item.Attribute(REF_ID).Value = $"{book}.{ch}.{vn}"; }
+
+                            }
+                            vn++;
+                        }
+
+                        var ch1 = Zech.Descendants().Where(x => x.Name.LocalName == CHAPTER && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == $"{book}.1").FirstOrDefault();
+                        var lstv = Zech.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == $"{book}.1.21").FirstOrDefault();
+                        lstv.AddAfterSelf(ch1);
+                        ch1.Remove();
+
+                        var ch2 = Zech.Descendants().Where(x => x.Name.LocalName == CHAPTER && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.2").FirstOrDefault();
+                        lstv = Zech.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.2.1").FirstOrDefault();
+                        lstv.AddBeforeSelf(ch2);
+                        ch2.Remove();
+                    }
+
+                    book = "Mal";
+                    var Mal = (xml.FirstNode as XElement).Elements().Where(x => x.Name.LocalName == DIV && x.Attribute(OSIS_ID).Value == book).FirstOrDefault();
+                    if (Mal != null) {
+                        var vn = 1;
+                        var ch = 4;
+                        for (int i = 19; i < 25; i++) {
+                            var items = Mal.Descendants().Where(x => (x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"{book}.3.{i}") || (x.Name.LocalName == NOTE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"{book}.3.{i}!")));
+                            foreach (var item in items) {
+                                if (item.Attribute(OSIS_ID) != null) {
+                                    item.Add(new XAttribute(OLD_ID, item.Attribute(OSIS_ID).Value));
+                                }
+                                if (item.Name.LocalName == VERSE && item.Attribute(OSIS_ID) != null) {
+                                    item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}";
+                                }
+                                else if (item.Name.LocalName == NOTE && item.Attribute(OSIS_ID) != null) {
+                                    item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}!note.{item.Attribute("n").Value}";
+                                }
+                                if (item.Attribute(START_ID) != null) { item.Attribute(START_ID).Value = $"{book}.{ch}.{vn}"; }
+                                if (item.Attribute(END_ID) != null) { item.Attribute(END_ID).Value = $"{book}.{ch}.{vn}"; }
+                                if (item.Name.LocalName == NOTE && item.Attribute(REF_ID) != null) { item.Attribute(REF_ID).Value = $"{book}.{ch}.{vn}"; }
+
+                            }
+                            vn++;
+                        }
+                        var ch3 = Mal.Descendants().Where(x => x.Name.LocalName == CHAPTER && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == $"{book}.3").FirstOrDefault();
+                        var lstv = Mal.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == $"{book}.3.18").FirstOrDefault();
+                        lstv.AddAfterSelf(ch3);
+                        ch3.Remove();
+
+                        lstv = Mal.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{ch}.1").FirstOrDefault();
+                        lstv.AddBeforeSelf(new XElement(XName.Get(CHAPTER, lstv.Name.NamespaceName), new XAttribute(START_ID, $"{book}.{ch}"), new XAttribute(OSIS_ID, $"{book}.{ch}")));
+
+                        lstv = Mal.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == $"{book}.{ch}.6").FirstOrDefault();
+                        lstv.AddAfterSelf(new XElement(XName.Get(CHAPTER, lstv.Name.NamespaceName), new XAttribute(END_ID, $"{book}.{ch}"), new XAttribute(OSIS_ID, $"{book}.{ch}")));
+
                     }
                 }
 
@@ -975,7 +1165,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
             if (nameOfBook.Contains("Obad")) { return "Księga Abdiasza"; }
             if (nameOfBook.Contains("Jonah")) { return "Księga Jonasza"; }
             if (nameOfBook.Contains("Mic")) { return "Księga Micheasza"; }
-            if (nameOfBook.Contains("Nah")) { return "Księga Hahuma"; }
+            if (nameOfBook.Contains("Nah")) { return "Księga Nahuma"; }
             if (nameOfBook.Contains("Hab")) { return "Księga Habakuka"; }
             if (nameOfBook.Contains("Zeph")) { return "Księga Sofoniasza"; }
             if (nameOfBook.Contains("Hag")) { return "Księga Aggeusza"; }

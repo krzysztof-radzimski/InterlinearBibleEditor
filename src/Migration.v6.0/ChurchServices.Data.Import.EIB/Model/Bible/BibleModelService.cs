@@ -559,7 +559,10 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             if (nameOfBook.Contains("Mt")) { return "Mt"; }
             if (nameOfBook.Contains("Mk")) { return "Mk"; }
             if (nameOfBook.Contains("Łk")) { return "Lk"; }
-            if (nameOfBook.Contains("J")) { return "Jn"; }
+            if (nameOfBook.Contains("1J")) { return "1Jn"; }
+            if (nameOfBook.Contains("2J")) { return "2Jn"; }
+            if (nameOfBook.Contains("3J")) { return "3Jn"; }
+            if (nameOfBook=="J") { return "Jn"; }
             if (nameOfBook.Contains("Dz")) { return "Ac"; }
             if (nameOfBook.Contains("Rz")) { return "Ro"; }
             if (nameOfBook.Contains("1Kor")) { return "1Co"; }
@@ -578,9 +581,9 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             if (nameOfBook.Contains("Jk")) { return "Jas"; }
             if (nameOfBook.Contains("1P")) { return "1Pe"; }
             if (nameOfBook.Contains("2P")) { return "2Pe"; }
-            if (nameOfBook.Contains("1J")) { return "1Jn"; }
-            if (nameOfBook.Contains("2J")) { return "2Jn"; }
-            if (nameOfBook.Contains("3J")) { return "3Jn"; }
+            //if (nameOfBook.Contains("1J")) { return "1Jn"; }
+            //if (nameOfBook.Contains("2J")) { return "2Jn"; }
+            //if (nameOfBook.Contains("3J")) { return "3Jn"; }
             if (nameOfBook.Contains("Jd")) { return "Jud"; }
             if (nameOfBook.Contains("Obj")) { return "Re"; }
 
