@@ -91,7 +91,12 @@ namespace ChurchServices.WinApp {
         public ArticleEditorForm(Article article) : this() {
             Article = article;
             if (Article.IsNotNull()) {
-                Text = Article.Subject;
+                if (Article.Subject.IsNotNullOrEmpty()) {
+                    Text = Article.Subject;
+                }
+                else {
+                    Text = "Nowy";
+                }
 
                 txtAuthor.Text = Article.AuthorName;
                 txtLead.Text = Article.Lead;
@@ -200,7 +205,7 @@ namespace ChurchServices.WinApp {
         private void btnReplaceAllSiglum_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             ReplaceAllSiglum();
         }
-              
+
         private void btnRemoveHostFromHyperlinks_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             var host = System.Configuration.ConfigurationManager.AppSettings["Host"];
             foreach (var link in editor.Document.Hyperlinks) {

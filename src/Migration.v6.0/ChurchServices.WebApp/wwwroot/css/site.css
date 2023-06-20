@@ -1,5 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');*/
+@font-face {
+    font-family: "SBL BibLit";
+    src: url(SBL_BLit.ttf);
+}
 
+@font-face {
+    font-family: "SBL Greek";
+    src: url(SBL_grk.ttf);
+}
+
+@font-face {
+    font-family: "SBL Hebrew";
+    src: url(SBL_Hbrw.ttf);
+}
 
 ::-webkit-scrollbar {
     width: 10px;
@@ -16,6 +29,10 @@
     ::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
+
+.greek-font {
+    font-family: "SBL Greek" !important;
+}
 
 .card {
     background-color: transparent;
@@ -223,8 +240,9 @@ button.accept-policy {
 /* Sticky footer styles
 -------------------------------------------------- */
 html, body {
-    font-family: Alegreya;
+    font-family: "SBL BibLit" /*Alegreya*/;
     font-size: 110%;
+    font-stretch: 80%;
 }
 
 html {
@@ -257,7 +275,7 @@ body {
         padding-bottom: 5px;
         white-space: normal;
         background-color: rgba(255,255,255,0.05);
-        max-width: 610px;
+        max-width: 642px;
         border-radius: 1rem 1rem 0 0;
     }
 
@@ -367,6 +385,7 @@ hr.fancy-line {
 .topnav-button {
     border-color: #ced4da !important;
 }
+
     .topnav-button:hover {
         background-color: #ced4da41 !important;
     }
@@ -483,6 +502,7 @@ hr.fancy-line {
 #github-lnk:after {
     content: 'Otwarty kod zrodlowy';
 }
+
 #privacy-policy:after {
     content: 'Polityka Prywatnosci';
 }
@@ -491,6 +511,7 @@ hr.fancy-line {
     #privacy-policy:after {
         content: ' ';
     }
+
     #github-lnk:after {
         content: ' ';
     }
@@ -1102,6 +1123,7 @@ img {
     #google-maps-iframe, #WalicowLogo {
         filter: invert(90%);
     }
+
     .footer {
         background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
     }

@@ -32,12 +32,13 @@ namespace ChurchServices.WinApp {
 
         private void btnAddArticle_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             var frm = new ArticleEditorForm(new Article(Uow) {
-                AuthorName = Environment.UserName,
+                AuthorName = String.Empty,
                 Date = DateTime.Now,
-                Lead = "Główna myśl...",
-                Subject = "Tytuł ..."
+                Lead = "",
+                Subject = ""
             });
-            frm.IconOptions.SvgImage = e.Item.ImageOptions.SvgImage;
+            frm.Icon = null;
+            frm.IconOptions.SvgImage = btnAddArticle.ImageOptions.SvgImage;
             frm.MdiParent = this.MdiParent;
             frm.Show();
         }

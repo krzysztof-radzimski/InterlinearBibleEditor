@@ -13,6 +13,7 @@
 
 using System.ComponentModel;
 using System.Reflection;
+using System.Xml.Serialization;
 
 namespace ChurchServices.Extensions {
     public static class EnumExtensions {
@@ -103,6 +104,33 @@ namespace ChurchServices.Extensions {
             }
 
             return (T)Enum.Parse(typeof(T), name);
+        }
+
+        public static string GetXmlEnum<T>(this T value)  {
+            if (!typeof(T).IsEnum) {
+                throw new InvalidEnumArgumentException("The specified type is not an enum");
+            }
+            try {
+                FieldInfo fi = value.GetType().GetField(value.ToString());
+                XmlEnumAttribute[] attributes = (XmlEnumAttribute[])fi.GetCustomAttributes(typeof(XmlEnumAttribute), false);
+                return (attributes.Length > 0) ? attributes[0].Name : value.ToString();
+            }
+            catch {
+                return string.Empty;
+            }
+        }
+
+        public static T GetEnumByXmlEnum<T>(this string xmlEnumValue) {
+            if (!typeof(T).IsEnum) {
+                throw new InvalidEnumArgumentException("The specified type is not an enum");
+            }
+
+            foreach (T item in Enum.GetValues(typeof(T))) {
+                if (string.Compare(item.GetXmlEnum(), xmlEnumValue, true) == 0) {
+                    return item;
+                }
+            }
+            return default(T);
         }
     }
 }

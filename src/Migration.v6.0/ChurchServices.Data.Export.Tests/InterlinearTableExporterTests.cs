@@ -1,7 +1,6 @@
 using ChurchServices.Data.Import;
 using ChurchServices.Data.Model;
 using DevExpress.Xpo;
-using DevExpress.Xpo.DB;
 
 namespace ChurchServices.Data.Export.Tests {
     [TestClass]
