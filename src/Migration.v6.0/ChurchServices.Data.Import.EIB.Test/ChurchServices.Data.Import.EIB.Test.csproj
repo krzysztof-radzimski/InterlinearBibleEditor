@@ -1,23 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
 
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-  </PropertyGroup>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
-    <PackageReference Include="coverlet.collector" Version="3.2.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
+		<PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+		<PackageReference Include="coverlet.collector" Version="3.2.0" />
 
-  <ItemGroup>
-    <ProjectReference Include="..\ChurchServices.Data.Import.EIB\ChurchServices.Data.Import.EIB.csproj" />
-  </ItemGroup>
+		<PackageReference Include="DevExpress.Xpo" Version="22.2.3" />
+		<PackageReference Include="LinqKit.Core" Version="1.2.2" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.6" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ChurchServices.Data.Import.EIB\ChurchServices.Data.Import.EIB.csproj" />
+		<ProjectReference Include="..\ChurchServices.Data\ChurchServices.Data.csproj" />
+		<ProjectReference Include="..\ChurchServices.Extensions\ChurchServices.Extensions.csproj" />
+	</ItemGroup>
 
 </Project>

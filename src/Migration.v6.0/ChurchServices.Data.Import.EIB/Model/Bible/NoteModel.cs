@@ -47,6 +47,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
     public class ReferenceIndex {
         public string BookShortcut { get; set; }
         public int ChapterNumber { get; set; }
+        public int SecondChapterNumber { get; set; }
         public int VerseStartNumber { get; set; }
         public int VerseEndNumber { get; set; }
         public ReferenceIndex() { }
@@ -57,6 +58,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 if (match.Success) {
                     if (match.Groups["book"] != null && match.Groups["book"].Success) { BookShortcut = match.Groups["book"].Value; }
                     if (match.Groups["chapter"] != null && match.Groups["chapter"].Success) { ChapterNumber = match.Groups["chapter"].Value.ToInt(); }
+                    if (match.Groups["chapter2"] != null && match.Groups["chapter2"].Success) { SecondChapterNumber = match.Groups["chapter2"].Value.ToInt(); }
                     if (match.Groups["verse"] != null && match.Groups["verse"].Success) { VerseStartNumber = match.Groups["verse"].Value.ToInt(); }
                     if (match.Groups["verse2"] != null && match.Groups["verse2"].Success) { VerseEndNumber = match.Groups["verse2"].Value.ToInt(); }
                 }

@@ -21,8 +21,56 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 using (WordprocessingDocument wordDocument =
                         WordprocessingDocument.Open(outputFilePath, true, new OpenSettings() { })) {
                     CurrentDocument = wordDocument;
+
+                    AppendTitle(bibleModel.Name);
+
                     foreach (var book in bibleModel.Books) {
+                        
                         AppendHeading1($"{BibleType}{book.BookShortcut}]]{book.BookName}");
+
+                        var tbl = body.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Table());
+                        tbl.AppendChild(new TableProperties() {
+                            TableStyle = new TableStyle() { Val = "Tabela-Siatka" },
+                            TableWidth = new TableWidth() { Type = TableWidthUnitValues.Auto },
+                            TableBorders = new TableBorders() {
+                                TopBorder = new TopBorder() { Val = BorderValues.None, Color = "auto", Space = 0, Size = 0 },
+                                LeftBorder = new LeftBorder() { Val = BorderValues.None, Color = "auto", Space = 0, Size = 0 },
+                                RightBorder = new RightBorder() { Val = BorderValues.None, Color = "auto", Space = 0, Size = 0 },
+                                BottomBorder = new BottomBorder() { Val = BorderValues.None, Color = "auto", Space = 0, Size = 0 }
+                            },
+                            TableLook = new TableLook() {
+                                Val = "04A0",
+                                NoVerticalBand = new OnOffValue(true),
+                                NoHorizontalBand = new OnOffValue(false),
+                                LastColumn = new OnOffValue(false),
+                                FirstColumn = new OnOffValue(true),
+                                LastRow = new OnOffValue(false),
+                                FirstRow = new OnOffValue(true),
+                            }
+                        });
+                        var tblGrid = tbl.AppendChild(new TableGrid());
+                        tblGrid.AppendChild(new GridColumn() { Width = "2122" });
+                        tblGrid.AppendChild(new GridColumn() { Width = "6940" });
+
+                        if (book.AuthorName != null && book.AuthorName.Items.Count > 0) {                            
+                            AppendTableRow(tbl, "Autor:", book.AuthorName.ToString());
+                        }
+                        if (book.TimeOfWriting != null && book.TimeOfWriting.Items.Count > 0) {
+                            AppendTableRow(tbl, "Czas:", book.TimeOfWriting.ToString());
+                        }
+                        if (book.PlaceWhereBookWasWritten != null && book.PlaceWhereBookWasWritten.Items.Count > 0) {
+                            AppendTableRow(tbl, "Miejsce:", book.PlaceWhereBookWasWritten.ToString());
+                        }
+                        if (book.Purpose != null && book.Purpose.Items.Count > 0) {
+                            AppendTableRow(tbl, "Cel:", book.Purpose.ToString());
+                        }
+                        if (book.Subject != null && book.Subject.Items.Count > 0) {
+                            AppendTableRow(tbl, "Temat:", book.Subject.ToString());
+                        }
+
+                        AppendParagraph();
+
+                        
                         var isPsalm = book.NumberOfBook == 230;
                         var chapterPrefix = !isPsalm ? bibleModel.ChapterName : bibleModel.PsalmName;
                         foreach (var chapter in book.Chapters) {
@@ -75,6 +123,41 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             }
         }
 
+        private void AppendTableRow(DocumentFormat.OpenXml.Wordprocessing.Table tbl,
+            string label, string text) {
+            // Label
+            var tr = tbl.AppendChild(new TableRow());
+            {
+                var tc = tr.AppendChild(new TableCell() {
+                    TableCellProperties = new TableCellProperties() {
+                        TableCellWidth = new TableCellWidth() { Width = "2122", Type = TableWidthUnitValues.Dxa }
+                    }
+                });
+                var p = tc.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Paragraph() { 
+                    ParagraphProperties = new ParagraphProperties() { }
+                });
+                var run = p.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Run() { 
+                    RunProperties = new RunProperties() {
+                        Bold = new DocumentFormat.OpenXml.Wordprocessing.Bold(),
+                        BoldComplexScript = new BoldComplexScript()
+                    }                    
+                });
+                run.AppendChild(new Text(label));
+            }
+            {
+                var tc = tr.AppendChild(new TableCell() {
+                    TableCellProperties = new TableCellProperties() {
+                        TableCellWidth = new TableCellWidth() { Width = "6940", Type = TableWidthUnitValues.Dxa }
+                    }
+                });
+                var p = tc.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Paragraph() {
+                    ParagraphProperties = new ParagraphProperties() { }
+                });
+                var run = p.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Run());
+                run.AppendChild(new Text(text));
+            }
+        }
+
         public void Export(string inputFilePath, string outputFilePath) {
             using (var service = new BibleModelService()) {
                 var model = service.GetModelFromFile(inputFilePath);
@@ -110,7 +193,13 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 }
                 else if (item is NoteReferenceModel) {
                     var reference = item as NoteReferenceModel;
-                    AppendRun($"[[{reference.Text}>>{reference.Index.BookShortcut} {reference.Index.ChapterNumber}:{reference.Index.VerseStartNumber}{(reference.Index.VerseEndNumber > 0 ? "-" + reference.Index.VerseEndNumber : "")}]]", footnoteTextParagraph);
+                    var index = reference.Index;
+                    if (index.SecondChapterNumber > 0 && index.SecondChapterNumber != index.ChapterNumber) {
+                        AppendRun($"[[{reference.Text}>>{reference.Index.BookShortcut} {reference.Index.ChapterNumber}:{reference.Index.VerseStartNumber}-{reference.Index.SecondChapterNumber}:{reference.Index.VerseEndNumber}]]", footnoteTextParagraph);
+                    }
+                    else {
+                        AppendRun($"[[{reference.Text}>>{index.BookShortcut} {index.ChapterNumber}:{index.VerseStartNumber}{(index.VerseEndNumber > 0 ? "-" + index.VerseEndNumber : "")}]]", footnoteTextParagraph);
+                    }
                 }
                 else if (item is string) {
                     AppendRun(item.ToString(), footnoteTextParagraph, removeOrphans: true);
@@ -139,6 +228,11 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             FootnoteId++;
         }
 
+        DocumentFormat.OpenXml.Wordprocessing.Paragraph AppendTitle(string text) {
+            var para = AppendParagraph("Tytu");
+            AppendRun(text, para);
+            return para;
+        }
         DocumentFormat.OpenXml.Wordprocessing.Paragraph AppendHeading1(string text) {
             var para = AppendParagraph("Nagwek1");
             AppendRun(text, para);
