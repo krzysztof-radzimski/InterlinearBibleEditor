@@ -31,7 +31,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                         var tbl = body.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Table());
                         tbl.AppendChild(new TableProperties() {
                             TableStyle = new TableStyle() { Val = "Tabela-Siatka" },
-                            TableWidth = new TableWidth() { Type = TableWidthUnitValues.Auto },
+                            TableWidth = new TableWidth() { Type = TableWidthUnitValues.Pct, Width = "5000" },
                             TableBorders = new TableBorders() {
                                 TopBorder = new TopBorder() { Val = BorderValues.None, Color = "auto", Space = 0, Size = 0 },
                                 LeftBorder = new LeftBorder() { Val = BorderValues.None, Color = "auto", Space = 0, Size = 0 },
@@ -89,12 +89,16 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                                     }
                                     var verseRunText = $"{BibleType}{book.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}]]";
                                     AppendRun(verseRunText, para);
+                                    //AppendRun($"{{{{field-on:verseNum}}}}{verse.NumberOfVerse}{{{{field-off:verseNum}}}}.\u00A0", para, bold: true, sup: true);
                                     AppendRun($"{verse.NumberOfVerse}.\u00A0", para, bold: true, sup: true);
                                     AppendRun($"{{{{field-on:bible}}}}", para);
 
                                     foreach (var verseItem in verse.Items) {
                                         if (verseItem is Span) {
                                             AppendRun((verseItem as Span).ToString(), para, SpaceProcessingModeValues.Preserve, removeOrphans: true);
+                                        }
+                                        else if (verseItem is WordOfGod) {
+                                            AppendRun($"{{{{field-on:word-of-christ}}}}{(verseItem as WordOfGod)}{{{{field-off:word-of-christ}}}}", para, SpaceProcessingModeValues.Preserve, removeOrphans: true);
                                         }
                                         else if (verseItem is BreakLine) {
                                             para = AppendParagraph();
@@ -130,7 +134,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             {
                 var tc = tr.AppendChild(new TableCell() {
                     TableCellProperties = new TableCellProperties() {
-                        TableCellWidth = new TableCellWidth() { Width = "2122", Type = TableWidthUnitValues.Dxa }
+                        TableCellWidth = new TableCellWidth() { Width = "800", Type = TableWidthUnitValues.Pct }
                     }
                 });
                 var p = tc.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Paragraph() { 
@@ -147,7 +151,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             {
                 var tc = tr.AppendChild(new TableCell() {
                     TableCellProperties = new TableCellProperties() {
-                        TableCellWidth = new TableCellWidth() { Width = "6940", Type = TableWidthUnitValues.Dxa }
+                        TableCellWidth = new TableCellWidth() { Width = "4200", Type = TableWidthUnitValues.Pct }
                     }
                 });
                 var p = tc.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Paragraph() {

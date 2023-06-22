@@ -3,6 +3,7 @@ using ChurchServices.Data.Import.EIB.Model.Osis;
 using ChurchServices.Data.Model;
 using ChurchServices.Extensions;
 using DevExpress.Xpo;
+using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -98,7 +99,7 @@ namespace ChurchServices.Data.Import.EIB.Test {
                     if (sb.Length > 0) {
                         var sb3 = $"[[{sb2}>>{sb}]]";
                         result.Items.Add(sb3);
-                    }                    
+                    }
 
                     if (match.Groups["postfix"] != null && match.Groups["postfix"].Value.IsNotNullOrEmpty()) {
                         result.Items.Add(RemoveOrphans(match.Groups["postfix"].Value));
@@ -151,6 +152,89 @@ namespace ChurchServices.Data.Import.EIB.Test {
             var bibleModelOutFilePath = @"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\snpd.eib.docx";
             using (var service = new LogosBibleModelService()) {
                 service.Export(bibleModelFilePath, bibleModelOutFilePath);
+            }
+        }
+
+        [TestMethod]
+        public void ExportDbBibleBWToLogosFile() { ExportDbBibleToLogosFile("BW"); }
+
+        [TestMethod]
+        public void ExportEkuBibleBWToLogosFile() { ExportDbBibleToLogosFile("EKU'18"); }
+
+        private void ExportDbBibleToLogosFile(string name) {
+            if (name != null) {
+                var srv = new BibleModelService();
+                var uow = new UnitOfWork();
+                var dbTranslation = new XPQuery<ChurchServices.Data.Model.Translation>(uow).Where(x => x.Name == name).FirstOrDefault();
+                if (dbTranslation != null) {
+                    var model = new BibleModel() {
+                        Shortcut = dbTranslation.Name,
+                        Name = dbTranslation.Description,
+                        Type = Model.Bible.TranslationType.Default,
+                        Books = new List<BookModel>()
+                    };
+                    foreach (var dbBook in dbTranslation.Books) {
+
+                        var dbBaseBook = new XPQuery<ChurchServices.Data.Model.BookBase>(uow).Where(x => x.NumberOfBook == dbBook.NumberOfBook).FirstOrDefault();
+
+                        var book = new BookModel() {
+                            BookShortcut = srv.GetShortcutFromEIBAbbreviation(dbBaseBook.BookShortcut),
+                            NumberOfBook = dbBook.NumberOfBook,
+                            BookName = dbBook.BookName,
+                            Color = dbBook.Color,
+                            Chapters = new List<ChapterModel>()
+                        };
+
+                        model.Books.Add(book);
+
+                        foreach (var dbChapter in dbBook.Chapters.OrderBy(x => x.NumberOfChapter)) {
+                            var chapter = new ChapterModel() {
+                                NumberOfChapter = dbChapter.NumberOfChapter,
+                                Items = new List<object>()
+                            };
+                            book.Chapters.Add(chapter);
+
+                            foreach (var dbVerse in dbChapter.Verses.OrderBy(x => x.NumberOfVerse)) {
+
+                                var dbSubtitles = new XPQuery<ChurchServices.Data.Model.Subtitle>(uow).Where(x => x.ParentChapter.Oid == dbChapter.Oid && x.BeforeVerseNumber == dbVerse.NumberOfVerse).OrderBy(x => x.Level).ToList();
+                                if (dbSubtitles.Count > 0) {
+                                    foreach (var dbSubtitle in dbSubtitles) {
+                                        chapter.Items.Add(new FormattedText(RemoveOrphans(dbSubtitle.Text)));
+                                    }
+                                }
+                                var verse = new VerseModel() {
+                                    NumberOfVerse = dbVerse.NumberOfVerse,
+                                    Style = VerseStyle.Default,
+                                    StartFromNewLine = dbVerse.StartFromNewLine,
+                                    Items = new List<object>()
+                                };
+
+                                // add content
+                                var text = dbVerse.Text
+                                    .Replace("<J>", "") //"{{field-on:word-of-christ}}")
+                                    .Replace("</J>", "") // "{{field-off:word-of-christ}}")
+                                    .Replace("<t>", "")
+                                    .Replace("</t>", "")
+                                    .Replace("<pb/>", "")
+                                    .Replace("<br/>", "")
+                                    .Replace("*", "")
+                                    .Replace("  ", " ")
+                                    .Replace("  ", " ");
+
+                                text = Regex.Replace(text, @"\<f\>\[[0-9]+\]\<\/f\>", "");
+                                text = Regex.Replace(text, @"\<h\>.+\<\/h\>", "");
+                                text = RemoveOrphans(text);
+                                verse.Items.Add(new Span(text));
+
+                                chapter.Items.Add(verse);
+                            }
+                        }
+                    }
+
+                    using (var service = new LogosBibleModelService()) {
+                        service.Export(model, @$"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\{dbTranslation.Name.Replace("'", "").Replace("+", "")}.docx");
+                    }
+                }
             }
         }
 
