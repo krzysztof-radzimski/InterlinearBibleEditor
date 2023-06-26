@@ -159,9 +159,10 @@ namespace ChurchServices.Data.Import.EIB.Test {
         public void ExportDbBibleBWToLogosFile() { ExportDbBibleToLogosFile("BW"); }
 
         [TestMethod]
-        public void ExportEkuBibleBWToLogosFile() { ExportDbBibleToLogosFile("EKU'18"); }
+        public void ExportDbBibleEkuToLogosFile() { ExportDbBibleToLogosFile("EKU'18"); }
 
         private void ExportDbBibleToLogosFile(string name) {
+            var fn = 1;
             if (name != null) {
                 var srv = new BibleModelService();
                 var uow = new UnitOfWork();
@@ -199,7 +200,10 @@ namespace ChurchServices.Data.Import.EIB.Test {
                                 var dbSubtitles = new XPQuery<ChurchServices.Data.Model.Subtitle>(uow).Where(x => x.ParentChapter.Oid == dbChapter.Oid && x.BeforeVerseNumber == dbVerse.NumberOfVerse).OrderBy(x => x.Level).ToList();
                                 if (dbSubtitles.Count > 0) {
                                     foreach (var dbSubtitle in dbSubtitles) {
-                                        chapter.Items.Add(new FormattedText(RemoveOrphans(dbSubtitle.Text)));
+                                        var stext = dbSubtitle.Text.Replace("<", "").Replace(">", "");
+                                        chapter.Items.Add(
+                                            new FormattedText(RemoveOrphans(stext))
+                                        );
                                     }
                                 }
                                 var verse = new VerseModel() {
@@ -211,28 +215,67 @@ namespace ChurchServices.Data.Import.EIB.Test {
 
                                 // add content
                                 var text = dbVerse.Text
-                                    .Replace("<J>", "") //"{{field-on:word-of-christ}}")
-                                    .Replace("</J>", "") // "{{field-off:word-of-christ}}")
+                                    .Replace("<J>", "{{field-on:words-of-christ}}")
+                                    .Replace("</J>", "{{field-off:words-of-christ}}")
+                                    .Replace("<e>", "{{field-on:ot-quote}}")
+                                    .Replace("</e>", "{{field-off:ot-quote}}")
                                     .Replace("<t>", "")
                                     .Replace("</t>", "")
+                                    .Replace("<i>", "")
+                                    .Replace("</i>", "")
+                                    .Replace("<u>", "")
+                                    .Replace("</u>", "")
+                                    .Replace("<b>", "")
+                                    .Replace("</b>", "")
+                                    .Replace("<pb>", "")
                                     .Replace("<pb/>", "")
                                     .Replace("<br/>", "")
-                                    .Replace("*", "")
-                                    .Replace("  ", " ")
-                                    .Replace("  ", " ");
+                                    .Replace("*", "");                                   
 
-                                text = Regex.Replace(text, @"\<f\>\[[0-9]+\]\<\/f\>", "");
-                                text = Regex.Replace(text, @"\<h\>.+\<\/h\>", "");
-                                text = RemoveOrphans(text);
-                                verse.Items.Add(new Span(text));
+                                text = Regex.Replace(text, @"\<f\>\[[0-9]+\]\<\/f\>", delegate (Match e) {
+                                    return "";
+                                });
+                                text = Regex.Replace(text, @"\!{2,3}", delegate (Match e) {
+                                    return "!";
+                                });
+                                text = Regex.Replace(text, @"\s{2,3}", delegate (Match e) {
+                                    return " ";
+                                });
+                                text = Regex.Replace(text, @"\<h\>(?<text>([AaĄąBbCcĆćDdEeĘęFfGgHhIiJjKkLlŁłMmNnŃńOoÓóPpRrSsŚśTtUuWwYyZzŹźŻż\s\-\.\;\:\?\""\'\,])+)\<\/h\>", delegate (Match e) {
+                                    chapter.Items.Add(
+                                        new FormattedText(RemoveOrphans(e.Groups["text"].Value))
+                                    );
+                                    return "";
+                                });
+                                text = Regex.Replace(text, @"\<n\>(?<text>.+)\<\/n\>", delegate (Match e) {
+                                    var footnoteText = e.Groups["text"].Value;
+                                    if (footnoteText.IsNotNullOrEmpty()) {
+                                        verse.Items.Add(new NoteModel() {
+                                            Number = fn.ToString(),
+                                            Type = NoteType.Default,
+                                            Items = new List<object> {
+                                            footnoteText
+                                        }
+                                        });
+                                        fn++;
+                                    }
+                                    return "";
+                                });
 
+                                //text = text.Replace("<", "").Replace(">", "");
+
+                                if (text.IsNotNullOrEmpty()) {
+                                    text = RemoveOrphans(text);
+                                    verse.Items.Add(new Span(text));
+                                }
                                 chapter.Items.Add(verse);
                             }
                         }
                     }
 
                     using (var service = new LogosBibleModelService()) {
-                        service.Export(model, @$"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\{dbTranslation.Name.Replace("'", "").Replace("+", "")}.docx");
+                        service.Export(model, @$"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\{dbTranslation.Name.Replace("'", "").Replace("+", "")}.docx", true);
+                        srv.SaveBibleModelToFile(model, @$"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\{dbTranslation.Name.Replace("'", "").Replace("+", "")}.xml");
                     }
                 }
             }

@@ -14,9 +14,14 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         Body body => mainPart != null ? mainPart.Document.Body : null;
 
         public LogosBibleModelService() { }
-        public void Export(BibleModel bibleModel, string outputFilePath) {
+        public void Export(BibleModel bibleModel, string outputFilePath, bool repairModel = false) {
             FootnoteId = 1;
             if (bibleModel != null) {
+
+                if (repairModel) {
+                    bibleModel = RepairModel(bibleModel);
+                }
+
                 File.WriteAllBytes(outputFilePath, Properties.Resources.Template);
                 using (WordprocessingDocument wordDocument =
                         WordprocessingDocument.Open(outputFilePath, true, new OpenSettings() { })) {
@@ -25,7 +30,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                     AppendTitle(bibleModel.Name);
 
                     foreach (var book in bibleModel.Books) {
-                        
+
                         AppendHeading1($"{BibleType}{book.BookShortcut}]]{book.BookName}");
 
                         var tbl = body.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Table());
@@ -52,7 +57,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                         tblGrid.AppendChild(new GridColumn() { Width = "2122" });
                         tblGrid.AppendChild(new GridColumn() { Width = "6940" });
 
-                        if (book.AuthorName != null && book.AuthorName.Items.Count > 0) {                            
+                        if (book.AuthorName != null && book.AuthorName.Items.Count > 0) {
                             AppendTableRow(tbl, "Autor:", book.AuthorName.ToString());
                         }
                         if (book.TimeOfWriting != null && book.TimeOfWriting.Items.Count > 0) {
@@ -70,7 +75,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
 
                         AppendParagraph();
 
-                        
+
                         var isPsalm = book.NumberOfBook == 230;
                         var chapterPrefix = !isPsalm ? bibleModel.ChapterName : bibleModel.PsalmName;
                         foreach (var chapter in book.Chapters) {
@@ -127,6 +132,123 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             }
         }
 
+        private BibleModel RepairModel(BibleModel model) {
+            if (model != null) {
+                
+                // Psalms
+                var Ps = model.Books.Where(x => x.NumberOfBook == 230).FirstOrDefault();
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 3).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 4).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 5).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 6).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 7).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 8).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 9).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 12).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 18).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 19).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 20).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 21).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 22).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 30).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 31).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 34).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 36).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 38).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 39).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 40).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 41).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 42).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 44).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 45).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 46).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 47).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 48).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 49).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 51).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 51).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 52).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 52).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 53).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 54).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 54).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 55).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 56).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 57).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 58).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 59).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 60).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 60).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 61).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 62).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 63).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 64).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 65).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 67).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 68).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 69).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 70).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 75).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 76).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 77).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 80).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 81).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 83).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 84).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 85).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 88).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 89).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 92).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 102).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 108).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 140).FirstOrDefault());
+                AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 142).FirstOrDefault());
+
+                // Mal 3/4
+                var Mal = model.Books.Where(x => x.NumberOfBook == 460).FirstOrDefault();
+                if (Mal != null) {
+                    var chapter3 = Mal.Chapters.Where(x => x.NumberOfChapter == 3).FirstOrDefault();
+                    if (chapter3 != null) {
+                        var chapter4 = new ChapterModel() { NumberOfChapter = 4, Items = new List<object>() };
+                        Mal.Chapters.Add(chapter4);
+                        var verses = chapter3.Verses.Where(x => x.NumberOfVerse > 18).ToArray();
+                        var vn = 1;
+                        foreach (var verse in verses) {
+                            verse.NumberOfVerse = vn;
+                            chapter4.Items.Add(verse);
+                            vn++;
+                        }
+                        for (int i = 0; i < verses.Length; i++) {
+                            chapter3.Items.Remove(verses[i]);
+                        }
+
+                    }
+                }
+            }
+            return model;
+        }
+
+        private void AddSecondVerseUp(ChapterModel chapter) {
+            if (chapter != null && chapter.Verses.Count() > 1) {
+                var first = chapter.Verses.Where(x => x.NumberOfVerse == 1).FirstOrDefault();
+                var second = chapter.Verses.Where(x => x.NumberOfVerse == 2).FirstOrDefault();
+                if (first != null & second != null) {
+                    first.Items.Add(new Span(" "));
+                    while (second.Items.Count > 0) {
+                        var item = second.Items.First();
+                        first.Items.Add(item);
+                        second.Items.Remove(item);
+                    }
+                    chapter.Items.Remove(second);
+                }
+                var vn = 1;
+                foreach (var item in chapter.Verses) {
+                    item.NumberOfVerse = vn;
+                    vn++;
+                }
+            }
+        }
+
         private void AppendTableRow(DocumentFormat.OpenXml.Wordprocessing.Table tbl,
             string label, string text) {
             // Label
@@ -137,14 +259,14 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                         TableCellWidth = new TableCellWidth() { Width = "800", Type = TableWidthUnitValues.Pct }
                     }
                 });
-                var p = tc.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Paragraph() { 
+                var p = tc.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Paragraph() {
                     ParagraphProperties = new ParagraphProperties() { }
                 });
-                var run = p.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Run() { 
+                var run = p.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Run() {
                     RunProperties = new RunProperties() {
                         Bold = new DocumentFormat.OpenXml.Wordprocessing.Bold(),
                         BoldComplexScript = new BoldComplexScript()
-                    }                    
+                    }
                 });
                 run.AppendChild(new Text(label));
             }
@@ -252,8 +374,22 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             AppendRun(text, para);
             return para;
         }
+
+        DocumentFormat.OpenXml.Wordprocessing.Paragraph GetLastParagraph() {
+            return body.ChildElements.Where(x => x is DocumentFormat.OpenXml.Wordprocessing.Paragraph).LastOrDefault() as DocumentFormat.OpenXml.Wordprocessing.Paragraph;
+        }
+
         DocumentFormat.OpenXml.Wordprocessing.Paragraph AppendParagraph(string styleId = "Normalny") {
-            var para = body.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Paragraph() { ParagraphProperties = new ParagraphProperties() });
+            var para = GetLastParagraph();
+            if (para != null &&
+                para.InnerText.IsNullOrEmpty()) {
+                if (para.ParagraphProperties == null) { para.ParagraphProperties = new ParagraphProperties(); }
+                para.ParagraphProperties.ParagraphStyleId = new ParagraphStyleId() {
+                    Val = styleId
+                };
+                return para;
+            }
+            para = body.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Paragraph() { ParagraphProperties = new ParagraphProperties() });
             para.ParagraphProperties.ParagraphStyleId = new ParagraphStyleId() {
                 Val = styleId
             };
