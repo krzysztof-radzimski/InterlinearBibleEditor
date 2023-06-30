@@ -18,8 +18,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
 
         public bool ShouldSerializeLogosBibleIndex() => LogosBibleIndex != null;
         public bool ShouldSerializeStyle() => Style != VerseStyle.Default;
-        public bool ShouldSerializeStartFromNewLine() => StartFromNewLine;
-
+        public bool ShouldSerializeStartFromNewLine() => StartFromNewLine;        
         public override string ToString() {
             if (Items != null) {
                 var sb = new StringBuilder();

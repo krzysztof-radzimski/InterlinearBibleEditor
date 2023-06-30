@@ -1,6 +1,4 @@
 ﻿using ChurchServices.Extensions;
-using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Wordprocessing;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -890,7 +888,8 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
                 book = "Eccl";
                 var Ecc = (xml.FirstNode as XElement).Elements().Where(x => x.Name.LocalName == DIV && x.Attribute(OSIS_ID).Value == book).FirstOrDefault();
                 if (Ecc != null) {
-                    MoveLastVerseOfChapterToNext(Ecc, book, 4, 17, 5, 19);
+                    // MoveLastVerseOfChapterToNext(Ecc, book, 4, 17, 5, 19);
+                    MoveSectionToNextChapter(Ecc, book, 4, 17, 17, 5, 2);
                 }
 
                 book = "Isa";
@@ -1124,6 +1123,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
 
                 }
 
+                MoveTitleBeforeEndChapterToNextChapterBeginning(xml);
 
                 xml.Save(result);
                 return result;
@@ -1131,7 +1131,45 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
             return filePath;
         }
 
-        static void MoveLastVerseOfChapterToNext(XElement e, string book, int chFrom, int verseFrom, int ch, int vc) {
+        void MoveTitleBeforeEndChapterToNextChapterBeginning(XElement e) {
+            var titles = e.Descendants(XName.Get(TITLE, e.Name.NamespaceName))
+                .Where(x => x.PreviousNode == null && 
+                           x.NextNode != null && 
+                           x.NextNode is XElement &&
+                           (
+                            (
+                                (x.NextNode as XElement).Name.LocalName == CHAPTER && 
+                                (x.NextNode as XElement).Attribute(END_ID) != null
+                            ) ||
+                            (
+                                (x.NextNode as XElement).Name.LocalName == VERSE &&
+                                (x.NextNode as XElement).Attribute(END_ID) != null &&
+                                (x.NextNode.NextNode as XElement).Name.LocalName == CHAPTER &&
+                                (x.NextNode.NextNode as XElement).Attribute(END_ID) != null
+                            )
+                           )
+                     )
+                .ToArray();   
+            
+            if (titles.Any()) {
+                var length = titles.Length;
+                for (int i = 0; i < length; i++) {
+                    var title = titles[i];
+
+                    var chapterEnd = title.ElementsAfterSelf(XName.Get(CHAPTER, title.Name.NamespaceName)).First() as XElement;
+                    if (chapterEnd != null) {
+                        var next = chapterEnd.NextNode as XElement;
+                        if (next != null && next.Name.LocalName == CHAPTER) {
+                            next.AddAfterSelf(title);
+                            title.Remove();
+                        }
+                    }                    
+                }
+                
+            }
+        }
+
+        void MoveLastVerseOfChapterToNext(XElement e, string book, int chFrom, int verseFrom, int ch, int vc) {
             var lastVerseStart = e.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{chFrom}.{verseFrom}").FirstOrDefault();
             var objects = new List<object> {
                             new XElement(XName.Get(VERSE, e.Name.NamespaceName),
@@ -1180,7 +1218,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
             var secondVerseStart = e.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{ch}.2").FirstOrDefault();
             secondVerseStart.AddBeforeSelf(objects);
         }
-        static void MoveFirstVerseToPreviousChapter(XElement e, string book, int chFrom, int chTo, int verseTo, int vc) {
+        void MoveFirstVerseToPreviousChapter(XElement e, string book, int chFrom, int chTo, int verseTo, int vc) {
             var firstVerseStart = e.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{chFrom}.1").FirstOrDefault();
             var objects = new List<object>{
                 new XElement(XName.Get(VERSE, e.Name.NamespaceName),
@@ -1234,7 +1272,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
                 vn++;
             }
         }
-        static XElement MoveSectionToPreviousChapter(XElement e, string book, int chFrom, int verseFrom, int verseTo, int ch, int vs) {
+        XElement MoveSectionToPreviousChapter(XElement e, string book, int chFrom, int verseFrom, int verseTo, int ch, int vs) {
             var section = e.Descendants().Where(x => x.Name.LocalName == CHAPTER && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{chFrom}").FirstOrDefault().Parent;
             if (section != null) {
                 var previousSection = section.PreviousNode as XElement;
@@ -1305,7 +1343,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
 
             return section;
         }
-        static void MoveSectionToNextChapter(XElement e, string book, int chFrom, int verseFrom, int verseTo, int ch, int vs) {
+        void MoveSectionToNextChapter(XElement e, string book, int chFrom, int verseFrom, int verseTo, int ch, int vs) {
 
             e.Descendants().Where(x => x.Name.LocalName == CHAPTER && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{ch}").Remove();
             var vn = vs;
@@ -1369,7 +1407,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
 
             }
         }
-        static void ChangeChapterNumber(XElement e, string book, int chFrom, int chTo) {
+        void ChangeChapterNumber(XElement e, string book, int chFrom, int chTo) {
             var items = e.Descendants().Where(x => (x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"{book}.{chFrom}")) ||
                                                    (x.Name.LocalName == NOTE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"{book}.{chFrom}")));
             foreach (var item in items) {
@@ -1397,7 +1435,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
                 if (chapter.Attribute(END_ID) != null) { chapter.Attribute(END_ID).Value = $"{book}.{chTo}"; }
             }
         }
-        static void MoveUpOne(XElement e, string book, int ch) {
+        void MoveUpOne(XElement e, string book, int ch) {
             var firstVerseEnd = e.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == $"{book}.{ch}.1").FirstOrDefault();
             var objects = new List<object>();
             var secondVerseStart = e.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{ch}.2").FirstOrDefault();

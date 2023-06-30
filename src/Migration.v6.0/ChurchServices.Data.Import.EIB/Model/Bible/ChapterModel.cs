@@ -9,7 +9,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         [XmlElement("verse", typeof(VerseModel))]
         public List<object> Items { get; set; }
 
-        [XmlIgnore] public IEnumerable<VerseModel> Verses => Items != null ? Items.Where(x => x is VerseModel).Cast<VerseModel>().OrderBy(x => x.NumberOfVerse) : null;
-        public bool ShouldSerializeNumberOfVerses() => NumberOfVerses != 0;
+        public IEnumerable<VerseModel> Verses() => Items != null ? Items.Where(x => x is VerseModel).Cast<VerseModel>().OrderBy(x => x.NumberOfVerse) : null;
+        public bool ShouldSerializeNumberOfVerses() => NumberOfVerses != 0;        
     }
 }

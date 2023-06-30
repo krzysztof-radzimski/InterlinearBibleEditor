@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\ChurchServices.Extensions\ChurchServices.Extensions.csproj" />
 		<PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
+		<PackageReference Include="HtmlToOpenXml.dll" Version="2.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
