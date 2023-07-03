@@ -819,7 +819,7 @@ P – papirus<br />
                     if (File.Exists(xmlInputFile)) {
                         using (var service2 = new LogosBibleModelService()) {
                             var bibleModelOutFilePath = @"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\snpd.eib.docx";
-                            service2.Export(xmlInputFile, bibleModelOutFilePath, introductionHtml: GetSNPDIntroduction(), addTitle: false);
+                            service2.Export(xmlInputFile, bibleModelOutFilePath, introductionHtml: GetSNPDIntroduction(), addTitle: false);                           
                         }
                     }
                     else {
@@ -919,7 +919,7 @@ P – papirus<br />
                                     .Replace("<pb>", "")
                                     .Replace("<pb/>", "")
                                     .Replace("<br/>", "")
-                                    .Replace("*", "");                                   
+                                    .Replace("*", "");
 
                                 text = Regex.Replace(text, @"\<f\>\[[0-9]+\]\<\/f\>", delegate (Match e) {
                                     return "";
@@ -963,8 +963,10 @@ P – papirus<br />
                     }
 
                     using (var service = new LogosBibleModelService()) {
-                        model = service.Export(model, @$"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\{dbTranslation.Name.Replace("'", "").Replace("+", "")}.docx", true);
+                        var bibleModelOutFilePath = @$"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\{dbTranslation.Name.Replace("'", "").Replace("+", "")}.docx";
+                        model = service.Export(model, bibleModelOutFilePath, true);
                         srv.SaveBibleModelToFile(model, @$"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\{dbTranslation.Name.Replace("'", "").Replace("+", "")}.xml");
+                        System.Diagnostics.Process.Start("explorer.exe", bibleModelOutFilePath);
                     }
                 }
             }

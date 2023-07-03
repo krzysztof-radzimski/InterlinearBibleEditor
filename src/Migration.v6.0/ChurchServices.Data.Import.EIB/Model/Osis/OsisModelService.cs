@@ -38,17 +38,17 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
             if (xml != null && xml.Name.LocalName == "osis") {
                 var book = "Num";
                 // Nu 16 i 17
-                var num = (xml.FirstNode as XElement).Elements().Where(x => x.Name.LocalName == DIV && x.Attribute(OSIS_ID).Value == "Num").FirstOrDefault();
-                if (num != null) {
+                var Num = (xml.FirstNode as XElement).Elements().Where(x => x.Name.LocalName == DIV && x.Attribute(OSIS_ID).Value == "Num").FirstOrDefault();
+                if (Num != null) {
                     // remove end of chapter 16
-                    num.Descendants().Where(x => x.Name.LocalName == CHAPTER && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == "Num.16").Remove();
+                    Num.Descendants().Where(x => x.Name.LocalName == CHAPTER && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == "Num.16").Remove();
                     // remove start of chapter 17
-                    num.Descendants().Where(x => x.Name.LocalName == CHAPTER && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == "Num.17").Remove();
+                    Num.Descendants().Where(x => x.Name.LocalName == CHAPTER && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == "Num.17").Remove();
                     // expand chapter 16
                     XElement lastItem = null;
                     var vn = 36;
                     for (int i = 1; i < 16; i++) {
-                        var items = num.Descendants().Where(x => (x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"Num.17.{i}") || (x.Name.LocalName == NOTE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"Num.17.{i}!")));
+                        var items = Num.Descendants().Where(x => (x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"Num.17.{i}") || (x.Name.LocalName == NOTE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"Num.17.{i}!")));
 
                         foreach (var item in items) {
                             if (item.Name.LocalName == VERSE && item.Attribute(OSIS_ID) != null) { item.Attribute(OSIS_ID).Value = $"Num.16.{vn}"; }
@@ -64,12 +64,12 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
 
                     // repair chapter 17
                     var on = 16;
-                    var startItem = num.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"Num.17.{on}").FirstOrDefault();
+                    var startItem = Num.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"Num.17.{on}").FirstOrDefault();
                     if (startItem != null) {
                         startItem.AddBeforeSelf(new XElement(XName.Get(CHAPTER, lastItem.Name.NamespaceName), new XAttribute(START_ID, "Num.17"), new XAttribute(OSIS_ID, "Num.17")));
                         vn = 1;
                         for (int i = on; i < 29; i++) {
-                            var items = num.Descendants().Where(x => (x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"Num.17.{i}") || (x.Name.LocalName == NOTE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"Num.17.{i}!")));
+                            var items = Num.Descendants().Where(x => (x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"Num.17.{i}") || (x.Name.LocalName == NOTE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"Num.17.{i}!")));
                             foreach (var item in items) {
                                 if (item.Name.LocalName == VERSE && item.Attribute(OSIS_ID) != null) { item.Attribute(OSIS_ID).Value = $"Num.17.{vn}"; }
                                 else if (item.Name.LocalName == NOTE && item.Attribute(OSIS_ID) != null) { item.Attribute(OSIS_ID).Value = $"Num.17.{vn}!note.{item.Attribute("n").Value}"; }
@@ -83,9 +83,9 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
 
 
                     // Nu 25:19
-                    var verse = num.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == "Num.25.19").FirstOrDefault();
+                    var verse = Num.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == "Num.25.19").FirstOrDefault();
                     if (verse != null) {
-                        var verse2 = num.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == "Num.26.1").FirstOrDefault();
+                        var verse2 = Num.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == "Num.26.1").FirstOrDefault();
                         if (verse2 != null) {
                             verse2.AddAfterSelf(verse.NextNode);
                             while (verse.NextNode != null) {
@@ -97,19 +97,20 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
                     }
 
                     // Nu 30:17
-                    verse = num.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == "Num.30.17").FirstOrDefault();
-                    if (verse != null) {
-                        var verse2 = num.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == "Num.30.16").FirstOrDefault();
-                        if (verse2 != null) {
-                            verse2.AddBeforeSelf(new XText(" "));
-                            verse2.AddBeforeSelf(verse.NextNode);
-                            while (verse.NextNode != null) {
-                                if (verse.NextNode is XElement && (verse.NextNode as XElement).Name.LocalName == CHAPTER) { break; }
-                                verse.NextNode.Remove();
-                            }
-                            verse.Remove();
-                        }
-                    }
+                    MoveFirstVerseToPreviousChapter(Num, book, 30, 29, 40, 17);
+                    //verse = num.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == "Num.30.17").FirstOrDefault();
+                    //if (verse != null) {
+                    //    var verse2 = num.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == "Num.30.16").FirstOrDefault();
+                    //    if (verse2 != null) {
+                    //        verse2.AddBeforeSelf(new XText(" "));
+                    //        verse2.AddBeforeSelf(verse.NextNode);
+                    //        while (verse.NextNode != null) {
+                    //            if (verse.NextNode is XElement && (verse.NextNode as XElement).Name.LocalName == CHAPTER) { break; }
+                    //            verse.NextNode.Remove();
+                    //        }
+                    //        verse.Remove();
+                    //    }
+                    //}
                 }
 
                 book = "Deut";

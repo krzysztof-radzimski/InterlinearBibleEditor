@@ -149,7 +149,24 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         private BibleModel RepairModel(BibleModel model) {
             if (model != null) {
 
-                // Psalms
+                var Num = model.Books.Where(x => x.NumberOfBook == 40).FirstOrDefault();
+                if (Num != null) {
+                    MoveVersesToAnotherChapter(Num, 17, 1, 15, 16, 36, true);
+                    MoveVersesToAnotherChapter(Num, 30, 1, 1, 29, 40, true);
+                }
+
+                var Dt = model.Books.Where(x => x.NumberOfBook == 50).FirstOrDefault();
+                if (Dt != null) {
+                    MoveVersesToAnotherChapter(Dt, 13, 1, 1, 12, 32, true);
+                    MoveVersesToAnotherChapter(Dt, 23, 1, 1, 22, 30, true);
+                    MoveLastToNextChapter(Dt, 28, 69);
+                }
+
+                var ISa = model.Books.Where(x => x.NumberOfBook == 90).FirstOrDefault();
+                if (ISa != null) {
+
+                }
+
                 var Ps = model.Books.Where(x => x.NumberOfBook == 230).FirstOrDefault();
                 if (Ps != null) {
                     AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 3).FirstOrDefault());
@@ -234,23 +251,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 // Mal 3/4
                 var Mal = model.Books.Where(x => x.NumberOfBook == 460).FirstOrDefault();
                 if (Mal != null) {
-                    MoveVersesToAnotherChapter(Mal, 3, 19, 24, 4, 1);
-                    //var chapter3 = Mal.Chapters.Where(x => x.NumberOfChapter == 3).FirstOrDefault();
-                    //if (chapter3 != null) {
-                    //    var chapter4 = new ChapterModel() { NumberOfChapter = 4, Items = new List<object>() };
-                    //    Mal.Chapters.Add(chapter4);
-                    //    var verses = chapter3.Verses.Where(x => x.NumberOfVerse > 18).ToArray();
-                    //    var vn = 1;
-                    //    foreach (var verse in verses) {
-                    //        verse.NumberOfVerse = vn;
-                    //        chapter4.Items.Add(verse);
-                    //        vn++;
-                    //    }
-                    //    for (int i = 0; i < verses.Length; i++) {
-                    //        chapter3.Items.Remove(verses[i]);
-                    //    }
-
-                    //}
+                    MoveVersesToAnotherChapter(Mal, 3, 19, 24, 4, 1);                   
                 }
             }
             return model;
