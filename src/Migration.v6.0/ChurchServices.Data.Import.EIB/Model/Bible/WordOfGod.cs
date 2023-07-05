@@ -2,9 +2,6 @@
 
 namespace ChurchServices.Data.Import.EIB.Model.Bible {
     public class WordOfGod : HtmlElement {
-        [XmlElement("i", typeof(Italic))]
-        [XmlElement("u", typeof(Underline))]
-        [XmlElement("b", typeof(Bold))]
         [XmlElement("br", typeof(BreakLine))]
         [XmlElement("hr", typeof(HLine))]
         [XmlElement("a", typeof(Hyperlink))]

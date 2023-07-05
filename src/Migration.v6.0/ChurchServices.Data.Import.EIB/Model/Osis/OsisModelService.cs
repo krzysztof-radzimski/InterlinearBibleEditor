@@ -322,53 +322,54 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
                     }
 
                     // 24.1
-                    previousItem = ISam.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == $"{book}.23.28").FirstOrDefault();
-                    startItem = ISam.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == $"{book}.24.1").FirstOrDefault();
-                    if (startItem != null && previousItem != null) {
-                        previousItem.AddBeforeSelf(new XText(" "));
-                        while (startItem.PreviousNode != null) {
-                            if (startItem.PreviousNode is XElement && (startItem.PreviousNode as XElement).Name.LocalName == VERSE) { break; }
-                            if (startItem.PreviousNode is XElement && (startItem.PreviousNode as XElement).Name.LocalName == NOTE) {
-                                var note = startItem.PreviousNode as XElement;
-                                if (note != null) {
-                                    note.Attribute(OSIS_ID).Value = note.Attribute(OSIS_ID).Value.Replace("1Sam.24.1", "1Sam.23.28");
-                                    note.Attribute(REF_ID).Value = note.Attribute(REF_ID).Value.Replace("1Sam.24.1", "1Sam.23.28");
-                                }
-                            }
-                            previousItem.AddBeforeSelf(startItem.PreviousNode);
-                            startItem.PreviousNode.Remove();
-                        }
-                        ISam.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"{book}.24.1").Remove();
-                        ISam.Descendants().Where(x => x.Name.LocalName == CHAPTER && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.24").Remove();
-                    }
+                    MoveFirstVerseToPreviousChapter(ISam, book, 24, 23, 29, 23);
+                    //previousItem = ISam.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == $"{book}.23.28").FirstOrDefault();
+                    //startItem = ISam.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == $"{book}.24.1").FirstOrDefault();
+                    //if (startItem != null && previousItem != null) {
+                    //    previousItem.AddBeforeSelf(new XText(" "));
+                    //    while (startItem.PreviousNode != null) {
+                    //        if (startItem.PreviousNode is XElement && (startItem.PreviousNode as XElement).Name.LocalName == VERSE) { break; }
+                    //        if (startItem.PreviousNode is XElement && (startItem.PreviousNode as XElement).Name.LocalName == NOTE) {
+                    //            var note = startItem.PreviousNode as XElement;
+                    //            if (note != null) {
+                    //                note.Attribute(OSIS_ID).Value = note.Attribute(OSIS_ID).Value.Replace("1Sam.24.1", "1Sam.23.28");
+                    //                note.Attribute(REF_ID).Value = note.Attribute(REF_ID).Value.Replace("1Sam.24.1", "1Sam.23.28");
+                    //            }
+                    //        }
+                    //        previousItem.AddBeforeSelf(startItem.PreviousNode);
+                    //        startItem.PreviousNode.Remove();
+                    //    }
+                    //    ISam.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"{book}.24.1").Remove();
+                    //    ISam.Descendants().Where(x => x.Name.LocalName == CHAPTER && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.24").Remove();
+                    //}
 
-                    ch = 24;
-                    on = 2;
-                    startItem = ISam.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{ch}.{on}").FirstOrDefault();
-                    if (startItem != null) {
-                        startItem.AddBeforeSelf(new XElement(XName.Get(CHAPTER, startItem.Name.NamespaceName),
-                            new XAttribute(START_ID, $"{book}.{ch}"),
-                            new XAttribute(OSIS_ID, $"{book}.{ch}")));
-                        var vn = 1;
-                        for (int i = on; i < 24; i++) {
-                            var items = ISam.Descendants().Where(x => (x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"{book}.{ch}.{i}") || (x.Name.LocalName == NOTE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"{book}.{ch}.{i}!")));
-                            foreach (var item in items) {
-                                if (item.Attribute(OSIS_ID) != null) {
-                                    item.Add(new XAttribute(OLD_ID, item.Attribute(OSIS_ID).Value));
-                                }
-                                if (item.Name.LocalName == VERSE && item.Attribute(OSIS_ID) != null) {
-                                    item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}";
-                                }
-                                else if (item.Name.LocalName == NOTE && item.Attribute(OSIS_ID) != null) {
-                                    item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}!note.{item.Attribute("n").Value}";
-                                }
-                                if (item.Attribute(START_ID) != null) { item.Attribute(START_ID).Value = $"{book}.{ch}.{vn}"; }
-                                if (item.Attribute(END_ID) != null) { item.Attribute(END_ID).Value = $"{book}.{ch}.{vn}"; }
-                                if (item.Name.LocalName == NOTE && item.Attribute(REF_ID) != null) { item.Attribute(REF_ID).Value = $"{book}.{ch}.{vn}"; }
-                            }
-                            vn++;
-                        }
-                    }
+                    //ch = 24;
+                    //on = 2;
+                    //startItem = ISam.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{ch}.{on}").FirstOrDefault();
+                    //if (startItem != null) {
+                    //    startItem.AddBeforeSelf(new XElement(XName.Get(CHAPTER, startItem.Name.NamespaceName),
+                    //        new XAttribute(START_ID, $"{book}.{ch}"),
+                    //        new XAttribute(OSIS_ID, $"{book}.{ch}")));
+                    //    var vn = 1;
+                    //    for (int i = on; i < 24; i++) {
+                    //        var items = ISam.Descendants().Where(x => (x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"{book}.{ch}.{i}") || (x.Name.LocalName == NOTE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"{book}.{ch}.{i}!")));
+                    //        foreach (var item in items) {
+                    //            if (item.Attribute(OSIS_ID) != null) {
+                    //                item.Add(new XAttribute(OLD_ID, item.Attribute(OSIS_ID).Value));
+                    //            }
+                    //            if (item.Name.LocalName == VERSE && item.Attribute(OSIS_ID) != null) {
+                    //                item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}";
+                    //            }
+                    //            else if (item.Name.LocalName == NOTE && item.Attribute(OSIS_ID) != null) {
+                    //                item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}!note.{item.Attribute("n").Value}";
+                    //            }
+                    //            if (item.Attribute(START_ID) != null) { item.Attribute(START_ID).Value = $"{book}.{ch}.{vn}"; }
+                    //            if (item.Attribute(END_ID) != null) { item.Attribute(END_ID).Value = $"{book}.{ch}.{vn}"; }
+                    //            if (item.Name.LocalName == NOTE && item.Attribute(REF_ID) != null) { item.Attribute(REF_ID).Value = $"{book}.{ch}.{vn}"; }
+                    //        }
+                    //        vn++;
+                    //    }
+                    //}
                 }
 
                 book = "1Kgs";
@@ -818,79 +819,146 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
                 book = "Ps";
                 var Ps = (xml.FirstNode as XElement).Elements().Where(x => x.Name.LocalName == DIV && x.Attribute(OSIS_ID).Value == book).FirstOrDefault();
                 if (Ps != null) {
-                    MoveUpOne(Ps, book, 3);
-                    MoveUpOne(Ps, book, 4);
-                    MoveUpOne(Ps, book, 5);
-                    MoveUpOne(Ps, book, 6);
-                    MoveUpOne(Ps, book, 7);
-                    MoveUpOne(Ps, book, 8);
-                    MoveUpOne(Ps, book, 9);
-                    MoveUpOne(Ps, book, 12);
-                    MoveUpOne(Ps, book, 18);
-                    MoveUpOne(Ps, book, 19);
-                    MoveUpOne(Ps, book, 20);
-                    MoveUpOne(Ps, book, 21);
-                    MoveUpOne(Ps, book, 22);
-                    MoveUpOne(Ps, book, 30);
-                    MoveUpOne(Ps, book, 31);
-                    MoveUpOne(Ps, book, 34);
-                    MoveUpOne(Ps, book, 36);
-                    MoveUpOne(Ps, book, 38);
-                    MoveUpOne(Ps, book, 39);
-                    MoveUpOne(Ps, book, 40);
-                    MoveUpOne(Ps, book, 41);
-                    MoveUpOne(Ps, book, 42);
-                    MoveUpOne(Ps, book, 44);
-                    MoveUpOne(Ps, book, 45);
-                    MoveUpOne(Ps, book, 46);
-                    MoveUpOne(Ps, book, 47);
-                    MoveUpOne(Ps, book, 48);
-                    MoveUpOne(Ps, book, 49);
-                    MoveUpOne(Ps, book, 51);
-                    MoveUpOne(Ps, book, 51);
-                    MoveUpOne(Ps, book, 52);
-                    MoveUpOne(Ps, book, 52);
-                    MoveUpOne(Ps, book, 53);
-                    MoveUpOne(Ps, book, 54);
-                    MoveUpOne(Ps, book, 54);
-                    MoveUpOne(Ps, book, 55);
-                    MoveUpOne(Ps, book, 56);
-                    MoveUpOne(Ps, book, 57);
-                    MoveUpOne(Ps, book, 58);
-                    MoveUpOne(Ps, book, 59);
-                    MoveUpOne(Ps, book, 60);
-                    MoveUpOne(Ps, book, 60);
-                    MoveUpOne(Ps, book, 61);
-                    MoveUpOne(Ps, book, 62);
-                    MoveUpOne(Ps, book, 63);
-                    MoveUpOne(Ps, book, 64);
-                    MoveUpOne(Ps, book, 65);
-                    MoveUpOne(Ps, book, 67);
-                    MoveUpOne(Ps, book, 68);
-                    MoveUpOne(Ps, book, 69);
-                    MoveUpOne(Ps, book, 70);
-                    MoveUpOne(Ps, book, 75);
-                    MoveUpOne(Ps, book, 76);
-                    MoveUpOne(Ps, book, 77);
-                    MoveUpOne(Ps, book, 80);
-                    MoveUpOne(Ps, book, 81);
-                    MoveUpOne(Ps, book, 83);
-                    MoveUpOne(Ps, book, 84);
-                    MoveUpOne(Ps, book, 85);
-                    MoveUpOne(Ps, book, 88);
-                    MoveUpOne(Ps, book, 89);
-                    MoveUpOne(Ps, book, 92);
-                    MoveUpOne(Ps, book, 102);
-                    MoveUpOne(Ps, book, 108);
-                    MoveUpOne(Ps, book, 140);
-                    MoveUpOne(Ps, book, 142);
+                    //MoveUpOne(Ps, book, 3);
+                    //MoveUpOne(Ps, book, 4);
+                    //MoveUpOne(Ps, book, 5);
+                    //MoveUpOne(Ps, book, 6);
+                    //MoveUpOne(Ps, book, 7);
+                    //MoveUpOne(Ps, book, 8);
+                    //MoveUpOne(Ps, book, 9);
+                    //MoveUpOne(Ps, book, 12);
+                    //MoveUpOne(Ps, book, 18);
+                    //MoveUpOne(Ps, book, 19);
+                    //MoveUpOne(Ps, book, 20);
+                    //MoveUpOne(Ps, book, 21);
+                    //MoveUpOne(Ps, book, 22);
+                    //MoveUpOne(Ps, book, 30);
+                    //MoveUpOne(Ps, book, 31);
+                    //MoveUpOne(Ps, book, 34);
+                    //MoveUpOne(Ps, book, 36);
+                    //MoveUpOne(Ps, book, 38);
+                    //MoveUpOne(Ps, book, 39);
+                    //MoveUpOne(Ps, book, 40);
+                    //MoveUpOne(Ps, book, 41);
+                    //MoveUpOne(Ps, book, 42);
+                    //MoveUpOne(Ps, book, 44);
+                    //MoveUpOne(Ps, book, 45);
+                    //MoveUpOne(Ps, book, 46);
+                    //MoveUpOne(Ps, book, 47);
+                    //MoveUpOne(Ps, book, 48);
+                    //MoveUpOne(Ps, book, 49);
+                    //MoveUpOne(Ps, book, 51);
+                    //MoveUpOne(Ps, book, 51);
+                    //MoveUpOne(Ps, book, 52);
+                    //MoveUpOne(Ps, book, 52);
+                    //MoveUpOne(Ps, book, 53);
+                    //MoveUpOne(Ps, book, 54);
+                    //MoveUpOne(Ps, book, 54);
+                    //MoveUpOne(Ps, book, 55);
+                    //MoveUpOne(Ps, book, 56);
+                    //MoveUpOne(Ps, book, 57);
+                    //MoveUpOne(Ps, book, 58);
+                    //MoveUpOne(Ps, book, 59);
+                    //MoveUpOne(Ps, book, 60);
+                    //MoveUpOne(Ps, book, 60);
+                    //MoveUpOne(Ps, book, 61);
+                    //MoveUpOne(Ps, book, 62);
+                    //MoveUpOne(Ps, book, 63);
+                    //MoveUpOne(Ps, book, 64);
+                    //MoveUpOne(Ps, book, 65);
+                    //MoveUpOne(Ps, book, 67);
+                    //MoveUpOne(Ps, book, 68);
+                    //MoveUpOne(Ps, book, 69);
+                    //MoveUpOne(Ps, book, 70);
+                    //MoveUpOne(Ps, book, 75);
+                    //MoveUpOne(Ps, book, 76);
+                    //MoveUpOne(Ps, book, 77);
+                    //MoveUpOne(Ps, book, 80);
+                    //MoveUpOne(Ps, book, 81);
+                    //MoveUpOne(Ps, book, 83);
+                    //MoveUpOne(Ps, book, 84);
+                    //MoveUpOne(Ps, book, 85);
+                    //MoveUpOne(Ps, book, 88);
+                    //MoveUpOne(Ps, book, 89);
+                    //MoveUpOne(Ps, book, 92);
+                    //MoveUpOne(Ps, book, 102);
+                    //MoveUpOne(Ps, book, 108);
+                    //MoveUpOne(Ps, book, 140);
+                    //MoveUpOne(Ps, book, 142);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 3);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 4);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 5);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 6);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 7);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 8);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 9);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 12);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 18);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 19);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 20);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 21);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 22);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 30);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 31);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 34);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 36);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 38);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 39);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 40);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 41);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 42);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 44);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 45);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 46);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 47);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 48);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 49);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 51, true);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 52, true);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 53);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 54, true);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 55);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 56);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 57);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 58);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 59);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 60, true);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 61);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 62);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 63);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 64);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 65);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 67);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 68);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 69);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 70);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 75);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 76);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 77);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 80);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 81);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 83);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 84);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 85);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 88);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 89);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 92);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 102);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 108);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 140);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, book, 142);
                 }
 
                 book = "Eccl";
                 var Ecc = (xml.FirstNode as XElement).Elements().Where(x => x.Name.LocalName == DIV && x.Attribute(OSIS_ID).Value == book).FirstOrDefault();
                 if (Ecc != null) {
-                    // MoveLastVerseOfChapterToNext(Ecc, book, 4, 17, 5, 19);
                     MoveSectionToNextChapter(Ecc, book, 4, 17, 17, 5, 2);
+                }
+
+                book = "Song";
+                var Song = (xml.FirstNode as XElement).Elements().Where(x => x.Name.LocalName == DIV && x.Attribute(OSIS_ID).Value == book).FirstOrDefault();
+                if (Song != null) {
+                    MoveFirstVerseToPreviousChapter(Song, book, 7, 6, 13, 14);
                 }
 
                 book = "Isa";
@@ -1134,12 +1202,12 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
 
         void MoveTitleBeforeEndChapterToNextChapterBeginning(XElement e) {
             var titles = e.Descendants(XName.Get(TITLE, e.Name.NamespaceName))
-                .Where(x => x.PreviousNode == null && 
-                           x.NextNode != null && 
+                .Where(x => x.PreviousNode == null &&
+                           x.NextNode != null &&
                            x.NextNode is XElement &&
                            (
                             (
-                                (x.NextNode as XElement).Name.LocalName == CHAPTER && 
+                                (x.NextNode as XElement).Name.LocalName == CHAPTER &&
                                 (x.NextNode as XElement).Attribute(END_ID) != null
                             ) ||
                             (
@@ -1150,8 +1218,8 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
                             )
                            )
                      )
-                .ToArray();   
-            
+                .ToArray();
+
             if (titles.Any()) {
                 var length = titles.Length;
                 for (int i = 0; i < length; i++) {
@@ -1164,12 +1232,11 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
                             next.AddAfterSelf(title);
                             title.Remove();
                         }
-                    }                    
+                    }
                 }
-                
+
             }
         }
-
         void MoveLastVerseOfChapterToNext(XElement e, string book, int chFrom, int verseFrom, int ch, int vc) {
             var lastVerseStart = e.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{chFrom}.{verseFrom}").FirstOrDefault();
             var objects = new List<object> {
@@ -1434,6 +1501,66 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
                 chapter.Attribute(OSIS_ID).Value = $"{book}.{chTo}";
                 if (chapter.Attribute(START_ID) != null) { chapter.Attribute(START_ID).Value = $"{book}.{chTo}"; }
                 if (chapter.Attribute(END_ID) != null) { chapter.Attribute(END_ID).Value = $"{book}.{chTo}"; }
+            }
+        }
+
+        void MarkFirstAsTitleAndRenumerateChapter(XElement e, string book, int ch, bool upSecond = false) {
+            var firstVerseStart = e.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{ch}.1").FirstOrDefault();
+            if (firstVerseStart != null) {
+                firstVerseStart.Attribute(START_ID).Value = $"{book}.{ch}.0";
+                firstVerseStart.Add(new XAttribute("isTitle", true));
+            }
+            var firstVerseEnd = e.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == $"{book}.{ch}.1").FirstOrDefault();
+            if (firstVerseEnd != null) {
+                firstVerseStart.Attribute(START_ID).Value = $"{book}.{ch}.0";
+                firstVerseEnd.Add(new XAttribute("isTitle", true));
+            }
+
+            var startRenum = 2;
+
+            if (upSecond) {
+                startRenum++;
+                var secondVerseStart = e.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{ch}.2").FirstOrDefault();
+                if (secondVerseStart != null) {
+                    var objects = new List<object>();
+
+                    while (secondVerseStart.NextNode != null) {
+                        if (secondVerseStart.NextNode is XElement && (secondVerseStart.NextNode as XElement).Name.LocalName == VERSE) { break; }
+                        if (secondVerseStart.NextNode is XElement && (secondVerseStart.NextNode as XElement).Name.LocalName == NOTE) {
+                            (secondVerseStart.NextNode as XElement).Attribute(OSIS_ID).Value = (secondVerseStart.NextNode as XElement).Attribute(OSIS_ID).Value.Replace($"{book}.{ch}.2", $"{book}.{ch}.0");
+                            (secondVerseStart.NextNode as XElement).Attribute(REF_ID).Value = (secondVerseStart.NextNode as XElement).Attribute(REF_ID).Value.Replace($"{book}.{ch}.2", $"{book}.{ch}.0");
+                        }
+                        objects.Add(secondVerseStart.NextNode);
+                        secondVerseStart.NextNode.Remove();
+                    }
+
+                    e.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"{book}.{ch}.2").Remove();
+
+                    firstVerseEnd.AddBeforeSelf(" ");
+                    firstVerseEnd.AddBeforeSelf(objects);
+                }
+            }
+
+            var vn = 1;
+            for (int i = startRenum; i < 200; i++) {
+                var items = e.Descendants().Where(x => (x.Name.LocalName == VERSE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value == $"{book}.{ch}.{i}") || (x.Name.LocalName == NOTE && x.Attribute(OSIS_ID) != null && x.Attribute(OSIS_ID).Value.StartsWith($"{book}.{ch}.{i}!")));
+                if (items.Count() == 0) { break; }
+                foreach (var item in items) {
+                    if (item.Attribute(OSIS_ID) != null) {
+                        if (item.Attribute(OLD_ID) == null) { item.Add(new XAttribute(OLD_ID, item.Attribute(OSIS_ID).Value)); }
+                    }
+                    if (item.Name.LocalName == VERSE && item.Attribute(OSIS_ID) != null) {
+                        item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}";
+                    }
+                    else if (item.Name.LocalName == NOTE && item.Attribute(OSIS_ID) != null) {
+                        item.Attribute(OSIS_ID).Value = $"{book}.{ch}.{vn}!note.{item.Attribute("n").Value}";
+                    }
+                    if (item.Attribute(START_ID) != null) { item.Attribute(START_ID).Value = $"{book}.{ch}.{vn}"; }
+                    if (item.Attribute(END_ID) != null) { item.Attribute(END_ID).Value = $"{book}.{ch}.{vn}"; }
+                    if (item.Name.LocalName == NOTE && item.Attribute(REF_ID) != null) { item.Attribute(REF_ID).Value = $"{book}.{ch}.{vn}"; }
+
+                }
+                vn++;
             }
         }
         void MoveUpOne(XElement e, string book, int ch) {

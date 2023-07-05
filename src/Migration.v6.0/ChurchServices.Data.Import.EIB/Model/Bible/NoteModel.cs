@@ -7,9 +7,6 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         [XmlAttribute("n")] public string Number { get; set; }
         [XmlAttribute("t")] public NoteType Type { get; set; } = NoteType.Default;
 
-        [XmlElement("i", typeof(Italic))]
-        [XmlElement("u", typeof(Underline))]
-        [XmlElement("b", typeof(Bold))]
         [XmlElement("br", typeof(BreakLine))]
         [XmlElement("a", typeof(Hyperlink))]
         [XmlElement("ref", typeof(NoteReferenceModel))]

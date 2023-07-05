@@ -11,6 +11,8 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
         [XmlElement("title", typeof(OsisTitle))]
         [XmlElement("verse", typeof(OsisVerse))]
         [XmlElement("note", typeof(OsisNote))]
+        [XmlElement("span", typeof(OsisSpan))]
+        [XmlElement("br", typeof(OsisBreakLine))]
         [XmlText(typeof(string))]
         public List<object> Items { get; set; }
 
@@ -18,6 +20,10 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
 
         public void SetDivType(OsisDivisionType divType) { TypeName = divType.GetXmlEnum(); }
     }
+
+ 
+
+  
 
     public enum OsisDivisionType {
         [XmlEnum("")] None,

@@ -58,8 +58,16 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 if (item is Osis.OsisVerse && (item as Osis.OsisVerse).ElementType == Osis.OsisElementType.Start) {
                     verse = new VerseModel() {
                         NumberOfVerse = (item as Osis.OsisVerse).Number,
-                        Items = new List<object>()
+                        Items = new List<object>(),
+                        IsTitle = (item as Osis.OsisVerse).IsTitle
                     };
+
+#if DEBUG
+                    //if ((item as Osis.OsisVerse).StartId == "Song.5.16") 
+                    //{ 
+
+                    //}
+#endif
 
                     if (verseOrphans.Count > 0) {
                         verse.Items.AddRange(verseOrphans);
@@ -67,7 +75,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                     }
                 }
                 else if (item is Osis.OsisVerse && (item as Osis.OsisVerse).ElementType == Osis.OsisElementType.End) {
-                    if (verse != null) {
+                    if (verse != null && !chapter.Items.Contains(verse)) {
                         chapter.Items.Add(verse);
                         verse = null;
                     }
@@ -96,6 +104,26 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                         chapter.Items.Add(title);
                     }
                 }
+                else if (item is Osis.OsisSpan) {
+                    var spanText = (item as Osis.OsisSpan).Value;
+                    //if ((item as Osis.OsisSpan).Language == "he") {
+                    //    var t = "";
+                    //    for (int i = 0; i < spanText.Length; i++) {
+                    //        t += HebrewAlphabetExtensions.HebrewToUnicode(spanText[i]);
+                    //    }
+                    //    spanText = t;
+                    //}
+                    var span = new Span(spanText) {
+                        Italic = (item as Osis.OsisSpan).Italic,
+                        Bold = (item as Osis.OsisSpan).Bold,
+                        Language = (item as Osis.OsisSpan).Language,
+                        Direction = (item as Osis.OsisSpan).Direction
+                    };
+                    if (verse != null) {
+                        verse.Items.Add(span);
+                    }
+                    else verseOrphans.Add(span);
+                }
                 else if (item is string) {
                     var span = new Span(item as string);
                     if (verse != null) {
@@ -113,6 +141,14 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 else if (item is Osis.OsisDivision) {
                     chapter = PopulateDiv(item as Osis.OsisDivision, chapter, book);
                 }
+                else if (item is Osis.OsisBreakLine) {
+                    verse.Items.Add(new BreakLine());
+                }
+            }
+
+            if (verse != null && !chapter.Items.Contains(verse)) {
+                chapter.Items.Add(verse);
+                verse = null;
             }
             return chapter;
         }

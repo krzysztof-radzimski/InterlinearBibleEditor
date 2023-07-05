@@ -5,9 +5,9 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
     public class VerseModel {
         [XmlAttribute("nr")] public int NumberOfVerse { get; set; }
         [XmlAttribute("nl")] public bool StartFromNewLine { get; set; } = false;
+        [XmlAttribute("title")] public bool IsTitle{ get; set; } = false;
         [XmlAttribute("vs")] public VerseStyle Style { get; set; } = VerseStyle.Default;
-        [XmlAttribute("li")] public string LogosBibleIndex { get; set; } = null; // if Logos Bible verse index is different.
-
+      
         [XmlElement("w", typeof(VerseWordModel))]
         [XmlElement("br", typeof(BreakLine))]
         [XmlElement("n", typeof(NoteModel))]
@@ -16,9 +16,9 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         [XmlText(typeof(string))]
         public List<object> Items { get; set; }
 
-        public bool ShouldSerializeLogosBibleIndex() => LogosBibleIndex != null;
         public bool ShouldSerializeStyle() => Style != VerseStyle.Default;
-        public bool ShouldSerializeStartFromNewLine() => StartFromNewLine;        
+        public bool ShouldSerializeStartFromNewLine() => StartFromNewLine;
+        public bool ShouldSerializeIsTitle() => IsTitle;
         public override string ToString() {
             if (Items != null) {
                 var sb = new StringBuilder();

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using System.Xml.Serialization;
 
 namespace ChurchServices.Data.Import.EIB.Model.Bible {
@@ -12,9 +8,10 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         [XmlIgnore][XmlAttribute("html")] public string Html { get; set; } = null;
         [XmlIgnore] public bool RTL => Direction == "rtl";
 
-        [XmlElement("i", typeof(Italic))]
-        [XmlElement("u", typeof(Underline))]
-        [XmlElement("b", typeof(Bold))]
+        [XmlAttribute("i")] public bool Italic { get; set; }
+        [XmlAttribute("b")] public bool Bold { get; set; }
+        [XmlAttribute("u")] public bool Underline { get; set; }
+
         [XmlElement("br", typeof(BreakLine))]
         [XmlElement("hr", typeof(HLine))]
         [XmlElement("a", typeof(Hyperlink))]
@@ -29,6 +26,9 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         public bool ShouldSerializeLanguage() => Language != null;
         public bool ShouldSerializeDirection() => Direction != null;
         public bool ShouldSerializeHtml() => Html != null;
+        public bool ShouldSerializeItalic() => Italic;
+        public bool ShouldSerializeBold() => Bold;
+        public bool ShouldSerializeUnderline() => Underline;
 
         public void MarkAsHebrew() {
             Direction = "rtl";

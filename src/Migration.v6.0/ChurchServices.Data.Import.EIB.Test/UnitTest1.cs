@@ -966,7 +966,7 @@ P – papirus<br />
                         var bibleModelOutFilePath = @$"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\{dbTranslation.Name.Replace("'", "").Replace("+", "")}.docx";
                         model = service.Export(model, bibleModelOutFilePath, true);
                         srv.SaveBibleModelToFile(model, @$"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\{dbTranslation.Name.Replace("'", "").Replace("+", "")}.xml");
-                        System.Diagnostics.Process.Start("explorer.exe", bibleModelOutFilePath);
+                        //System.Diagnostics.Process.Start("explorer.exe", bibleModelOutFilePath);
                     }
                 }
             }

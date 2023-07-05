@@ -98,15 +98,28 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                                         para = AppendParagraph();
                                         firstInSection = false;
                                     }
-                                    var verseRunText = $"{BibleType}{book.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}]]";
+                                    var verseRunText = "";
+                                    if (verse.IsTitle) {
+                                        verseRunText = $"{BibleType}{book.BookShortcut} {chapter.NumberOfChapter}:title]]";
+                                    }
+                                    else {
+                                        verseRunText = $"{BibleType}{book.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}]]";
+                                    }
                                     AppendRun(verseRunText, para);
                                     //AppendRun($"{{{{field-on:verseNum}}}}{verse.NumberOfVerse}{{{{field-off:verseNum}}}}.\u00A0", para, bold: true, sup: true);
-                                    AppendRun($"{verse.NumberOfVerse}.\u00A0", para, bold: true, sup: true);
+                                    if (!verse.IsTitle) {
+                                        AppendRun($"{verse.NumberOfVerse}.\u00A0", para, bold: true, sup: true);
+                                    }
                                     AppendRun($"{{{{field-on:bible}}}}", para);
 
                                     foreach (var verseItem in verse.Items) {
                                         if (verseItem is Span) {
-                                            AppendRun((verseItem as Span).ToString(), para, SpaceProcessingModeValues.Preserve, removeOrphans: true);
+                                            if ((verseItem as Span).Language.IsNotNullOrEmpty()) {
+                                                AppendRun((verseItem as Span).ToString(), para, SpaceProcessingModeValues.Preserve, lang: (verseItem as Span).Language,rtl: (verseItem as Span).RTL,  bold: (verseItem as Span).Bold, italic: (verseItem as Span).Italic, removeOrphans: true);
+                                            }
+                                            else {
+                                                AppendRun((verseItem as Span).ToString(), para, SpaceProcessingModeValues.Preserve, bold: (verseItem as Span).Bold, italic: (verseItem as Span).Italic, removeOrphans: true);
+                                            }
                                         }
                                         else if (verseItem is WordOfGod) {
                                             AppendRun($"{{{{field-on:word-of-christ}}}}{(verseItem as WordOfGod)}{{{{field-off:word-of-christ}}}}", para, SpaceProcessingModeValues.Preserve, removeOrphans: true);
@@ -148,6 +161,14 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
 
         private BibleModel RepairModel(BibleModel model) {
             if (model != null) {
+                var Ge = model.Books.Where(x => x.NumberOfBook == 10).FirstOrDefault();
+                if (Ge != null) {
+                    var versesCount31 = Ge.Chapters.Where(x => x.NumberOfChapter == 31).First().Verses().Count();
+                    var versesCount32 = Ge.Chapters.Where(x=>x.NumberOfChapter==32).First().Verses().Count();
+                    if (versesCount32 == 33 && versesCount31 == 54) {
+                        MoveVersesToAnotherChapter(Ge, 32, 1, 1, 31, 55, true);
+                    }
+                }
 
                 var Num = model.Books.Where(x => x.NumberOfBook == 40).FirstOrDefault();
                 if (Num != null) {
@@ -164,83 +185,191 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
 
                 var ISa = model.Books.Where(x => x.NumberOfBook == 90).FirstOrDefault();
                 if (ISa != null) {
+                    MoveFirstVerseOfChapterToLastVersePreviousChapter(ISa, 21);
+                    MoveVersesToAnotherChapter(ISa, 24, 1, 1, 23, 23, true);
+                }
 
+                var IKi = model.Books.Where(x => x.NumberOfBook == 110).FirstOrDefault();
+                if (IKi != null) {
+                    MoveVerseToAnotherVerse(IKi, 22, 44, 43);
+                }
+
+                var IIKi = model.Books.Where(x => x.NumberOfBook == 120).FirstOrDefault();
+                if (IIKi != null) {
+                    MoveVersesToAnotherChapter(IIKi, 12, 1, 1, 11, 21, true);
+                }
+
+                var ICh = model.Books.Where(x => x.NumberOfBook == 130).FirstOrDefault();
+                if (ICh != null) {
+                    RenumerateChapter(ICh, 6, 16);
+                    MoveVersesToBeginingOfChapter(ICh, 5, 27, 41, 6);
+
+                    MoveVerseToAnotherVerse(ICh, 12, 5, 4);
+                }
+
+                var IICh = model.Books.Where(x => x.NumberOfBook == 140).FirstOrDefault();
+                if (IICh != null) {
+                    MoveLastToNextChapter(IICh, 1, 18);
+                    MoveLastToNextChapter(IICh, 13, 23);
+                }
+
+                var Ne = model.Books.Where(x => x.NumberOfBook == 160).FirstOrDefault();
+                if (Ne != null) {
+                    MoveVersesToAnotherChapter(Ne, 10, 1, 1, 9, 38, true);
+                }
+
+                var Job = model.Books.Where(x => x.NumberOfBook == 220).FirstOrDefault();
+                if (Job != null) {
+                    RenumerateChapter(Job, 41, 9);
+                    MoveVersesToBeginingOfChapter(Job, 40, 25, 32, 41);
                 }
 
                 var Ps = model.Books.Where(x => x.NumberOfBook == 230).FirstOrDefault();
                 if (Ps != null) {
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 3).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 4).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 5).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 6).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 7).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 8).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 9).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 12).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 18).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 19).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 20).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 21).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 22).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 30).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 31).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 34).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 36).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 38).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 39).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 40).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 41).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 42).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 44).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 45).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 46).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 47).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 48).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 49).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 51).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 51).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 52).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 52).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 53).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 54).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 54).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 55).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 56).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 57).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 58).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 59).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 60).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 60).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 61).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 62).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 63).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 64).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 65).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 67).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 68).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 69).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 70).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 75).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 76).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 77).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 80).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 81).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 83).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 84).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 85).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 88).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 89).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 92).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 102).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 108).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 140).FirstOrDefault());
-                    AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 142).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 3).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 4).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 5).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 6).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 7).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 8).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 9).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 12).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 18).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 19).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 20).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 21).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 22).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 30).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 31).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 34).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 36).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 38).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 39).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 40).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 41).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 42).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 44).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 45).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 46).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 47).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 48).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 49).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 51).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 51).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 52).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 52).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 53).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 54).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 54).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 55).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 56).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 57).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 58).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 59).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 60).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 60).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 61).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 62).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 63).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 64).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 65).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 67).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 68).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 69).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 70).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 75).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 76).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 77).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 80).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 81).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 83).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 84).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 85).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 88).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 89).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 92).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 102).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 108).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 140).FirstOrDefault());
+                    //AddSecondVerseUp(Ps.Chapters.Where(x => x.NumberOfChapter == 142).FirstOrDefault());
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 3);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 4);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 5);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 6);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 7);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 8);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 9);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 12);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 18);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 19);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 20);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 21);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 22);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 30);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 31);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 34);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 36);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 38);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 39);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 40);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 41);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 42);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 44);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 45);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 46);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 47);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 48);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 49);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 51, 2);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 52, 2);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 53);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 54, 2);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 55);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 56);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 57);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 58);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 59);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 60, 2);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 61);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 62);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 63);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 64);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 65);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 67);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 68);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 69);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 70);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 75);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 76);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 77);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 80);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 81);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 83);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 84);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 85);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 88);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 89);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 92);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 102);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 108);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 140);
+                    MarkFirstAsTitleAndRenumerateChapter(Ps, 142);
                 }
 
                 var Ecc = model.Books.Where(x => x.NumberOfBook == 250).FirstOrDefault();
                 if (Ecc != null) {
                     MoveLastToNextChapter(Ecc, 4, 17);
-                    MoveLastToNextChapter(Ecc, 8, 18);
+                    AddSecondVerseUp(Ecc, 8, 18);
+                }
+
+                var Song = model.Books.Where(x => x.NumberOfBook == 260).FirstOrDefault();
+                if (Song != null) {
+                    MoveVersesToAnotherChapter(Song, 7, 1, 1, 6, 13, true);
+                }
+
+                var Isa = model.Books.Where(x => x.NumberOfBook == 290).FirstOrDefault();
+                if (Isa != null) {
+                    MoveLastToNextChapter(Isa, 8, 23);
                 }
 
                 var Zach = model.Books.Where(x => x.NumberOfBook == 450).FirstOrDefault();
@@ -248,16 +377,48 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                     MoveVersesToAnotherChapter(Zach, 2, 1, 4, 1, 18, true);
                 }
 
-                // Mal 3/4
                 var Mal = model.Books.Where(x => x.NumberOfBook == 460).FirstOrDefault();
                 if (Mal != null) {
-                    MoveVersesToAnotherChapter(Mal, 3, 19, 24, 4, 1);                   
+                    MoveVersesToAnotherChapter(Mal, 3, 19, 24, 4, 1);
                 }
             }
             return model;
         }
 
-        private void MoveVersesToAnotherChapter(BookModel book, int ch, int vs, int ve, int chTo, int vf, bool renumerateChapterFrom = false, int renumerateNum = 1) {
+        private void MoveFirstVerseOfChapterToLastVersePreviousChapter(BookModel book, int ch) {
+            var chapterFrom = book.Chapters.Where(x => x.NumberOfChapter == ch).FirstOrDefault();
+            if (chapterFrom != null) {
+                var verseFrom = chapterFrom.Verses().First();
+                if (verseFrom != null) {
+                    var chapterTo = book.Chapters.Where(x => x.NumberOfChapter == (ch - 1)).FirstOrDefault();
+                    if (chapterTo != null) {
+                        var verseTo = chapterTo.Verses().Last();
+                        if (verseTo != null) {
+                            verseTo.Items.Add(new Span(" "));
+                            verseTo.Items.AddRange(verseFrom.Items);
+                            chapterFrom.Items.Remove(verseFrom);
+
+                            foreach (var verse in chapterFrom.Verses()) {
+                                verse.NumberOfVerse = verse.NumberOfVerse - 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void RenumerateChapter(BookModel book, int ch, int vs) {
+            var chapter = book.Chapters.Where(x => x.NumberOfChapter == ch).FirstOrDefault();
+            if (chapter != null) {
+                var chToVerses = chapter.Verses().ToArray();
+                for (int i = 0; i < chToVerses.Length; i++) {
+                    var item = chToVerses[i];
+                    item.NumberOfVerse = vs;
+                    vs++;
+                }
+            }
+        }
+        private void MoveVersesToBeginingOfChapter(BookModel book, int ch, int vs, int ve, int chTo, int vf = 1) {
             var chapterFrom = book.Chapters.Where(x => x.NumberOfChapter == ch).FirstOrDefault();
             var chapterTo = book.Chapters.Where(x => x.NumberOfChapter == chTo).FirstOrDefault();
             if (chapterFrom != null) {
@@ -278,23 +439,58 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 var idxEnd = chapterFrom.Items.IndexOf(chapterFrom.Verses().Where(x => x.NumberOfVerse == ve).FirstOrDefault());
                 var items = chapterFrom.Items.Between(idxStart, idxEnd);
                 var vn = vf;
-                var idx = idxStart;
                 foreach (var item in items) {
+                    chapterFrom.Items.Remove(item);
+                    if (item is VerseModel) {
+                        (item as VerseModel).NumberOfVerse = vn;
+                        vn++;
+                    }
+                }
+
+                items.Reverse();
+
+                foreach (var item in items) {
+                    chapterTo.Items.Insert(0, item);
+                }
+            }
+        }
+        private void MoveVersesToAnotherChapter(BookModel book, int ch, int vs, int ve, int chTo, int vf, bool renumerateChapterFrom = false, int renumerateChapterFromNum = 1) {
+            var chapterFrom = book.Chapters.Where(x => x.NumberOfChapter == ch).FirstOrDefault();
+            var chapterTo = book.Chapters.Where(x => x.NumberOfChapter == chTo).FirstOrDefault();
+            if (chapterFrom != null) {
+                if (chapterTo == null) {
+                    chapterTo = new ChapterModel() { NumberOfChapter = chTo, Items = new List<object>() };
+                    book.Chapters.Add(chapterTo);
+                }
+
+                var itemStart = chapterFrom.Verses().Where(x => x.NumberOfVerse == vs).FirstOrDefault();
+
+                var idxStart = chapterFrom.Items.IndexOf(itemStart);
+                if (idxStart > 0) {
+                    var previous = chapterFrom.Items[idxStart - 1];
+                    if (previous is FormattedText) {
+                        idxStart--;
+                    }
+                }
+                var idxEnd = chapterFrom.Items.IndexOf(chapterFrom.Verses().Where(x => x.NumberOfVerse == ve).FirstOrDefault());
+                var items = chapterFrom.Items.Between(idxStart, idxEnd);
+                var vn = vf;
+
+                foreach (var item in items) {
+                    chapterFrom.Items.Remove(item);
                     if (item is VerseModel) {
                         (item as VerseModel).NumberOfVerse = vn;
                         vn++;
                     }
                     chapterTo.Items.Add(item);
-                    chapterFrom.Items.Remove(item);
-                    idx++;
                 }
 
                 if (renumerateChapterFrom) {
                     var chFromVerses = chapterFrom.Verses().ToArray();
                     for (int i = 0; i < chFromVerses.Length; i++) {
                         var item = chFromVerses[i];
-                        item.NumberOfVerse = renumerateNum;
-                        renumerateNum++;
+                        item.NumberOfVerse = renumerateChapterFromNum;
+                        renumerateChapterFromNum++;
                     }
                 }
             }
@@ -330,6 +526,62 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                         }
                     }
                 }
+            }
+        }
+
+        private void MoveVerseToAnotherVerse(BookModel book, int ch, int v1, int v2, bool renumerateChapterVerses = true) {
+            var chapter = book.Chapters.Where(x => x.NumberOfChapter == ch).FirstOrDefault();
+            if (chapter != null) {
+                var verse1 = chapter.Verses().Where(x => x.NumberOfVerse == v1).FirstOrDefault();
+                var verse2 = chapter.Verses().Where(x => x.NumberOfVerse == v2).FirstOrDefault();
+                if (verse1 != null && verse2 != null) {
+                    verse2.Items.Add(new Span(" "));
+                    verse2.Items.AddRange(verse1.Items);
+                    chapter.Items.Remove(verse1);
+
+                    var vn = 1;
+                    foreach (var item in chapter.Verses()) {
+                        item.NumberOfVerse = vn;
+                        vn++;
+                    }
+                }
+            }
+        }
+
+        private void MarkFirstAsTitleAndRenumerateChapter(BookModel book, int ch, int numOfVerses = 1) {
+            var chapter = book.Chapters.Where(x => x.NumberOfChapter == ch).FirstOrDefault();
+            if (chapter != null) {
+                var first = chapter.Verses().Where(x => x.NumberOfVerse == 1).FirstOrDefault();
+                if (first != null) {
+                    first.NumberOfVerse = 0;
+                    first.IsTitle = true;
+
+                    if (numOfVerses > 1) {
+                        for (int i = 1; i < numOfVerses; i++) {
+                            var second = chapter.Verses().Where(x => x.NumberOfVerse > 0).FirstOrDefault();
+                            if (second != null) {
+                                first.Items.Add(new BreakLine());
+                                first.Items.AddRange(second.Items);
+                                chapter.Items.Remove(second);
+                            }
+                        }
+                    }
+
+                    var vn = 1;
+                    foreach (var item in chapter.Verses()) {
+                        if (item == first) { continue; }
+                        item.NumberOfVerse = vn;
+                        vn++;
+                    }
+                }
+            }
+        }
+
+        private void AddSecondVerseUp(BookModel book, int ch, int ifVersesCountEquals = 0) {
+            var chapter = book.Chapters.Where(x => x.NumberOfChapter == ch).FirstOrDefault();
+            if (chapter != null) {
+                if (ifVersesCountEquals > 0 && ifVersesCountEquals != chapter.Verses().Count()) { return; }
+                AddSecondVerseUp(chapter);
             }
         }
 
@@ -390,66 +642,71 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         }
 
         private void AppendFootnote(NoteModel note, DocumentFormat.OpenXml.Wordprocessing.Paragraph para) {
-            var footnote = new Footnote() { Id = FootnoteId };
-            var footnoteTextParagraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph() {
-                ParagraphProperties = new ParagraphProperties() {
-                    ParagraphStyleId = new ParagraphStyleId() { Val = "Tekstprzypisudolnego" }
-                }
-            };
-            var footnoteTextRun = footnoteTextParagraph.AppendChild(new Run() {
-                RunProperties = new RunProperties() {
-                    VerticalTextAlignment = new VerticalTextAlignment() {
-                        Val = VerticalPositionValues.Superscript
+            if (note != null && note.Items.Count > 0) {
+                var footnote = new Footnote() { Id = FootnoteId };
+                var footnoteTextParagraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph() {
+                    ParagraphProperties = new ParagraphProperties() {
+                        ParagraphStyleId = new ParagraphStyleId() { Val = "Tekstprzypisudolnego" }
                     }
-                }
-            });
-            footnoteTextRun.AppendChild(new Text($"{note.Number}\u00A0"));
+                };
+                var footnoteTextRun = footnoteTextParagraph.AppendChild(new Run() {
+                    RunProperties = new RunProperties() {
+                        VerticalTextAlignment = new VerticalTextAlignment() {
+                            Val = VerticalPositionValues.Superscript
+                        }
+                    }
+                });
+                footnoteTextRun.AppendChild(new Text($"{note.Number}\u00A0"));
 
-            foreach (var item in note.Items) {
-                if (item is Span) {
-                    var span = item as Span;
-                    if (span.Language.IsNotNullOrEmpty()) {
-                        AppendRun(span.ToString(), footnoteTextParagraph, SpaceProcessingModeValues.Preserve, lang: span.Language, rtl: span.RTL);
+                foreach (var item in note.Items) {
+                    if (item is Span) {
+                        var span = item as Span;
+                        if (span.Language.IsNotNullOrEmpty()) {
+                            AppendRun(span.ToString(), footnoteTextParagraph, SpaceProcessingModeValues.Preserve, lang: span.Language, rtl: span.RTL);
+                        }
+                        else {
+                            AppendRun(span.ToString(), footnoteTextParagraph, SpaceProcessingModeValues.Preserve, removeOrphans: true);
+                        }
                     }
-                    else {
-                        AppendRun(span.ToString(), footnoteTextParagraph, SpaceProcessingModeValues.Preserve, removeOrphans: true);
+                    else if (item is NoteReferenceModel) {
+                        var reference = item as NoteReferenceModel;
+                        var index = reference.Index;
+                        if (index.SecondChapterNumber > 0 && index.SecondChapterNumber != index.ChapterNumber) {
+                            AppendRun($"[[{reference.Text}>>{reference.Index.BookShortcut} {reference.Index.ChapterNumber}:{reference.Index.VerseStartNumber}-{reference.Index.SecondChapterNumber}:{reference.Index.VerseEndNumber}]]", footnoteTextParagraph);
+                        }
+                        else {
+                            AppendRun($"[[{reference.Text}>>{index.BookShortcut} {index.ChapterNumber}:{index.VerseStartNumber}{(index.VerseEndNumber > 0 ? "-" + index.VerseEndNumber : "")}]]", footnoteTextParagraph);
+                        }
+                    }
+                    else if (item is string) {
+                        AppendRun(item.ToString(), footnoteTextParagraph, removeOrphans: true);
                     }
                 }
-                else if (item is NoteReferenceModel) {
-                    var reference = item as NoteReferenceModel;
-                    var index = reference.Index;
-                    if (index.SecondChapterNumber > 0 && index.SecondChapterNumber != index.ChapterNumber) {
-                        AppendRun($"[[{reference.Text}>>{reference.Index.BookShortcut} {reference.Index.ChapterNumber}:{reference.Index.VerseStartNumber}-{reference.Index.SecondChapterNumber}:{reference.Index.VerseEndNumber}]]", footnoteTextParagraph);
-                    }
-                    else {
-                        AppendRun($"[[{reference.Text}>>{index.BookShortcut} {index.ChapterNumber}:{index.VerseStartNumber}{(index.VerseEndNumber > 0 ? "-" + index.VerseEndNumber : "")}]]", footnoteTextParagraph);
-                    }
+
+                footnote.AppendChild(footnoteTextParagraph);
+
+                if (mainPart.FootnotesPart == null) {
+                    var footPart = mainPart.AddNewPart<FootnotesPart>();
+                    footPart.Footnotes = new Footnotes();
                 }
-                else if (item is string) {
-                    AppendRun(item.ToString(), footnoteTextParagraph, removeOrphans: true);
-                }
+
+                mainPart.FootnotesPart.Footnotes.Append(footnote);
+
+                var runRef = para.AppendChild(new Run() {
+                    RunProperties = new RunProperties() {
+                        VerticalTextAlignment = new VerticalTextAlignment() {
+                            Val = VerticalPositionValues.Superscript
+                        }
+                    }
+                });
+                runRef.AppendChild(new FootnoteReference() { CustomMarkFollows = new OnOffValue(true), Id = FootnoteId });
+                runRef.AppendChild(new Text(note.Number));
+                AppendRun(" ", para, SpaceProcessingModeValues.Preserve);
+                FootnoteId++;
             }
-
-            footnote.AppendChild(footnoteTextParagraph);
-
-            if (mainPart.FootnotesPart == null) {
-                var footPart = mainPart.AddNewPart<FootnotesPart>();
-                footPart.Footnotes = new Footnotes();
+            else {
+                //throw new Exception("")
             }
-
-            mainPart.FootnotesPart.Footnotes.Append(footnote);
-
-            var runRef = para.AppendChild(new Run() {
-                RunProperties = new RunProperties() {
-                    VerticalTextAlignment = new VerticalTextAlignment() {
-                        Val = VerticalPositionValues.Superscript
-                    }
-                }
-            });
-            runRef.AppendChild(new FootnoteReference() { CustomMarkFollows = new OnOffValue(true), Id = FootnoteId });
-            runRef.AppendChild(new Text(note.Number));
-            AppendRun(" ", para, SpaceProcessingModeValues.Preserve);
-            FootnoteId++;
         }
 
         DocumentFormat.OpenXml.Wordprocessing.Paragraph AppendTitle(string text) {
@@ -492,7 +749,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
 
             return para;
         }
-        Run AppendRun(string text, DocumentFormat.OpenXml.Wordprocessing.Paragraph para, SpaceProcessingModeValues space = SpaceProcessingModeValues.Default, string lang = null, bool rtl = false, bool bold = false, bool sup = false, bool removeOrphans = false) {
+        Run AppendRun(string text, DocumentFormat.OpenXml.Wordprocessing.Paragraph para, SpaceProcessingModeValues space = SpaceProcessingModeValues.Default, string lang = null, bool rtl = false, bool bold = false, bool sup = false, bool removeOrphans = false, bool italic = false, bool underline = false) {
             var run = para.AppendChild(new Run() { RunProperties = new RunProperties() });
             if (lang.IsNotNullOrEmpty()) {
                 if (lang == "he") {
@@ -505,6 +762,12 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             }
             if (bold) {
                 run.RunProperties.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Bold());
+            }
+            if (italic) {
+                run.RunProperties.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Italic());
+            }
+            if (underline) {
+                run.RunProperties.AppendChild(new DocumentFormat.OpenXml.Wordprocessing.Underline());
             }
             if (sup) {
                 run.RunProperties.AppendChild(new VerticalTextAlignment() { Val = VerticalPositionValues.Superscript });
