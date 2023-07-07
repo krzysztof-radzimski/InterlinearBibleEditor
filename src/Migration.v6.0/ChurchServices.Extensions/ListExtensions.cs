@@ -24,5 +24,16 @@
 
             return resultList;
         }
+
+        public static void AddRangeAfterSelf<T>(this List<T> list, IEnumerable<T> newElements, T existingElement) {
+            int index = list.IndexOf(existingElement);
+
+            if (index != -1) {
+                list.InsertRange(index + 1, newElements);
+            }
+            else {
+                throw new ArgumentException("Existing element not found in the list.");
+            }
+        }
     }
 }

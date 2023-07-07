@@ -3,7 +3,7 @@
 namespace ChurchServices.Data.Import.EIB.Model.Bible {
     public class Paragraph : HtmlElement {
         [XmlElement("div", typeof(Div))]
-        [XmlElement("span", typeof(Span))]    
+        [XmlElement("span", typeof(SpanModel))]    
         [XmlElement("br", typeof(BreakLine))]
         [XmlElement("hr", typeof(HLine))]
         [XmlElement("a", typeof(Hyperlink))]

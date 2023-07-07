@@ -5,7 +5,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
     public class FormattedText {
         [XmlElement("div", typeof(Div))]
         [XmlElement("p", typeof(Paragraph))]
-        [XmlElement("span", typeof(Span))]
+        [XmlElement("span", typeof(SpanModel))]
         [XmlElement("br", typeof(BreakLine))]
         [XmlElement("hr", typeof(HLine))]
         [XmlElement("a", typeof(Hyperlink))]

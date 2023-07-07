@@ -1288,13 +1288,19 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
         }
         void MoveFirstVerseToPreviousChapter(XElement e, string book, int chFrom, int chTo, int verseTo, int vc) {
             var firstVerseStart = e.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{chFrom}.1").FirstOrDefault();
-            var objects = new List<object>{
-                new XElement(XName.Get(VERSE, e.Name.NamespaceName),
-                    new XAttribute(START_ID, $"{book}.{chTo}.{verseTo}"),
-                    new XAttribute(OSIS_ID, $"{book}.{chTo}.{verseTo}"))
-            };
-
+            var objects = new List<object>();
             if (firstVerseStart != null) {
+                while (firstVerseStart.PreviousNode != null) {
+                    if (firstVerseStart.PreviousNode is XElement && (firstVerseStart.PreviousNode as XElement).Name.LocalName == CHAPTER) { break; }
+                    if (firstVerseStart.PreviousNode is XElement && (firstVerseStart.PreviousNode as XElement).Name.LocalName == VERSE) { break; }
+                    if (firstVerseStart.PreviousNode is XElement && (firstVerseStart.PreviousNode as XElement).Name.LocalName == NOTE) { break; }
+                    objects.Insert(0, firstVerseStart.PreviousNode);
+                    firstVerseStart.PreviousNode.Remove();
+                }
+
+                objects.Add(new XElement(XName.Get(VERSE, e.Name.NamespaceName),
+                    new XAttribute(START_ID, $"{book}.{chTo}.{verseTo}"),
+                    new XAttribute(OSIS_ID, $"{book}.{chTo}.{verseTo}")));
                 while (firstVerseStart.NextNode != null) {
                     if (firstVerseStart.NextNode is XElement && (firstVerseStart.NextNode as XElement).Name.LocalName == VERSE) { break; }
                     if (firstVerseStart.NextNode is XElement && (firstVerseStart.NextNode as XElement).Name.LocalName == NOTE) {
@@ -1508,11 +1514,25 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
             var firstVerseStart = e.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(START_ID) != null && x.Attribute(START_ID).Value == $"{book}.{ch}.1").FirstOrDefault();
             if (firstVerseStart != null) {
                 firstVerseStart.Attribute(START_ID).Value = $"{book}.{ch}.0";
+                firstVerseStart.Attribute(OSIS_ID).Value = $"{book}.{ch}.0";
                 firstVerseStart.Add(new XAttribute("isTitle", true));
             }
+
+            var node = firstVerseStart.NextNode;
+            while (node != null) {
+                var _e = node as XElement;
+                if (_e != null && _e.Name.LocalName == VERSE) { break; }
+                if (_e != null && _e.Name.LocalName == NOTE) {
+                    _e.Attribute(OSIS_ID).Value = _e.Attribute(OSIS_ID).Value.Replace($"{book}.{ch}.1", $"{book}.{ch}.0");
+                    _e.Attribute(REF_ID).Value = _e.Attribute(REF_ID).Value.Replace($"{book}.{ch}.1", $"{book}.{ch}.0");
+                }
+                node = node.NextNode;
+            }
+
             var firstVerseEnd = e.Descendants().Where(x => x.Name.LocalName == VERSE && x.Attribute(END_ID) != null && x.Attribute(END_ID).Value == $"{book}.{ch}.1").FirstOrDefault();
             if (firstVerseEnd != null) {
-                firstVerseStart.Attribute(START_ID).Value = $"{book}.{ch}.0";
+                firstVerseEnd.Attribute(END_ID).Value = $"{book}.{ch}.0";
+                firstVerseEnd.Attribute(OSIS_ID).Value = $"{book}.{ch}.0";
                 firstVerseEnd.Add(new XAttribute("isTitle", true));
             }
 

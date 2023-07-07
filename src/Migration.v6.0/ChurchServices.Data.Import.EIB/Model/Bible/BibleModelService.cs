@@ -1,5 +1,4 @@
 ﻿using ChurchServices.Extensions;
-using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -106,14 +105,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 }
                 else if (item is Osis.OsisSpan) {
                     var spanText = (item as Osis.OsisSpan).Value;
-                    //if ((item as Osis.OsisSpan).Language == "he") {
-                    //    var t = "";
-                    //    for (int i = 0; i < spanText.Length; i++) {
-                    //        t += HebrewAlphabetExtensions.HebrewToUnicode(spanText[i]);
-                    //    }
-                    //    spanText = t;
-                    //}
-                    var span = new Span(spanText) {
+                    var span = new SpanModel(spanText) {
                         Italic = (item as Osis.OsisSpan).Italic,
                         Bold = (item as Osis.OsisSpan).Bold,
                         Language = (item as Osis.OsisSpan).Language,
@@ -122,10 +114,13 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                     if (verse != null) {
                         verse.Items.Add(span);
                     }
-                    else verseOrphans.Add(span);
+                    else {
+                        chapter.Items.Add(span);
+                    }
+                    //else verseOrphans.Add(span);
                 }
                 else if (item is string) {
-                    var span = new Span(item as string);
+                    var span = new SpanModel(item as string);
                     if (verse != null) {
                         verse.Items.Add(span);
                     }
@@ -142,7 +137,12 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                     chapter = PopulateDiv(item as Osis.OsisDivision, chapter, book);
                 }
                 else if (item is Osis.OsisBreakLine) {
-                    verse.Items.Add(new BreakLine());
+                    if (verse != null) {
+                        verse.Items.Add(new BreakLine());
+                    }
+                    else {
+                        chapter.Items.Add(new BreakLine());
+                    }
                 }
             }
 
@@ -173,7 +173,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                         note.Items.AddRange(hrec);
                     }
                     else {
-                        note.Items.Add(new Span(itemText));
+                        note.Items.Add(new SpanModel(itemText));
                     }
                 }
                 else if (item is Osis.OsisNoteReference) {
@@ -242,7 +242,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                                 result.Add(__text);
                             }
                             currentIndex = match.Index + match.Length;
-                            var span = new Span(gr.Value);
+                            var span = new SpanModel(gr.Value);
                             span.MarkAsGreek();
                             result.Add(span);
                         }
@@ -286,7 +286,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                     foreach (var item in rmatches) {
                         if (item.IndexInOrginalString > 0) {
                             var __text = text.Substring(currentIndex, item.IndexInOrginalString - currentIndex);
-                            if (result.Count > 0 && (result.Last() is Span || result.Last() is NoteReferenceModel)) {
+                            if (result.Count > 0 && (result.Last() is SpanModel || result.Last() is NoteReferenceModel)) {
                                 __text = " " + __text;
                             }
 
@@ -299,13 +299,13 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                             }
                         }
                         currentIndex = item.IndexInOrginalString + item.LengthInOrginalString;
-                        var span = new Span(item.NormalString) { Html = item.HtmlString };
+                        var span = new SpanModel(item.NormalString) { Html = item.HtmlString };
                         span.MarkAsHebrew();
                         result.Add(span);
                     }
                     if (currentIndex < text.Length) {
                         var __text = text.Substring(currentIndex);
-                        if (result.Count > 0 && (result.Last() is Span || result.Last() is NoteReferenceModel)) {
+                        if (result.Count > 0 && (result.Last() is SpanModel || result.Last() is NoteReferenceModel)) {
                             __text = " " + __text;
                         }
 

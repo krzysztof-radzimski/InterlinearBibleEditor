@@ -106,19 +106,19 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                                         verseRunText = $"{BibleType}{book.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}]]";
                                     }
                                     AppendRun(verseRunText, para);
-                                    //AppendRun($"{{{{field-on:verseNum}}}}{verse.NumberOfVerse}{{{{field-off:verseNum}}}}.\u00A0", para, bold: true, sup: true);
                                     if (!verse.IsTitle) {
                                         AppendRun($"{verse.NumberOfVerse}.\u00A0", para, bold: true, sup: true);
                                     }
                                     AppendRun($"{{{{field-on:bible}}}}", para);
 
                                     foreach (var verseItem in verse.Items) {
-                                        if (verseItem is Span) {
-                                            if ((verseItem as Span).Language.IsNotNullOrEmpty()) {
-                                                AppendRun((verseItem as Span).ToString(), para, SpaceProcessingModeValues.Preserve, lang: (verseItem as Span).Language,rtl: (verseItem as Span).RTL,  bold: (verseItem as Span).Bold, italic: (verseItem as Span).Italic, removeOrphans: true);
+                                        if (verseItem is SpanModel) {
+                                            var span = verseItem as SpanModel;
+                                            if (span.Language.IsNotNullOrEmpty()) {
+                                                AppendRun(span.ToString(), para, SpaceProcessingModeValues.Preserve, lang: span.Language, rtl: span.RTL, bold: span.Bold, italic: span.Italic, removeOrphans: true, sup: span.Sup);
                                             }
                                             else {
-                                                AppendRun((verseItem as Span).ToString(), para, SpaceProcessingModeValues.Preserve, bold: (verseItem as Span).Bold, italic: (verseItem as Span).Italic, removeOrphans: true);
+                                                AppendRun(span.ToString(), para, SpaceProcessingModeValues.Preserve, bold: span.Bold, italic: span.Italic, removeOrphans: true, sup: span.Sup);
                                             }
                                         }
                                         else if (verseItem is WordOfGod) {
@@ -138,6 +138,18 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
 
                                     AppendRun("{{field-off:bible}} ", para, SpaceProcessingModeValues.Preserve);
 
+                                }
+                                else if (item is BreakLine) {
+                                    para = AppendParagraph();
+                                }
+                                else if (item is SpanModel) {
+                                    var span = item as SpanModel;
+                                    if (span.Language.IsNotNullOrEmpty()) {
+                                        AppendRun(span.ToString(), para, SpaceProcessingModeValues.Preserve, lang: span.Language, rtl: span.RTL, bold: span.Bold, italic: span.Italic, removeOrphans: true, sup: span.Sup);
+                                    }
+                                    else {
+                                        AppendRun(span.ToString(), para, SpaceProcessingModeValues.Preserve, bold: span.Bold, italic: span.Italic, removeOrphans: true, sup: span.Sup);
+                                    }
                                 }
                                 else if (item is FormattedText) {
                                     AppendHeading3((item as FormattedText).ToString());
@@ -164,7 +176,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 var Ge = model.Books.Where(x => x.NumberOfBook == 10).FirstOrDefault();
                 if (Ge != null) {
                     var versesCount31 = Ge.Chapters.Where(x => x.NumberOfChapter == 31).First().Verses().Count();
-                    var versesCount32 = Ge.Chapters.Where(x=>x.NumberOfChapter==32).First().Verses().Count();
+                    var versesCount32 = Ge.Chapters.Where(x => x.NumberOfChapter == 32).First().Verses().Count();
                     if (versesCount32 == 33 && versesCount31 == 54) {
                         MoveVersesToAnotherChapter(Ge, 32, 1, 1, 31, 55, true);
                     }
@@ -201,9 +213,11 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
 
                 var ICh = model.Books.Where(x => x.NumberOfBook == 130).FirstOrDefault();
                 if (ICh != null) {
-                    RenumerateChapter(ICh, 6, 16);
-                    MoveVersesToBeginingOfChapter(ICh, 5, 27, 41, 6);
-
+                    var ch5 = ICh.Chapters.Where(x => x.NumberOfChapter == 5).FirstOrDefault();
+                    if (ch5 != null && ch5.Verses().Count() > 26) {
+                        RenumerateChapter(ICh, 6, 16);
+                        MoveVersesToBeginingOfChapter(ICh, 5, 27, 41, 6);
+                    }
                     MoveVerseToAnotherVerse(ICh, 12, 5, 4);
                 }
 
@@ -220,8 +234,11 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
 
                 var Job = model.Books.Where(x => x.NumberOfBook == 220).FirstOrDefault();
                 if (Job != null) {
-                    RenumerateChapter(Job, 41, 9);
-                    MoveVersesToBeginingOfChapter(Job, 40, 25, 32, 41);
+                    var ch40 = Job.Chapters.Where(x => x.NumberOfChapter == 40).FirstOrDefault();
+                    if (ch40.Verses().Count() > 24) {
+                        RenumerateChapter(Job, 41, 9);
+                        MoveVersesToBeginingOfChapter(Job, 40, 25, 32, 41);
+                    }
                 }
 
                 var Ps = model.Books.Where(x => x.NumberOfBook == 230).FirstOrDefault();
@@ -371,6 +388,51 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 if (Isa != null) {
                     MoveLastToNextChapter(Isa, 8, 23);
                 }
+                var Je = model.Books.Where(x => x.NumberOfBook == 300).FirstOrDefault();
+                if (Je != null) {
+                    MoveLastToNextChapter(Je, 8, 23);
+                }
+                var Da = model.Books.Where(x => x.NumberOfBook == 340).FirstOrDefault();
+                if (Da != null) {
+                    var ch3 = Da.Chapters.Where(x => x.NumberOfChapter == 3).FirstOrDefault();
+                    
+                    if (ch3 != null && ch3.Verses().Count() == 100) {
+                        var v23 = ch3.Verses().Where(x => x.NumberOfVerse == 23).FirstOrDefault();
+                        var idxStart = ch3.Items.IndexOf(ch3.Verses().Where(x => x.NumberOfVerse == 24).FirstOrDefault());
+                        var idxEnd = ch3.Items.IndexOf(ch3.Verses().Where(x => x.NumberOfVerse == 90).FirstOrDefault());
+                        var v = ch3.Items.Between(idxStart, idxEnd);
+                        var vr = new List<object>();
+                        foreach (var item in v) {
+                            var itemVerse = item as VerseModel;
+
+                            if (itemVerse != null) {
+                                if (itemVerse.NumberOfVerse == 25) {
+                                    vr.Add(new FormattedText("Pieśń Azariasza"));
+                                    vr.Add(new BreakLine());
+                                }
+                                if (itemVerse.NumberOfVerse == 51) {
+                                    vr.Add(new FormattedText("Pieśń trzech młodzieńców"));
+                                    vr.Add(new BreakLine());
+                                }
+                                vr.Add(new SpanModel($" ({itemVerse.NumberOfVerse}) ") { Sup = true });
+                                vr.Add(new SpanModel(itemVerse.ToString()));
+                            }
+                        }
+
+                        vr.Add(new BreakLine());
+                        vr.Add(new FormattedText("Nabuchodonozor ułaskawia trzech młodzieńców"));
+                        vr.Add(new BreakLine());
+
+                        ch3.Items.RemoveRange(idxStart, (idxEnd - idxStart) + 1);
+                        RenumerateChapter(ch3, 1);
+                        ch3.Items.AddRangeAfterSelf(vr, v23);
+                    }
+
+                    if (ch3 != null && ch3.Verses().Count() == 33) {
+                        RenumerateChapter(Da, 4, 4);
+                        MoveVersesToBeginingOfChapter(Da, 3, 31, 33, 4, 1);
+                    }
+                }
 
                 var Zach = model.Books.Where(x => x.NumberOfBook == 450).FirstOrDefault();
                 if (Zach != null) {
@@ -394,7 +456,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                     if (chapterTo != null) {
                         var verseTo = chapterTo.Verses().Last();
                         if (verseTo != null) {
-                            verseTo.Items.Add(new Span(" "));
+                            verseTo.Items.Add(new SpanModel(" "));
                             verseTo.Items.AddRange(verseFrom.Items);
                             chapterFrom.Items.Remove(verseFrom);
 
@@ -418,6 +480,16 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 }
             }
         }
+        private void RenumerateChapter(ChapterModel chapter, int vs) {
+            if (chapter != null) {
+                var chToVerses = chapter.Verses().ToArray();
+                for (int i = 0; i < chToVerses.Length; i++) {
+                    var item = chToVerses[i];
+                    item.NumberOfVerse = vs;
+                    vs++;
+                }
+            }
+        }
         private void MoveVersesToBeginingOfChapter(BookModel book, int ch, int vs, int ve, int chTo, int vf = 1) {
             var chapterFrom = book.Chapters.Where(x => x.NumberOfChapter == ch).FirstOrDefault();
             var chapterTo = book.Chapters.Where(x => x.NumberOfChapter == chTo).FirstOrDefault();
@@ -428,29 +500,30 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 }
 
                 var itemStart = chapterFrom.Verses().Where(x => x.NumberOfVerse == vs).FirstOrDefault();
-
-                var idxStart = chapterFrom.Items.IndexOf(itemStart);
-                if (idxStart > 0) {
-                    var previous = chapterFrom.Items[idxStart - 1];
-                    if (previous is FormattedText) {
-                        idxStart--;
+                if (itemStart != null) {
+                    var idxStart = chapterFrom.Items.IndexOf(itemStart);
+                    if (idxStart > 0) {
+                        var previous = chapterFrom.Items[idxStart - 1];
+                        if (previous is FormattedText) {
+                            idxStart--;
+                        }
                     }
-                }
-                var idxEnd = chapterFrom.Items.IndexOf(chapterFrom.Verses().Where(x => x.NumberOfVerse == ve).FirstOrDefault());
-                var items = chapterFrom.Items.Between(idxStart, idxEnd);
-                var vn = vf;
-                foreach (var item in items) {
-                    chapterFrom.Items.Remove(item);
-                    if (item is VerseModel) {
-                        (item as VerseModel).NumberOfVerse = vn;
-                        vn++;
+                    var idxEnd = chapterFrom.Items.IndexOf(chapterFrom.Verses().Where(x => x.NumberOfVerse == ve).FirstOrDefault());
+                    var items = chapterFrom.Items.Between(idxStart, idxEnd);
+                    var vn = vf;
+                    foreach (var item in items) {
+                        chapterFrom.Items.Remove(item);
+                        if (item is VerseModel) {
+                            (item as VerseModel).NumberOfVerse = vn;
+                            vn++;
+                        }
                     }
-                }
 
-                items.Reverse();
+                    items.Reverse();
 
-                foreach (var item in items) {
-                    chapterTo.Items.Insert(0, item);
+                    foreach (var item in items) {
+                        chapterTo.Items.Insert(0, item);
+                    }
                 }
             }
         }
@@ -535,7 +608,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 var verse1 = chapter.Verses().Where(x => x.NumberOfVerse == v1).FirstOrDefault();
                 var verse2 = chapter.Verses().Where(x => x.NumberOfVerse == v2).FirstOrDefault();
                 if (verse1 != null && verse2 != null) {
-                    verse2.Items.Add(new Span(" "));
+                    verse2.Items.Add(new SpanModel(" "));
                     verse2.Items.AddRange(verse1.Items);
                     chapter.Items.Remove(verse1);
 
@@ -590,7 +663,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 var first = chapter.Verses().Where(x => x.NumberOfVerse == 1).FirstOrDefault();
                 var second = chapter.Verses().Where(x => x.NumberOfVerse == 2).FirstOrDefault();
                 if (first != null & second != null) {
-                    first.Items.Add(new Span(" "));
+                    first.Items.Add(new SpanModel(" "));
                     while (second.Items.Count > 0) {
                         var item = second.Items.First();
                         first.Items.Add(item);
@@ -659,8 +732,8 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 footnoteTextRun.AppendChild(new Text($"{note.Number}\u00A0"));
 
                 foreach (var item in note.Items) {
-                    if (item is Span) {
-                        var span = item as Span;
+                    if (item is SpanModel) {
+                        var span = item as SpanModel;
                         if (span.Language.IsNotNullOrEmpty()) {
                             AppendRun(span.ToString(), footnoteTextParagraph, SpaceProcessingModeValues.Preserve, lang: span.Language, rtl: span.RTL);
                         }

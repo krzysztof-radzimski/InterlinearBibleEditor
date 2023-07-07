@@ -19,11 +19,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Osis {
         public OsisDivisionType GetDivType() => TypeName.GetEnumByXmlEnum<OsisDivisionType>();
 
         public void SetDivType(OsisDivisionType divType) { TypeName = divType.GetXmlEnum(); }
-    }
-
- 
-
-  
+    }  
 
     public enum OsisDivisionType {
         [XmlEnum("")] None,

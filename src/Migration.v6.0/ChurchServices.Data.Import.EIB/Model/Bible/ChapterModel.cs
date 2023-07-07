@@ -6,6 +6,8 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         [XmlAttribute("vn")] public int NumberOfVerses { get; set; } = 0;
 
         [XmlElement("title", typeof(FormattedText))]
+        [XmlElement("span", typeof(SpanModel))]
+        [XmlElement("br", typeof(BreakLine))]
         [XmlElement("verse", typeof(VerseModel))]
         public List<object> Items { get; set; }
 

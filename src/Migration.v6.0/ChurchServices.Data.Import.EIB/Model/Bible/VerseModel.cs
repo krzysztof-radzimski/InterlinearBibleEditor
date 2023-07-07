@@ -12,7 +12,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         [XmlElement("br", typeof(BreakLine))]
         [XmlElement("n", typeof(NoteModel))]
         [XmlElement("gw", typeof(WordOfGod))]        
-        [XmlElement("span", typeof(Span))]
+        [XmlElement("span", typeof(SpanModel))]
         [XmlText(typeof(string))]
         public List<object> Items { get; set; }
 
@@ -23,7 +23,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             if (Items != null) {
                 var sb = new StringBuilder();
                 foreach (object item in Items) {
-                    if (item is Span || item is NoteModel) {
+                    if (item is SpanModel || item is NoteModel) {
                         sb.Append(item.ToString());
                     }
                 }

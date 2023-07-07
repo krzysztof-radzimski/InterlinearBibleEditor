@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 
 namespace ChurchServices.Data.Import.EIB.Model.Bible {
-    public class Span : HtmlElement {
+    public class SpanModel : HtmlElement {
         [XmlAttribute("lang")] public string Language { get; set; } = null;
         [XmlAttribute("dir")] public string Direction { get; set; } = null;
         [XmlIgnore][XmlAttribute("html")] public string Html { get; set; } = null;
@@ -11,14 +11,15 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         [XmlAttribute("i")] public bool Italic { get; set; }
         [XmlAttribute("b")] public bool Bold { get; set; }
         [XmlAttribute("u")] public bool Underline { get; set; }
+        [XmlAttribute("sup")] public bool Sup { get; set; }
 
         [XmlElement("br", typeof(BreakLine))]
         [XmlElement("hr", typeof(HLine))]
         [XmlElement("a", typeof(Hyperlink))]
         [XmlText(typeof(string))]
         public List<object> Items { get; set; }
-        public Span() { }
-        public Span(string text) {
+        public SpanModel() { }
+        public SpanModel(string text) {
             if (Items == null) { Items = new List<object>(); }
             Items.Add(text);
         }
@@ -29,7 +30,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         public bool ShouldSerializeItalic() => Italic;
         public bool ShouldSerializeBold() => Bold;
         public bool ShouldSerializeUnderline() => Underline;
-
+        public bool ShouldSerializeSup() => Sup;
         public void MarkAsHebrew() {
             Direction = "rtl";
             Language = "he";

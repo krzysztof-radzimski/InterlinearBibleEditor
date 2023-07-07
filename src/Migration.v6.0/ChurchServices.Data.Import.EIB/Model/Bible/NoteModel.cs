@@ -10,7 +10,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         [XmlElement("br", typeof(BreakLine))]
         [XmlElement("a", typeof(Hyperlink))]
         [XmlElement("ref", typeof(NoteReferenceModel))]
-        [XmlElement("span", typeof(Span))]
+        [XmlElement("span", typeof(SpanModel))]
         [XmlText(typeof(string))]
         public List<object> Items { get; set; }
 

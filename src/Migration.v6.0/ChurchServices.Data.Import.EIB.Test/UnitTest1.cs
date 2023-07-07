@@ -850,6 +850,9 @@ P – papirus<br />
         [TestMethod]
         public void ExportDbBibleEkuToLogosFile() { ExportDbBibleToLogosFile("EKU'18"); }
 
+        [TestMethod]
+        public void ExportDbBibleBTToLogosFile() { ExportDbBibleToLogosFile("BT'99"); }
+
         private void ExportDbBibleToLogosFile(string name) {
             var fn = 1;
             if (name != null) {
@@ -955,7 +958,7 @@ P – papirus<br />
 
                                 if (text.IsNotNullOrEmpty()) {
                                     text = RemoveOrphans(text);
-                                    verse.Items.Add(new Span(text));
+                                    verse.Items.Add(new SpanModel(text));
                                 }
                                 chapter.Items.Add(verse);
                             }
