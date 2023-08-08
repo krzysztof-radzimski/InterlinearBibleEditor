@@ -121,10 +121,10 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                                                 AppendRun(span.ToString(), para, SpaceProcessingModeValues.Preserve, bold: span.Bold, italic: span.Italic, removeOrphans: true, sup: span.Sup);
                                             }
                                         }
-                                        else if (verseItem is WordOfGod) {
-                                            AppendRun($"{{{{field-on:word-of-christ}}}}{(verseItem as WordOfGod)}{{{{field-off:word-of-christ}}}}", para, SpaceProcessingModeValues.Preserve, removeOrphans: true);
+                                        else if (verseItem is WordOfGodModel) {
+                                            AppendRun($"{{{{field-on:word-of-christ}}}}{(verseItem as WordOfGodModel)}{{{{field-off:word-of-christ}}}}", para, SpaceProcessingModeValues.Preserve, removeOrphans: true);
                                         }
-                                        else if (verseItem is BreakLine) {
+                                        else if (verseItem is BreakLineModel) {
                                             para = AppendParagraph();
                                         }
                                         else if (verseItem is NoteModel) {
@@ -139,7 +139,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                                     AppendRun("{{field-off:bible}} ", para, SpaceProcessingModeValues.Preserve);
 
                                 }
-                                else if (item is BreakLine) {
+                                else if (item is BreakLineModel) {
                                     para = AppendParagraph();
                                 }
                                 else if (item is SpanModel) {
@@ -408,20 +408,20 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                             if (itemVerse != null) {
                                 if (itemVerse.NumberOfVerse == 25) {
                                     vr.Add(new FormattedText("Pieśń Azariasza"));
-                                    vr.Add(new BreakLine());
+                                    vr.Add(new BreakLineModel());
                                 }
                                 if (itemVerse.NumberOfVerse == 51) {
                                     vr.Add(new FormattedText("Pieśń trzech młodzieńców"));
-                                    vr.Add(new BreakLine());
+                                    vr.Add(new BreakLineModel());
                                 }
                                 vr.Add(new SpanModel($" ({itemVerse.NumberOfVerse}) ") { Sup = true });
                                 vr.Add(new SpanModel(itemVerse.ToString()));
                             }
                         }
 
-                        vr.Add(new BreakLine());
+                        vr.Add(new BreakLineModel());
                         vr.Add(new FormattedText("Nabuchodonozor ułaskawia trzech młodzieńców"));
-                        vr.Add(new BreakLine());
+                        vr.Add(new BreakLineModel());
 
                         ch3.Items.RemoveRange(idxStart, (idxEnd - idxStart) + 1);
                         RenumerateChapter(ch3, 1);
@@ -633,7 +633,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                         for (int i = 1; i < numOfVerses; i++) {
                             var second = chapter.Verses().Where(x => x.NumberOfVerse > 0).FirstOrDefault();
                             if (second != null) {
-                                first.Items.Add(new BreakLine());
+                                first.Items.Add(new BreakLineModel());
                                 first.Items.AddRange(second.Items);
                                 chapter.Items.Remove(second);
                             }
@@ -831,6 +831,9 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 }
                 else if (lang == "gr") {
                     run.RunProperties.AddChild(new Languages() { Val = "el-GR" });
+                }
+                else if (lang == "la") {
+                    run.RunProperties.AddChild(new Languages() { Val = "la-Latn" });
                 }
             }
             if (bold) {

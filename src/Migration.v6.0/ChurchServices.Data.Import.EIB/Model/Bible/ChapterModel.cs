@@ -7,7 +7,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
 
         [XmlElement("title", typeof(FormattedText))]
         [XmlElement("span", typeof(SpanModel))]
-        [XmlElement("br", typeof(BreakLine))]
+        [XmlElement("br", typeof(BreakLineModel))]
         [XmlElement("verse", typeof(VerseModel))]
         public List<object> Items { get; set; }
 

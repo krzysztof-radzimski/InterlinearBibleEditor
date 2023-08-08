@@ -5,13 +5,13 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
     public class VerseModel {
         [XmlAttribute("nr")] public int NumberOfVerse { get; set; }
         [XmlAttribute("nl")] public bool StartFromNewLine { get; set; } = false;
-        [XmlAttribute("title")] public bool IsTitle{ get; set; } = false;
+        [XmlAttribute("title")] public bool IsTitle { get; set; } = false;
         [XmlAttribute("vs")] public VerseStyle Style { get; set; } = VerseStyle.Default;
-      
+
         [XmlElement("w", typeof(VerseWordModel))]
-        [XmlElement("br", typeof(BreakLine))]
+        [XmlElement("br", typeof(BreakLineModel))]
         [XmlElement("n", typeof(NoteModel))]
-        [XmlElement("gw", typeof(WordOfGod))]        
+        [XmlElement("gw", typeof(WordOfGodModel))]
         [XmlElement("span", typeof(SpanModel))]
         [XmlText(typeof(string))]
         public List<object> Items { get; set; }

@@ -13,7 +13,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         [XmlAttribute("u")] public bool Underline { get; set; }
         [XmlAttribute("sup")] public bool Sup { get; set; }
 
-        [XmlElement("br", typeof(BreakLine))]
+        [XmlElement("br", typeof(BreakLineModel))]
         [XmlElement("hr", typeof(HLine))]
         [XmlElement("a", typeof(Hyperlink))]
         [XmlText(typeof(string))]
@@ -39,6 +39,11 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             Direction = "ltr";
             Language = "gr";
         }
+        public void MarkAsLatin() {
+            Direction = "ltr";
+            Language = "la";
+        }
+
         public override string ToString() {
             if (Items != null) {
                 var sb = new StringBuilder();

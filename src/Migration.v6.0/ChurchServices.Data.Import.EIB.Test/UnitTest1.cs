@@ -1,4 +1,5 @@
-﻿using ChurchServices.Data.Import.EIB.Model.Bible;
+﻿using ChurchServices.Data.Import.EIB.Model;
+using ChurchServices.Data.Import.EIB.Model.Bible;
 using ChurchServices.Data.Import.EIB.Model.Osis;
 using ChurchServices.Data.Model;
 using ChurchServices.Extensions;
@@ -6,6 +7,7 @@ using DevExpress.Xpo;
 using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.Extensions.Primitives;
 using System.Text;
 using System.Text.RegularExpressions;
 using static DevExpress.Data.Helpers.ExpressiveSortInfo;
@@ -42,9 +44,407 @@ namespace ChurchServices.Data.Import.EIB.Test {
                 book.TimeOfWriting = RecognizeBookInfo(dbBook.TimeOfWriting, model, uow);
                 book.Purpose = RecognizeBookInfo(dbBook.Purpose, model, uow);
                 book.Subject = RecognizeBookInfo(dbBook.Subject, model, uow);
+                if (book.BookName.IsNullOrEmpty()) { book.BookName = dbBook.BookTitle; }
+                if (book.Color.IsNullOrEmpty()) { book.Color = dbBook.Color; }
             }
         }
 
+        private string GetSNPLIntroduction() {
+            var html = @"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//PL"">
+<html>
+<head>
+<title></title>
+</head>
+<body>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p style=""text-align: center; font-size: 40pt;"">BIBLIA<br/>to jest<br/>Pismo Święte<br/>Starego i&nbsp;Nowego<br/>Przymierza</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p style=""text-align: center; font-size: 14pt;"">Przekład literacki z&nbsp;języka hebrajskiego,<br/>aramejskiego i&nbsp;greckiego,<br/>z przypisami</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p><b>Biblia, to jest Pismo Święte Starego i&nbsp;Nowego Przymierza<br/>Przekład literacki z&nbsp;języka hebrajskiego, aramejskiego i&nbsp;greckiego, z&nbsp;przypisami</b></p>
+<span>Wydanie pierwsze</span></h2>
+<p>Original edition © 2016 Ewangeliczny Instytut Biblijny, www.feib.pl</p>
+<p>Ebook edition © 2016 LOGOS MEDIA, www.logosmedia.pl</p>
+<p><b>Tłumaczenie</b>: Piotr Zaremba (z&nbsp;Anną Haning: Mt-J, Rz, Hbr)</p>
+<p><b>Uaktualnienia związane z&nbsp;tekstem greckim NA28</b>: Piotr Zaremba</p>
+<p><b>Uaktualnienia językowe i&nbsp;stylistyczne</b>: Karolina J. Zaremba, Piotr Zaremba</p>
+<p><b>Odsyłacze</b>: Adam Ciorga, Karolina J. Zaremba, Krystyna W. Wierszyłowska-Zaremba, Piotr Zaremba</p>
+<p><b>Części wstępne</b>: <i>Ważniejsze uwagi o&nbsp;przekładzie</i>, tabele informacyjne, <i>Miary i&nbsp;wagi</i>, uwagi na temat not wstępnych i&nbsp;podziału Księgi Psalmów: Piotr Zaremba</p>
+<p><b>Przekład części wstępnych na język angielsk</b>i: Karolina J. Zaremba</p>
+<p><b>Redakcja naukowa</b>: Dariusz Banicki, Adam Ciorga, Robert Merecz, Piotr Muchowski, Andrzej Zaborski (†), Karolina J. Zaremba</p>
+<p><b>Konsultacja polonistyczna</b>: Ewa Sawicka (†), Ewa i&nbsp;Andrzej Seweryn, Marta Tylenda-Wodniczak, Karolina J. Zaremba</p>
+<p><b>Sponsor przekładu</b>: In Touch Mission International</p>
+<p><b>Redakcja wydania elektronicznego</b>: Jarosław Jankowski</p>
+<p><b>Konwersja publikacji i&nbsp;redakcja techniczn</b>a: Zbigniew Szalbot</p>
+<p><b>Projekt okładki</b>: Marcin Wiśniewski</p>
+<p>Publikacja powstała we współpracy z&nbsp;Ewangelicznym Instytutem Biblijnym.</p>
+<p><b>Wersja ebooka</b>: 1.0</p>
+<p>All Rights Reserved. Wszelkie prawa zastrzeżone. Przedruk, odtwarzanie lub przetwarzanie całości lub fragmentów książki w&nbsp;mediach każdego rodzaju wymaga pisemnego zezwolenia Ewangelicznego Instytutu Biblijnego.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p> 
+<p><b>Wydawca</b>: LOGOS MEDIA</p>
+<p><b>Przygotowanie wersji dla <i>Logos Study Bible 10</i></b>: Krzysztof Radzimski</p>
+<p>EPUB: ISBN  978-83-63837-88-4<br/>MOBI: ISBN 978-83-63837-89-1</p>
+<p><b>Patronat</b>:</p>
+<p><a href=""http://www.jezus.pl"">jezus.pl</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p style=""text-align: center;""><b>Słowo zaproszenia</b></p>
+<p>Trzymasz w&nbsp;ręce nie tyle Księgę, co bibliotekę sześćdziesięciu sześciu Ksiąg Starego i&nbsp;Nowego Przymierza. Uwiecznione w&nbsp;nich słowa wkraczały w&nbsp;ludzką rzeczywistość stopniowo, na przestrzeni bodaj tysiąca czterystu lat, aby w&nbsp;końcu znaleźć potwierdzenie i&nbsp;pełny wyraz w&nbsp;Słowie, które stało się ciałem, w&nbsp;Jezusie Chrystusie.</p>
+<p>Księgi tego zbioru nie przestają służyć wielu za podręcznik definiowania racji. Tymczasem mają one służyć pogłębianiu relacji. Obserwując wzmożone wysiłki współczesnych sobie uczonych, Pan Jezus Chrystus podsumował: <b>„Zagłębiacie się w&nbsp;Pisma, ponieważ sądzicie, że macie w&nbsp;nich życie wieczne, podczas gdy one składają świadectwo o&nbsp;Mnie. A jednak nie chcecie przyjść do Mnie, aby zyskać życie.”</b></p>
+<p>Trudno o&nbsp;lepsze ujęcie sprawy. Jeśli na kartach tych Pism zamierzasz szukać przede wszystkim racji, to zapewne ją znajdziesz, jak wielu innych – na własną miarę, jednym na pociechę, drugim na przekór. Może tej racji zechcesz bronić, a&nbsp;nawet za nią umrzeć. Jeśli jednak dzięki tej Księdze nie nawiążesz relacji z&nbsp;Osobą, z&nbsp;Panem wszechrzeczy, Jezusem Chrystusem, jeśli On sam nie stanie się rdzeniem Twojego życia, to uzbrojony w&nbsp;prawdziwe racje, możesz rozminąć się z&nbsp;prawdziwym życiem.</p>
+<p>Księga ta nie należy do łatwych. I&nbsp;dobrze. Szczerzej przyjdą Ci słowa: <b>„Panie, otwórz mi oczy na to, co na tych kartach czytam, a&nbsp;to, co zrozumiem, zastosuję w&nbsp;życiu.”</b> Przy takiej postawie doznasz czegoś szczególnego: zauważysz, że Pismo Święte jest Księgą, którą czyta się w&nbsp;obecności jej Autora. Na tym polega wyjątkowość tej Księgi – i&nbsp;przygoda, do której Cię zapraszamy.</p>
+<p style=""text-align: right;""><a href=""https://feib.pl/"">Ewangeliczny Instytut Biblijny</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<h2 style=""text-align: center;"">Wykaz skrótów i oznaczeń</h2>
+<p><b>Skróty ksiąg biblijnych:</b></p>
+<p>Stare Przymierze: Rdz, Wj, Kpł, Lb, Pwt, Joz, Sdz, Rt, 1-2Sm, 1-2Krl, 1-2Krn, Ezd, Ne, Est, Jb, Ps, Prz, Kzn, Pnp, Iz, Jr, Tr, Ez, Dn, Oz, Jl, Am, Ab, Jo, Mi, Na, Ha, So, Ag, Za, Ml</p>
+<p>Nowe Przymierze: Mt, Mk, Łk, J , Dz, Rz, 1-2Kor, Ga, Ef, Flp, Kol, 1-2Ts, 1-2Tm, Tt, Flm, Hbr, Jk, 1-2P, 1-3J, Jd, Obj</p>
+<p>&nbsp;</p>
+<p><b>Nazwy znaków alfabetu hebrajskiego:</b></p>
+<p><span lang=""he"" dir=""rtl"">א</span><span dir=""ltr"">&nbsp;alef</span>, <span lang=""he"" dir=""rtl"">ב</span><span dir=""ltr"">&nbsp;bet</span>, <span lang=""he"" dir=""rtl"">ג</span><span dir=""ltr"">&nbsp;gimel</span>, <span lang=""he"" dir=""rtl"">ד</span><span dir=""ltr"">&nbsp;dalet</span>, <span lang=""he"" dir=""rtl"">ה</span><span dir=""ltr"">&nbsp;he</span>, <span lang=""he"" dir=""rtl"">ו</span><span dir=""ltr"">&nbsp;waw</span>, <span lang=""he"" dir=""rtl"">ז</span><span dir=""ltr"">&nbsp;zain</span>, <span lang=""he"" dir=""rtl"">ח</span><span dir=""ltr"">&nbsp;chet</span>, <span lang=""he"" dir=""rtl"">ט</span><span dir=""ltr"">&nbsp;tet</span>, <span lang=""he"" dir=""rtl"">י</span><span dir=""ltr"">&nbsp;jod</span>, <span lang=""he"" dir=""rtl"">כ</span><span dir=""ltr"">&nbsp;kaw</span>, <span lang=""he"" dir=""rtl"">ל</span><span dir=""ltr"">&nbsp;lamed</span>, <span lang=""he"" dir=""rtl"">מ</span><span dir=""ltr"">&nbsp;mem</span>, <span lang=""he"" dir=""rtl"">נ</span><span dir=""ltr"">&nbsp;nun</span>, <span lang=""he"" dir=""rtl"">ס</span><span dir=""ltr"">&nbsp;samek</span>, <span lang=""he"" dir=""rtl"">ע</span><span dir=""ltr"">&nbsp;ain</span>, <span lang=""he"" dir=""rtl"">פ</span><span dir=""ltr"">&nbsp;pe</span>, <span lang=""he"" dir=""rtl"">צ</span><span dir=""ltr"">&nbsp;tsade</span>, <span lang=""he"" dir=""rtl"">ק</span><span dir=""ltr"">&nbsp;kof</span>, <span lang=""he"" dir=""rtl"">ר</span><span dir=""ltr"">&nbsp;resz</span>, <span lang=""he"" dir=""rtl"">ש</span><span dir=""ltr"">&nbsp;szin</span>, <span lang=""he"" dir=""rtl"">ת</span><span dir=""ltr"">&nbsp;taw</span></p>
+<p>&nbsp;</p>
+
+<p><b>Inne skróty i oznaczenia</b></p>
+<p style=""text-align: left;"">
+abc – kursywą zaznaczono cytaty ze Starego Przymierza za NA27 i NA28. W samym Starym Przymierzu zaznaczono w&nbsp;ten sposób nie tłumaczone wyrazy obcego pochodzenia, jak: Sela i pur<br />
+A – Kodeks Aleksandryjski = GA w&nbsp;SP, V w. po Chr.<br />
+abs. – absolutus<br />
+acc. – acusativus<br />
+ak. – akkadyjski<br />
+aleks. – aleksandryjski<br />
+amor. – amorycki<br />
+aor. – aoryst<br />
+Ar – wersja arabska<br />
+arab. – arabski<br />
+aram. – aramejski<br />
+as. – asyryjski<br />
+B – Kodeks Watykański = GB w&nbsp;SP, IV w. po Chr.<br />
+Ba – Baruch<br />
+bab. – babiloński<br />
+bezok – bezokolicznik<br />
+bliskozn. – bliskoznaczny, -a, -e<br />
+bo – wersja bohairyczna<br />
+BHQ – Biblia Hebraica Quinta. 2010. Schenker. Stuttgart: Deutsche Bibelgesellschaft<br />
+BHS – Biblia Hebraica Stuttgartensia. 1997. K. Elliger, W. Rudolf, red., wyd. 5. Stuttgart: Deutsche Bibelgesellschaft<br />
+C – Kodeks Efrema, V w. po Chr.<br />
+chald. – chaldejski<br />
+con. – coniunctivus<br />
+cz – czasownik, -niki<br />
+D – Kodeks Bezy, V w. po Chr.<br />
+dat. – dativus<br />
+dat. instr. – dativus instrumentalis<br />
+dat. loc. – dativus locativus<br />
+defek. – defektywna (forma)<br />
+det. – determinatyw<br />
+Did – Didache<br />
+dit. – dittografia<br />
+dk – dokonane<br />
+dł. – długość<br />
+dod. – dodatek, dodaje, -ją, -wać<br />
+dos. – dosłowny, -a, -e, -nie<br />
+dot. – dotyczy, - czący<br />
+du – dualis<br />
+duch. – duchowy, -a, -e, -o<br />
+EA – Tel-el-Amarna<br />
+ed(d) – edycje Ms(s)<br />
+egip. – egipski<br />
+elam. – elamicki, -e<br />
+em. – emendacja, -dowane<br />
+emf. – emfatyczne<br />
+Ew. – Ewangelia<br />
+etiop. — etiopski<br />
+etym. – etymologia, -cznie<br />
+euf. – eufemizm<br />
+f. – funkcja, funkcjonować<br />
+fen. – fenicki<br />
+filist. – filistyński<br />
+frg. frgy. – fragment, –y<br />
+fryg. – frygijski, -a,-e<br />
+fut. – futurum, futuryczny, -a, -e<br />
+G* – G, tekst gr. pierwotny<br />
+LXX, G, Gmss – Septuaginta, niektóre manuskrypty Septuaginty<br />
+GA – Kodeks Aleksandryjski<br />
+GB – Kodeks Watykański<br />
+GBal – Kodeks Watykański wtóry<br />
+GE – Göttingen Exodus<br />
+gen. – genetivus<br />
+GK – fragmenty z&nbsp;Genizy Kairskiej<br />
+GL – G, recenzja Lucjana<br />
+Gmin – G, mss minuskułowe<br />
+GN – kodeks Basiliano-Vaticanus połączony z&nbsp;kodeksem Veneto<br />
+GO – G, recenzja Orygenesa<br />
+GS – zasada Granville’a Sharpa<br />
+GS – Kodeks Synaiticus<br />
+GV – Kodeks Venetus<br />
+G82 – G ms 82<br />
+G127 – G ms 127<br />
+głęb. – głębokość<br />
+godz. – godzina<br />
+gr. – grecki<br />
+gram. – gramaty-ka, -cznie, -czny<br />
+grub. – grubość, -ści<br />
+H – przekład Hieronima<br />
+h – h wygłosowe w&nbsp;transkrypcji wyrażeń<br />
+hbr., które przy wymowie pozostaje nieme<br />
+h. – homonim, homonim(icznie)(iczny)<br />
+hap. – haplografia<br />
+hbr. – hebrajski<br />
+hebr. – hebraizm<br />
+Hen – Henoch, księgi Henocha<br />
+hend. – hendiadys<br />
+het. – hetycki, -s<br />
+Hex – źródła heksaplaryczne<br />
+hi – hifil<br />
+hier. egip. – hieroglificzny egipski<br />
+hist. – historyczny, -a, -e, -nie<br />
+hitp – hitpael<br />
+hitpalp – hitpalpel<br />
+hitpo – hitpolel<br />
+HM – hebrajski misznaicki<br />
+HN – hebrajski nebatejski<br />
+hof – hofal<br />
+hl – hapax legomenon, słowo użyte tylko raz w&nbsp;tekście Biblii<br />
+hl2,3 – słowo użyte w&nbsp;tekście Biblii, odpowiednio, dwa lub trzy razy<br />
+hom. – homonim<br />
+hur. – hurycki<br />
+Id, If, Ih, Ip – interpretacje: duchowa, futuryczna, historycza i preteryczna<br />
+ill. – illyryjski<br />
+imp. – imperativus<br />
+impf. – imperfectum<br />
+ind. – indicativus<br />
+inf. – infinitivus<br />
+ins. – inskrypcja, -cje<br />
+int. – interpretacja, -cje<br />
+J – źródło jahwistyczne<br />
+J. – jezioro<br />
+jedn. – jednostka<br />
+JHWH – Imię własne Boga, Jahwe<br />
+Jub – Księga Jubileuszy<br />
+Jud – Księga Judyty<br />
+juss. – jussivus<br />
+kan. – kananejski, -a<br />
+KA – Konstytucje Apostolskie<br />
+KD – Kodeks Damasceński<br />
+KH – Kodeks Hammurabiego<br />
+KP – Kodeks Petersburski, B 19A<br />
+ketiw – wyrażenie zaświadczone w&nbsp;tekście głównym MT, dla którego sugeruje się właściwy odczyt, czyli qere<br />
+kj,w,z – kryterium, odpowiednio, językowe, większego wglądu w&nbsp;tekst wyjściowy i&nbsp;zrozumiałości.<br />
+klk, klkn, klkd, klks – kilka, -naście, -dziesiąt, -set.<br />
+kod. – kodeks, -y<br />
+konstr. – konstrukcja<br />
+kont. — kontekst, -owy<br />
+kor. – korekta<br />
+L – Kodeks angelicus, IX w. po Chr.<br />
+l. – lub<br />
+la b d e o – lectio, odpowiednio: ante, brevior, difficilior, facilus explicavit, lingua originali<br />
+licz – liczebnik<br />
+lit. – literatura<br />
+lp, lm – liczba pojedyncza, liczba mnoga<br />
+LR – Leviticus Rabba<br />
+łac. – łaciński<br />
+mat. – materiał(y)<br />
+M. – morze<br />
+Mch – Machabejskie, księgi<br />
+Mdr – Księga Mądrości<br />
+med. – medyczny<br />
+met. – metonimia, -nimicznie<br />
+metaf. – metafora, metaforycz(ny)(nie)<br />
+metat. – metateza<br />
+mez. – mezopotamski, -a<br />
+mg – margines, -owy, -owa<br />
+min. – minuta<br />
+min – w&nbsp;indeksie górnym: minuskuł(a)(owy)<br />
+m.in. – między innymi<br />
+mn. – mniejszy, -a<br />
+monet. – monetarny<br />
+ms, mss – manuskrypt(y)<br />
+Ms – kodeks hbr. średniowieczny<br />
+MT, MTmss – tekst masorecki, manuskrypty tekstu masoreckiego<br />
+MTMs, MTMss – manuskrypt, manuskrypty hebrajskie średniowieczne<br />
+NA27, NA28 – Novum Testamentum Graece. Nestle-Aland. 1993, 2012. Stuttgart: Deutsche Bibelgesellschaft<br />
+NB – Niewola Babilońska<br />
+ndk – niedokonane<br />
+neoas. – noeasyryjski, -a, -e<br />
+ni – nifal<br />
+niereg. – nieregularny, -a, -e<br />
+nom. – nominativus<br />
+NP – Nowe Przymierze (Nowy Testament)<br />
+n.p.m. – nad poziomem morza<br />
+O – recenzja Orygenesa<br />
+OG – wersje starogreckie<br />
+okr. – okres<br />
+OL – wersje starołacińskie<br />
+oryg. – oryginalny (tekst l. wariant)<br />
+ozn. – oznacza<br />
+P – źródło kapłańskie<br />
+palp – palpel<br />
+pap. – papirus(y)<br />
+par. – paralelne, paralelizm<br />
+pas. – passivus, strona bierna<br />
+pd – południe<br />
+pd wsch – południowy wschód<br />
+pd zach – południowy zachód<br />
+pers. – perski<br />
+pf. – perfectum<br />
+pi – piel<br />
+pilp – pilpel<br />
+PA – Pouczenia Amenemope<br />
+PL – Pardes Lauder<br />
+pl – pluralis, lm<br />
+pn – północ<br />
+pn wsch – północny wchód<br />
+pn zach – północny zachód<br />
+poch. – pochodzenie<br />
+pod. – podobnie, podobieństwo<br />
+poj. – pojęcie<br />
+pojem. – pojemność<br />
+polit. – polityczny, -a, -e<br />
+polp – polpal<br />
+por. – porównaj<br />
+pow. – powierzchnia<br />
+późn. – późniejszy, -e<br />
+p.p.m. – poniżej poziomu morza<br />
+praes. – praesens, czas teraźniejszy<br />
+pret. – preteryczny, -a, -e, -nie<br />
+prek. – prekatywny, -a, -e, -nie<br />
+profet. – profetyczny/e<br />
+prop. – proponowany, -a, -e, -zycja, -uje<br />
+przedr – przedrostek<br />
+przen. – przenośnia, -e<br />
+przetłum. – przetłumaczony -a, -e<br />
+przyd – przydawka<br />
+przyim – przyimek<br />
+przym – przymiotnik, -kowy<br />
+przyp. – przypadek<br />
+przys – przysłówek<br />
+PN – Papirus Nasha<br />
+PS – Pięcioksiąg Samarytański<br />
+PsSal – Psalmy Salomona<br />
+ptc. – participium, imiesłów<br />
+pu – pual<br />
+przyp. – przypis, -y<br />
+przys – przysłówek<br />
+pyt. – pytanie<br />
+q – kal<br />
+qere – wyrażenie sugerowane jako właściwy odczyt wyrażenia zaświadczonego w&nbsp;tekście głównym MT, czyli ketiw<br />
+red. – redakcja, -cyjny<br />
+rel. – religijny, -a, -e<br />
+rewok. – rewokalizacja<br />
+rm – rodzaj męski<br />
+rodz. – rodzajnik<br />
+r. p. Chr. – rok przed Chrystusem<br />
+r. po Chr. – rok po Chrystusie<br />
+rz – rzeczownik<br />
+rzym. – rzymski<br />
+rż – rodzaj żeński<br />
+S – tekst syryjski<br />
+sbab. – starobabiloński<br />
+sc – status constructus<br />
+scp – scriptio plena, pisownia pełna<br />
+scd – scriptio defectiva, pisownia ułomna<br />
+szer. – szerokość<br />
+SG – Salkinson-Ginsburg. 1886. Hebrew New Testament, wyd. popr. 1999 w&nbsp;kierunku zgodności z&nbsp;Tekstem przyjętym greckiego NT<br />
+sg – singularis, lp<br />
+skr. – skrót, skrócony, -ne<br />
+SP – Stare Przymierze (Stary Testament)<br />
+spers. – staroperski<br />
+spój – spójnik<br />
+st. – stopień<br />
+str. – strona, -y<br />
+suf – sufiks<br />
+sym. – symbol, -icznie, -iczny<br />
+syn. – synonim, synonimiczny, -nie<br />
+synek. – synekdocha, -chicznie<br />
+Syr – Mądrość Syracha<br />
+syr. – syryjski<br />
+T – Talmud<br />
+tamud. – tamudyjski<br />
+TB – Talmud Babiloński<br />
+Tb – Księga Tobiasza<br />
+Tg – targum<br />
+TgJo – Targum Jonatana<br />
+TgN – Targum Neofiti<br />
+TgPsJ – Targum Pseudo-Jonatana<br />
+TgO – Targum Onkelosa<br />
+TgMs/Mss – kodeks, kodeksy Targumów<br />
+Th – grecki tekst Teodocjona<br />
+tiq – tiqqune soferim<br />
+TL – Testament Lewiego<br />
+tłum. – tłumaczenie, -one<br />
+TP – Tekst przyjęty<br />
+trad. – tradycja, -cyjny, -cyjnie<br />
+trans. – transliteracja<br />
+Trt – Tertulian<br />
+TW – Tekst większościowy<br />
+tys. – tysiąclecie<br />
+tyt. – tytuł<br />
+ugar. – ugarycki<br />
+vid – wariant widoczny, lecz niepewny<br />
+Vg – Wulgata<br />
+W – Kodeks Waszyngtoński, IV/V w. po Chr.<br />
+w., ww. – werset, wersety<br />
+wd,l,o,p,s,t – wzgląd, odpowiednio, duchowego dziedzictwa, logiczności, objętości, pierwszeństwa NP, starożytności i&nbsp;trudności wariantu<br />
+war. – warunek, - owy, -owa<br />
+WMoj – Wniebowstąpienie Mojżesza<br />
+wok. – wokalizacja<br />
+wsch – wschód<br />
+wsp. – współczesne<br />
+wyr. – wyrażenie<br />
+wys. – wysokość<br />
+wzgl. – względnie<br />
+zach – zachód<br />
+zaim – zaimek<br />
+zal. – zależne, zależność, -ści<br />
+zał. – założenie<br />
+zak. – zakończenie<br />
+zap. – zapożyczenie<br />
+ZMM – Zwoje znad Morza Martwego<br />
+zm. – zmarł<br />
+zn. – znaczenie<br />
+zob. – zobacz<br />
+zwok. – zwokalizowane<br />
+zwr. – zwrotny, -a, -e<br />
+I, II... – homonimy (pierwszy, drugi...) ’‘ – transkrypcja odpowiednio (alef) i&nbsp;(ain)<br />
+α’ – przekład Akwili<br />
+ε’ – Quinta, warianty piątej kolumny Heksapli εβρ’ – późniejsze przekłady tekstu na język grecki hebrajskiego, lecz bliżej nieokreślonego pochodzenia<br />
+P – papirus<br />
+Θ Ψ m P75 892txt 070 1241 f 1.13 – powszechnie stosowane określenia świadectw tekstowych Nowego Przymierza. W&nbsp;niniejszym przekładzie przytaczane za Novum Testamentum Graece (jak wyżej)<br />
+θ’ – przekład Teodocjona<br />
+σ’ – przekład Symmacha<br />
+Ψ – Athous Lavrensis, IX/X w. po Chr.<br />
+1Hen – Pierwsza Księga Henocha<br />
+1Kl – Pierwszy List Klemensa<br />
+1Mch, 2Mch, 4Mch – Pierwsza, Druga, Czwarta Księga Machabejska<br />
+<span lang=""he"" dir=""rtl"">א</span> – Kodeks synajski, III w. po Chr.<br />
+[<span lang=""he"" dir=""rtl"">ה</span>] – znak lub znaki w&nbsp;nawiasie kwadratowym oznaczają, że nie zachowały się one w&nbsp;manuskryptach<br />
+<span lang=""he"" dir=""rtl"">מֿהל֯ש̇</span> — brak znaku nad literą oznacza literę pewną, kropka prawdopodobną, kółko możliwą, kreska zaś niepewność co do identyfikacji liter podobnych<br />
+[...] – nawias kwadratowy zamyka wyrazy lub wyrażenia, których w&nbsp;oryginale wyraźnie brak, a które w&nbsp;odczuciu tłumaczy wyjaśniają lub stanowią opcję wyjaśnienia znaczenia tekstu<br />
+* – oryginalny odczyt ms<br />
+1,2... – pierwsza, druga ... grupa korekt<br />
+099 – Kodeks majuskułowy, VII w. po Chr.<br />
+597 – Kodeks minuskułowy, XIII w. po Chr.
+</p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p> 
+<p>&nbsp;</p>
+<p>&nbsp;</p> 
+</body>
+</html>";
+            return html;
+        }
         private string GetSNPDIntroduction() {
             var html = @"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//PL"">
 <html>
@@ -800,6 +1200,222 @@ P – papirus<br />
         }
 
         [TestMethod]
+        public void GetSNPLFromXHtmlFiles() {
+            var dir = @"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPL\XHTML";
+            var bservice = new BibleModelService();
+            var bmodel = new BibleModel() {
+                Shortcut = "SNPL",
+                Books = new List<BookModel>(),
+                Name = "Stare i Nowe Przymierze - Przekład Literacki",
+                Type = Model.Bible.TranslationType.Default
+            };
+            var service = new XhtmlModelService();
+            for (int i = 1; i <= 66; i++) {
+                var filePath = System.IO.Path.Combine(dir, $"{i.ToString().PadLeft(2, '0')}.xhtml");
+                if (File.Exists(filePath)) {
+                    var book = service.GetBook(filePath);
+                    if (book != null) { bmodel.Books.Add(book); }
+                }
+            }
+
+            Assert.IsTrue(bmodel.Books.Count > 0);
+
+            foreach (var book in bmodel.Books) {
+                SetBookInfo(book, bmodel);
+            }
+
+            var xmlInputFile = @"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPL\snpl.eib.xml";
+            bservice.SaveBibleModelToFile(bmodel, xmlInputFile);
+
+            if (File.Exists(xmlInputFile)) {
+                using (var service2 = new LogosBibleModelService()) {
+                    var bibleModelOutFilePath = @"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPL\snpl.eib.docx";
+                    service2.Export(xmlInputFile, bibleModelOutFilePath, introductionHtml: GetSNPLIntroduction(), addTitle: false, repairModel: true);
+                }
+            }
+            else {
+                Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        public void ReplaceSNPDInDatabaseFromOsisModel() {
+            const string TRANSLATION = "PBD";
+            var service = new OsisModelService();
+            var model = service.GetModelFromFile(@"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\snpd.osis.v3.xml");
+            if (model != null) {
+                var bservice = new BibleModelService();
+                var bmodel = bservice.GetBibleModelFromOsisModel(model);
+                if (bmodel != null) {
+                    var uow = new UnitOfWork();
+                    var translation = new XPQuery<Translation>(uow).Where(x => x.Name == TRANSLATION).FirstOrDefault();
+
+                    var subTitles = new XPQuery<Subtitle>(uow).Where(x => x.ParentChapter.ParentBook.ParentTranslation == translation).ToList();
+                    if (subTitles.Count > 0) {
+                        uow.Delete(subTitles);
+                        uow.CommitChanges();
+                    }
+
+                    foreach (var book in bmodel.Books) {
+                        var baseBook = new XPQuery<BookBase>(uow).Where(x => x.NumberOfBook == book.NumberOfBook).FirstOrDefault();
+                        var dbBook = new XPQuery<Book>(uow).Where(x => x.ParentTranslation == translation && x.NumberOfBook == book.NumberOfBook).FirstOrDefault();
+                        if (dbBook == null) {
+                            dbBook = new Book(uow) {
+                                NumberOfBook = book.NumberOfBook,
+                                BaseBook = baseBook,
+                                BookShortcut = baseBook.BookShortcut,
+                                BookName = book.BookName,
+                                NumberOfChapters = book.Chapters.Count,
+                                Color = book.Color,
+                                ParentTranslation = translation
+                            };
+                            dbBook.Save();
+                        }
+                        else {
+                            dbBook.NumberOfChapters = book.Chapters.Count;
+                            dbBook.BookName = book.BookName;
+                            dbBook.BookShortcut = baseBook.BookShortcut;
+                        }
+
+                        foreach (var chapter in book.Chapters) {
+                            var dbChapter = new XPQuery<Chapter>(uow).Where(x => x.ParentBook == dbBook && x.NumberOfChapter == chapter.NumberOfChapter).FirstOrDefault();
+                            if (dbChapter == null) {
+                                dbChapter = new Chapter(uow) {
+                                    NumberOfChapter = chapter.NumberOfChapter,
+                                    ParentBook = dbBook,
+                                    NumberOfVerses = chapter.Verses().Count(),
+                                    Index = $"{TRANSLATION}.{book.NumberOfBook}.{chapter.NumberOfChapter}"
+                                };
+                                dbChapter.Save();
+                            }
+                            else {
+                                dbChapter.NumberOfVerses = chapter.Verses().Count();
+                            }
+
+                            var vn = 1;
+                            VerseModel verse = null;
+                            foreach (var item in chapter.Items) {
+                                if (item is VerseModel) {
+                                    verse = item as VerseModel;
+                                    vn = verse.NumberOfVerse;
+                                    var dbVerse = new XPQuery<Verse>(uow).Where(x => x.ParentChapter == dbChapter && x.NumberOfVerse == vn).FirstOrDefault();
+                                    if (dbVerse == null) {
+                                        dbVerse = new Verse(uow) {
+                                            ParentChapter = dbChapter,
+                                            NumberOfVerse = verse.NumberOfVerse,
+                                            Text = GetVerseText(verse),
+                                            StartFromNewLine = false,
+                                            Index = $"{TRANSLATION}.{book.NumberOfBook}.{chapter.NumberOfChapter}.{verse.NumberOfVerse}"
+                                        };
+                                    }
+                                    else {
+                                        dbVerse.Text = GetVerseText(verse);
+                                    }
+                                    dbVerse.Save();
+                                }
+                                else if (item is FormattedText) {
+                                    var title = item as FormattedText;
+                                    if (title != null) {
+                                        var dbTitle = new XPQuery<Subtitle>(uow).Where(x => x.ParentChapter == dbChapter && x.BeforeVerseNumber == vn).FirstOrDefault();
+                                        if (dbTitle == null) {
+                                            dbTitle = new Subtitle(uow) {
+                                                BeforeVerseNumber = vn,
+                                                Level = 2,
+                                                ParentChapter = dbChapter,
+                                                Text = title.ToString()
+                                            };
+                                            dbTitle.Save();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    uow.CommitChanges();
+                    uow.PurgeDeletedObjects();
+                }
+            }
+        }
+
+        private string GetVerseText(VerseModel verse) {
+            if (verse != null) {
+                var sbfm = String.Empty;
+                var sb = new StringBuilder();
+                var sbf = new StringBuilder();
+                foreach (var item in verse.Items) {
+                    if (item is string) {
+                        sb.Append(RemoveBrakets(item));
+                    }
+                    else if (item is NoteModel) {
+                        sbfm = $"{sbfm}*";
+                        if (sb.ToString().EndsWith("*")) { sb.Append(" "); }
+                        sb.Append(sbfm);
+                        sbf.Append($"[{sbfm}");
+                        var nbp = String.Empty;
+                        foreach (var nitem in (item as NoteModel).Items) {
+                            if (nitem is NoteReferenceModel) {
+                                if (nitem.ToString().Contains(":")) {
+                                    var nref = nitem as NoteReferenceModel;
+                                    var abbr = nref.Ref.Substring(0, nref.Ref.IndexOf(".")).Replace(".", "");
+                                    if (abbr.IsNotNullOrWhiteSpace()) { nbp = abbr; }
+                                    var idx = nref.Text.IndexOf(" ");
+                                    var nn = "";
+                                    if (idx != -1) {
+                                        nn = nref.Text.Substring(nref.Text.IndexOf(" ")).Trim();
+                                    }
+                                    else {
+                                        nn = nref.Text;
+                                    }
+
+                                    if (abbr == "" && nbp != "" && idx == -1) {
+                                        abbr = nbp;
+                                    }
+
+                                    if (abbr != "") {
+                                        var bn = BibleModelService.GetBookNumberFromLogosAbbreviation(abbr);
+                                        if (bn != 0) {
+                                            var reff = $"<x>{bn} {nn.Replace("L.", "").Replace("L", "").Trim()}</x>";
+                                            if (nn.Contains("L")) {
+                                                reff += "L.";
+                                            }
+                                            sbf.Append(reff);
+                                        }
+                                        else {
+                                            sbf.Append(RemoveBrakets(nitem));
+                                        }
+                                    }
+                                    else {
+                                        sbf.Append(RemoveBrakets(nitem));
+                                    }
+                                }
+                                else {
+                                    sbf.Append(RemoveBrakets(nitem));
+                                }
+                            }
+                            else {
+                                sbf.Append(RemoveBrakets(nitem));
+                            }
+                        }
+                        sbf.Append($"]");
+                    }
+                    else if (item is WordOfGodModel) {
+                        sb.Append($"<J>{RemoveBrakets(item)}</J>");
+                    }
+                    else if (item is SpanModel) {
+                        sb.Append(RemoveBrakets(item));
+                    }
+                }
+                return $"{sb}<n>{sbf}</n>";
+            }
+            return null;
+        }
+
+        private string RemoveBrakets(object o) {
+            var s = o.ToString();
+            return s.Replace("[", "(").Replace("]", ")").Replace("*", String.Empty);
+        }
+
+        [TestMethod]
         public void TestConvertOsisModelToBibleModel() {
             var service = new OsisModelService();
             var model = service.GetModelFromFile(@"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\snpd.osis.v3.xml", true);
@@ -819,7 +1435,7 @@ P – papirus<br />
                     if (File.Exists(xmlInputFile)) {
                         using (var service2 = new LogosBibleModelService()) {
                             var bibleModelOutFilePath = @"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\snpd.eib.docx";
-                            service2.Export(xmlInputFile, bibleModelOutFilePath, introductionHtml: GetSNPDIntroduction(), addTitle: false);                           
+                            service2.Export(xmlInputFile, bibleModelOutFilePath, introductionHtml: GetSNPDIntroduction(), addTitle: false);
                         }
                     }
                     else {

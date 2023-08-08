@@ -1,3 +1,3 @@
 ﻿namespace ChurchServices.Data.Import.EIB.Model.Bible {
-    public class BreakLine : HtmlElement { }
+    public class BreakLineModel : HtmlElement { }
 }

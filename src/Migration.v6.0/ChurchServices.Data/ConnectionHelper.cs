@@ -36,7 +36,7 @@ namespace ChurchServices.Data {
             typeof(Article),
             typeof(UrlShort),
             typeof(Song),
-            typeof(SongVerse)
+            typeof(SongVerse),
         };
 
         public void Connect(bool threadSafe = true, string connectionString = null, AutoCreateOption autoCreateOption = AutoCreateOption.SchemaAlreadyExists) {

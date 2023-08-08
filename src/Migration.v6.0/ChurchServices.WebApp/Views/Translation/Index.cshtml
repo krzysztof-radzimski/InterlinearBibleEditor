@@ -931,7 +931,7 @@ else {
 
                         var text = " " + verse.Text;
                         if (text.Contains("<n>") && text.Contains("*")) {
-                            var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\·\…\d\–\?\־\’\’\‘\#\᾽\…";
+                            var footNoteTextPatternFragment = @"״\½\+\­\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\·\…\d\–\?\־\’\’\‘\#\᾽\…";
                             var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
                             var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
                             var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
@@ -939,7 +939,10 @@ else {
                             var f5 = $@"\[\*\*\*\*\*\s?(?<f5>[{footNoteTextPatternFragment}]+)\]";
                             var f6 = $@"\[\*\*\*\*\*\*\s?(?<f6>[{footNoteTextPatternFragment}]+)\]";
                             var f7 = $@"\[\*\*\*\*\*\*\*\s?(?<f7>[{footNoteTextPatternFragment}]+)\]";
-                            var footNoteTextPattern = $@"\<n\>(\s+)?{f1}(\s+)?({f2})?(\s+)?({f3})?(\s+)?({f4})?(\s+)?({f5})?(\s+)?({f6})?(\s+)?({f7})?(\s+)?\</n\>";
+                            var f8 = $@"\[\*\*\*\*\*\*\*\*\s?(?<f8>[{footNoteTextPatternFragment}]+)\]";
+                            var f9 = $@"\[\*\*\*\*\*\*\*\*\*\s?(?<f9>[{footNoteTextPatternFragment}]+)\]";
+                            var f10 = $@"\[\*\*\*\*\*\*\*\*\*\*\s?(?<f10>[{footNoteTextPatternFragment}]+)\]";
+                            var footNoteTextPattern = $@"\<n\>(\s+)?{f1}(\s+)?({f2})?(\s+)?({f3})?(\s+)?({f4})?(\s+)?({f5})?(\s+)?({f6})?(\s+)?({f7})?(\s+)?({f8})?(\s+)?({f9})?(\s+)?({f10})?(\s+)?\</n\>";
 
                             var f1Index = 0;
                             var f2Index = 0;
@@ -948,11 +951,14 @@ else {
                             var f5Index = 0;
                             var f6Index = 0;
                             var f7Index = 0;
+                            var f8Index = 0;
+                            var f9Index = 0;
+                            var f10Index = 0;
 
                             text = System.Text.RegularExpressions.Regex.Replace(text, footNoteTextPattern, delegate (System.Text.RegularExpressions.Match m) {
                                 if (m.Groups != null && m.Groups.Count > 0) {
 
-                                    for (var i = 1; i < 8; i++) {
+                                    for (var i = 1; i < 11; i++) {
                                         var groupName = $"f{i}";
                                         if (m.Groups[groupName] != null && m.Groups[groupName].Success) {
                                             var groupValue = m.Groups[groupName].Value;
@@ -973,6 +979,9 @@ else {
                                                 case 5: { f5Index = footNoteIndex; break; }
                                                 case 6: { f6Index = footNoteIndex; break; }
                                                 case 7: { f7Index = footNoteIndex; break; }
+                                                case 8: { f8Index = footNoteIndex; break; }
+                                                case 9: { f9Index = footNoteIndex; break; }
+                                                case 10: { f10Index = footNoteIndex; break; }
                                             }
                                             footNoteIndex++;
                                         }
@@ -992,6 +1001,9 @@ else {
                                 if (m.Value == "*****") { footNoteRefIndex = f5Index; }
                                 if (m.Value == "******") { footNoteRefIndex = f6Index; }
                                 if (m.Value == "*******") { footNoteRefIndex = f7Index; }
+                                if (m.Value == "********") { footNoteRefIndex = f8Index; }
+                                if (m.Value == "*********") { footNoteRefIndex = f9Index; }
+                                if (m.Value == "**********") { footNoteRefIndex = f10Index; }
                                 var footnoteTitleText = string.Empty;
                                 var footnoteTitle = footNotes.Where(x => x.Index == footNoteRefIndex).FirstOrDefault();
                                 if (footnoteTitle.IsNotNull()) {

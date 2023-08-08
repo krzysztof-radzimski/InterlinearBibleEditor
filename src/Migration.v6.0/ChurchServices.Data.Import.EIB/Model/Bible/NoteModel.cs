@@ -7,7 +7,7 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         [XmlAttribute("n")] public string Number { get; set; }
         [XmlAttribute("t")] public NoteType Type { get; set; } = NoteType.Default;
 
-        [XmlElement("br", typeof(BreakLine))]
+        [XmlElement("br", typeof(BreakLineModel))]
         [XmlElement("a", typeof(Hyperlink))]
         [XmlElement("ref", typeof(NoteReferenceModel))]
         [XmlElement("span", typeof(SpanModel))]
@@ -39,6 +39,8 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             LiteratureAndNotes = literatureAndNotes;
         }
         public bool ShouldSerializeLiteratureAndNotes() => LiteratureAndNotes;
+
+        public override string ToString() => Text;
     }
 
     public class ReferenceIndex {

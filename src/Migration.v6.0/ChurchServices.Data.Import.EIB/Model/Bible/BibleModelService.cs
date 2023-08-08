@@ -138,10 +138,10 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                 }
                 else if (item is Osis.OsisBreakLine) {
                     if (verse != null) {
-                        verse.Items.Add(new BreakLine());
+                        verse.Items.Add(new BreakLineModel());
                     }
                     else {
-                        chapter.Items.Add(new BreakLine());
+                        chapter.Items.Add(new BreakLineModel());
                     }
                 }
             }
@@ -660,6 +660,84 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             if (nameOfBook == "Did") { return "Did"; }
             if (nameOfBook == "2Ezd") { return "2Esd"; }
             if (nameOfBook == "3Ezd") { return "3Esd"; }
+
+            return default;
+        }
+
+        public static int GetBookNumberFromLogosAbbreviation(string nameOfBook) {
+            if (nameOfBook == "Ge" || nameOfBook == "Gen") { return 10; }
+            if (nameOfBook == "Ex") { return 20; }
+            if (nameOfBook == "Le") { return 30; }
+            if (nameOfBook == "Nu") { return 40; }
+            if (nameOfBook == "Dt") { return 50; }
+
+            if (nameOfBook == "Jos") { return 60; }
+            if (nameOfBook == "Jdg") { return 70; }
+            if (nameOfBook == "Ru") { return 80; }
+
+            if (nameOfBook == "1Sa") { return 90; }
+            if (nameOfBook == "2Sa") { return 100; }
+            if (nameOfBook == "1Ki") { return 110; }
+            if (nameOfBook == "2Ki") { return 120; }
+            if (nameOfBook == "1Ch") { return 130; }
+            if (nameOfBook == "2Ch") { return 140; }
+
+
+            if (nameOfBook == "Ezr") { return 150; }
+            if (nameOfBook == "Ne") { return 160; }
+            if (nameOfBook == "Es") { return 190; }
+
+            if (nameOfBook == "Job") { return 220; }
+            if (nameOfBook == "Ps") { return 230; }
+            if (nameOfBook == "Pr") { return 240; }
+            if (nameOfBook == "Ec") { return 250; }
+            if (nameOfBook == "So") { return 260; }
+
+            if (nameOfBook == "Is") { return 290; }
+            if (nameOfBook == "Je") { return 300; }
+            if (nameOfBook == "La") { return 310; }
+            if (nameOfBook == "Eze") { return 330; }
+            if (nameOfBook == "Da") { return 340; }
+            if (nameOfBook == "Ho") { return 350; }
+            if (nameOfBook == "Joe") { return 360; }
+            if (nameOfBook == "Am") { return 370; }
+            if (nameOfBook == "Ob") { return 380; }
+            if (nameOfBook == "Jon") { return 390; }
+            if (nameOfBook == "Mic") { return 400; }
+            if (nameOfBook == "Na") { return 410; }
+            if (nameOfBook == "Hab") { return 420; }
+            if (nameOfBook == "Zep") { return 430; }
+            if (nameOfBook == "Hag") { return 440; }
+            if (nameOfBook == "Zec") { return 450; }
+            if (nameOfBook == "Mal") { return 460; }
+
+            if (nameOfBook == "Mt") { return 470; }
+            if (nameOfBook == "Mk") { return 480; }
+            if (nameOfBook == "Lk") { return 490; }
+            if (nameOfBook == "1Jn") { return 690; }
+            if (nameOfBook == "2Jn") { return 700; }
+            if (nameOfBook == "3Jn") { return 710; }
+            if (nameOfBook == "Jn") { return 500; }
+            if (nameOfBook == "Ac") { return 510; }
+            if (nameOfBook == "Ro") { return 520; }
+            if (nameOfBook == "1Co" || nameOfBook == "1Cor") { return 530; }
+            if (nameOfBook == "2Co" || nameOfBook == "2Cor") { return 540; }
+            if (nameOfBook == "Ga") { return 550; }
+            if (nameOfBook == "Eph") { return 560; }
+            if (nameOfBook == "Php") { return 570; }
+            if (nameOfBook == "Col") { return 580; }
+            if (nameOfBook == "1Th") { return 590; }
+            if (nameOfBook == "2Th") { return 600; }
+            if (nameOfBook == "1Ti") { return 610; }
+            if (nameOfBook == "2Ti") { return 620; }
+            if (nameOfBook == "Tt" || nameOfBook == "Titus") { return 630; }
+            if (nameOfBook == "Phm" || nameOfBook == "Phlm") { return 640; }
+            if (nameOfBook == "Heb") { return 650; }
+            if (nameOfBook == "Jas") { return 660; }
+            if (nameOfBook == "1Pe") { return 670; }
+            if (nameOfBook == "2Pe") { return 680; }           
+            if (nameOfBook == "Jud") { return 720; }
+            if (nameOfBook == "Re") { return 730; }
 
             return default;
         }
