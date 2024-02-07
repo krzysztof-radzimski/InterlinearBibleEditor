@@ -117,7 +117,18 @@ namespace ChurchServices.Data.Export {
 
             var ms = new MemoryStream();
             if (saveFormat == ExportSaveFormat.Docx) {
-                builder.Document.Save(ms, SaveFormat.Docx);
+                var saveOptions = new Aspose.Words.Saving.OoxmlSaveOptions(SaveFormat.Docx) {
+                    Compliance = OoxmlCompliance.Iso29500_2008_Transitional,
+                    AllowEmbeddingPostScriptFonts = true,
+                    CompressionLevel = 0,
+                    MemoryOptimization = false,
+                    PrettyFormat = true,
+                    UpdateLastSavedTimeProperty = true,
+                    UseHighQualityRendering = true,
+                    UseAntiAliasing = true,
+                    ExportGeneratorName = false
+                };
+                builder.Document.Save(ms, saveOptions);
             }
             else {
                 builder.Document.Save(ms, new PdfSaveOptions() {

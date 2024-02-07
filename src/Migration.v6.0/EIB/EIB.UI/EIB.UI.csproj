@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>disable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DevExpress.Utils" Version="23.1.5" />
+    <PackageReference Include="DevExpress.Win" Version="23.1.5" />
+    <PackageReference Include="DevExpress.Win.Design" Version="23.1.5" />
+    <PackageReference Include="DevExpress.Win.Dialogs" Version="23.1.5" />
+    <PackageReference Include="DevExpress.Win.Dialogs.Core" Version="23.1.5" />
+    <PackageReference Include="DevExpress.Win.RichEdit" Version="23.1.5" />
+    
+  </ItemGroup>
+
+</Project>

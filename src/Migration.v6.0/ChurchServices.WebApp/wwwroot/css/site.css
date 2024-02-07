@@ -1,4 +1,3 @@
-/*@import url('https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');*/
 @font-face {
     font-family: "SBL BibLit";
     src: url(SBL_BLit.ttf);
@@ -41,13 +40,10 @@
 .text-gradient-church-service {
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 170%;
-    background: -webkit-linear-gradient(300deg, #ED2C32 20%, #11b1ee 60%);
+    font-size: 120%;
     background-clip: text;
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-    -webkit-box-decoration-break: clone;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    text-align: left;
+    font-stretch:extra-condensed;
 }
 
 .smt-60 {
@@ -253,7 +249,7 @@ html {
 body {
     margin-bottom: 60px;
     background-color: #eef6ff;
-    background-image: url('../img/background-2021.jpg?ID=5');
+    background-image: url('../img/background-2024.jpg?ID=4');
     background-position: top center;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -546,7 +542,6 @@ hr.fancy-line {
 }
 
 @media (max-width: 1126px) and (min-width: 991px) {
-
     #WalicowLogo {
         max-width: 100%;
     }
@@ -708,7 +703,9 @@ img {
     padding-bottom: 10px;
     max-width: 90%;
 }
-
+.text-justify {
+    text-align: justify !important;
+}
 #translation-introduction {
     text-align: justify;
     font-size: 1.1rem !important;
@@ -751,7 +748,8 @@ img {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center center;
-    height: 335px;
+    min-height: 150px;
+    max-height: 300px;
 }
 
 .song-img {
@@ -899,6 +897,10 @@ img {
         margin-bottom: 10px;
     }
 
+.col-min-w-song-text {
+    min-width: 600px !important;
+}
+
 @media only screen and (min-width: 1830px) {
     #footnotes {
         padding-left: 25px;
@@ -927,6 +929,10 @@ img {
     #chapterContent {
         max-width: 90%;
     }
+
+    .col-min-w-song-text {
+        min-width: 700px !important;
+    }
 }
 /************************** DARK **********************************/
 @media (prefers-color-scheme: dark) {
@@ -940,7 +946,7 @@ img {
 
     body {
         background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
-        background-image: url('../img/background-2021-dark.jpg?ID=5');
+        background-image: url('../img/background-2024-dark.jpg?ID=2');
         color: #C8C8C8;
     }
 

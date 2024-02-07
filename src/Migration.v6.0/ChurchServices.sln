@@ -21,7 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChurchServices.Data.Export.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChurchServices.Data.Import.EIB", "ChurchServices.Data.Import.EIB\ChurchServices.Data.Import.EIB.csproj", "{6C2C8EF2-33E9-49C9-909E-5AC09609D51C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChurchServices.Data.Import.EIB.Test", "ChurchServices.Data.Import.EIB.Test\ChurchServices.Data.Import.EIB.Test.csproj", "{915517C6-78B4-408F-9FB5-BA9F199DA3F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChurchServices.Data.Import.EIB.Test", "ChurchServices.Data.Import.EIB.Test\ChurchServices.Data.Import.EIB.Test.csproj", "{915517C6-78B4-408F-9FB5-BA9F199DA3F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EIB", "EIB", "{ACE77261-DB45-49E9-8F14-BB1DD2ACAE64}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EIB.Data", "EIB\EIB.Data\EIB.Data.csproj", "{5EA8EC97-F735-4B26-8EA8-4221A1BA2990}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EIB.UI", "EIB\EIB.UI\EIB.UI.csproj", "{86D7AF5A-AF92-4E6B-93CB-ED71BF2A384A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,9 +117,29 @@ Global
 		{915517C6-78B4-408F-9FB5-BA9F199DA3F3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{915517C6-78B4-408F-9FB5-BA9F199DA3F3}.Release|ARM64.ActiveCfg = Release|Any CPU
 		{915517C6-78B4-408F-9FB5-BA9F199DA3F3}.Release|ARM64.Build.0 = Release|Any CPU
+		{5EA8EC97-F735-4B26-8EA8-4221A1BA2990}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EA8EC97-F735-4B26-8EA8-4221A1BA2990}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EA8EC97-F735-4B26-8EA8-4221A1BA2990}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{5EA8EC97-F735-4B26-8EA8-4221A1BA2990}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{5EA8EC97-F735-4B26-8EA8-4221A1BA2990}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EA8EC97-F735-4B26-8EA8-4221A1BA2990}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EA8EC97-F735-4B26-8EA8-4221A1BA2990}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{5EA8EC97-F735-4B26-8EA8-4221A1BA2990}.Release|ARM64.Build.0 = Release|Any CPU
+		{86D7AF5A-AF92-4E6B-93CB-ED71BF2A384A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86D7AF5A-AF92-4E6B-93CB-ED71BF2A384A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86D7AF5A-AF92-4E6B-93CB-ED71BF2A384A}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{86D7AF5A-AF92-4E6B-93CB-ED71BF2A384A}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{86D7AF5A-AF92-4E6B-93CB-ED71BF2A384A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86D7AF5A-AF92-4E6B-93CB-ED71BF2A384A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86D7AF5A-AF92-4E6B-93CB-ED71BF2A384A}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{86D7AF5A-AF92-4E6B-93CB-ED71BF2A384A}.Release|ARM64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5EA8EC97-F735-4B26-8EA8-4221A1BA2990} = {ACE77261-DB45-49E9-8F14-BB1DD2ACAE64}
+		{86D7AF5A-AF92-4E6B-93CB-ED71BF2A384A} = {ACE77261-DB45-49E9-8F14-BB1DD2ACAE64}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {29DF2951-BA29-445A-AFDA-9158048A4E6C}

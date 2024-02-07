@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.Data.Filtering;
 
 namespace ChurchServices.WinApp {
     public partial class SongsForm : RibbonForm {
@@ -27,6 +28,14 @@ namespace ChurchServices.WinApp {
             view.Properties.Add(new ViewProperty("BPM", SortDirection.None, "[BPM]", false, true));
             view.Properties.Add(new ViewProperty("Number", SortDirection.Ascending, "[Number]", false, true));
             view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+
+            string emptyValue = null;
+            var criteria = CriteriaOperator.And(
+                new BinaryOperator("YouTube", emptyValue, BinaryOperatorType.NotEqual), // Check for not null
+                new BinaryOperator("YouTube", String.Empty, BinaryOperatorType.NotEqual)    // Check for not empty
+            );
+
+            view.Properties.Add(new ViewProperty("YouTube", SortDirection.None, criteria, false, true));
 
             grid.DataSource = view;
             gridView.BestFitColumns();

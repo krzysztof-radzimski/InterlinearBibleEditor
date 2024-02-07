@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Informator Zborowy";
+}
+@model ChurchJournalData
+@section HeaderScripts{
+    <style>
+        .isDisabled {
+            color: currentColor;
+            cursor: not-allowed;
+            opacity: 0.5;
+            text-decoration: none;
+        }
+    </style>
+}
+<div class="max-width-1000" style="padding-top: 20px;">
+    @Html.Partial("~/Views/Shared/_Baner.cshtml")
+    <h1><i class="fas fa-circle-info"></i> @ViewData["Title"]</h1><br />
+    
+    @Html.Raw(Model.Data)    
+</div>

@@ -104,12 +104,18 @@
         <div class="col p-4 d-flex flex-column position-static">
             <div class="btn-group" style="max-width:150px;">
                 <a href="/articles" class="btn btn-light active d-inline-block text-decoration-none" title="Więcej artykułów" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
+                @{
+                    var _abstract = Model.Article.Lead;
+                    _abstract = System.Text.RegularExpressions.Regex.Replace(_abstract, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                        return " " + m.Value.Trim() + "&nbsp;";
+                    }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                }
+
                 <span class="btn btn-light d-inline-block text-success fw-bold" role="button">@Model.Article.Type.GetDescription()</span>
-                @*<a class="btn btn-light active d-inline-block text-decoration-none" style="cursor: pointer" onclick="copyToClipboard3('@speecheloText')" title="Kopiuj treść artykułu dla Speechelo"><i class="fa-solid fa-bullhorn" style="width:18px;"></i></a>*@
-            </div>
+             </div>
             <h3 class="mb-0 text-gradient-church-service">@Model.Article.Subject</h3>
             <p class="mb-auto fst-italic">@Model.Article.AuthorName</p>
-            <p class="mb-auto">@Model.Article.Lead</p>
+            <p class="mb-auto">@Html.Raw(_abstract)</p>
             <div class="mb-1 text-muted">@Html.Raw(Model.Article.Date.GetDatePl())</div>
         </div>
 

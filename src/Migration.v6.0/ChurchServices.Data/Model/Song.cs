@@ -53,7 +53,7 @@ namespace ChurchServices.Data.Model {
             set { SetPropertyValue(nameof(Type), ref type, value); }
         }
 
-        // [NonPersistent] public string TypeDescription => Type.GetDescription(); 
+        //   [NonPersistent] public bool YoutubeLinkAdded => YouTube.IsNotNullOrEmpty();
 
         [Association("SongVerses")]
         public XPCollection<SongVerse> SongVerses {

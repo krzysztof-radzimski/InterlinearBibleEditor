@@ -8,6 +8,9 @@
     var priorSong = Model.IsNotNull() && Model.Song.Number > 1 ? Model.Song.Number - 1 : 1;
     var nextSong = Model.IsNotNull() && Model.Song.Number < Model.MaxNumber ? Model.Song.Number + 1 : Model.MaxNumber;
 
+    var downloadFileNameDocx = Model.IsNotNull() ? $"{Model.Song.Number}-{Model.Song.Name.Replace(" ", "-").RemovePolishChars()}.docx" : "";
+    var downloadFileNamePdf = Model.IsNotNull() ? $"{Model.Song.Number}-{Model.Song.Name.Replace(" ","-").RemovePolishChars()}.pdf" : "";
+
 }
 @inject IConfiguration Configuration
 
@@ -27,12 +30,15 @@
 
 @if (Model != null) {
     <div class="row shadow-lg" style="max-width: 1040px; margin: auto;">
-        <div class="col p-4 d-flex flex-column position-static">
+        <div class="col p-4 d-flex flex-column position-static" style="padding: 0px !important;">
             <div class="btn-group" >
                 <a href="/Songs" class="btn btn-light active d-inline-block text-decoration-none" title="Więcej pieśni" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
                 
                 <span class="btn btn-light d-inline-block text-success fw-bold" role="button" style="text-align: left;">@Model.Song.Number. @Model.Song.Name</span>
-                <span class="btn btn-light d-inline-block text-success" role="button" style="text-align: left;">Syg.:&nbsp;<b>@Model.Song.Signature</b> BPM:&nbsp;<b>@Model.Song.BPM</b></span>
+                <span class="btn btn-light d-inline-block text-success" role="button" style="text-align: left;">Syg.:&nbsp;<b>@Model.Song.Signature</b> BPM:&nbsp;<b>@Model.Song.BPM</b>
+                    &nbsp;<a href="/api/SongDownload?q=@Model.Song.Number,docx"><i class="fa-solid fa-file-word"></i></a>
+                    &nbsp;<a href="/api/SongDownload?q=@Model.Song.Number,pdf"><i class="fa-solid fa-file-pdf"></i></a>
+                </span>
                 <span class="btn btn-light d-inline-block text-success fw-bold" role="button" style="max-width: 120px;">@Model.Song.Type.GetDescription()</span>
             </div>
         
@@ -66,7 +72,7 @@
         @foreach (var item in Model.Song.GetParts()) {
             <div class="row">
                 @if (item.Type == SongVerseType.Chorus) {
-                    <div class="col mt-3 quote2 col-auto">
+                    <div class="col mt-3 quote2 col-auto col-min-w-song-text">
                         @Html.Raw(item.Text)
                         &nbsp;
                     </div>
@@ -76,7 +82,7 @@
 
                 }
                 else if (item.Type == SongVerseType.Default) {
-                    <div class="col mt-3 col-auto">
+                    <div class="col mt-3 col-auto col-min-w-song-text">
                         @Html.Raw(item.Text)
                     </div>
                     <div class="col-auto mt-3 mw-138 ml-6">
@@ -84,7 +90,7 @@
                     </div>
                 }
                 else if (item.Type == SongVerseType.Bridge) {
-                    <div class="col mt-3 fst-italic col-auto">
+                    <div class="col mt-3 fst-italic col-auto col-min-w-song-text">
                         @Html.Raw(item.Text)
                     </div>
                     <div class="col-auto mt-3 mw-138 ml-6">
