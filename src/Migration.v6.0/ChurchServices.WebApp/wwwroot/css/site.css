@@ -13,6 +13,11 @@
     src: url(SBL_Hbrw.ttf);
 }
 
+@font-face {
+    font-family: "Old London";
+    src: url(OldLondon.ttf);
+}
+
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -31,6 +36,12 @@
 
 .greek-font {
     font-family: "SBL Greek" !important;
+}
+
+.OldLondonH1 {
+    text-align: center;
+    font-family: 'Old London';
+    font-size: 600%
 }
 
 .card {
@@ -482,6 +493,12 @@ hr.fancy-line {
     margin-bottom: 1em;
     cursor: pointer;
 }
+#course {
+    border-radius: 0.5em;
+    margin-bottom: 1em;
+    cursor: pointer;
+    width: 100%;
+}
 
 #footnotes {
     padding-bottom: 3rem;
@@ -529,6 +546,10 @@ hr.fancy-line {
     #WalicowLogo {
         max-width: 100%;
     }
+
+    .OldLondonH1 {
+        font-size: 400%;
+    }
 }
 
 @media (max-width: 991px) and (min-width: 768px) {
@@ -539,11 +560,18 @@ hr.fancy-line {
     #WalicowLogo {
         max-width: 100%;
     }
+
+    .OldLondonH1 {
+        font-size: 300%;
+    }
 }
 
 @media (max-width: 1126px) and (min-width: 991px) {
     #WalicowLogo {
         max-width: 100%;
+    }
+    .OldLondonH1 {
+        font-size: 400%;
     }
 }
 

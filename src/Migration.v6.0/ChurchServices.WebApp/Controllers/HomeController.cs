@@ -12,11 +12,11 @@
   ===================================================================================*/
 
 namespace ChurchServices.WebApp.Controllers {
-    public class HomeController : Controller {
+    public class HomeController : ChurchControllerBase {
         private readonly ILogger<HomeController> Logger;
 
         private readonly ITranslationInfoController TranslationInfoController;
-        public HomeController(ILogger<HomeController> logger, ITranslationInfoController translationInfoController) {
+        public HomeController(ILogger<HomeController> logger, ITranslationInfoController translationInfoController, IWebHostEnvironment webHostEnvironment) : base(webHostEnvironment) {
             Logger = logger;
             TranslationInfoController = translationInfoController;
         }
@@ -25,7 +25,8 @@ namespace ChurchServices.WebApp.Controllers {
             return View(TranslationInfoController.GetLastFourArticles());
         }
 
-        public IActionResult WhatWeBelieve() => View();
+        public IActionResult WhatWeBelieve() => View(GetConfessionFileData());
+        private HtmlFileData GetConfessionFileData() => GetFileData("download\\confession.html", "Nie udało się wczytać wyznania wiary.");
 
         public IActionResult About() => View();
 
@@ -49,5 +50,5 @@ namespace ChurchServices.WebApp.Controllers {
         public IActionResult Error() {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-    }       
+    }
 }

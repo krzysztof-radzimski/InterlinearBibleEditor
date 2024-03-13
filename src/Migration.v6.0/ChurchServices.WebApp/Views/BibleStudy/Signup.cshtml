@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Studium biblijne - Rejestracja";
+}
+@inject IConfiguration Configuration
+@model BibleStudyUserModel
+
+<div class="clearfix max-width-1000" style="padding-top: 20px;">
+    @Html.Partial("~/Views/Shared/_CourseBaner.cshtml")
+
+    <h2>Rejestracja / Logowanie</h2>
+    <form asp-controller="BibleStudy" asp-action="Register" method="post">
+        <div class="mb-3">
+            <label asp-for="EmailAddress" class="form-label"></label>
+            <input asp-for="EmailAddress" type="email" class="form-control" aria-describedby="emailHelp">
+            <span asp-validation-for="EmailAddress"></span>
+            <div id="emailHelp" class="form-text">Nigdy nie udostępniamy Twojego adresu e-mail. Służy on jedynie do komunikacji z osobą prowadzącą studium.</div>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label"></label>
+            <input asp-for="Password" type="password" class="form-control" aria-describedby="passwordHelp">
+            <span asp-validation-for="Password"></span>
+            <div id="passwordHelp" class="form-text">Hasło jest potrzebne do zabezpieczenia twoich postępów w studium.</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Zarejestruj</button>
+    </form>
+</div>

@@ -14,20 +14,12 @@
 namespace ChurchServices.WebApp.Controllers {
     [Route("/informator")]
     [Route("/churchjournal")]
-    public class ChurchJournalController : Controller {
-        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
-        public ChurchJournalController(Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment) {
-            _hostingEnvironment = hostingEnvironment;
-        }
-        public IActionResult Index() => View(GetJournalFilePath());
-        private ChurchJournalData GetJournalFilePath() {
-            var filePath = _hostingEnvironment.WebRootPath + "/download/journal/journal.html";
-            if (System.IO.File.Exists(filePath)) {
-                var data = System.IO.File.ReadAllText(filePath);
-                return new ChurchJournalData() { Data = data };
-            }
-            return new ChurchJournalData() { Data = "<p>Nie udało się wczytać listy informatorów zborowych.</p>" };
-        }
+    public class ChurchJournalController : ChurchControllerBase {
+        public ChurchJournalController(IWebHostEnvironment webHostEnvironment) : base(webHostEnvironment) { }
+        public IActionResult Index() => View(GetJournalFileData());
+        [Route("/legalacts")]
+        public IActionResult LegalActs() => View(GetLegalActsFileData());
+        private HtmlFileData GetJournalFileData() => GetFileData("download\\journal\\journal.html", "Nie udało się wczytać listy informatorów zborowych.");
+        private HtmlFileData GetLegalActsFileData() => GetFileData("download\\legalacts\\index.html", "Nie udało się wczytać listy aktów prawnych.");
     }
-    public class ChurchJournalData { public string Data { get; set; } }
 }

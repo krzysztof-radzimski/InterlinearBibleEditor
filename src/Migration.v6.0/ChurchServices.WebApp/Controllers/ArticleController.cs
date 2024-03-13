@@ -11,6 +11,10 @@
 
   ===================================================================================*/
 
+using ChurchServices.Data.Export;
+using ChurchServices.Data.Model;
+using Microsoft.SqlServer.Server;
+
 namespace ChurchServices.WebApp.Controllers {
     public class ArticleController : Controller {
         protected readonly IConfiguration Configuration;
@@ -70,6 +74,60 @@ namespace ChurchServices.WebApp.Controllers {
                         return new MemoryStream(article.AuthorPicture);
                     }
                 }
+            }
+            return default;
+        }
+    }
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ArticleDownloadController : Controller {
+        protected readonly IConfiguration Configuration;
+        protected ExportSaveFormat Format { get; }
+        public ArticleDownloadController(IConfiguration configuration) {
+            Configuration = configuration;
+        }
+        [HttpGet]
+        public async Task<IActionResult> Get() {
+            var qs = Request.QueryString;
+
+            if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 5) {
+                var queryString = HttpUtility.UrlDecode(qs.Value).RemoveAny("?q=");
+                DownloadStreamResult result;
+                try {
+                    result = await CreateStream(queryString);
+                }
+                catch (AuthException) {
+                    return new RedirectResult("/Account/Index?ReturnUrl=" + Request.Path + HttpUtility.UrlDecode(Request.QueryString.Value));
+                }
+                if (result.IsNull()) { return NotFound(); }
+                return File(result.Stream, Format.GetDescription(), result.FileName);
+            }
+
+            return NotFound();
+        }
+
+        private async Task<DownloadStreamResult> CreateStream(string queryString) {
+            var fileName = String.Empty;
+            var paramsTable = queryString.Split(',');
+            var article = new XPQuery<Article>(new UnitOfWork()).Where(x=> x.Oid == paramsTable[0].ToInt()).FirstOrDefault();
+            if (article != null) {
+                fileName = $"{article.Subject.Replace(" ", "-").RemovePolishChars()}.{paramsTable[1]}";
+                ExportSaveFormat saveFormat = paramsTable[1] == "docx" ? ExportSaveFormat.Docx : ExportSaveFormat.Pdf;
+                byte[] licData = await GetLicData();
+                var host = (this.Request.IsHttps ? "https://" : "http://") + this.Request.Host;
+                var exporter = new ArticleExporter(licData, host);
+                return new DownloadStreamResult { Stream = new MemoryStream(exporter.Export(article, saveFormat)), FileName = fileName };
+            }
+            return default;
+        }
+
+        private async Task<byte[]> GetLicData() {
+            var licPath = Configuration["AsposeLic"];
+            var licInfo = new System.IO.FileInfo(licPath);
+
+            if (licInfo.Exists) {
+                return await System.IO.File.ReadAllBytesAsync(licPath);
             }
             return default;
         }

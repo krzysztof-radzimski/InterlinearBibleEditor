@@ -14,47 +14,27 @@
             if (item is ChurchServices.WebApp.Controllers.ArticleInfo) {
                 var _item = item as ChurchServices.WebApp.Controllers.ArticleInfo;
                 var lead = _item.Lead;
+                lead = System.Text.RegularExpressions.Regex.Replace(lead, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                    return " " + m.Value.Trim() + "&nbsp;";
+                }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
                 <a href="../Article?id=@item.Id" class="list-group-item list-group-item-action m-0 border-0" aria-current="true" style="padding-left: 0; padding-right: 0;">
                     <div class="card bg-transparent m-0 p-0 shadow-lg">
                         <div class="row g-0 m-0">
-                            <div class="col-md-4 col-auto d-none d-lg-block">
-                                <div class="col-auto d-none d-lg-block" style="background-image: url('data:image/png;base64, @_item.AuthorPicture'); background-repeat: no-repeat; background-position: center center; background-size: cover; max-width: 350px; width: 100%; height: 245px;"></div>
+                            <div class="col-md-4 d-lg-block">
+                                <div class="d-lg-block" style="background-image: url('data:image/png;base64, @_item.AuthorPicture'); background-repeat: no-repeat; background-position: center center; background-size: cover; max-width: 350px; width: 100%; height: 245px;"></div>
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <h3 class="card-title text-gradient-church-service">@item.Subject</h3>
-                                    <p class="card-text" style="line-height: 1.3;">@lead</p>
+                                    <p class="card-text" style="line-height: 1.3;">@Html.Raw(lead)</p>
                                     <p class="card-text" style="line-height: 0.9;"><small class="text-muted">@item.AuthorName <br /> @item.GetDaysAgo()</small></p>
                                 </div>
                                 <strong class="d-inline-block mb-2 text-success pill-white float-end" style="right: 15px; bottom: 15px; position: absolute;">@_item.Type</strong>
                             </div>
                         </div>
                     </div>
-                </a>
-
-                @*if (lead.Length > 130) {
-                    lead = lead.Substring(0, 130) + "...";
-                }
-
-                <div class="col-sm-6" style="padding: 0;">
-                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-lg h-md-250 position-relative" id="article-cell">
-                        <div class="col p-4 d-flex flex-column position-static">
-                            <strong class="d-inline-block mb-2 text-success pill-white">@_item.Type</strong>
-                            <h3 class="mb-0">@item.Subject</h3>
-                            <div class="mb-1 text-muted">@Html.Raw(item.Date.GetDatePl())</div>
-                            <p class="mb-auto fst-italic">@item.AuthorName</p>
-                            <p class="mb-auto">@lead</p>
-                            <a href="../Article?id=@item.Id" class="stretched-link">Czytaj dalej...</a>
-                        </div>
-
-                        @if (!String.IsNullOrEmpty(_item.AuthorPicture)) {
-                            <div class="col-auto d-none d-lg-block" style="background-image: url('data:image/png;base64, @_item.AuthorPicture'); background-repeat: no-repeat; background-position: center center; background-size: cover; max-width: 350px; width: 40%; "></div>
-                        }
-
-                    </div>
-                </div>
-        *@
+                </a>                               
             }
             else {
                 if (!_listView) {
@@ -69,8 +49,7 @@
                 </div>
 
                 @if (item == Model.LastOrDefault()) {
-                    @Html.Raw(@"</div>")
-                    ;
+                    @Html.Raw(@"</div>")                    
                 }
             }
         }

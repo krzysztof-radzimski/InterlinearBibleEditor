@@ -14,50 +14,9 @@
 </html> ";
     document.LoadHtml(html);
     var xpath = "//*[self::h1 or self::h2 or self::h3 or self::h4 or self::h5]";
-    @*var xpath2 = "//*[self::h1 or self::h2 or self::h3 or self::h4 or self::h5 or self::p or self::ol or self::ul]";
-    HtmlAgilityPack.HtmlNodeCollection speecheloElements = null;
-   
-    //try
-    //{
-    //    var firstDiv = document.DocumentNode.Descendants("div").FirstOrDefault();
-    //    if (firstDiv != null)
-    //    {
-    //        speecheloElements = firstDiv.SelectNodes(xpath2);
-    //        @foreach (var e in speecheloElements)
-    //        {
-    //            var footnotes = e.Descendants().Where(x => x.Name == "a" && x.Attributes["id"] != null && x.Attributes["id"].Value.StartsWith("ref-fn")).ToArray();
-    //            for (int i = footnotes.Length - 1; i >= 0; i--)
-    //            {
-    //                footnotes[i].InnerHtml = "";
-    //            }
-
-    //            e.InnerHtml = System.Text.RegularExpressions.Regex.Replace(e.InnerHtml, @"[\u0590-\u05FF\u200f\u200e]+", "");
-    //        }
-
-    //    }
-    //}
-    //catch { 
     
-    //}
-    *@
     var headings = document.DocumentNode.SelectNodes(xpath);
-
-    @*
-    //var speecheloPart = 1;
-    //var speecheloPartLen = 18000;
-    //var speecheloText = @"[startSpeech v=Loud rate=""+20%"" p=Low startSpeech] ";
-    //@foreach (var e in speecheloElements) {       
-    //    speecheloText += $" [breathing]{e.InnerText.Replace("&nbsp;", " ")}";
-    //    if (speecheloText.Length > (speecheloPartLen * speecheloPart)) {
-    //        speecheloText += @$" [endSpeech] -------------------- Part {speecheloPart} -------------------- [startSpeech v=Loud rate=""+20%"" p=Low startSpeech]";
-    //        speecheloPart++;
-    //    }
-    //}
-    //speecheloText += " [endSpeech]";
-    //speecheloText = speecheloText.Replace("( )", "").Replace("()", "").Replace("'", "").Replace("-", "");
-    //speecheloText = Regex.Replace(speecheloText, @"\s+", @" ");
-    //speecheloText = Regex.Replace(speecheloText, @"(\[breathing\]((\s)+)?)+", @"[breathing] ");
-    *@
+       
     ViewData["ContainerClass"] = headings != null && headings.Count > 0 ? "container-translation" : "";
 }
 @inject IConfiguration Configuration
@@ -101,6 +60,7 @@
     ViewData["Title"] = @Model.Article.Subject;
 
     <div class="row shadow-lg article-width">
+       
         <div class="col p-4 d-flex flex-column position-static">
             <div class="btn-group" style="max-width:150px;">
                 <a href="/articles" class="btn btn-light active d-inline-block text-decoration-none" title="Więcej artykułów" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
@@ -109,9 +69,19 @@
                     _abstract = System.Text.RegularExpressions.Regex.Replace(_abstract, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
                         return " " + m.Value.Trim() + "&nbsp;";
                     }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                    var url1 = $"/api/ArticleDownload?q={Model.Article.Oid},docx";
+                    var url2 = $"/api/ArticleDownload?q={Model.Article.Oid},pdf";
                 }
 
                 <span class="btn btn-light d-inline-block text-success fw-bold" role="button">@Model.Article.Type.GetDescription()</span>
+
+                <span class="btn btn-light d-inline-block text-success" role="button">
+                    <a href="@url1"><i class="fa-solid fa-file-word"></i></a>                    
+                </span>
+                <span class="btn btn-light d-inline-block text-success" role="button">                    
+                    <a href="@url2"><i class="fa-solid fa-file-pdf"></i></a>
+                </span>
              </div>
             <h3 class="mb-0 text-gradient-church-service">@Model.Article.Subject</h3>
             <p class="mb-auto fst-italic">@Model.Article.AuthorName</p>
@@ -120,7 +90,7 @@
         </div>
 
         @if (Model.Article.AuthorPicture.IsNotNull()) {
-            <div class="col-auto d-none d-lg-block" style="background-image: url('data:image/png;base64, @Convert.ToBase64String(Model.Article.AuthorPicture)'); background-position: center center; background-repeat: no-repeat; background-size: cover; max-width: 350px; width: 40%;"></div>
+            <div class="d-lg-block" style="background-image: url('data:image/png;base64, @Convert.ToBase64String(Model.Article.AuthorPicture)'); background-position: center center; background-repeat: no-repeat; background-size: cover; max-width: 350px; width: 100%; min-height: 245px;"></div>
         }
     </div>
     <div class="article-width">
@@ -135,11 +105,6 @@
 
         @Html.Raw(text)
     </div>
-
-
-
-
-
 }
 else {
     <div style="max-width: 1025px; margin: auto; padding-top: 20px;">

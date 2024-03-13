@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Informator Zborowy";
 }
-@model ChurchJournalData
+@model HtmlFileData
 @section HeaderScripts{
     <style>
         .isDisabled {
@@ -16,5 +16,8 @@
     @Html.Partial("~/Views/Shared/_Baner.cshtml")
     <h1><i class="fas fa-circle-info"></i> @ViewData["Title"]</h1><br />
     
-    @Html.Raw(Model.Data)    
+    @if (Model != null)
+    {
+        @Html.Raw(Model.Data)
+    }
 </div>

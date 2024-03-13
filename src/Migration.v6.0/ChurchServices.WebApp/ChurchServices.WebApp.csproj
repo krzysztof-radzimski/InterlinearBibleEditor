@@ -17,7 +17,8 @@
     <PackageReference Include="DevExpress.Xpo" Version="23.1.5" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
     <PackageReference Include="LinqKit.Core" Version="1.2.2" />    
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.6" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.6" />    
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +29,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\download\journal\2024\" />
+    <Folder Include="wwwroot\download\study\" />
   </ItemGroup>
 
 </Project>

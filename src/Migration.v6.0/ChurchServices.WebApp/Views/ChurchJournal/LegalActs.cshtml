@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Materiały dla liderów";
+    ViewData["Title"] = "Akty prawne";
 }
 @model HtmlFileData
 @section HeaderScripts {
@@ -7,12 +7,17 @@
         h1, h2 {
             margin-top: 20px;
         }
+
+        a {
+            text-decoration: none;
+        }
     </style>
 }
-
 <div class="max-width-1000" style="padding-top: 20px;">
     @Html.Partial("~/Views/Shared/_Baner.cshtml")
-    <h1><i class="fas fa-book-reader"></i> @ViewData["Title"]</h1><br />
+    <h1><i class="fas fa-file-contract"></i> @ViewData["Title"]</h1><br />
 
-    @Html.Raw(Model.Data)
+    @if (Model != null) {
+        @Html.Raw(Model.Data)
+    }
 </div>

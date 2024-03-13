@@ -3,43 +3,61 @@
 }
 @inject IConfiguration Configuration
 
+@section HeaderScripts {
+    <style>
+        #start-button {
+            color: darkred !important;
+            font-size: 200%;
+            padding: 0.5em;
+            border-radius: 0.5em;
+        }
+
+            #start-button:hover {
+                color: red !important;
+            }
+    </style>
+}
+
 <div class="clearfix max-width-1000" style="padding-top: 20px;">
-    <img src="~/img/Course.svg" class="shadow-lg" style="border-radius: 0.5em; margin-bottom: 1em;" />
-    <div class="input-group" style="margin: auto; padding-bottom: 1em;">
-        <a class="btn btn-dark fs-4" style="margin: auto;" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSf1tpZL3XUfnvNo2GINhIvUgJpW_ThdM2yMg75iNdUoJP7Idw/viewform?vc=0&c=0&w=1&flr=0&usp=mail_form_link"><i class="fa-regular fa-paper-plane"></i>&nbsp;Wypełnij formularz i&nbsp;rozpocznij studium on-line</a>
-    </div>
+    @Html.Partial("~/Views/Shared/_CourseBaner.cshtml")
+
 
     <h2>Zasady studium</h2>
     <p class="fs-5">Celem studium jest poznanie Boga i&nbsp;zbliżenie się do Niego poprzez Jego Święte Słowo. W&nbsp;osiągnięciu tego celu pomocne będą poniższe zasady:</p>
     <ol>
         <li>
-            Zachęcamy, aby w&nbsp;pierwszej kolejności korzystać z&nbsp;Biblii. Użyty przekład Pisma Świętego nie jest tu istotny o&nbsp;ile
-            jest on tłumaczeniem z&nbsp;języków oryginalnych i&nbsp;nie jest parafrazą lub przekładem dynamicznym.
-            Zachęcamy do korzystania z&nbsp;takiej Biblii, jaka jest dostępna w&nbsp;twoim domu.
+            W&nbsp;pierwszej kolejności korzystaj z&nbsp;Biblii. Użyty przekład Pisma Świętego nie jest tu istotny o&nbsp;ile
+            jest on tłumaczeniem z&nbsp;języków oryginalnych i&nbsp;nie jest parafrazą lub przekładem dynamicznym.<br />
+            <b>Zachęcamy do korzystania z&nbsp;takiej Biblii, jaka jest dostępna w&nbsp;twoim domu.</b>
             Jeżeli nie posiadasz egzemplarza drukowanego, to możesz użyć jednego z&nbsp;przekładów dostępnych na naszej stronie,
             np. <a href="/BW">Biblii Warszawskiej</a>. Dopiero w&nbsp;dalszej kolejności można skorzystać z&nbsp;komentarzy, atlasów, konkordancji i&nbsp;wszelkich słowników.
         </li>
         <li>Zachęcamy, aby wysyłać pracę w terminie jednego tygodnia, wierzymy, że będzie to miało lepszy wpływ na naukę i&nbsp;zrozumienie.</li>
         <li>Każda lekcja zawiera link do filmu na naszym kanale YouTube. Można go obejrzeć po przeczytaniu zadanego fragmentu, dzięki temu łatwiej będzie odpowiadać na pytania.</li>
-        <li>Odpowiedzi należy wysyłać w&nbsp;formie pliku edytowalnego (MS Word), aby prowadzący kurs mógł nanieść swoje komentarze.</li>
     </ol>
 
+    <p style="text-align: center;">
+        <a id="start-button" class="btn btn-warning" title="Rozpocznij studium biblijne" href="/BibleStudy/Signup">Rozpocznij studium biblijne</a>
+    </p>
+
     <h3>Zachęta:</h3>
-    <p class="fs-5">
-        „Całe Pismo przez Boga jest natchnione i&nbsp;pożyteczne do nauki, do wykrywania błędów, do
-        poprawy, do wychowywania w sprawiedliwości, aby człowiek Boży był doskonały, do
-        wszelkiego dobrego dzieła przygotowany.” 2&nbsp;Tym&nbsp;3:16-17
-    </p>
-    <p class="fs-5">
-        „Bo Słowo Boże jest żywe i&nbsp;skuteczne, ostrzejsze niż wszelki miecz obosieczny, przenikające
-        aż do rozdzielenia duszy i&nbsp;ducha, stawów i&nbsp;szpiku, zdolne osądzić zamiary i&nbsp;myśli serca;” Hbr&nbsp;4:12
-    </p>
-    <p class="fs-5">
-        „Z&nbsp;całego serca szukam ciebie, Nie daj mi zboczyć od przykazań twoich! W&nbsp;sercu moim
-        przechowuję słowo twoje, Abym nie zgrzeszył przeciwko tobie. Błogosławiony Tyś, Panie.
-        Naucz mię ustaw twoich!” Psalm&nbsp;119:10-12
-    </p>
-    <div class="input-group" style="margin: auto; padding-bottom: 1em;">
-        <a class="btn btn-dark fs-4" style="margin: auto;" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSf1tpZL3XUfnvNo2GINhIvUgJpW_ThdM2yMg75iNdUoJP7Idw/viewform?vc=0&c=0&w=1&flr=0&usp=mail_form_link"><i class="fa-regular fa-paper-plane"></i>&nbsp;Wypełnij formularz i&nbsp;rozpocznij studium on-line</a>
-    </div>
+    <figure class="text-center">
+        <blockquote class="blockquote">
+            „Całe Pismo przez Boga jest natchnione i&nbsp;pożyteczne do nauki, do wykrywania błędów, do
+            poprawy, do wychowywania w sprawiedliwości, aby człowiek Boży był doskonały, do
+            wszelkiego dobrego dzieła przygotowany.”
+        </blockquote>
+        <figcaption class="blockquote-footer"><a href="/BW/620/3/16,17" target="_blank">2 list do Tymoteusza 3:16-17</a></figcaption>
+        <blockquote class="blockquote">
+            „Bo Słowo Boże jest żywe i&nbsp;skuteczne, ostrzejsze niż wszelki miecz obosieczny, przenikające
+            aż do rozdzielenia duszy i&nbsp;ducha, stawów i&nbsp;szpiku, zdolne osądzić zamiary i&nbsp;myśli serca;”
+        </blockquote>
+        <figcaption class="blockquote-footer"><a href="/BW/650/4/12" target="_blank">List do Hebrajczyków&nbsp;4:12</a></figcaption>
+        <blockquote class="blockquote">
+            „Z&nbsp;całego serca szukam ciebie, Nie daj mi zboczyć od przykazań twoich! W&nbsp;sercu moim
+            przechowuję słowo twoje, Abym nie zgrzeszył przeciwko tobie. Błogosławiony Tyś, Panie.
+            Naucz mię ustaw twoich!”
+        </blockquote>
+        <figcaption class="blockquote-footer"><a href="/BW/230/119/10,11,12" target="_blank">Psalm&nbsp;119:10-12</a></figcaption>
+    </figure>
 </div>

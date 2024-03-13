@@ -60,7 +60,7 @@ namespace ChurchServices.WebApp.Controllers {
 
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 5) {
                 var queryString = HttpUtility.UrlDecode(qs.Value).RemoveAny("?q=");
-                SongStreamResult result;
+                DownloadStreamResult result;
                 try {
                     result= await CreateStream(queryString);
                 }
@@ -74,7 +74,7 @@ namespace ChurchServices.WebApp.Controllers {
             return NotFound();
         }
 
-        private async Task<SongStreamResult> CreateStream(string queryString) {
+        private async Task<DownloadStreamResult> CreateStream(string queryString) {
             var fileName = String.Empty;
             var paramsTable = queryString.Split(',');
             var song = new XPQuery<Song>(new UnitOfWork()).Where(x => x.Number == paramsTable[0].ToInt()).FirstOrDefault();
@@ -83,8 +83,8 @@ namespace ChurchServices.WebApp.Controllers {
                 ExportSaveFormat saveFormat = paramsTable[1] == "docx" ? ExportSaveFormat.Docx : ExportSaveFormat.Pdf;
                 byte[] licData = await GetLicData();
                 var host = (this.Request.IsHttps ? "https://" : "http://") + this.Request.Host;
-                var songExporter = new SongExporter(licData, host);
-                return new SongStreamResult { Stream = new MemoryStream(songExporter.Export(song, saveFormat)), FileName = fileName };
+                var exporter = new SongExporter(licData, host);
+                return new DownloadStreamResult { Stream = new MemoryStream(exporter.Export(song, saveFormat)), FileName = fileName };
             }
 
             return default;
@@ -101,7 +101,7 @@ namespace ChurchServices.WebApp.Controllers {
         }
     }
 
-    class SongStreamResult {
+    internal class DownloadStreamResult {
         public Stream Stream { get; set; }
         public string FileName { get; set; }
     }

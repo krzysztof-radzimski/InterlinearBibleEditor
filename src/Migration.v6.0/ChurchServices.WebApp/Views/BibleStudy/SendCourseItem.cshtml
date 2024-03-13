@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Studium biblijne";
+    var userName = this.ViewContext.HttpContext.User.Identity?.Name;
+}
+@inject IConfiguration Configuration
+@model BibleStudyUserModel
+<div class="clearfix max-width-1000" style="padding-top: 20px;">
+    @if (Model.Data != null) {
+        <p style="text-align: right;"><i class="fa-solid fa-user"></i> @userName</p>
+        <h1 style="text-align:center;"><b>Studium biblijne</b><br />na podstawie Ewangelii wg św. Jana</h1>
+        <br />
+
+        <h2>Błąd</h2>
+        <div class="alert alert-warning" role="alert">@Model.Data</div>
+        <p id="start-button-p">
+            <a id="start-button" class="btn btn-primary" href="/BibleStudy/Register">Wróć do edycji</a>
+        </p>
+    }
+    else {
+        <p style="text-align: right;"><i class="fa-solid fa-user"></i> @userName</p>
+        <h1 style="text-align:center;"><b>Studium biblijne</b><br />na podstawie Ewangelii wg św. Jana</h1>
+        <br />
+
+        <h2>Zapisano zmiany i wysłano je do prowadzącego kurs</h2>
+        <div class="alert alert-secondary" role="alert">Twoje odpowiedzi zostały wysłane.</div>
+        <p id="start-button-p">
+            <a id="start-button" class="btn btn-primary" href="/BibleStudy/Register">Wróć do edycji</a>
+        </p>
+
+    }
+</div>
