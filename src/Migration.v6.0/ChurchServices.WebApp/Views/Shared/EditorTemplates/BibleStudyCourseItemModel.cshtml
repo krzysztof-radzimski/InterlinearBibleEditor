@@ -1,5 +1,8 @@
 ﻿@model BibleStudyCourseItemModel
-<input asp-for="@Model.Index" type="hidden"/>
+@{
+    var userName = this.ViewContext.HttpContext.User.Identity?.Name;
+}
+<input asp-for="@Model.Index" type="hidden" />
 @Html.DisplayFor(model => model.Index))
 
 <b>
@@ -9,3 +12,16 @@
 <br />
 <textarea asp-for="@Model.QuestionAnswer" class="form-control" style="min-height: 100px; width: 100%;"></textarea>
 <br />
+@if (userName == "info@kosciol-jezusa.pl") {
+    <b style="color:darkgreen">Komentarz</b>
+    <br />
+    <textarea asp-for="@Model.TeacherComment" class="form-control" style="min-height: 100px; width: 100%; background-color: darkgreen; color:white;"></textarea>
+    <br />
+}
+else if (Model.TeacherComment.IsNotNullOrEmpty()) {
+    <p style="color:darkgreen">
+        <input asp-for="@Model.TeacherComment" type="hidden" />
+        &nbsp;@Html.DisplayFor(model => model.TeacherComment)
+    </p>
+    <br />
+}

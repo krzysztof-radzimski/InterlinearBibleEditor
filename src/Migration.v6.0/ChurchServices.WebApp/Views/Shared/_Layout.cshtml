@@ -12,8 +12,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - @Configuration["PageTitle"]</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awsome/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="icon" type="image/svg+xml" href="~/img/baptysci-logo-2023.svg" asp-append-version="true" />
     @RenderSection("HeaderScripts", required: false)
@@ -147,20 +147,36 @@
 
                 <li class="nav-item">
                     <div class="btn-group" role="group" aria-label="Przyciski">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" title="Polityka prywatności"><i class="fas fa-user-shield"></i></a>&nbsp;&nbsp;
-                        <a class="nav-link menu-item-a" href="https://m.me/koscioljezusa" target="_blank" title="Wyślij wiadomość"><i class="fab fa-facebook-messenger"></i></a>&nbsp;&nbsp;
-                        <a class="nav-link menu-item-a" href="https://www.facebook.com/koscioljezusa" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>&nbsp;&nbsp;
-                        <a class="nav-link menu-item-a" href="https://www.youtube.com/@@baptysci-ndm" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>&nbsp;&nbsp;
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy" data-bs-toggle="tooltip"
+                           data-bs-placement="bottom"
+                           data-bs-title="Polityka prywatności"><i class="fas fa-user-shield"></i></a>&nbsp;&nbsp;
+                        <a class="nav-link menu-item-a" href="https://m.me/koscioljezusa" target="_blank" data-bs-toggle="tooltip"
+                           data-bs-placement="bottom"
+                           data-bs-title="Wyślij wiadomość"><i class="fab fa-facebook-messenger"></i></a>&nbsp;&nbsp;
+                        <a class="nav-link menu-item-a" href="https://www.facebook.com/koscioljezusa" target="_blank" data-bs-toggle="tooltip"
+                           data-bs-placement="bottom"
+                           data-bs-title="Facebook"><i class="fab fa-facebook"></i></a>&nbsp;&nbsp;
+                        <a class="nav-link menu-item-a" href="https://www.youtube.com/@@baptysci-ndm" target="_blank" data-bs-toggle="tooltip"
+                           data-bs-placement="bottom"
+                           data-bs-title="YouTube"><i class="fab fa-youtube"></i></a>&nbsp;&nbsp;
                                 @if (User.Identity.IsAuthenticated) {
-                            <a class="nav-link menu-item-a" asp-area="" asp-controller="Account" asp-action="Logout" title="Wyloguj"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+                            <a class="nav-link menu-item-a" asp-area="" asp-controller="Account" asp-action="Logout" data-bs-toggle="tooltip"
+                               data-bs-placement="bottom"
+                               data-bs-title="Wyloguj"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
                                 }
                                 else {
-                            <a class="nav-link menu-item-a" asp-area="" asp-controller="Home" asp-action="Secured" title="Zaloguj"><i class="fa-solid fa-arrow-right-to-bracket"></i></a>
+                            <a class="nav-link menu-item-a" asp-area="" asp-controller="Home" asp-action="Secured" data-bs-toggle="tooltip"
+                               data-bs-placement="bottom"
+                               data-bs-title="Zaloguj"><i class="fa-solid fa-arrow-right-to-bracket"></i></a>
                                 }
                                 @if (isLocal || isDefault) {
-                            <a class="nav-link menu-item-a" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sch=http&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=pl&_x_tr_pto=nui" title="English"><img src="~/img/uk.png" style="width: 19px; min-width: 19px; position: relative; top: -3px;" /></a>
+                            <a class="nav-link menu-item-a" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sch=http&_x_tr_sl=pl&_x_tr_tl=en&_x_tr_hl=pl&_x_tr_pto=nui" data-bs-toggle="tooltip"
+                               data-bs-placement="bottom"
+                               data-bs-title="English"><img src="~/img/uk.png" style="width: 19px; min-width: 19px; position: relative; top: -3px;" /></a>
 
-                            <a class="nav-link menu-item-a" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sl=pl&_x_tr_tl=uk&_x_tr_hl=pl&_x_tr_pto=wapp" title="Uкраїнський"><img src="~/img/ukraine.png" style="width: 19px; min-width: 19px; position: relative; top: -3px;" /></a>
+                            <a class="nav-link menu-item-a" href="https://kosciol--jezusa-pl.translate.goog/?_x_tr_sl=pl&_x_tr_tl=uk&_x_tr_hl=pl&_x_tr_pto=wapp" data-bs-toggle="tooltip"
+                               data-bs-placement="bottom"
+                               data-bs-title="Uкраїнський"><img src="~/img/ukraine.png" style="width: 19px; min-width: 19px; position: relative; top: -3px;" /></a>
                                 }
                     </div>
                 </li>
@@ -169,7 +185,11 @@
                 <form class="d-flex" id="siglum-form" method="get" enctype="multipart/form-data" asp-controller="Search" asp-action="Siglum" autocomplete="off" spellcheck="false">
                     <div class="input-group">
                         <input id="siglum-input-text" name="text" class="form-control" type="text" placeholder="Porównaj lub przejdź do wersetu" aria-label="Porównaj lub przejdź do wersetu" spellcheck="false" autocomplete="off" />
-                        <button id="siglum-button" class="btn btn-light topnav-button" type="submit" title="Przejdź do wersetu"><i class="fa-solid fa-magnifying-glass-arrow-right"></i></button>
+                        <button id="siglum-button" class="btn btn-light topnav-button" type="submit" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                data-bs-title="Przejdź do wersetu">
+                            <i class="fa-solid fa-magnifying-glass-arrow-right"></i>
+                        </button>
                         <button class="btn btn-light dropdown-toggle dropdown-toggle-split topnav-button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
@@ -177,7 +197,9 @@
                             <button class="dropdown-item" type="submit" name="type" value="go">Przejdź do wersetu</button>
                             <button class="dropdown-item" type="submit" name="type" value="compare">Porównaj przekłady</button>
                             <li><hr class="dropdown-divider"></li>
-                            <a class="nav-link menu-item-a" href="/Search/Siglum" title="Schemat siglów biblijnych"><i class="fa-solid fa-magnifying-glass-arrow-right"></i>&nbsp;Schemat Siglum</a>
+                            <a class="nav-link menu-item-a" href="/Search/Siglum" data-bs-toggle="tooltip"
+                               data-bs-placement="bottom"
+                               data-bs-title="Schemat siglów biblijnych"><i class="fa-solid fa-magnifying-glass-arrow-right"></i>&nbsp;Schemat Siglum</a>
                         </ul>
                     </div>
                 </form>
@@ -186,7 +208,11 @@
                     <div class="input-group">
                         <input id="search-input-text" name="text" class="form-control" type="search" placeholder="Szukaj w Biblii" aria-label="Szukaj w Biblii" />
 
-                        <button id="search-button" class="btn btn-light topnav-button" type="submit" title="Szukaj w Biblii"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <button id="search-button" class="btn btn-light topnav-button" type="submit" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                data-bs-title="Szukaj w Biblii">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
                         <button class="btn btn-light dropdown-toggle dropdown-toggle-split topnav-button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
@@ -197,7 +223,9 @@
                                 }
 
                             <li><hr class="dropdown-divider"></li>
-                            <a class="nav-link menu-item-a" href="/Search/Siglum" title="Schemat siglów biblijnych"><i class="fa-solid fa-magnifying-glass-arrow-right"></i>&nbsp;Schemat Siglum</a>
+                            <a class="nav-link menu-item-a" href="/Search/Siglum" data-bs-toggle="tooltip"
+                               data-bs-placement="bottom"
+                               data-bs-title="Schemat siglów biblijnych"><i class="fa-solid fa-magnifying-glass-arrow-right"></i>&nbsp;Schemat Siglum</a>
                         </ul>
                     </div>
                 </form>
@@ -226,14 +254,21 @@
     </footer>
 
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>    
+    <script src="~/lib/bootstrap/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"></script>
+    <script src="~/lib/font-awsome/all.min.js"></script>
+
+    <script type="text/javascript">
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
+
     @RenderSection("Scripts", required: false)
 
-    <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v9.0" nonce="TGe91ewv"></script>
-
+   @*  
+       <div id="fb-root"></div>
+       <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v9.0" nonce="TGe91ewv"></script>
+    *@
 </body>
 </html>

@@ -67,16 +67,28 @@ else if (Model.Book.IsNullOrEmpty()) {
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         @if (Model.Translation.Type == TranslationType.Dynamic) {
-            <span role="button" class="btn btn-danger" title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Dynamiczny</span>
+            <span role="button" class="btn btn-danger" 
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  data-bs-title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Dynamiczny</span>
         }
         else if (Model.Translation.Type == TranslationType.Literal) {
-            <span role="button" class="btn btn-success" title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Dosłowny</span>
+            <span role="button" class="btn btn-success" 
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  data-bs-title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Dosłowny</span>
         }
         else if (Model.Translation.Type == TranslationType.Interlinear) {
-            <span role="button" class="btn btn-primary" title="Przekład interlinearny - transliteracja tekstu z języka oryginalnego">Interlinia</span>
+            <span role="button" class="btn btn-primary" 
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  data-bs-title="Przekład interlinearny - transliteracja tekstu z języka oryginalnego">Interlinia</span>
         }
         else {
-            <span role="button" class="btn btn-info" title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Literacki</span>
+            <span role="button" class="btn btn-info" 
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  data-bs-title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Literacki</span>
         }
     </div>
 
@@ -106,9 +118,12 @@ else if (Model.Book.IsNullOrEmpty()) {
 
                 var pillHtml = $@"<span class=""badge bg-success rounded-pill"" style=""position: absolute; right: -10px; top: -15px"">{_book.NumberOfChapters}</span>";
 
-                <div class="col p-2 btn-book" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3);" title="@bookTitle">
+                <div class="col p-2 btn-book" style="background-color: rgba(@color.R, @color.G, @color.B, 0.3);" 
+                     data-bs-toggle="tooltip"
+                     data-bs-title="@bookTitle">
                     <span style="position: relative;">
-                        <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" title="@bookTitle" href="/@translationName/@_book.NumberOfBook/@bookLinkChapterNumber">@Html.Raw(bookHtml)&nbsp;</a>@Html.Raw(pillHtml)
+                        <a class="btn fs-4" style="background-color: rgba(@color.R, @color.G, @color.B, 0.5);" 
+                           href="/@translationName/@_book.NumberOfBook/@bookLinkChapterNumber">@Html.Raw(bookHtml)&nbsp;</a>@Html.Raw(pillHtml)
                     </span>
                 </div>
             }
@@ -165,36 +180,63 @@ else {
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
 
             @if (Model.Translation.Type == TranslationType.Dynamic) {
-                <span role="button" class="btn btn-danger" title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Dynamiczny</span>
+                <span role="button" class="btn btn-danger"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-title="Przekład dynamiczny - może zawierać tendencyjne, dalekie od oryginału tłumaczenie">Dynamiczny</span>
             }
             else if (Model.Translation.Type == TranslationType.Literal) {
-                <span role="button" class="btn btn-success" title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Dosłowny</span>
+                <span role="button" class="btn btn-success"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-title="Przekład dosłowny - bliski brzmnieniu w języku oryginalnym">Dosłowny</span>
             }
             else if (Model.Translation.Type == TranslationType.Interlinear) {
-                <span role="button" class="btn btn-primary" title="Przekład interlinearny - transliteracja tekstu z języka oryginalnego">Interlinia</span>
+                <span role="button" class="btn btn-primary"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-title="Przekład interlinearny - transliteracja tekstu z języka oryginalnego">Interlinia</span>
             }
             else {
-                <span role="button" class="btn btn-info" title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Literacki</span>
+                <span role="button" class="btn btn-info"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-title="Przekład literacki - tekst dostosowany do zasad języka polskiego">Literacki</span>
             }
 
             @if (Model.Translation.Catolic) {
-                <span role="button" class="btn btn-dark" title="Przekład katolicki">Katolicki</span>
+                <span role="button" class="btn btn-dark"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-title="Przekład katolicki">Katolicki</span>
             }
 
             @if (Model.Translation.Recommended) {
-                <span role="button" class="btn btn-success" title="Polecamy ten przekład">Polecamy</span>
+                <span role="button" class="btn btn-success"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-title="Polecamy ten przekład">Polecamy</span>
             }
 
             @if (bookStatus == TheBookType.ChurchFathersLetter) {
-                <span role="button" class="btn btn-secondary" title="Pisma chrześcijańskie okresu Ojców Kościoła (wczesny kościół od II-Iv w.n.e.)">Patrologia</span>
+                <span role="button" class="btn btn-secondary"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-title="Pisma chrześcijańskie okresu Ojców Kościoła (wczesny kościół od II-Iv w.n.e.)">Patrologia</span>
             }
 
 
             @if (canonType == CanonType.SecondCanon) {
-                <span role="button" class="btn btn-danger" title="Uwaga! @bookTitle jest księgą wtórnie-kanoniczną">Wtórnie-kanoniczna</span>
+                <span role="button" class="btn btn-danger"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-title="Uwaga! @bookTitle jest księgą wtórnie-kanoniczną">Wtórnie-kanoniczna</span>
             }
             else if (canonType == CanonType.Apocrypha) {
-                <span role="button" class="btn btn-danger" title="Uwaga! @bookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej">Apokryf</span>
+                <span role="button" class="btn btn-danger"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      data-bs-title="Uwaga! @bookTitle jest apokryfem, nie należy do kanonu Biblii Hebrajskiej">Apokryf</span>
             }
 
             @if (Model.Translation.BookType == TheBookType.Bible) {
@@ -223,10 +265,10 @@ else {
                         <li><h6 class="dropdown-header disabled">@_trans.Key</h6></li>
 
                         foreach (var item in _trans) {
-                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-secondary btn-sm abbr-small"" title=""Przekład katolicki"">katolicki</abbr>" : "";
-                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
-                            var _notrecommendedBadge = item.TranslationType == TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm abbr-small"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
-                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-danger btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-secondary btn-sm abbr-small"" data-bs-toggle=""tooltip"" data-bs-placement=""right"" data-bs-title=""Przekład katolicki"">katolicki</abbr>" : "";
+                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" data-bs-toggle=""tooltip"" data-bs-placement=""right"" data-bs-title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                            var _notrecommendedBadge = item.TranslationType == TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm abbr-small"" data-bs-toggle=""tooltip"" data-bs-placement=""right"" data-bs-title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
+                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-danger btn-sm abbr-small"" data-bs-toggle=""tooltip"" data-bs-placement=""right"" data-bs-title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
                             var _active = String.Empty;
                             if (item.Name == Model.Translation.Name) {
                                 _active = " active";
@@ -272,10 +314,10 @@ else {
                     }
                     @foreach (var _trans in _allTranslations) {
                         foreach (var item in _trans) {
-                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" title=""Przekład katolicki"">katolicki</abbr>" : "";
-                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
-                            var _notrecommendedBadge = item.TranslationType == TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
-                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm"" data-bs-toggle=""tooltip"" data-bs-placement=""right"" data-bs-title=""Przekład katolicki"">katolicki</abbr>" : "";
+                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm"" data-bs-toggle=""tooltip"" data-bs-placement=""right"" data-bs-title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                            var _notrecommendedBadge = item.TranslationType == TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm"" data-bs-toggle=""tooltip"" data-bs-placement=""right"" data-bs-title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
+                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm"" data-bs-toggle=""tooltip"" data-bs-placement=""right"" data-bs-title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
 
                             var _active = String.Empty;
                             if (item.Name == Model.Translation.Name) {
@@ -326,7 +368,10 @@ else {
                         if (_book.BaseBook.Status.CanonType == CanonType.SecondCanon) {
                             _secondCanon = " text-warning bg-dark";
                         }
-                        <a class="col-auto chapter-shortcut dropdown-item@_secondCanon" href="/@translationName/@_book.NumberOfBook/1" title="@_book.BaseBook.BookTitle" style="@_active">@_book.BaseBook.BookShortcut</a>
+                        <a class="col-auto chapter-shortcut dropdown-item@_secondCanon" href="/@translationName/@_book.NumberOfBook/1"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="bottom"
+                           data-bs-title="@_book.BaseBook.BookTitle" style="@_active">@_book.BaseBook.BookShortcut</a>
                     }
                 </div>
             </div>
@@ -684,10 +729,10 @@ else {
                         var words = verse.VerseWords.OrderBy(x => x.NumberOfVerseWord);
                         foreach (var word in words) {
                             var isFirst = word == words.First();
-                            var gcTooltip = word.GrammarCode.IsNotNull() && word.GrammarCode.ShortDefinition.IsNotNullOrEmpty() ? word.GrammarCode.ShortDefinition.Replace("\"", "'").Replace("\r\n", "").Replace("\r", "").Replace("\n", "") : $"";
-                            var scTooltip = word.StrongCode.IsNotNull() && word.StrongCode.ShortDefinition.IsNotNullOrEmpty() ? word.StrongCode.ShortDefinition.Replace("\"", "'").Replace("\r\n", "").Replace("\r", "").Replace("\n", "") : $"";
-                            var gc = word.GrammarCode.IsNotNull() ? $"<a class=\"text-decoration-none\" style=\"padding-left: 0 !important;\" href=\"/GrammarsCode?id={word.GrammarCode.GrammarCodeVariant1}\" target=\"_blank\" title=\"{gcTooltip}\">{word.GrammarCode.GrammarCodeVariant1}</a>" : String.Empty;
-                            var sc = word.StrongCode.IsNotNull() ? $"<a class=\"text-decoration-none\" style=\"padding-left: 0 !important;\" href=\"/StrongsCode?id={word.StrongCode.Code}\" target=\"_blank\" title=\"{scTooltip}\">G{word.StrongCode.Code}</a>" : String.Empty;
+                            var gcTooltip = word.GrammarCode.IsNotNull() && word.GrammarCode.ShortDefinition.IsNotNullOrEmpty() ? word.GrammarCode.ShortDefinition.Replace("\"", "'").Replace("\r\n", "").Replace("\r", "").Replace("\n", "") : (word.GrammarCode!=null?$"{word.GrammarCode.GrammarCodeVariant1} ": $"brak kodu gramatycznego");
+                            var scTooltip = word.StrongCode.IsNotNull() && word.StrongCode.ShortDefinition.IsNotNullOrEmpty() ? word.StrongCode.ShortDefinition.Replace("\"", "'").Replace("\r\n", "").Replace("\r", "").Replace("\n", "") : (word.StrongCode!=null?$"{word.StrongCode.Code} ": $"brak kodu Stronga");
+                            var gc = word.GrammarCode.IsNotNull() ? $"<a class=\"text-decoration-none\" style=\"padding-left: 0 !important;\" href=\"/GrammarsCode?id={word.GrammarCode.GrammarCodeVariant1}\" target=\"_blank\" data-bs-toggle=\"tooltip\" data-bs-title=\"{gcTooltip}\">{word.GrammarCode.GrammarCodeVariant1}</a>" : String.Empty;
+                            var sc = word.StrongCode.IsNotNull() ? $"<a class=\"text-decoration-none\" style=\"padding-left: 0 !important;\" href=\"/StrongsCode?id={word.StrongCode.Code}\" target=\"_blank\" data-bs-toggle=\"tooltip\" data-bs-title=\"{scTooltip}\">G{word.StrongCode.Code}</a>" : String.Empty;
                             var translation = word.Translation;
                             if (translation.IsNullOrEmpty()) { translation = "―"; }
                             translation = translation.Replace(" ", "&nbsp;").Replace("<n>", @"<span class=""text-muted"">").Replace("</n>", "</span>");
@@ -717,7 +762,7 @@ else {
                                 footnoteTextTitle = BibleTagController.CleanVerseText(footnoteTextTitle);
                             }
                             if (footnoteText.IsNotNullOrEmpty()) {
-                                translation += $@"<a class=""text-decoration-none fw-bold interlinear-footnote-ref"" href=""#footNote{footNoteRefIndex}"" title=""{footnoteTextTitle}"" id=""ref{footNoteRefIndex}"">{footNoteRefIndex}</a>";
+                                translation += $@"<a class=""text-decoration-none fw-bold interlinear-footnote-ref"" href=""#footNote{footNoteRefIndex}"" data-bs-toggle=""tooltip"" data-bs-placement=""right"" data-bs-title=""{footnoteTextTitle}"" id=""ref{footNoteRefIndex}"">{footNoteRefIndex}</a>";
                                 footNotes.Add(new FootnoteInfo() { Index = footNoteRefIndex, Title = footnoteText, Html = $@"<p><a class=""footnote-tag"" name=""footNote{footNoteRefIndex}"" onclick=""scrollToFootnoteRef('ref{footNoteRefIndex}')""/>{footNoteRefIndex}</a>)&nbsp;<b>{baseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse}</b>&nbsp;{footnoteText}</p>" });
                                 footNoteRefIndex++;
                             }
@@ -734,7 +779,7 @@ else {
                                         // Numer wersetu
                                         //
                                         var chapterNumberString = Model.Translation.ChapterRomanNumbering ? chapter.NumberOfChapter.ArabicToRoman() : chapter.NumberOfChapter.ToString();
-                                        <div class="position-absolute verse-interlinear-div" style="left: -20px; font-weight: bold;">
+                                        <div class="position-absolute verse-interlinear-div" style="left: -30px; font-weight: bold;">
                                             <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse" class="verse-number-b"></a>
                                             <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold verse-interlinear-btn" role="button" data-bs-toggle="" aria-expanded="false" style="font-size: 120%;" onclick="showDopdownMenu(this, 'verseDropDownMenu_@verse.NumberOfVerse')">@verse.NumberOfVerse.</a>
                                             <ul id="verseDropDownMenu_@verse.NumberOfVerse" class="my-dropdown" aria-labelledby="verseMenu_@verse.NumberOfVerse" style="max-height: 85%; overflow: auto;">
@@ -802,8 +847,8 @@ else {
                     @if (footNotes.Count > 0 || toc.Count > 0) {
                         @section Footnotes {
 
-        <div id="footnotes" class=" container lh-sm fs-6">
-            <div class="card-body bible-content">
+        <div id="footnotes" class="container lh-sm fs-6">
+            <div class="card-body bible-content p-3">
                 @if (toc.Count > 0) {
                                         <h4>Spis treści</h4>
                                         <ul>
@@ -834,35 +879,13 @@ else {
                 else if (!Model.Translation.Hidden) {
                     var verses = chapter.Verses.OrderBy(x => x.NumberOfVerse);
                     var chapterString = book.NumberOfBook == 230 ? Model.Translation.ChapterPsalmString : book.BaseBook.BookName;
-                    var speecheloChapterText = @"[startSpeech v=Loud startSpeech] [breathing] ";
-                    speecheloChapterText += bookTitle.Replace("III Księga", "Trzecia Księga")
-                    .Replace("II Księga", "Druga Księga")
-                    .Replace("I Księga", "Pierwsza Księga")
-                    .Replace("III List", "Trzeci List")
-                    .Replace("II List", "Drugi List")
-                    .Replace("I List", "Pierwszy List");
-                    speecheloChapterText += $". [breathing]Rozdział {chapter.NumberOfChapter}. ";
-                    var speecheloPart = 1;
-                    var speecheloPartLen = 18000;
                     var chapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {chapterString} {chapter.NumberOfChapter}. ";
                     foreach (var verse in verses) {
-                        if (chapter.Subtitles.Any() && chapter.Subtitles.Where(x => x.BeforeVerseNumber == verse.NumberOfVerse).Any()) {
-                            speecheloChapterText += " [sPause sec=0.8 ePause] ";
-                        }
-
                         var _verseText = BibleTagController.CleanVerseText(verse.Text, true);
                         _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
                         chapterText += $"{verse.NumberOfVerse}. {_verseText} ";
-                        speecheloChapterText += $" [breathing]{_verseText}";
-                        if (chapterText.Length > (speecheloPartLen * speecheloPart)) {
-                            speecheloChapterText += @$" [endSpeech] -------------------- Part {speecheloPart} -------------------- [startSpeech v=Loud rate=""+20%"" p=Low startSpeech]";
-                            speecheloPart++;
-                        }
                     }
                     chapterText = Regex.Replace(chapterText, @"\s+", @" ");
-
-                    speecheloChapterText = Regex.Replace(speecheloChapterText, @"\s+", @" ");
-                    speecheloChapterText += " [endSpeech]";
 
                     <div class="dropdown d-grid gap-2 d-md-flex justify-content-center" style="width: auto;" id="divDownload">
                         <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
@@ -880,7 +903,6 @@ else {
                             <li><a class="dropdown-item" href="/api/DownloadDefaultDocx?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-word"></i>&nbsp;Pobierz rozdział w formacie DOCX</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@chapterText')"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść rozdziału</a></li>
-                            <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@speecheloChapterText')"><i class="fa-solid fa-bullhorn" style="width:18px;"></i>&nbsp;Kopiuj treść rozdziału dla Speechelo</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#copyVersesModal"><i class="far fa-check-square" style="width:18px;"></i>&nbsp;Kopiuj wybrane wersety</a></li>
                         </ul>
@@ -1008,8 +1030,16 @@ else {
                                 var footnoteTitle = footNotes.Where(x => x.Index == footNoteRefIndex).FirstOrDefault();
                                 if (footnoteTitle.IsNotNull()) {
                                     footnoteTitleText = footnoteTitle.Title.Replace("'", "”").Replace("\"", "”");
+                                    if (footnoteTitleText.Contains("<x>")) {
+                                        footnoteTitleText = BibleTagController.GetInternalVerseRangeText(footnoteTitleText, Model);
+                                        footnoteTitleText = BibleTagController.GetInternalVerseText(footnoteTitleText, Model);
+                                        footnoteTitleText = BibleTagController.GetExternalVerseRangeText(footnoteTitleText, Model);
+                                        footnoteTitleText = BibleTagController.GetExternalVerseText(footnoteTitleText, Model);
+                                        footnoteTitleText = BibleTagController.GetInternalVerseListText(footnoteTitleText, Model);
+                                        footnoteTitleText = BibleTagController.GetMultiChapterRangeText(footnoteTitleText, Model);
+                                    }
                                 }
-                                var result = $@"<a id=""ref{footNoteRefIndex}"" class=""footnote-ref text-decoration-none"" href=""#footNote{footNoteRefIndex}"" title=""{footnoteTitleText}"">{footNoteRefIndex}</a>";
+                                var result = $@"<a id=""ref{footNoteRefIndex}"" class=""footnote-ref text-decoration-none"" href=""#footNote{footNoteRefIndex}"" data-bs-toggle=""tooltip"" data-bs-title=""{footnoteTitleText}"">{footNoteRefIndex}</a>";
 
                                 return result;
                             }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);

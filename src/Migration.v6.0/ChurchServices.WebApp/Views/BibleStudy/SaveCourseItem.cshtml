@@ -5,7 +5,7 @@
 @inject IConfiguration Configuration
 @model BibleStudyUserModel
 <div class="clearfix max-width-1000" style="padding-top: 20px;">
-    @if (Model.Data != null) {        
+    @if (Model.Data != null) {
         <p style="text-align: right;"><i class="fa-solid fa-user"></i> @userName</p>
         <h1 style="text-align:center;"><b>Studium biblijne</b><br />na podstawie Ewangelii wg św. Jana</h1>
         <br />
@@ -15,7 +15,9 @@
         <p id="start-button-p">
             <a id="start-button" class="btn btn-primary" href="/BibleStudy/Register">Wróć do edycji</a>
         </p>
-    } else {
+    }
+    else {
+        var courseLevel = Model.CourseLevel + 1;
         <p style="text-align: right;"><i class="fa-solid fa-user"></i> @userName</p>
         <h1 style="text-align:center;"><b>Studium biblijne</b><br />na podstawie Ewangelii wg św. Jana</h1>
         <br />
@@ -23,7 +25,12 @@
         <h2>Zapisano zmiany</h2>
         <div class="alert alert-secondary" role="alert">Twoje odpowiedzi zostały zapisane.</div>
         <p id="start-button-p">
-            <a id="start-button" class="btn btn-primary" href="/BibleStudy/Register">Wróć do edycji</a>
+            @if (userName != Model.EmailAddress) {
+                <a id="start-button" class="btn btn-primary" href="/BibleStudy/Register/@Model.EmailAddress/@courseLevel">Wróć do edycji</a>
+            }
+            else {
+                <a id="start-button" class="btn btn-primary" href="/BibleStudy/Register/@courseLevel">Wróć do edycji</a>
+            }
         </p>
 
     }

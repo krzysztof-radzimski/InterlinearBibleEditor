@@ -3,7 +3,9 @@
     var userName = this.ViewContext.HttpContext.User.Identity?.Name;
 }
 @inject IConfiguration Configuration
+@inject IBibleStudyCourseTeacherHelper TeacherHelper;
 @model BibleStudyUserModel
+
 <div class="clearfix max-width-1000" style="padding-top: 20px;">
     @if (Model.Data != null) {
         @Html.Partial("~/Views/Shared/_CourseBaner.cshtml")
@@ -13,9 +15,63 @@
             <a id="start-button" class="btn btn-primary" title="Zaloguj się" href="/BibleStudy/Signup">Zaloguj się ponownie</a>
         </p>
     }
+    else if (userName == "info@kosciol-jezusa.pl") {
+        var courses = TeacherHelper.GetSentCourses();
+        if (courses != null) {
+            <h2>Lekcje do sprawdzenia</h2>
+            <ul>
+                @foreach (var courseInfo in courses) {
+                    <li><a href="/BibleStudy/Register/@courseInfo.EmailAddress/@courseInfo.CourseLevel">@courseInfo.EmailAddress Lekcja @courseInfo.CourseLevel</a></li>
+                }
+            </ul>
+        }
+
+        if (Model.EmailAddress != userName && Model.CourseItem != null) {
+            <p style="text-align: right;"><i class="fa-solid fa-user"></i> @Model.EmailAddress</p>
+            <h2><a href="/BW/500/@Model.CourseItem.GetChapter()/@Model.CourseItem.GetVerses()" target="_blank">Rozdział @Model.CourseItem.Passage</a></h2>
+            @Html.Raw(Model.CourseItem.Introduction)
+            <h2>Program studium Ewangelii</h2>
+            <ol>
+                <li>Przeczytaj fragment Ewangelii wg św. Jana, <a href="/BW/500/@Model.CourseItem.GetChapter()/@Model.CourseItem.GetVerses()" target="_blank">rozdział @Model.CourseItem.Passage</a>,</li>
+                <li>Odpowiedz na poniższe pytania.</li>
+            </ol>
+            <h2>Łańcuch pytań</h2>
+            <form>
+                <input asp-for="EmailAddress" type="hidden" />
+                <input asp-for="CourseLevel" type="hidden" />
+                <input asp-for="CourseItem.YouTubeLink" type="hidden" />
+                <input asp-for="CourseItem.Passage" type="hidden" />
+                <input asp-for="CourseItem.Introduction" type="hidden" />
+                <input asp-for="CourseItem.Status" type="hidden" />
+
+                @if (Model.CourseItem.Items != null) {
+                    @for (var i = 0; i < Model.CourseItem.Items.Count; i++) {
+                        @Html.EditorFor(m => m.CourseItem.Items[i])
+                    }
+                }
+                <p>
+                    <b><label asp-for="CourseItem.Description"></label></b> <br /><textarea asp-for="CourseItem.Description" class="form-control" style=" min-height: 100px; width: 100%;"></textarea>
+                </p>
+
+                <button asp-controller="BibleStudy" asp-action="SaveCourseItem" formmethod="post" type="submit" class="btn btn-primary" id="SaveCourseItemButton">Zapisz</button>
+                <button asp-controller="BibleStudy" asp-action="ApproveCourseItem" formmethod="post" type="submit" class="btn btn-warning float-end" id="SendCourseItemButton">Oddaj lekcję</button>
+            </form>
+        }
+    }
     else {
         <p style="text-align: right;"><i class="fa-solid fa-user"></i> @userName</p>
         <h1 style="text-align:center;"><b>Studium biblijne</b><br />na podstawie Ewangelii wg św. Jana</h1>
+
+        var courses = TeacherHelper.GetApprovedCourses(userName);
+        if (courses != null && courses.Count() > 0) {
+            <h2>Oddane lekcje</h2>
+            <ul>
+                @foreach (var courseInfo in courses) {
+                    <li><a href="/BibleStudy/Register/@courseInfo.EmailAddress/@courseInfo.CourseLevel">Lekcja @courseInfo.CourseLevel</a></li>
+                }
+            </ul>
+        }
+
         <br />
         <h2><a href="/BW/500/@Model.CourseItem.GetChapter()/@Model.CourseItem.GetVerses()" target="_blank">Rozdział @Model.CourseItem.Passage</a></h2>
         @Html.Raw(Model.CourseItem.Introduction)
@@ -31,7 +87,7 @@
             <input asp-for="CourseItem.YouTubeLink" type="hidden" />
             <input asp-for="CourseItem.Passage" type="hidden" />
             <input asp-for="CourseItem.Introduction" type="hidden" />
-            <input asp-for="CourseItem.Sent" type="hidden" />
+            <input asp-for="CourseItem.Status" type="hidden" />
 
             @if (Model.CourseItem.Items != null) {
                 @for (var i = 0; i < Model.CourseItem.Items.Count; i++) {
@@ -43,7 +99,9 @@
             </p>
 
             <button asp-controller="BibleStudy" asp-action="SaveCourseItem" formmethod="post" type="submit" class="btn btn-primary" id="SaveCourseItemButton">Zapisz</button>
-            <button asp-controller="BibleStudy" asp-action="SendCourseItem" formmethod="post" type="submit" class="btn btn-warning" id="SendCourseItemButton">Wyślij do prowadzącego studium</button>
+
+            <button asp-controller="BibleStudy" asp-action="SendCourseItem" formmethod="post" type="submit" class="btn btn-warning float-end" id="SendCourseItemButton">Wyślij do prowadzącego studium</button>
+
         </form>
         @if (Model.CourseItem.YouTubeLink.IsNotNullOrEmpty()) {
             <br />
@@ -54,11 +112,14 @@
     }
 </div>
 @section Scripts  {
+    @{
+        var courseSet = Model.CourseItem != null ? userName != "info@kosciol-jezusa.pl" && Model.CourseItem.Status != BibleStudyCourseStaus.Edit : false;
+    }
     <script type="text/javascript">
         $(document).ready(function () {
-            $('textarea').prop('disabled', @Model.CourseItem.Sent.ToString().ToLower());
-            $('#SaveCourseItemButton').prop('disabled', @Model.CourseItem.Sent.ToString().ToLower());
-            $('#SendCourseItemButton').prop('disabled', @Model.CourseItem.Sent.ToString().ToLower());
+            $('textarea').prop('disabled', @courseSet.ToString().ToLower());
+            $('#SaveCourseItemButton').prop('disabled', @courseSet.ToString().ToLower());
+            $('#SendCourseItemButton').prop('disabled', @courseSet.ToString().ToLower());
         });
     </script>
  }

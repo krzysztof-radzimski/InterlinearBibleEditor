@@ -600,7 +600,7 @@ hr.fancy-line {
     display: none;
     position: fixed;
     z-index: 1000;
-    width: 530px;
+    width: 550px;
     padding: .5rem 0;
     margin: auto;
     font-size: 1rem;
@@ -611,6 +611,7 @@ hr.fancy-line {
     background-clip: padding-box;
     border: 1px solid rgba(0,0,0,.15);
     border-radius: .25rem;
+    padding: 1em; 
 }
 
 @media only screen and (max-width: 1920px) {
@@ -914,11 +915,12 @@ img {
 }
 
 #footnotes {
-    text-align: left;
+    text-align: left;    
 }
 
     #footnotes .bible-content {
         min-height: 0;
+        padding: 20px;
     }
 
     #footnotes p {

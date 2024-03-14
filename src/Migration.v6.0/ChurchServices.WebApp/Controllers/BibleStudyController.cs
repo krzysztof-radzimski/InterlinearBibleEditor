@@ -11,6 +11,7 @@
 
   ===================================================================================*/
 
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
@@ -27,16 +28,11 @@ namespace ChurchServices.WebApp.Controllers {
             if (model != null) {
                 var login = model.EmailAddress;
                 var partialDir = $"download\\study\\{login.Replace("@", "_").Replace(".", "_")}";
+                var lessonFile = $"{partialDir}\\lesson{model.CourseLevel + 1}.json";
                 var dirPath = CreateDirectory(partialDir);
                 if (dirPath != null) {
-                    var partialFile = $"{partialDir}\\register.json";
-                    if (FileDataExists(partialFile)) {
-                        var _model = GetFileData<BibleStudyUserModel>(partialFile, "Nie znaleziono pliku!");
-                        _model.CourseItem = model.CourseItem;
-                        SaveFileData(_model, partialFile);
-
-                        return View(_model);
-                    }
+                    SaveFileData(model.CourseItem, lessonFile);
+                    return View(model);
                 }
             }
             return View(new BibleStudyUserModel() { Data = "Nie znaleziono danych do zapisania!" });
@@ -45,39 +41,50 @@ namespace ChurchServices.WebApp.Controllers {
             if (model != null) {
                 var login = model.EmailAddress;
                 var partialDir = $"download\\study\\{login.Replace("@", "_").Replace(".", "_")}";
+                var lessonFile = $"{partialDir}\\lesson{model.CourseLevel + 1}.json";
                 var dirPath = CreateDirectory(partialDir);
                 if (dirPath != null) {
-                    var partialFile = $"{partialDir}\\register.json";
-                    if (FileDataExists(partialFile)) {
-                        var _model = GetFileData<BibleStudyUserModel>(partialFile, "Nie znaleziono pliku!");
-                        _model.CourseItem = model.CourseItem;
-                        _model.CourseItem.Sent = true;
-                        SaveFileData(_model, partialFile);
-
-
-                        // wysłanie widomości do prowadzącego
-                        partialDir = $"download\\study\\admin";
-                        dirPath = CreateDirectory(partialDir);
-                        partialDir = $"download\\study\\admin\\{login.Replace("@", "_").Replace(".", "_")}";
-                        dirPath = CreateDirectory(partialDir);
-                        partialFile = $"{partialDir}\\lesson{model.CourseLevel+1}.json";
-                        SaveFileData(_model, partialFile);
-
-                        // tu fajnie by było wygenerować worda
-
-                        return View(_model);
-                    }
+                    model.CourseItem.Status = BibleStudyCourseStaus.Sent;
+                    SaveFileData(model.CourseItem, lessonFile);
+                    return View(model);
+                }
+            }
+            return View(new BibleStudyUserModel() { Data = "Nie znaleziono danych do zapisania!" });
+        }
+        public IActionResult ApprovedCourseItem(BibleStudyUserModel model) {
+            if (model != null) {
+                var login = model.EmailAddress;
+                var partialDir = $"download\\study\\{login.Replace("@", "_").Replace(".", "_")}";
+                var partialFile = $"{partialDir}\\register.json";
+                var _model = GetFileData<BibleStudyUserModel>(partialFile, "Nie znaleziono pliku!");
+                if (_model != null) {
+                    _model.CourseLevel += 1;
+                    SaveFileData(_model, partialFile);
                 }
 
-                
-
+                var lessonFile = $"{partialDir}\\lesson{model.CourseLevel + 1}.json";
+                var dirPath = CreateDirectory(partialDir);
+                if (dirPath != null) {
+                    model.CourseItem.Status = BibleStudyCourseStaus.Approved;
+                    SaveFileData(model.CourseItem, lessonFile);
+                    return View(model);
+                }
             }
             return View(new BibleStudyUserModel() { Data = "Nie znaleziono danych do zapisania!" });
         }
 
-        public IActionResult Register() {
+        [Route("/BibleStudy/Register/{email}/{level}")]
+        public IActionResult Register(string email, int level) {
+            if (HttpContext.User.Identity?.Name != null && HttpContext.User.Identity.Name == "info@kosciol-jezusa.pl") {
+                return OnRegisted(level, email);
+            }
+            return View(new BibleStudyUserModel() { Data = "Nie można wyświetlić danych studium. Uzytkownik nie jest zalogowany!" });
+        }
+
+        [Route("/BibleStudy/Register/{level}")]
+        public IActionResult Register(int level = -1) {
             if (HttpContext.User.Identity?.Name != null) {
-                return OnRegisted();
+                return OnRegisted(level);
             }
             return View(new BibleStudyUserModel() { Data = "Nie można wyświetlić danych studium. Uzytkownik nie jest zalogowany!" });
         }
@@ -89,6 +96,8 @@ namespace ChurchServices.WebApp.Controllers {
                 var dirPath = CreateDirectory(partialDir);
                 if (dirPath != null) {
                     var partialFile = $"{partialDir}\\register.json";
+                    var lessonFile = $"{partialDir}\\lesson{model.CourseLevel + 1}.json";
+                    var emptyLessonFile = $"download\\study\\Lesson{model.CourseLevel + 1}.json";
                     if (FileDataExists(partialFile)) {
                         var _model = GetFileData<BibleStudyUserModel>(partialFile, "Nie znaleziono pliku!");
                         if (_model.Password != model.Password) {
@@ -96,18 +105,31 @@ namespace ChurchServices.WebApp.Controllers {
                         }
                         MarkAsLogged(_model);
 
-                        if (_model.CourseItem == null) {
-                            _model.CourseItem = GetFileData<BibleStudyCourseModel>($"download\\study\\Lesson{_model.CourseLevel + 1}.json", "Nie znaleziono pliku lekcji!");
-                            SaveFileData(_model, partialFile);
+                        if (model.EmailAddress == "info@kosciol-jezusa.pl") {
+                            return View(model);
+                        }
+
+                        if (FileDataExists(lessonFile)) {
+                            _model.CourseItem = GetFileData<BibleStudyCourseModel>(lessonFile, "Nie znaleziono pliku lekcji!");
+                        }
+                        else {
+                            _model.CourseItem = GetFileData<BibleStudyCourseModel>(emptyLessonFile, "Nie znaleziono pliku lekcji!");
+                            SaveFileData(_model.CourseItem, lessonFile);
                         }
 
                         return View(_model);
                     }
                     else {
-                        if (model.CourseItem == null) {
-                            model.CourseItem = GetFileData<BibleStudyCourseModel>($"download\\study\\Lesson{model.CourseLevel + 1}.json", "Nie znaleziono pliku lekcji!");
-                        }
                         SaveFileData(model, partialFile);
+
+                        if (FileDataExists(lessonFile)) {
+                            model.CourseItem = GetFileData<BibleStudyCourseModel>(lessonFile, "Nie znaleziono pliku lekcji!");
+                        }
+                        else {
+                            model.CourseItem = GetFileData<BibleStudyCourseModel>(emptyLessonFile, "Nie znaleziono pliku lekcji!");
+                            SaveFileData(model.CourseItem, lessonFile);
+                        }
+
                         MarkAsLogged(model);
                         return View(model);
                     }
@@ -119,40 +141,43 @@ namespace ChurchServices.WebApp.Controllers {
             return NotFound();
         }
 
-        private IActionResult OnRegisted() {
-            var login = HttpContext.User.Identity?.Name;
+        private IActionResult OnRegisted(int level = -1, string login = null) {
+            if (login.IsNullOrEmpty()) { login = HttpContext.User.Identity?.Name; }
             var partialDir = $"download\\study\\{login.Replace("@", "_").Replace(".", "_")}";
             var dirPath = CreateDirectory(partialDir);
             if (dirPath != null) {
                 var partialFile = $"{partialDir}\\register.json";
                 if (FileDataExists(partialFile)) {
                     var _model = GetFileData<BibleStudyUserModel>(partialFile, "Nie znaleziono pliku!");
+                    if (_model != null) {
+                        if (level == -1) { level = _model.CourseLevel + 1; }
+                        var lessonFile = $"{partialDir}\\lesson{level}.json";
+                        var emptyLessonFile = $"download\\study\\Lesson{level}.json";
 
-                    if (_model.CourseItem == null) {
-                        _model.CourseItem = GetFileData<BibleStudyCourseModel>($"download\\study\\Lesson{_model.CourseLevel + 1}.json", "Nie znaleziono pliku lekcji!");
-                        SaveFileData(_model, partialFile);
+                        if (FileDataExists(lessonFile)) {
+                            _model.CourseItem = GetFileData<BibleStudyCourseModel>(lessonFile, "Nie znaleziono pliku lekcji!");
+                        }
+                        else {
+                            _model.CourseItem = GetFileData<BibleStudyCourseModel>(emptyLessonFile, "Nie znaleziono pliku lekcji!");
+                            SaveFileData(_model.CourseItem, lessonFile);
+                        }
+
+                        return View(_model);
                     }
-
-                    return View(_model);
                 }
             }
             return NotFound();
         }
 
         private void MarkAsLogged(BibleStudyUserModel model) {
-            var userClaims = new List<Claim>()
-                   {
-                    new Claim(ClaimTypes.Name, model.EmailAddress)
-                };
-
+            var userClaims = new List<Claim>() {
+                new Claim(ClaimTypes.Name, model.EmailAddress)
+            };
             var grandmaIdentity = new ClaimsIdentity(userClaims, "User Identity");
-
             var userPrincipal = new ClaimsPrincipal(new[] { grandmaIdentity });
             HttpContext.SignInAsync(userPrincipal);
         }
     }
-
-
     public class BibleStudyUserModel : HtmlFileData {
         [Required]
         [EmailAddress]
@@ -168,14 +193,20 @@ namespace ChurchServices.WebApp.Controllers {
         public BibleStudyCourseModel CourseItem { get; set; }
     }
 
-
+    public class BibleStudyCourseInfoModel {
+        public string EmailAddress { get; set; }
+        public int CourseLevel { get; set; }
+    }
+    public enum BibleStudyCourseStaus {
+        Edit = 0, Sent = 1, Approved = 2
+    }
     public class BibleStudyCourseModel : HtmlFileData {
         private int _chapter;
         private string _verses;
         public string Passage { get; set; }
         public string Introduction { get; set; }
         public string YouTubeLink { get; set; }
-        public bool Sent {  get; set; }
+        public BibleStudyCourseStaus Status { get; set; }
         public List<BibleStudyCourseItemModel> Items { get; set; }
 
         [Display(Name = "Twoje myśli, uwagi")]
@@ -221,5 +252,68 @@ namespace ChurchServices.WebApp.Controllers {
         public int Index { get; set; }
         public string Question { get; set; }
         public string QuestionAnswer { get; set; } = string.Empty;
+        public string TeacherComment { get; set; } = string.Empty;
+    }
+
+    public interface IBibleStudyCourseTeacherHelper {
+        IEnumerable<BibleStudyCourseInfoModel> GetSentCourses();
+        IEnumerable<BibleStudyCourseInfoModel> GetApprovedCourses(string userName = null);
+    }
+    public class BibleStudyCourseTeacherHelper : IBibleStudyCourseTeacherHelper {
+        protected readonly IWebHostEnvironment _webHostEnvironment;
+        public BibleStudyCourseTeacherHelper(IWebHostEnvironment webHostEnvironment) { _webHostEnvironment = webHostEnvironment; }
+        public IEnumerable<BibleStudyCourseInfoModel> GetApprovedCourses(string userName = null) {
+            var list = new List<BibleStudyCourseInfoModel>();
+            var dirPath = Path.Combine(_webHostEnvironment.WebRootPath, "download\\study\\");
+            var directory = new DirectoryInfo(dirPath);
+            var dirs = directory.GetDirectories();
+            foreach (var dir in dirs) {
+                
+                var u = GetFileData<BibleStudyUserModel>(Path.Combine(dir.FullName, "register.json"));
+                if (u != null) {
+                    if (userName.IsNotNullOrEmpty() && userName != u.EmailAddress) { continue; }
+                    var files = dir.GetFiles("lesson*.json");
+
+                    foreach (var file in files) {
+                        var c = GetFileData<BibleStudyCourseModel>(file.FullName);
+                        if (c != null && c.Status == BibleStudyCourseStaus.Approved) {
+                            list.Add(new BibleStudyCourseInfoModel() {
+                                CourseLevel = file.Name.Replace("lesson", "").Replace(".json", "").ToInt(),
+                                EmailAddress = u.EmailAddress
+                            });
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+        public IEnumerable<BibleStudyCourseInfoModel> GetSentCourses() {
+            var list = new List<BibleStudyCourseInfoModel>();
+            var dirPath = Path.Combine(_webHostEnvironment.WebRootPath, "download\\study\\");
+            var directory = new DirectoryInfo(dirPath);
+            var dirs = directory.GetDirectories();
+            foreach (var dir in dirs) {
+                var files = dir.GetFiles("lesson*.json");
+                var u = GetFileData<BibleStudyUserModel>(Path.Combine(dir.FullName, "register.json"));
+                foreach (var file in files) {
+                    var c = GetFileData<BibleStudyCourseModel>(file.FullName);
+                    if (c != null && c.Status == BibleStudyCourseStaus.Sent) {
+                        list.Add(new BibleStudyCourseInfoModel() {
+                            CourseLevel = file.Name.Replace("lesson", "").Replace(".json", "").ToInt(),
+                            EmailAddress = u.EmailAddress
+                        });
+                    }
+                }
+            }
+            return list;
+        }
+
+        protected T GetFileData<T>(string dataFilePath) where T : HtmlFileData, new() {
+            if (System.IO.File.Exists(dataFilePath)) {
+                var data = System.IO.File.ReadAllText(dataFilePath);
+                return JsonConvert.DeserializeObject<T>(data);
+            }
+            return default;
+        }
     }
 }
