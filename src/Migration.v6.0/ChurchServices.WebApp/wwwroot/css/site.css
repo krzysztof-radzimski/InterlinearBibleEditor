@@ -787,7 +787,7 @@ img {
     background-repeat: no-repeat;
     background-size: contain;
     max-width: 410px;
-    width: 35%;
+    width: 15%;
 }
 
 .baner-img {
@@ -930,6 +930,11 @@ img {
 .col-min-w-song-text {
     min-width: 600px !important;
 }
+@media only screen and (max-width: 400px) {
+    .col-min-w-song-text {
+        min-width: 60% !important;
+    }
+}
 
 @media only screen and (min-width: 1830px) {
     #footnotes {
@@ -963,12 +968,24 @@ img {
     .col-min-w-song-text {
         min-width: 700px !important;
     }
+	
+	textarea.form-control {
+		font-size: 120%;		
+	}
 }
 /************************** DARK **********************************/
 @media (prefers-color-scheme: dark) {
     ::-webkit-scrollbar-track {
         background: rgba(var(--bs-dark-rgb));
     }
+	::placeholder {
+		color: #C8C8C8 !important;
+		opacity: 1; /* Firefox */
+	}
+
+	::-ms-input-placeholder { /* Edge 12 -18 */
+		color: #C8C8C8 !important;
+	}
 
     html {
         background-color: rgba(var(--bs-dark-rgb)) !important;
@@ -983,6 +1000,21 @@ img {
     h1, h2, h3, h4, h5, .list-group-item {
         color: #C8C8C8 !important;
     }
+	
+	p, figure, li, div, .form-label, .form-text {
+		color: #C8C8C8 !important;
+	}
+	
+	textarea.form-control {
+		background-color: black !important;
+		color: #ad9a73 !important;		
+	}
+	.btn-primary {
+		color: white !important;		
+	}
+	.alert-secondary {
+		color: black !important;
+	}
 
     .baner-img {
         background-image: url('/img/baptysci-logo-wnd-white.png');

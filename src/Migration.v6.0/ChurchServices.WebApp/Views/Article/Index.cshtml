@@ -70,23 +70,28 @@
                         return " " + m.Value.Trim() + "&nbsp;";
                     }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                    var url1 = $"/api/ArticleDownload?q={Model.Article.Oid},docx";
-                    var url2 = $"/api/ArticleDownload?q={Model.Article.Oid},pdf";
+                    var url1 = $"/api/ArticleDownload/{Model.Article.Oid}/Docx";
+                    var url2 = $"/api/ArticleDownload/{Model.Article.Oid}/Pdf";
                 }
 
                 <span class="btn btn-light d-inline-block text-success fw-bold" role="button">@Model.Article.Type.GetDescription()</span>
 
-                <span class="btn btn-light d-inline-block text-success" role="button">
-                    <a href="@url1"><i class="fa-solid fa-file-word"></i></a>                    
-                </span>
-                <span class="btn btn-light d-inline-block text-success" role="button">                    
-                    <a href="@url2"><i class="fa-solid fa-file-pdf"></i></a>
-                </span>
+                <button class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    Pobierz
+                </button>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="@url1"><i class="fa-solid fa-file-word"></i>&nbsp;Dokument Microsoft Word (*.docx)</a></li>
+                    <li><a class="dropdown-item" href="@url2"><i class="fa-solid fa-file-pdf"></i>&nbsp;Dokument PDF (*.pdf)</a></li>
+                </ul>
              </div>
             <h3 class="mb-0 text-gradient-church-service">@Model.Article.Subject</h3>
             <p class="mb-auto fst-italic">@Model.Article.AuthorName</p>
             <p class="mb-auto">@Html.Raw(_abstract)</p>
-            <div class="mb-1 text-muted">@Html.Raw(Model.Article.Date.GetDatePl())</div>
+            @if (Model.Article.Date > DateTime.MinValue)
+            {
+                <div class="mb-1 text-muted">@Html.Raw(Model.Article.Date.GetDatePl())</div>
+            }
         </div>
 
         @if (Model.Article.AuthorPicture.IsNotNull()) {

@@ -28,6 +28,19 @@
         <div class="d-flex" id="filter-form">
             <input id="filter-input-text" name="text" class="form-control me-2" type="text" placeholder="Filtruj pieśni" aria-label="Filtruj pieśni" onkeyup="SongFilterButtonClick()" />
             <button id="filter-button" class="btn btn-outline-success" type="button" onclick="SongFilterButtonClick()">Filtruj</button>
+            <span>&nbsp;</span>
+            <div class="dropdown">
+                <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    Pobierz
+                </a>
+                
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="/api/SongsDownload/Docx"><i class="fa-solid fa-file-word"></i>&nbsp;Dokument Microsoft Word (*.docx)</a></li>
+                    <li><a class="dropdown-item" href="/api/SongsDownload/Pdf"><i class="fa-solid fa-file-pdf"></i>&nbsp;Dokument PDF (*.pdf)</a></li>
+                </ul>
+            </div>
+
+            
         </div>
     </div>
 

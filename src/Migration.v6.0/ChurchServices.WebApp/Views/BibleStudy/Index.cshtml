@@ -19,16 +19,29 @@
         var courses = TeacherHelper.GetSentCourses();
         if (courses != null) {
             <h2>Lekcje do sprawdzenia</h2>
-            <ul>
-                @foreach (var courseInfo in courses) {
-                    <li><a href="/BibleStudy/Register/@courseInfo.EmailAddress/@courseInfo.CourseLevel">@courseInfo.EmailAddress Lekcja @courseInfo.CourseLevel</a></li>
-                }
-            </ul>
+            <div class="container">
+                <div class="row">
+                    <div class="col"><b>Adres Email</b></div>
+                    <div class="col"><b>Numer lekcji</b></div>
+                    <div class="col"><b>Sprawdź</b></div>
+                    <div />
+                    @foreach (var courseInfo in courses) {
+                        <div class="row">
+                            <div class="col">
+                                @courseInfo.EmailAddress
+                            </div>
+                            <div class="col">Lekcja @courseInfo.CourseLevel</div>
+                            <div class="col"><a href="/BibleStudy/Index/@courseInfo.EmailAddress/@courseInfo.CourseLevel"><i class="fa-solid fa-person-chalkboard"></i></a></div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <p>&nbsp;</p>
         }
 
         if (Model.EmailAddress != userName && Model.CourseItem != null) {
             <p style="text-align: right;"><i class="fa-solid fa-user"></i> @Model.EmailAddress</p>
-            <h2><a href="/BW/500/@Model.CourseItem.GetChapter()/@Model.CourseItem.GetVerses()" target="_blank">Rozdział @Model.CourseItem.Passage</a></h2>
+            <h2>Lekcja @(Model.CourseLevel + 1), <a href="/BW/500/@Model.CourseItem.GetChapter()/@Model.CourseItem.GetVerses()" target="_blank"> Rozdział @Model.CourseItem.Passage</a></h2>
             @Html.Raw(Model.CourseItem.Introduction)
             <h2>Program studium Ewangelii</h2>
             <ol>
@@ -65,20 +78,35 @@
         var courses = TeacherHelper.GetApprovedCourses(userName);
         if (courses != null && courses.Count() > 0) {
             <h2>Oddane lekcje</h2>
-            <ul>
-                @foreach (var courseInfo in courses) {
-                    <li><a href="/BibleStudy/Register/@courseInfo.EmailAddress/@courseInfo.CourseLevel">Lekcja @courseInfo.CourseLevel</a></li>
-                }
-            </ul>
+            <div class="container">
+                <div class="row">
+                    <div class="col"><b>Adres Email</b></div>
+                    <div class="col"><b>Numer lekcji</b></div>
+                    <div class="col"><b>Sprawdź</b></div>
+                    <div />
+                    @foreach (var courseInfo in courses) {
+                        <div class="row">
+                            <div class="col">
+                                @courseInfo.EmailAddress
+                            </div>
+                            <div class="col">Lekcja @courseInfo.CourseLevel</div>
+                            <div class="col"><a href="/BibleStudy/Index/@courseInfo.EmailAddress/@courseInfo.CourseLevel"><i class="fa-solid fa-person-chalkboard"></i></a></div>
+                        </div>
+                    }
+                </div>
+            </div>
         }
 
         <br />
         <h2><a href="/BW/500/@Model.CourseItem.GetChapter()/@Model.CourseItem.GetVerses()" target="_blank">Rozdział @Model.CourseItem.Passage</a></h2>
-        @Html.Raw(Model.CourseItem.Introduction)
+        <p><b>Wyjaśnienie zwrotów i słów (dla dociekliwych)</b></p>
+        <div>
+            @Html.Raw(Model.CourseItem.Introduction)
+        </div>
         <h2>Program studium Ewangelii</h2>
         <ol>
             <li>Przeczytaj fragment Ewangelii wg św. Jana, <a href="/BW/500/@Model.CourseItem.GetChapter()/@Model.CourseItem.GetVerses()" target="_blank">rozdział @Model.CourseItem.Passage</a>,</li>
-            <li>Odpowiedz na poniższe pytania.</li>
+            <li>Odpowiedz na poniższe pytania:</li>
         </ol>
         <h2>Łańcuch pytań</h2>
         <form>
@@ -91,20 +119,29 @@
 
             @if (Model.CourseItem.Items != null) {
                 @for (var i = 0; i < Model.CourseItem.Items.Count; i++) {
+                    if (Model.CourseItem.Items[i].Index == 11) {
+                        <h2>Zastosowanie</h2>
+                    }
                     @Html.EditorFor(m => m.CourseItem.Items[i])
                 }
             }
-            <p>
-                <b><label asp-for="CourseItem.Description"></label></b> <br /><textarea asp-for="CourseItem.Description" class="form-control" style=" min-height: 100px; width: 100%;"></textarea>
-            </p>
+            <h2><label asp-for="CourseItem.Description"></label></h2>
+            <textarea asp-for="CourseItem.Description" class="form-control" style=" min-height: 200px; width: 100%;"></textarea>
 
-            <button asp-controller="BibleStudy" asp-action="SaveCourseItem" formmethod="post" type="submit" class="btn btn-primary" id="SaveCourseItemButton">Zapisz</button>
 
-            <button asp-controller="BibleStudy" asp-action="SendCourseItem" formmethod="post" type="submit" class="btn btn-warning float-end" id="SendCourseItemButton">Wyślij do prowadzącego studium</button>
+            <button asp-controller="BibleStudy" asp-action="SaveCourseItem" formmethod="post" type="submit" class="btn btn-primary" id="SaveCourseItemButton" aria-describedby="SaveCourseItemButtonHelp">Zapisz</button>
+            <button asp-controller="BibleStudy" asp-action="SendCourseItem" formmethod="post" type="submit" class="btn btn-warning float-end" id="SendCourseItemButton" aria-describedby="SendCourseItemButtonHelp">Wyślij</button>
+
+            <br/>
+
+            <div id="SaveCourseItemButtonHelp" class="form-text" style="max-width: 40%; display: inline-block;">Kiedy zapisujesz swoje odpowiedzi, to <b>nie są</b> one jeszcze wysyłane do prowadzącego studium. Możesz do nich wrócić w dowolnym momencie, aby kontynuować.</div>
+
+            <div id="SendCourseItemButtonHelp" class="form-text float-end" style="max-width: 40%; display: inline-block; text-align: right;">Jeżeli wszystkie odpowiedzi są w twojej ocenie kompletne, to kliknij ten przycisk, aby przesłać je do prowadzącego studium. Po wykonaniu tej operacji, dalsza edycja lekcji zostanie zablokowana</div>
 
         </form>
         @if (Model.CourseItem.YouTubeLink.IsNotNullOrEmpty()) {
             <br />
+            <h2>Fragment filmu "Gospel of John"</h2>
             <div class="embed-responsive embed-responsive-16by9 shadow-lg">
                 <iframe id="YouTubeFrame" width="560" height="600" src="@Model.CourseItem.YouTubeLink" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
@@ -122,11 +159,11 @@
             $('#SendCourseItemButton').prop('disabled', @courseSet.ToString().ToLower());
         });
     </script>
- }
+    }
 @section HeaderScripts {
     <style>
         .btn-primary {
             color: #fff !important;
         }
     </style>
-}
+    }

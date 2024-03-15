@@ -12,17 +12,7 @@
   ===================================================================================*/
 
 namespace ChurchServices.WebApp.Models {
-    public class SongControllerModel {
-        public Song Song { get; set; }
-        public int MaxNumber { get; set; }
-    }
-
-    public class SongsInfo {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Signature { get; set; }
-        public string BPM { get; set; }
-        public int Number { get; set; }
-        public SongGroupType Type { get; set; }
+    public enum BibleStudyCourseStaus {
+        Edit = 0, Sent = 1, Approved = 2
     }
 }

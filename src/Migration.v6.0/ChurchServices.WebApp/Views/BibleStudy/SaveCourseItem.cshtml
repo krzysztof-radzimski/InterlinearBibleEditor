@@ -13,7 +13,7 @@
         <h2>Błąd</h2>
         <div class="alert alert-warning" role="alert">@Model.Data</div>
         <p id="start-button-p">
-            <a id="start-button" class="btn btn-primary" href="/BibleStudy/Register">Wróć do edycji</a>
+            <a id="start-button" class="btn btn-primary" href="/BibleStudy/Index">Wróć do edycji</a>
         </p>
     }
     else {
@@ -26,10 +26,10 @@
         <div class="alert alert-secondary" role="alert">Twoje odpowiedzi zostały zapisane.</div>
         <p id="start-button-p">
             @if (userName != Model.EmailAddress) {
-                <a id="start-button" class="btn btn-primary" href="/BibleStudy/Register/@Model.EmailAddress/@courseLevel">Wróć do edycji</a>
+                <a id="start-button" class="btn btn-primary" href="/BibleStudy/Index/@Model.EmailAddress/@courseLevel">Wróć do edycji</a>
             }
             else {
-                <a id="start-button" class="btn btn-primary" href="/BibleStudy/Register/@courseLevel">Wróć do edycji</a>
+                <a id="start-button" class="btn btn-primary" href="/BibleStudy/Index/@courseLevel">Wróć do edycji</a>
             }
         </p>
 

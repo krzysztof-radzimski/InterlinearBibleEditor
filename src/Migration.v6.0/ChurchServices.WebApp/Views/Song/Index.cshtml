@@ -9,54 +9,60 @@
     var nextSong = Model.IsNotNull() && Model.Song.Number < Model.MaxNumber ? Model.Song.Number + 1 : Model.MaxNumber;
 
     var downloadFileNameDocx = Model.IsNotNull() ? $"{Model.Song.Number}-{Model.Song.Name.Replace(" ", "-").RemovePolishChars()}.docx" : "";
-    var downloadFileNamePdf = Model.IsNotNull() ? $"{Model.Song.Number}-{Model.Song.Name.Replace(" ","-").RemovePolishChars()}.pdf" : "";
+    var downloadFileNamePdf = Model.IsNotNull() ? $"{Model.Song.Number}-{Model.Song.Name.Replace(" ", "-").RemovePolishChars()}.pdf" : "";
 
 }
+
 @inject IConfiguration Configuration
-
-
 
 @section HeaderScripts {
     @if (Model.IsNotNull()) {
-<!-- social sharing metadata -->
-<meta property="og:title" content="@Model.Song.Name - @Configuration["PageTitle"]" />
-<meta property="og:description" content="@Model.Song.Name" />
-<meta property="og:image" content="@__host/img/TloSpiewnik.png" />
-<meta property="og:url" content="@__host/Song?id=@Model.Song.Oid" />
-<meta property="og:type" content="song" />
-<meta property="og:locale" content="pl_PL" />
+        <!-- social sharing metadata -->
+        <meta property="og:title" content="@Model.Song.Name - @Configuration["PageTitle"]" />
+        <meta property="og:description" content="@Model.Song.Name" />
+        <meta property="og:image" content="@__host/img/TloSpiewnik.png" />
+        <meta property="og:url" content="@__host/Song?id=@Model.Song.Oid" />
+        <meta property="og:type" content="song" />
+        <meta property="og:locale" content="pl_PL" />
     }
 }
 
 @if (Model != null) {
     <div class="row shadow-lg" style="max-width: 1040px; margin: auto;">
         <div class="col p-4 d-flex flex-column position-static" style="padding: 0px !important;">
-            <div class="btn-group" >
+            <div class="btn-group">
                 <a href="/Songs" class="btn btn-light active d-inline-block text-decoration-none" title="Więcej pieśni" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
-                
+
                 <span class="btn btn-light d-inline-block text-success fw-bold" role="button" style="text-align: left;">@Model.Song.Number. @Model.Song.Name</span>
-                <span class="btn btn-light d-inline-block text-success" role="button" style="text-align: left;">Syg.:&nbsp;<b>@Model.Song.Signature</b> BPM:&nbsp;<b>@Model.Song.BPM</b>
-                    &nbsp;<a href="/api/SongDownload?q=@Model.Song.Number,docx"><i class="fa-solid fa-file-word"></i></a>
-                    &nbsp;<a href="/api/SongDownload?q=@Model.Song.Number,pdf"><i class="fa-solid fa-file-pdf"></i></a>
+                <span class="btn btn-light d-inline-block text-success" role="button" style="text-align: left;">
+                    Syg.:&nbsp;<b>@Model.Song.Signature</b> BPM:&nbsp;<b>@Model.Song.BPM</b>&nbsp; @Model.Song.Type.GetDescription()
                 </span>
-                <span class="btn btn-light d-inline-block text-success fw-bold" role="button" style="max-width: 120px;">@Model.Song.Type.GetDescription()</span>
+
+                <button class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    Pobierz
+                </button>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="/api/SongDownload/@Model.Song.Number/Docx"><i class="fa-solid fa-file-word"></i>&nbsp;Dokument Microsoft Word (*.docx)</a></li>
+                    <li><a class="dropdown-item" href="/api/SongDownload/@Model.Song.Number/Pdf"><i class="fa-solid fa-file-pdf"></i>&nbsp;Dokument PDF (*.pdf)</a></li>
+                </ul>                
             </div>
-        
-            <div class="btn-group" >
+
+            <div class="btn-group">
                 <a href="/Song?id=@priorSong" class="btn btn-primary text-light d-inline-block" role="button" title="Poprzednia pieśń" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
                 <button class="btn btn-primary text-light dropdown-toggle dropdown-toggle-split" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0;">
                     Wybierz inną
                 </button>
                 <div class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenuDownloadBook">
                     <div class="row" style="padding-left: 10px;">
-                    @for (int i = 1; i <= Model.MaxNumber; i++) {
-                        var _active = String.Empty;
-                        if (i == Model.Song.Number) {
-                            _active = " active";
+                        @for (int i = 1; i <= Model.MaxNumber; i++) {
+                            var _active = String.Empty;
+                            if (i == Model.Song.Number) {
+                                _active = " active";
+                            }
+
+                            <a class="col-auto dropdown-item@_active" href="/Song?id=@i" style="width: auto;">@i</a>
                         }
-                        
-                        <a class="col-auto dropdown-item@_active" href="/Song?id=@i" style="width: auto;">@i</a>
-                    }
                     </div>
                 </div>
 
@@ -64,7 +70,7 @@
             </div>
         </div>
 
-        <div class="col-auto d-none d-lg-block song-img" ></div>
+        <div class="col-auto d-none d-lg-block song-img"></div>
     </div>
 
     <div style="max-width: 1025px; margin: auto; padding-top: 20px; font-size: 120%;">
@@ -107,7 +113,7 @@
             </div>
         }
 
-        <hr/>
+        <hr />
         <p class="small text-center">Śpiewnik zborowy Kościoła Chrześcijan Baptystów w Nowym Dworze Mazowieckim</p>
 
     </div>

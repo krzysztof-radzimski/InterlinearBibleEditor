@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace ChurchServices.WebApp.Controllers {
+﻿namespace ChurchServices.WebApp.Controllers {
     public abstract class ChurchControllerBase : Controller {
         protected readonly IWebHostEnvironment _webHostEnvironment;
         public ChurchControllerBase(IWebHostEnvironment webHostEnvironment) {
@@ -45,6 +43,4 @@ namespace ChurchServices.WebApp.Controllers {
             return dirPath;
         }
     }
-
-    public class HtmlFileData { public string Data { get; set; } }
 }

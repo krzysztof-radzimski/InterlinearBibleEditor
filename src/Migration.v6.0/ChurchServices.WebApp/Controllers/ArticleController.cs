@@ -11,9 +11,7 @@
 
   ===================================================================================*/
 
-using ChurchServices.Data.Export;
-using ChurchServices.Data.Model;
-using Microsoft.SqlServer.Server;
+using DevExpress.Xpo.DB;
 
 namespace ChurchServices.WebApp.Controllers {
     public class ArticleController : Controller {
@@ -22,6 +20,28 @@ namespace ChurchServices.WebApp.Controllers {
             Configuration = configuration;
         }
 
+        [Route("/[controller]/{id}")]
+        public IActionResult Index(int id) {
+            var article = new XPQuery<Article>(new UnitOfWork()).Where(x => x.Oid == id && !x.Hidden).FirstOrDefault();
+            if (article.IsNotNull()) {
+                return View(new ArticleControllerModel() { Article = article });
+            }
+            else {
+                var dl = new SimpleDataLayer(new InMemoryDataStore());
+                var uow = new UnitOfWork(dl);
+                return View(new ArticleControllerModel() {
+                    Article = new Article(uow) {
+                        AuthorName = "Brak artykułu",
+                        AuthorPicture = null,
+                        Date = DateTime.MinValue,
+                        Lead = $"Nie znaleziono artykułu o numerze {id}!",
+                        DocumentData = null,
+                        Text = String.Empty,
+                        Type = ArticleType.Article
+                    }
+                });
+            }
+        }
         public IActionResult Index() {
             var qs = Request.QueryString;
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 3) {
@@ -46,6 +66,15 @@ namespace ChurchServices.WebApp.Controllers {
         public ArticleImageController(IConfiguration configuration) {
             Configuration = configuration;
         }
+
+        [HttpGet]
+        [Route("/api/[controller]/{id}")]
+        public async Task<IActionResult> Get(int id) {
+            var stream = await GetImage(id);
+            if (stream.IsNull()) { return NotFound(); }
+            return File(stream, "image/jpg", "article.jpg");
+        }
+
         [HttpGet]
         public async Task<IActionResult> Get() {
             var qs = Request.QueryString;
@@ -77,6 +106,17 @@ namespace ChurchServices.WebApp.Controllers {
             }
             return default;
         }
+
+        private async Task<Stream> GetImage(int id) {
+            if (id > 0) {
+                var uow = new UnitOfWork();
+                var article = new XPQuery<Article>(uow).Where(x => x.Oid == id).FirstOrDefault();
+                if (article.IsNotNull()) {
+                    return new MemoryStream(article.AuthorPicture);
+                }
+            }
+            return default;
+        }
     }
 
     [ApiController]
@@ -88,36 +128,28 @@ namespace ChurchServices.WebApp.Controllers {
             Configuration = configuration;
         }
         [HttpGet]
-        public async Task<IActionResult> Get() {
-            var qs = Request.QueryString;
-
-            if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 5) {
-                var queryString = HttpUtility.UrlDecode(qs.Value).RemoveAny("?q=");
-                DownloadStreamResult result;
-                try {
-                    result = await CreateStream(queryString);
-                }
-                catch (AuthException) {
-                    return new RedirectResult("/Account/Index?ReturnUrl=" + Request.Path + HttpUtility.UrlDecode(Request.QueryString.Value));
-                }
-                if (result.IsNull()) { return NotFound(); }
-                return File(result.Stream, Format.GetDescription(), result.FileName);
+        [Route("/api/[controller]/{id}/{format}")]
+        public async Task<IActionResult> Get(int id, ExportSaveFormat format) {
+            DownloadStreamResult result;
+            try {
+                result = await CreateStream(id, format);
             }
-
-            return NotFound();
+            catch (AuthException) {
+                return new RedirectResult("/Account/Index?ReturnUrl=" + Request.Path + HttpUtility.UrlDecode(Request.QueryString.Value));
+            }
+            if (result.IsNull()) { return NotFound(); }
+            return File(result.Stream, Format.GetDescription(), result.FileName);
         }
 
-        private async Task<DownloadStreamResult> CreateStream(string queryString) {
+        private async Task<DownloadStreamResult> CreateStream(int id, ExportSaveFormat format) {
             var fileName = String.Empty;
-            var paramsTable = queryString.Split(',');
-            var article = new XPQuery<Article>(new UnitOfWork()).Where(x=> x.Oid == paramsTable[0].ToInt()).FirstOrDefault();
+            var article = new XPQuery<Article>(new UnitOfWork()).Where(x => x.Oid == id).FirstOrDefault();
             if (article != null) {
-                fileName = $"{article.Subject.Replace(" ", "-").RemovePolishChars()}.{paramsTable[1]}";
-                ExportSaveFormat saveFormat = paramsTable[1] == "docx" ? ExportSaveFormat.Docx : ExportSaveFormat.Pdf;
+                fileName = $"{article.Subject.Replace(" ", "-").RemovePolishChars()}.{format.ToString().ToLower()}";
                 byte[] licData = await GetLicData();
                 var host = (this.Request.IsHttps ? "https://" : "http://") + this.Request.Host;
                 var exporter = new ArticleExporter(licData, host);
-                return new DownloadStreamResult { Stream = new MemoryStream(exporter.Export(article, saveFormat)), FileName = fileName };
+                return new DownloadStreamResult { Stream = new MemoryStream(exporter.Export(article, format)), FileName = fileName };
             }
             return default;
         }
