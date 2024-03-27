@@ -13,8 +13,8 @@
     }
 
     <p>
-    <a href="https://pl.wikipedia.org/wiki/Siglum" target="_blank">Siglum</a> zapisujemy według zasad protestanckich jak poniżej:<br />
-    <pre>
+        <a href="https://pl.wikipedia.org/wiki/Siglum" target="_blank">Siglum</a> zapisujemy według zasad protestanckich jak poniżej:<br />
+        <pre>
         {skrót księgi} {numer rozdziału}:{numer wersetu} np. J 3:16
         {skrót księgi} {numer rozdziału}:{numer wersetu}-{do wersetu} np. Mt 5:3-5
         {skrót przekładu} {skrót księgi} {numer rozdziału}:{numer wersetu} np. UBG 1J 5:20
@@ -22,11 +22,11 @@
     </p>
 
     <p>
-    Schemat siglum można użyć w wywołaniu:
-    <pre>
-        @Configuration["HostUrl"]/Search/Siglum?text=Rz 12:9
-        @Configuration["HostUrl"]/Search/Siglum?text=Mat 5:5-9
-        @Configuration["HostUrl"]/Search/Siglum?text=UBG J 5:20
+        Schemat siglum można użyć w wywołaniu:
+        <pre>
+            @Configuration["HostUrl"]/Search/Siglum?text=Rz 12:9
+            @Configuration["HostUrl"]/Search/Siglum?text=Mat 5:5-9
+            @Configuration["HostUrl"]/Search/Siglum?text=UBG J 5:20
     </pre>
     </p>
 </div>
@@ -38,24 +38,26 @@
     var books = TranslationInfoController.GetBookBases(session);
     var baseBooks = books
         .Where(x => x.StatusBookType == TheBookType.Bible)
-        .Select(x => new { x.NumberOfBook, x.BookShortcut, x.BookName });
+        .Select(x => new { x.NumberOfBook, x.BookShortcut, x.BookName, x.StatusCanonType });
 }
 <div class="container">
-    <p>
-        <span class="fw-bold">Skróty przekładów:</span>&nbsp;
-        @foreach (var translation in translations) {
-            <a href="/@translation.Name/@translation.FirstNumber/1" title="@translation.Description">@Html.Raw(translation.Name),</a>
-        }
-    </p>
-
-</div>
-
-<div class="container">
-    <p class="fw-bold">Skróty ksiąg</p>
-    @foreach (var book in baseBooks) {
-        <div class="row p-1">
-            <div class="col-auto p-1 border-bottom fw-bold" style="min-width: 70px;"><a href="/BW/@book.NumberOfBook/1">@book.BookShortcut</a></div>
-            <div class="col-auto p-1 border-bottom" style="min-width: 250px;">@book.BookName</div>
+    <h3>Skróty przekładów</h3>
+    <div class="row">
+        <div class="col">
+            @foreach (var translation in translations) {
+                <a href="/@translation.Name/@translation.FirstNumber/1" title="@translation.Description">@Html.Raw(translation.Name),</a>
+            }
         </div>
-    }
+    </div>
+</div>
+<br />
+<div class="container">
+    <h3>Skróty ksiąg</h3>
+    <div class="row p-1">
+        @foreach (var book in baseBooks) {
+            var _tran = book.StatusCanonType == CanonType.Canon ? "BW" : "PAU";
+
+            <div class="col-auto p-1"><a class="fw-bold" href="/@_tran/@book.NumberOfBook/1">@book.BookShortcut</a>&nbsp;@book.BookName</div>
+        }
+    </div>
 </div>

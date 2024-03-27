@@ -1,13 +1,18 @@
 ﻿@model BibleStudyCourseItemModel
 @{
     var userName = this.ViewContext.HttpContext.User.Identity?.Name;
+    var question = Model.Question;
+    // usuwam sierotki
+    question = System.Text.RegularExpressions.Regex.Replace(question, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+        return " " + m.Value.Trim() + "&nbsp;";
+    }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 }
 <input asp-for="@Model.Index" type="hidden" />
 @Html.DisplayFor(model => model.Index))
 
 <b>
     <input asp-for="@Model.Question" type="hidden" />
-    &nbsp;@Html.DisplayFor(model => model.Question)
+    &nbsp;@Html.Raw(question)
 </b>
 <br />
 <textarea asp-for="@Model.QuestionAnswer" class="form-control" style="min-height: 100px; width: 100%;"></textarea>
@@ -25,3 +30,4 @@ else if (Model.TeacherComment.IsNotNullOrEmpty()) {
     </p>
     <br />
 }
+<input asp-for="@Model.Application" type="hidden" />

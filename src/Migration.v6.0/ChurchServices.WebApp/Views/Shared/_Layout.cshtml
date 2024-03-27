@@ -8,10 +8,10 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head prefix="og: http://ogp.me/ns#">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - @Configuration["PageTitle"]</title>
+    <title>@ViewData["Title"] :: @Configuration["PageTitle"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/font-awsome/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -34,33 +34,18 @@
                                 <div style="display: inline-block; width: 25px;"><i class="fa-solid fa-place-of-worship"></i></div>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMain">
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Service"><div style="display: inline-block; width: 25px;"><i class="fas fa-church"></i></div> Nabożeństwa i grupy biblijne</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Articles" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="far fa-newspaper"></i></div> Nauczanie&nbsp;<span class="badge bg-success text-white">skrypty kazań</span></a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="WhatWeBelieve"><div style="display: inline-block; width: 25px;"><i class="fas fa-cross"></i></div> W co wierzymy (<span style="font-family: 'Old London'; font-size: 120%;">Wyznanie wiary</span>)</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="About"><div style="display: inline-block; width: 25px;"><i class="fas fa-user-friends"></i></div> O nas, kim jesteśmy</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="ChurchJournal" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-circle-info"></i></div> Informator Zborowy</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="ChurchJournal" asp-action="LegalActs"><div style="display: inline-block; width: 25px;"><i class="fa-solid fa-file-contract"></i></div> Akty prawne</a>
-                                </li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Service"><div style="display: inline-block; width: 25px;"><i class="fas fa-church"></i></div> Nabożeństwa i grupy biblijne</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Articles" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="far fa-newspaper"></i></div> Nauczanie&nbsp;<span class="badge bg-success text-white">skrypty kazań</span></a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="WhatWeBelieve"><div style="display: inline-block; width: 25px;"><i class="fas fa-cross"></i></div> W co wierzymy (<span style="font-family: 'Old London'; font-size: 120%;">Wyznanie wiary</span>)</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="About"><div style="display: inline-block; width: 25px;"><i class="fas fa-user-friends"></i></div> O nas, kim jesteśmy</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="ChurchJournal" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-circle-info"></i></div> Informator Zborowy</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="ChurchJournal" asp-action="LegalActs"><div style="display: inline-block; width: 25px;"><i class="fa-solid fa-file-contract"></i></div> Akty prawne</a></li>
                                 <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Songs" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-music"></i></div> Śpiewajmy dla Jezusa</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Camps" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-child"></i></div> Obozy dla dzieci i młodzieży</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="LeadersMaterials" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-book-reader"></i></div> Materiały dla liderów</a></li>
                                 <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Songs" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-music"></i></div> Śpiewajmy dla Jezusa</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Camps" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-child"></i></div> Obozy dla dzieci i młodzieży</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="LeadersMaterials" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-book-reader"></i></div> Materiały dla liderów</a>
+                                    <a class="dropdown-item" href="https://chat.openai.com/g/g-EFuqOChJS-baptysci-w-nowym-dworze-mazowieckim" data-bs-toggle="tooltip" data-bs-title="Dowiedz się więcej o Kościele Chrześcijan Baptystów w Nowym Dworze Mazowieckim, korzystając z dedykowanego modelu ChatGPT"><div style="display: inline-block; width: 25px;"><i class="fa-brands fa-rocketchat"></i></div> ChatGPT</a>
                                 </li>
                             </ul>
                         </li>
@@ -92,10 +77,10 @@
                                         foreach (var item in groupName) {
                                             var _name = item.Name.Replace("'", "").Replace("+", "");
                                             var _description = item.Description;
-                                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm abbr-small"" title=""Przekład katolicki"">katolicki</abbr>" : "";
-                                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
-                                            var _notrecommendedBadge = item.TranslationType == TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm abbr-small"" title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
-                                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+                                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm abbr-small"" data-bs-toggle=""tooltip"" data-bs-title=""Przekład katolicki"">katolicki</abbr>" : "";
+                                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" data-bs-toggle=""tooltip"" data-bs-title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                                            var _notrecommendedBadge = item.TranslationType == TranslationType.Dynamic.GetDescription() ? @"<abbr class=""btn btn-outline-danger btn-sm abbr-small"" data-bs-toggle=""tooltip"" data-bs-title=""Przekład dynamiczny może zawierać tendencyjne, dalekie od oryginału tłumaczenie"">czytaj uważnie</abbr>" : "";
+                                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" data-bs-toggle=""tooltip"" data-bs-title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
                                             var _isUA = item.Language == Language.Ukrainian ? @"&nbsp;<img src=""/img/ukraine.png"" style=""width: 16px; "" />" : "";
                                         <li><a class="dropdown-item" href="/@_name"><b>@item.Name</b>&nbsp;<span class="fs-80per">@_description</span>&nbsp;@Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_notrecommendedBadge)@Html.Raw(_loginRequired)@Html.Raw(@_isUA)</a></li>
                                         }
@@ -111,7 +96,7 @@
 
                         <li class="nav-item dropdown menu-item-a">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <div class="menu-item-i"><i class="fas fa-book menu-item-i" title="Patrologia"></i></div>
+                                <div class="menu-item-i"><i class="fas fa-book menu-item-i" data-bs-toggle="tooltip" data-bs-title="Patrologia"></i></div>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown2">
                                     @{
@@ -132,9 +117,9 @@
                                         foreach (var item in groupName) {
                                             var _name = item.Name.Replace("'", "").Replace("+", "");
                                             var _description = item.Description;
-                                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm abbr-small"" title=""Przekład katolicki"">katolicki</abbr>" : "";
-                                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" title=""Polecamy ten przekład"">polecamy</abbr>" : "";
-                                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
+                                            var _catolicBadge = item.Catholic ? $@"<abbr class=""btn btn-outline-light btn-sm abbr-small"" data-bs-toggle=""tooltip"" data-bs-title=""Przekład katolicki"">katolicki</abbr>" : "";
+                                            var _recommendedBadge = item.Recommended ? @"<abbr class=""btn btn-outline-success btn-sm abbr-small"" data-bs-toggle=""tooltip"" data-bs-title=""Polecamy ten przekład"">polecamy</abbr>" : "";
+                                            var _loginRequired = item.PasswordRequired && !User.Identity.IsAuthenticated ? @"&nbsp;<abbr class=""btn btn-outline-warning btn-sm abbr-small"" data-bs-toggle=""tooltip"" data-bs-title=""Dostęp do przekładu po podaniu hasła"">wymaga hasła</abbr>" : "";
 
 
                                         <li><a class="dropdown-item" href="/@_name">@_description @Html.Raw(_catolicBadge)@Html.Raw(_recommendedBadge)@Html.Raw(_loginRequired)</a></li>
@@ -197,7 +182,7 @@
                             <button class="dropdown-item" type="submit" name="type" value="go">Przejdź do wersetu</button>
                             <button class="dropdown-item" type="submit" name="type" value="compare">Porównaj przekłady</button>
                             <li><hr class="dropdown-divider"></li>
-                            <a class="nav-link menu-item-a" href="/Search/Siglum" data-bs-toggle="tooltip"
+                            <a class="dropdown-item" href="/Search/Siglum" data-bs-toggle="tooltip"
                                data-bs-placement="bottom"
                                data-bs-title="Schemat siglów biblijnych"><i class="fa-solid fa-magnifying-glass-arrow-right"></i>&nbsp;Schemat Siglum</a>
                         </ul>

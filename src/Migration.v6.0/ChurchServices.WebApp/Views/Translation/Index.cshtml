@@ -9,7 +9,7 @@
     int chapterNumber = 0;
     if (Model != null && Model.Book.IsNotNullOrEmpty()) {
         book = Model.Translation.Books.Where(x => x.NumberOfBook == Convert.ToInt32(Model.Book)).FirstOrDefault();
-        if (Model.Chapter.IsNotNullOrEmpty()) {
+        if (book != null && Model.Chapter.IsNotNullOrEmpty()) {
             chapterNumber = Convert.ToInt32(Model.Chapter);
             chapter = book.Chapters.Where(x => x.NumberOfChapter == chapterNumber).FirstOrDefault();
 
@@ -42,10 +42,22 @@
 }
 
 @if (Model == null) {
-    <h1>Nie przekazano nazwy przekładu</h1>
+    <br/>
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Błąd!</h4>
+        <p>Nie przekazano nazwy przekładu.</p>
+        <hr>
+        <p class="mb-0">Najwyraźniej wskazany adres strony jest niepoprawny. Wróć do strony głównej i spróbuj ponownie.</p>
+    </div>
 }
 else if (Model.Translation.IsNull() || Model.Translation.Hidden) {
-    <h1>Wskazany przekład nie jest dostępny</h1>
+    <br />
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">Uwaga!</h4>
+        <p>Wskazany przekład nie jest już dostępny.</p>
+        <hr>
+        <p class="mb-0">Wróć do strony głównej i wybierz inny przekład.</p>
+    </div>
 }
 else if (Model.Book.IsNullOrEmpty()) {
 
@@ -164,10 +176,19 @@ else if (Model.Book.IsNullOrEmpty()) {
     </div>
 }
 else {
+    if (book == null) {
+        <br/>
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Błąd!</h4>
+            <p>W przekładzie "@Model.Translation.Description" nie udało się odnaleźć wskazanej księgi. Najwyraźniej ten przekład jej nie zawiera.</p>
+            <hr>
+            <p class="mb-0">Spróbuj odnaleźć żądaną księgę w innym przekładzie.</p>
+        </div>        
+    }
     //
     // Wyświetlanie treści rozdziałów poszczególnych ksiąg
     //
-    if (book.IsNotNull()) {
+    else if (book.IsNotNull()) {
         var baseBook = book.BaseBook;
         var bookShortcut = baseBook.IsNotNull() ? baseBook.BookShortcut : String.Empty;
         var bookName = baseBook.IsNotNull() ? baseBook.BookName : String.Empty;      

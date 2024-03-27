@@ -993,16 +993,15 @@ img {
 
     body {
         background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
-        background-image: url('../img/background-2024-dark.jpg?ID=2');
-        color: #C8C8C8;
+        background-image: url('../img/background-2024-dark.jpg?ID=2');       
     }
 
     h1, h2, h3, h4, h5, .list-group-item {
-        color: #C8C8C8 !important;
+        color: #C8C8C8;
     }
 	
 	p, figure, li, div, .form-label, .form-text {
-		color: #C8C8C8 !important;
+		color: #C8C8C8;
 	}
 	
 	textarea.form-control {

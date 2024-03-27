@@ -1,42 +1,57 @@
 ﻿@model ArticleControllerModel
 @{
-    ViewData["Title"] = "Artykuł";
+    var atitle = "Artykuł";
+    if (Model != null && Model.Article != null) {
+        atitle = $"{Model.Article.Type.GetDescription()} :: {Model.Article.Subject}";
+    }
+
+    ViewData["Title"] = atitle;
 
     var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
     var __path = this.Context.Request.Path;
-
-    var document = new HtmlAgilityPack.HtmlDocument();
-    var html = $@"<!DOCTYPE html>
+    HtmlAgilityPack.HtmlNodeCollection headings = null;
+    if (Model != null && Model.Article != null)
+    {
+        var document = new HtmlAgilityPack.HtmlDocument();
+        var html = $@"<!DOCTYPE html>
 <html>
 <body>
 	{Model.Article.Text}
 </body>
 </html> ";
-    document.LoadHtml(html);
-    var xpath = "//*[self::h1 or self::h2 or self::h3 or self::h4 or self::h5]";
-    
-    var headings = document.DocumentNode.SelectNodes(xpath);
-       
-    ViewData["ContainerClass"] = headings != null && headings.Count > 0 ? "container-translation" : "";
+        document.LoadHtml(html);
+        var xpath = "//*[self::h1 or self::h2 or self::h3 or self::h4 or self::h5]";
+
+        headings = document.DocumentNode.SelectNodes(xpath);
+
+        ViewData["ContainerClass"] = headings != null && headings.Count > 0 ? "container-translation" : "";
+    }
 }
 @inject IConfiguration Configuration
 
 @section HeaderScripts {
     @if (Model.IsNotNull()) {
         <!-- social sharing metadata -->
+        <meta property="og:site_name" content="@__host" />
         <meta property="og:title" content="@Model.Article.Subject - @Configuration["PageTitle"]" />
         <meta property="og:description" content="@Model.Article.Lead" />
         <meta property="og:image" content="@__host/api/ArticleImage?id=@Model.Article.Oid" />
         <meta property="og:url" content="@__host/Article?id=@Model.Article.Oid" />
         <meta property="og:type" content="article" />
         <meta property="og:locale" content="pl_PL" />
+        <meta property="og:article:author" content="@Model.Article.AuthorName">
+        <meta property="og:article:published_time" content="@Model.Article.Date">
+        <!-- facebook metadata -->
+        <meta property="article:published_time" content="@Model.Article.Date">
+        <meta property="article:author" content="@Model.Article.AuthorName" />
+        <meta property="article:publisher" content="https://www.facebook.com/koscioljezusa" />
     }
 }
 
- @section Footnotes {
-      @if (headings != null && headings.Count > 0) {
+@section Footnotes {
+    @if (headings != null && headings.Count > 0) {
         <div class="left-panel container">
-            <div class="card-body bible-content">
+            <div class="card-body bible-content" style="padding-top: 20px; padding-bottom: 10px;">
                 <ul>
                     @foreach (var h in headings) {
                         <li type="@h.Name">
@@ -55,12 +70,9 @@
     }
  }
 
-    @if (Model != null) {
-
-    ViewData["Title"] = @Model.Article.Subject;
-
+@if (Model != null) {
     <div class="row shadow-lg article-width">
-       
+
         <div class="col p-4 d-flex flex-column position-static">
             <div class="btn-group" style="max-width:150px;">
                 <a href="/articles" class="btn btn-light active d-inline-block text-decoration-none" title="Więcej artykułów" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
@@ -72,24 +84,28 @@
 
                     var url1 = $"/api/ArticleDownload/{Model.Article.Oid}/Docx";
                     var url2 = $"/api/ArticleDownload/{Model.Article.Oid}/Pdf";
+                    var jsonUrl1 = $"/api/ArticlesData/{Model.Article.Oid}";
+                    var jsonUrl2 = $"/api/ArticlesData/{Model.Article.AuthorName.Replace(" ","-")}";
                 }
 
                 <span class="btn btn-light d-inline-block text-success fw-bold" role="button">@Model.Article.Type.GetDescription()</span>
 
                 <button class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                    Pobierz
+                    <i class="fa-solid fa-download"></i>
                 </button>
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li><a class="dropdown-item" href="@url1"><i class="fa-solid fa-file-word"></i>&nbsp;Dokument Microsoft Word (*.docx)</a></li>
                     <li><a class="dropdown-item" href="@url2"><i class="fa-solid fa-file-pdf"></i>&nbsp;Dokument PDF (*.pdf)</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="@jsonUrl1"><i class="fa-regular fa-file-lines"></i>&nbsp;Dane w formacie JSON (*.json)</a></li>
+                    <li><a class="dropdown-item" href="@jsonUrl2"><i class="fa-regular fa-file-lines"></i>&nbsp;Wszystkie kazania @Model.Article.AuthorName jako dane w formacie JSON (*.json)</a></li>
                 </ul>
-             </div>
+            </div>
             <h3 class="mb-0 text-gradient-church-service">@Model.Article.Subject</h3>
             <p class="mb-auto fst-italic">@Model.Article.AuthorName</p>
             <p class="mb-auto">@Html.Raw(_abstract)</p>
-            @if (Model.Article.Date > DateTime.MinValue)
-            {
+            @if (Model.Article.Date > DateTime.MinValue) {
                 <div class="mb-1 text-muted">@Html.Raw(Model.Article.Date.GetDatePl())</div>
             }
         </div>

@@ -29,7 +29,7 @@ namespace ChurchServices.Extensions {
                 }
             }
 
-            try {
+            try {                
                 return Convert.ToInt32(o);
             }
             catch {

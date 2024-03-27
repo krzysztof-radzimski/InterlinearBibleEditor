@@ -31,12 +31,14 @@
             <span>&nbsp;</span>
             <div class="dropdown">
                 <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                    Pobierz
+                    <i class="fa-solid fa-download"></i>
                 </a>
                 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li><a class="dropdown-item" href="/api/SongsDownload/Docx"><i class="fa-solid fa-file-word"></i>&nbsp;Dokument Microsoft Word (*.docx)</a></li>
                     <li><a class="dropdown-item" href="/api/SongsDownload/Pdf"><i class="fa-solid fa-file-pdf"></i>&nbsp;Dokument PDF (*.pdf)</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/api/SongsData"><i class="fa-regular fa-file-lines"></i>&nbsp;Dane w formacie JSON (*.json)</a></li>
                 </ul>
             </div>
 
@@ -47,10 +49,10 @@
     @foreach (var song in Model) {       
         <div class="row song-row">
             <div class="col-auto" style="min-width: 70px;">
-                <a href="/Song?id=@song.Number" class="btn text-start fw-bold" role="button" aria-pressed="true">@song.Number</a>
+                <a href="/Song/@song.Number" class="btn text-start fw-bold" role="button" aria-pressed="true">@song.Number</a>
             </div>
             <div class="col">
-                <a href="/Song?id=@song.Number" class="btn text-primary text-start" role="button">@song.Name</a>
+                <a href="/Song/@song.Number" class="btn text-primary text-start" role="button">@song.Name</a>
             </div>
             <div class="col-auto">
                 <span class="btn text-secondary text-end">@song.Type.GetDescription()</span>

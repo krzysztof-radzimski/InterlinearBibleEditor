@@ -12,7 +12,7 @@
   ===================================================================================*/
 
 namespace ChurchServices.WebApp.Controllers {
-     public class ArticlesController : Controller {
+    public class ArticlesController : Controller {
         private readonly ILogger<ArticlesController> _logger;
 
         public ArticlesController(ILogger<ArticlesController> logger) {
@@ -20,11 +20,26 @@ namespace ChurchServices.WebApp.Controllers {
         }
 
         public IActionResult Index() {
-            //var articles = new XPQuery<Article>(new UnitOfWork()).Where(x=>!x.Hidden).OrderByDescending(x => x.Date);
             var view = new XPView(new UnitOfWork(), typeof(Article)) {
-                //TopReturnedRecords = 4,
                 CriteriaString = "[Hidden] = 0"
             };
+            List<ArticleInfoBase> list = GetArticlesListByView(view);
+
+            return View(list);
+        }
+
+        [Route("/[controller]/{AuthorName}")]
+        public IActionResult GetByAuthorName(string AuthorName) {
+            AuthorName = AuthorName.Replace("+", " ").Replace("-", " ");
+            var view = new XPView(new UnitOfWork(), typeof(Article)) {
+                CriteriaString = $"[Hidden] = 0 AND [AuthorName] = '{AuthorName}'"
+            };
+            List<ArticleInfoBase> list = GetArticlesListByView(view);
+
+            return View("Index", list);
+        }
+
+        private List<ArticleInfoBase> GetArticlesListByView(XPView view) {
             view.Properties.Add(new ViewProperty("AuthorName", SortDirection.None, "[AuthorName]", false, true));
             view.Properties.Add(new ViewProperty("AuthorPicture", SortDirection.None, "[AuthorPicture]", false, true));
             view.Properties.Add(new ViewProperty("Date", SortDirection.Descending, "[Date]", false, true));
@@ -59,10 +74,10 @@ namespace ChurchServices.WebApp.Controllers {
                 }
             }
 
-            return View(list);
-        }   
+            return list;
+        }
     }
-
+    
     public class ArticleInfoBase {
         public int Id { get; set; }
         public string Subject { get; set; }
@@ -111,7 +126,7 @@ namespace ChurchServices.WebApp.Controllers {
                     case 1: { return "miesiąc temu"; }
                     case 2:
                     case 3:
-                    case 4: { return months+ " miesiące temu"; }
+                    case 4: { return months + " miesiące temu"; }
                     default: { return months + " miesięcy temu"; }
                 }
             }

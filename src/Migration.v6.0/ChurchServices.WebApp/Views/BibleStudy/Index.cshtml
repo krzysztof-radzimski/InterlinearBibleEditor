@@ -17,7 +17,7 @@
     }
     else if (userName == "info@kosciol-jezusa.pl") {
         var courses = TeacherHelper.GetSentCourses();
-        if (courses != null) {
+        if (courses != null && courses.Count() > 0) {
             <h2>Lekcje do sprawdzenia</h2>
             <div class="container">
                 <div class="row">
@@ -40,9 +40,19 @@
         }
 
         if (Model.EmailAddress != userName && Model.CourseItem != null) {
+            var introduction = Model.CourseItem.Introduction;
+            // usuwam sierotki
+            introduction = System.Text.RegularExpressions.Regex.Replace(introduction, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+                return " " + m.Value.Trim() + "&nbsp;";
+            }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
             <p style="text-align: right;"><i class="fa-solid fa-user"></i> @Model.EmailAddress</p>
             <h2>Lekcja @(Model.CourseLevel + 1), <a href="/BW/500/@Model.CourseItem.GetChapter()/@Model.CourseItem.GetVerses()" target="_blank"> Rozdział @Model.CourseItem.Passage</a></h2>
-            @Html.Raw(Model.CourseItem.Introduction)
+            <p>Przekład interlinearny: <a href="/NPI/500/@Model.CourseItem.GetChapter()/@Model.CourseItem.GetVerses()" target="_blank">@Model.CourseItem.Passage</a></p>
+            <h2>Wyjaśnienie zwrotów i słów (dla dociekliwych)</h2>
+
+            @Html.Raw(introduction)
+
             <h2>Program studium Ewangelii</h2>
             <ol>
                 <li>Przeczytaj fragment Ewangelii wg św. Jana, <a href="/BW/500/@Model.CourseItem.GetChapter()/@Model.CourseItem.GetVerses()" target="_blank">rozdział @Model.CourseItem.Passage</a>,</li>
@@ -59,6 +69,9 @@
 
                 @if (Model.CourseItem.Items != null) {
                     @for (var i = 0; i < Model.CourseItem.Items.Count; i++) {
+                        if (Model.CourseItem.Items[i].Application) {
+                            <h2>Zastosowanie</h2>
+                        }
                         @Html.EditorFor(m => m.CourseItem.Items[i])
                     }
                 }
@@ -67,11 +80,18 @@
                 </p>
 
                 <button asp-controller="BibleStudy" asp-action="SaveCourseItem" formmethod="post" type="submit" class="btn btn-primary" id="SaveCourseItemButton">Zapisz</button>
-                <button asp-controller="BibleStudy" asp-action="ApproveCourseItem" formmethod="post" type="submit" class="btn btn-warning float-end" id="SendCourseItemButton">Oddaj lekcję</button>
+                <button asp-controller="BibleStudy" asp-action="ApprovedCourseItem" formmethod="post" type="submit" class="btn btn-warning float-end" id="SendCourseItemButton">Oddaj lekcję</button>
             </form>
         }
     }
     else {
+        var introduction = Model.CourseItem.Introduction;
+        // usuwam sierotki
+        introduction = System.Text.RegularExpressions.Regex.Replace(introduction, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
+            return " " + m.Value.Trim() + "&nbsp;";
+        }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+
         <p style="text-align: right;"><i class="fa-solid fa-user"></i> @userName</p>
         <h1 style="text-align:center;"><b>Studium biblijne</b><br />na podstawie Ewangelii wg św. Jana</h1>
 
@@ -99,9 +119,10 @@
 
         <br />
         <h2><a href="/BW/500/@Model.CourseItem.GetChapter()/@Model.CourseItem.GetVerses()" target="_blank">Rozdział @Model.CourseItem.Passage</a></h2>
-        <p><b>Wyjaśnienie zwrotów i słów (dla dociekliwych)</b></p>
+        <p>Przekład interlinearny: <a href="/NPI/500/@Model.CourseItem.GetChapter()/@Model.CourseItem.GetVerses()" target="_blank">@Model.CourseItem.Passage</a></p>
+        <h2>Wyjaśnienie zwrotów i słów (dla dociekliwych)</h2>
         <div>
-            @Html.Raw(Model.CourseItem.Introduction)
+            @Html.Raw(introduction)
         </div>
         <h2>Program studium Ewangelii</h2>
         <ol>
@@ -119,7 +140,7 @@
 
             @if (Model.CourseItem.Items != null) {
                 @for (var i = 0; i < Model.CourseItem.Items.Count; i++) {
-                    if (Model.CourseItem.Items[i].Index == 11) {
+                    if (Model.CourseItem.Items[i].Application) {
                         <h2>Zastosowanie</h2>
                     }
                     @Html.EditorFor(m => m.CourseItem.Items[i])
@@ -132,7 +153,7 @@
             <button asp-controller="BibleStudy" asp-action="SaveCourseItem" formmethod="post" type="submit" class="btn btn-primary" id="SaveCourseItemButton" aria-describedby="SaveCourseItemButtonHelp">Zapisz</button>
             <button asp-controller="BibleStudy" asp-action="SendCourseItem" formmethod="post" type="submit" class="btn btn-warning float-end" id="SendCourseItemButton" aria-describedby="SendCourseItemButtonHelp">Wyślij</button>
 
-            <br/>
+            <br />
 
             <div id="SaveCourseItemButtonHelp" class="form-text" style="max-width: 40%; display: inline-block;">Kiedy zapisujesz swoje odpowiedzi, to <b>nie są</b> one jeszcze wysyłane do prowadzącego studium. Możesz do nich wrócić w dowolnym momencie, aby kontynuować.</div>
 

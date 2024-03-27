@@ -1,14 +1,35 @@
-﻿@{
-    ViewData["Title"] = "Nauczanie - kazania, artykuły, skrypty";
+﻿@model List<ChurchServices.WebApp.Controllers.ArticleInfoBase>
+@{
+    ViewData["Title"] = "Nauczanie";
     var _listView = false;
+    var oneAuthor = "";
+    List<string> authors = new List<string>();
+    if (Model != null) {
+        authors = Model.Select(x => x.AuthorName).Distinct().ToList();
+        if (authors.Count == 1) {
+            oneAuthor = authors.First();
+        }
+    }
 }
-
-@model List<ChurchServices.WebApp.Controllers.ArticleInfoBase>
 
 <div class="max-width-1000" style="padding-top: 20px;">
     @Html.Partial("~/Views/Shared/_Baner.cshtml")
-    <h1><i class="fas fa-newspaper"></i> @ViewData["Title"]</h1>
-    <br />
+    @if (oneAuthor.IsNotNullOrEmpty()) {
+        <h1><i class="fas fa-newspaper"></i> @ViewData["Title"] :: @oneAuthor</h1>
+    }
+    else {
+        <h1><i class="fas fa-newspaper"></i> @ViewData["Title"]</h1>
+    }
+
+    @if (oneAuthor.IsNullOrEmpty()) {
+        <div>
+            @foreach (var item in authors) {
+                <a href="/Articles/@item.Replace(" ","-")">@item</a>
+                <span> | </span>
+            }                      
+        </div>
+        <br />
+    }
     <div class="row">
         @foreach (var item in Model) {
             if (item is ChurchServices.WebApp.Controllers.ArticleInfo) {
@@ -28,13 +49,18 @@
                                 <div class="card-body">
                                     <h3 class="card-title text-gradient-church-service">@item.Subject</h3>
                                     <p class="card-text" style="line-height: 1.3;">@Html.Raw(lead)</p>
-                                    <p class="card-text" style="line-height: 0.9;"><small class="text-muted">@item.AuthorName <br /> @item.GetDaysAgo()</small></p>
+                                    @if (oneAuthor.IsNullOrEmpty()) {
+                                        <p class="card-text" style="line-height: 0.9;"><small class="text-muted">@item.AuthorName<br /> @item.GetDaysAgo()</small></p>
+                                    }
+                                    else {
+                                        <p class="card-text" style="line-height: 0.9;"><small class="text-muted">@item.GetDaysAgo()</small></p>
+                                    }
                                 </div>
                                 <strong class="d-inline-block mb-2 text-success pill-white float-end" style="right: 15px; bottom: 15px; position: absolute;">@_item.Type</strong>
                             </div>
                         </div>
                     </div>
-                </a>                               
+                </a>
             }
             else {
                 if (!_listView) {
@@ -44,14 +70,21 @@
 
                 <div style="display: table-row;">
                     <div style="display: table-cell; vertical-align: top; padding-top: 10px; padding-right: 5px;">@Html.Raw(item.Date.GetShortDatePl())</div>
-                    <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><a href="../Article?id=@item.Id" class="link text-decoration-none">@item.Subject</a></div>
-                    <div style="display: table-cell; vertical-align: top; padding-top: 10px; font-size: 80%;"><i>@Html.Raw(item.AuthorName.GetInitials())</i></div>
+                    <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><a href="/Article/@item.Id" class="link text-decoration-none">@item.Subject</a></div>
+                    @if (oneAuthor.IsNullOrEmpty()) {
+                        <div style="display: table-cell; vertical-align: top; padding-top: 10px; font-size: 80%;"><i>@Html.Raw(item.AuthorName.GetInitials())</i></div>
+                    }
                 </div>
 
                 @if (item == Model.LastOrDefault()) {
-                    @Html.Raw(@"</div>")                    
+                    @Html.Raw(@"</div>")
                 }
             }
         }
     </div>
+    @if (oneAuthor.IsNotNullOrEmpty()) {
+        <div class="d-flex flex-row-reverse mt-3">
+            <a href="/Articles" class="btn btn-secondary">Więcej...</a>
+        </div>
+    }
 </div>

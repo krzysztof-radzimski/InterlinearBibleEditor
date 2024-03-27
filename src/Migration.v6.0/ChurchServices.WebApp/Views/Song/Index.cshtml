@@ -39,17 +39,19 @@
                 </span>
 
                 <button class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                    Pobierz
+                    <i class="fa-solid fa-download"></i>
                 </button>
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <li><a class="dropdown-item" href="/api/SongDownload/@Model.Song.Number/Docx"><i class="fa-solid fa-file-word"></i>&nbsp;Dokument Microsoft Word (*.docx)</a></li>
                     <li><a class="dropdown-item" href="/api/SongDownload/@Model.Song.Number/Pdf"><i class="fa-solid fa-file-pdf"></i>&nbsp;Dokument PDF (*.pdf)</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/api/SongsData/@Model.Song.Number"><i class="fa-regular fa-file-lines"></i>&nbsp;Dane w formacie JSON (*.json)</a></li>
                 </ul>                
             </div>
 
             <div class="btn-group">
-                <a href="/Song?id=@priorSong" class="btn btn-primary text-light d-inline-block" role="button" title="Poprzednia pieśń" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
+                <a href="/Song/@priorSong" class="btn btn-primary text-light d-inline-block" role="button" title="Poprzednia pieśń" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left"></i></a>
                 <button class="btn btn-primary text-light dropdown-toggle dropdown-toggle-split" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0;">
                     Wybierz inną
                 </button>
@@ -61,12 +63,12 @@
                                 _active = " active";
                             }
 
-                            <a class="col-auto dropdown-item@_active" href="/Song?id=@i" style="width: auto;">@i</a>
+                            <a class="col-auto dropdown-item@_active" href="/Song/@i" style="width: auto;">@i</a>
                         }
                     </div>
                 </div>
 
-                <a href="/Song?id=@nextSong" class="btn btn-primary text-light d-inline-block" role="button" title="Następna pieśń" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-right"></i></a>
+                <a href="/Song/@nextSong" class="btn btn-primary text-light d-inline-block" role="button" title="Następna pieśń" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-right"></i></a>
             </div>
         </div>
 

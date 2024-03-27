@@ -138,12 +138,12 @@ namespace ChurchServices.Data.Model {
             set { SetPropertyValue(nameof(Index), ref index, value); }
         }
 
-        [Browsable(false)]
+        [Browsable(false)]        
         [Association("SongVerses")]
         public Song Parent {
             get { return parent; }
             set { SetPropertyValue(nameof(Parent), ref parent, value); }
-        }
+        }        
 
         public SongVerse(Session session) : base(session) { }
     }
