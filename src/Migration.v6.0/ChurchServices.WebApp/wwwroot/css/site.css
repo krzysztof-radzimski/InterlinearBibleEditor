@@ -38,6 +38,11 @@
     font-family: "SBL Greek" !important;
 }
 
+.article-days-ago {
+    line-height: 0.9;
+    margin-top: -5px;
+}
+
 .OldLondonH1 {
     text-align: center;
     font-family: 'Old London';
