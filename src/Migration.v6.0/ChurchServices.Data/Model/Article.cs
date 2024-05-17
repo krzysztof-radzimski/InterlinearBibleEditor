@@ -22,6 +22,7 @@ namespace ChurchServices.Data.Model {
         private ArticleType type;
         private byte[] authorPicture;
         private bool hidden;
+        private string passage;
 
         [Size(200)]
         public string Subject {
@@ -70,6 +71,12 @@ namespace ChurchServices.Data.Model {
         public bool Hidden {
             get { return hidden; }
             set { SetPropertyValue(nameof(Hidden), ref hidden, value); }
+        }
+
+        [Size(200)]
+        public string Passage {
+            get { return passage; }
+            set { SetPropertyValue(nameof(Passage), ref passage, value); }
         }
 
         public Article(Session session) : base(session) { }

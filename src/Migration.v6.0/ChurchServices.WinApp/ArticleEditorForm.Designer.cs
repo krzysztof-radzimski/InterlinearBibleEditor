@@ -25,12 +25,12 @@ namespace ChurchServices.WinApp {
         /// </summary>
         private void InitializeComponent() {
             components = new System.ComponentModel.Container();
-            DevExpress.XtraBars.Ribbon.GalleryItemGroup galleryItemGroup2 = new DevExpress.XtraBars.Ribbon.GalleryItemGroup();
-            DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipTitleItem toolTipTitleItem2 = new DevExpress.Utils.ToolTipTitleItem();
-            DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.XtraBars.Ribbon.GalleryItemGroup galleryItemGroup1 = new DevExpress.XtraBars.Ribbon.GalleryItemGroup();
+            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipTitleItem toolTipTitleItem1 = new DevExpress.Utils.ToolTipTitleItem();
+            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ArticleEditorForm));
-            DevExpress.XtraBars.Ribbon.ReduceOperation reduceOperation2 = new DevExpress.XtraBars.Ribbon.ReduceOperation();
+            DevExpress.XtraBars.Ribbon.ReduceOperation reduceOperation1 = new DevExpress.XtraBars.Ribbon.ReduceOperation();
             ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
             pasteItem1 = new DevExpress.XtraRichEdit.UI.PasteItem();
             cutItem1 = new DevExpress.XtraRichEdit.UI.CutItem();
@@ -146,21 +146,23 @@ namespace ChurchServices.WinApp {
             tabs = new DevExpress.XtraBars.Navigation.TabPane();
             tabSettings = new DevExpress.XtraBars.Navigation.TabNavigationPage();
             tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
+            txtAuthor = new DevExpress.XtraEditors.ComboBoxEdit();
             cbHidden = new DevExpress.XtraEditors.CheckEdit();
             txtAuthorPicture = new DevExpress.XtraEditors.PictureEdit();
-            labelControl6 = new DevExpress.XtraEditors.LabelControl();
-            labelControl5 = new DevExpress.XtraEditors.LabelControl();
+            lblAuthorPicture = new DevExpress.XtraEditors.LabelControl();
+            lblType = new DevExpress.XtraEditors.LabelControl();
             txtType = new DevExpress.XtraEditors.LookUpEdit();
             btnPreviewHtml = new DevExpress.XtraEditors.SimpleButton();
             txtLead = new DevExpress.XtraEditors.MemoEdit();
-            labelControl4 = new DevExpress.XtraEditors.LabelControl();
-            labelControl3 = new DevExpress.XtraEditors.LabelControl();
+            lblLead = new DevExpress.XtraEditors.LabelControl();
+            lblAuthor = new DevExpress.XtraEditors.LabelControl();
             txtDate = new DevExpress.XtraEditors.DateEdit();
-            labelControl2 = new DevExpress.XtraEditors.LabelControl();
+            lblDate = new DevExpress.XtraEditors.LabelControl();
             txtSubject = new DevExpress.XtraEditors.TextEdit();
-            labelControl1 = new DevExpress.XtraEditors.LabelControl();
             sidePanel2 = new DevExpress.XtraEditors.SidePanel();
-            txtAuthor = new DevExpress.XtraEditors.ComboBoxEdit();
+            lblPassage = new DevExpress.XtraEditors.LabelControl();
+            lblSubject = new DevExpress.XtraEditors.LabelControl();
+            txtPassage = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemFontEdit1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemRichEditFontSizeEdit1).BeginInit();
@@ -171,6 +173,7 @@ namespace ChurchServices.WinApp {
             tabSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)tablePanel1).BeginInit();
             tablePanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)txtAuthor.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)cbHidden.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)txtAuthorPicture.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)txtType.Properties).BeginInit();
@@ -179,13 +182,13 @@ namespace ChurchServices.WinApp {
             ((System.ComponentModel.ISupportInitialize)txtDate.Properties.CalendarTimeProperties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)txtSubject.Properties).BeginInit();
             sidePanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)txtAuthor.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtPassage.Properties).BeginInit();
             SuspendLayout();
             // 
             // ribbonControl1
             // 
             ribbonControl1.ExpandCollapseItem.Id = 0;
-            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, ribbonControl1.SearchEditItem, pasteItem1, cutItem1, copyItem1, pasteSpecialItem1, barButtonGroup1, changeFontNameItem1, changeFontSizeItem1, fontSizeIncreaseItem1, fontSizeDecreaseItem1, barButtonGroup2, toggleFontBoldItem1, toggleFontItalicItem1, toggleFontUnderlineItem1, toggleFontDoubleUnderlineItem1, toggleFontStrikeoutItem1, toggleFontDoubleStrikeoutItem1, toggleFontSuperscriptItem1, toggleFontSubscriptItem1, barButtonGroup3, changeFontColorItem1, changeFontHighlightColorItem1, changeTextCaseItem1, makeTextUpperCaseItem1, makeTextLowerCaseItem1, capitalizeEachWordCaseItem1, toggleTextCaseItem1, clearFormattingItem1, barButtonGroup4, toggleBulletedListItem1, toggleNumberingListItem1, toggleMultiLevelListItem1, barButtonGroup5, decreaseIndentItem1, increaseIndentItem1, rtlToggleBulletedListItem1, rtlToggleNumberingListItem1, rtlToggleMultiLevelListItem1, rtlDecreaseIndentItem1, rtlIncreaseIndentItem1, toggleParagraphLeftToRightItem1, toggleParagraphRightToLeftItem1, barButtonGroup6, toggleParagraphAlignmentLeftItem1, toggleParagraphAlignmentCenterItem1, toggleParagraphAlignmentRightItem1, toggleParagraphAlignmentJustifyItem1, toggleParagraphAlignmentArabicJustifyGroupItem1, toggleParagraphAlignmentArabicJustifyItem1, toggleParagraphAlignmentJustifyLowItem1, toggleParagraphAlignmentJustifyMediumItem1, toggleParagraphAlignmentJustifyHighItem1, toggleParagraphAlignmentDistributeItem1, toggleParagraphAlignmentThaiDistributeItem1, toggleShowWhitespaceItem1, barButtonGroup7, changeParagraphLineSpacingItem1, setSingleParagraphSpacingItem1, setSesquialteralParagraphSpacingItem1, setDoubleParagraphSpacingItem1, showLineSpacingFormItem1, addSpacingBeforeParagraphItem1, removeSpacingBeforeParagraphItem1, addSpacingAfterParagraphItem1, removeSpacingAfterParagraphItem1, changeParagraphBackColorItem1, galleryChangeStyleItem1, findItem1, replaceItem1, insertTableOfContentsItem1, updateTableOfContentsItem1, addParagraphsToTableOfContentItem1, setParagraphHeadingLevelItem1, setParagraphHeadingLevelItem2, setParagraphHeadingLevelItem3, setParagraphHeadingLevelItem4, setParagraphHeadingLevelItem5, setParagraphHeadingLevelItem6, setParagraphHeadingLevelItem7, setParagraphHeadingLevelItem8, setParagraphHeadingLevelItem9, setParagraphHeadingLevelItem10, insertCaptionPlaceholderItem1, insertFiguresCaptionItems1, insertTablesCaptionItems1, insertEquationsCaptionItems1, insertTableOfFiguresPlaceholderItem1, insertTableOfFiguresItems1, insertTableOfTablesItems1, insertTableOfEquationsItems1, updateTableOfFiguresItem1, insertFootnoteItem1, insertEndnoteItem1, navigationNotesItem1, showNotesItem1, btnSave, btnQuote, btnReplaceAllSiglum, btnRemoveHostUrlFromHyperlinks });
+            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, pasteItem1, cutItem1, copyItem1, pasteSpecialItem1, barButtonGroup1, changeFontNameItem1, changeFontSizeItem1, fontSizeIncreaseItem1, fontSizeDecreaseItem1, barButtonGroup2, toggleFontBoldItem1, toggleFontItalicItem1, toggleFontUnderlineItem1, toggleFontDoubleUnderlineItem1, toggleFontStrikeoutItem1, toggleFontDoubleStrikeoutItem1, toggleFontSuperscriptItem1, toggleFontSubscriptItem1, barButtonGroup3, changeFontColorItem1, changeFontHighlightColorItem1, changeTextCaseItem1, makeTextUpperCaseItem1, makeTextLowerCaseItem1, capitalizeEachWordCaseItem1, toggleTextCaseItem1, clearFormattingItem1, barButtonGroup4, toggleBulletedListItem1, toggleNumberingListItem1, toggleMultiLevelListItem1, barButtonGroup5, decreaseIndentItem1, increaseIndentItem1, rtlToggleBulletedListItem1, rtlToggleNumberingListItem1, rtlToggleMultiLevelListItem1, rtlDecreaseIndentItem1, rtlIncreaseIndentItem1, toggleParagraphLeftToRightItem1, toggleParagraphRightToLeftItem1, barButtonGroup6, toggleParagraphAlignmentLeftItem1, toggleParagraphAlignmentCenterItem1, toggleParagraphAlignmentRightItem1, toggleParagraphAlignmentJustifyItem1, toggleParagraphAlignmentArabicJustifyGroupItem1, toggleParagraphAlignmentArabicJustifyItem1, toggleParagraphAlignmentJustifyLowItem1, toggleParagraphAlignmentJustifyMediumItem1, toggleParagraphAlignmentJustifyHighItem1, toggleParagraphAlignmentDistributeItem1, toggleParagraphAlignmentThaiDistributeItem1, toggleShowWhitespaceItem1, barButtonGroup7, changeParagraphLineSpacingItem1, setSingleParagraphSpacingItem1, setSesquialteralParagraphSpacingItem1, setDoubleParagraphSpacingItem1, showLineSpacingFormItem1, addSpacingBeforeParagraphItem1, removeSpacingBeforeParagraphItem1, addSpacingAfterParagraphItem1, removeSpacingAfterParagraphItem1, changeParagraphBackColorItem1, galleryChangeStyleItem1, findItem1, replaceItem1, insertTableOfContentsItem1, updateTableOfContentsItem1, addParagraphsToTableOfContentItem1, setParagraphHeadingLevelItem1, setParagraphHeadingLevelItem2, setParagraphHeadingLevelItem3, setParagraphHeadingLevelItem4, setParagraphHeadingLevelItem5, setParagraphHeadingLevelItem6, setParagraphHeadingLevelItem7, setParagraphHeadingLevelItem8, setParagraphHeadingLevelItem9, setParagraphHeadingLevelItem10, insertCaptionPlaceholderItem1, insertFiguresCaptionItems1, insertTablesCaptionItems1, insertEquationsCaptionItems1, insertTableOfFiguresPlaceholderItem1, insertTableOfFiguresItems1, insertTableOfTablesItems1, insertTableOfEquationsItems1, updateTableOfFiguresItem1, insertFootnoteItem1, insertEndnoteItem1, navigationNotesItem1, showNotesItem1, btnSave, btnQuote, btnReplaceAllSiglum, btnRemoveHostUrlFromHyperlinks });
             ribbonControl1.Location = new Point(0, 0);
             ribbonControl1.MaxItemId = 99;
             ribbonControl1.Name = "ribbonControl1";
@@ -611,7 +614,7 @@ namespace ChurchServices.WinApp {
             // 
             // 
             galleryChangeStyleItem1.Gallery.ColumnCount = 10;
-            galleryChangeStyleItem1.Gallery.Groups.AddRange(new DevExpress.XtraBars.Ribbon.GalleryItemGroup[] { galleryItemGroup2 });
+            galleryChangeStyleItem1.Gallery.Groups.AddRange(new DevExpress.XtraBars.Ribbon.GalleryItemGroup[] { galleryItemGroup1 });
             galleryChangeStyleItem1.Gallery.ImageSize = new Size(65, 46);
             galleryChangeStyleItem1.Id = 66;
             galleryChangeStyleItem1.Name = "galleryChangeStyleItem1";
@@ -761,11 +764,11 @@ namespace ChurchServices.WinApp {
             // 
             // navigationNotesItem1
             // 
-            toolTipTitleItem2.Text = "Next Footnote";
-            toolTipItem2.Text = "Jump to next footnote";
-            superToolTip2.Items.Add(toolTipTitleItem2);
-            superToolTip2.Items.Add(toolTipItem2);
-            navigationNotesItem1.DropDownSuperTip = superToolTip2;
+            toolTipTitleItem1.Text = "Next Footnote";
+            toolTipItem1.Text = "Jump to next footnote";
+            superToolTip1.Items.Add(toolTipTitleItem1);
+            superToolTip1.Items.Add(toolTipItem1);
+            navigationNotesItem1.DropDownSuperTip = superToolTip1;
             navigationNotesItem1.Id = 93;
             navigationNotesItem1.Name = "navigationNotesItem1";
             // 
@@ -811,12 +814,12 @@ namespace ChurchServices.WinApp {
             // 
             homeRibbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { clipboardRibbonPageGroup1, fontRibbonPageGroup1, paragraphRibbonPageGroup1, stylesRibbonPageGroup1, editingRibbonPageGroup1 });
             homeRibbonPage1.Name = "homeRibbonPage1";
-            reduceOperation2.Behavior = DevExpress.XtraBars.Ribbon.ReduceOperationBehavior.UntilAvailable;
-            reduceOperation2.GroupName = null;
-            reduceOperation2.ItemLinkIndex = 0;
-            reduceOperation2.ItemLinksCount = 0;
-            reduceOperation2.Operation = DevExpress.XtraBars.Ribbon.ReduceOperationType.Gallery;
-            homeRibbonPage1.ReduceOperations.Add(reduceOperation2);
+            reduceOperation1.Behavior = DevExpress.XtraBars.Ribbon.ReduceOperationBehavior.UntilAvailable;
+            reduceOperation1.GroupName = null;
+            reduceOperation1.ItemLinkIndex = 0;
+            reduceOperation1.ItemLinksCount = 0;
+            reduceOperation1.Operation = DevExpress.XtraBars.Ribbon.ReduceOperationType.Gallery;
+            homeRibbonPage1.ReduceOperations.Add(reduceOperation1);
             // 
             // clipboardRibbonPageGroup1
             // 
@@ -997,41 +1000,55 @@ namespace ChurchServices.WinApp {
             tabSettings.Controls.Add(tablePanel1);
             tabSettings.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("tabSettings.ImageOptions.SvgImage");
             tabSettings.Name = "tabSettings";
-            tabSettings.Size = new Size(358, 689);
+            tabSettings.Size = new Size(358, 702);
             // 
             // tablePanel1
             // 
             tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] { new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F) });
+            tablePanel1.Controls.Add(txtPassage);
+            tablePanel1.Controls.Add(lblSubject);
+            tablePanel1.Controls.Add(lblPassage);
             tablePanel1.Controls.Add(txtAuthor);
             tablePanel1.Controls.Add(cbHidden);
             tablePanel1.Controls.Add(txtAuthorPicture);
-            tablePanel1.Controls.Add(labelControl6);
-            tablePanel1.Controls.Add(labelControl5);
+            tablePanel1.Controls.Add(lblAuthorPicture);
+            tablePanel1.Controls.Add(lblType);
             tablePanel1.Controls.Add(txtType);
             tablePanel1.Controls.Add(btnPreviewHtml);
             tablePanel1.Controls.Add(txtLead);
-            tablePanel1.Controls.Add(labelControl4);
-            tablePanel1.Controls.Add(labelControl3);
+            tablePanel1.Controls.Add(lblLead);
+            tablePanel1.Controls.Add(lblAuthor);
             tablePanel1.Controls.Add(txtDate);
-            tablePanel1.Controls.Add(labelControl2);
+            tablePanel1.Controls.Add(lblDate);
             tablePanel1.Controls.Add(txtSubject);
-            tablePanel1.Controls.Add(labelControl1);
             tablePanel1.Dock = DockStyle.Fill;
             tablePanel1.Location = new Point(0, 0);
             tablePanel1.Name = "tablePanel1";
-            tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] { new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F) });
-            tablePanel1.Size = new Size(358, 689);
+            tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] { new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F) });
+            tablePanel1.Size = new Size(358, 702);
             tablePanel1.TabIndex = 0;
+            // 
+            // txtAuthor
+            // 
+            tablePanel1.SetColumn(txtAuthor, 0);
+            txtAuthor.Location = new Point(3, 112);
+            txtAuthor.MenuManager = ribbonControl1;
+            txtAuthor.Name = "txtAuthor";
+            txtAuthor.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            txtAuthor.Properties.Items.AddRange(new object[] { "Krzysztof Radzimski", "Zbigniew Kępiński" });
+            tablePanel1.SetRow(txtAuthor, 5);
+            txtAuthor.Size = new Size(352, 20);
+            txtAuthor.TabIndex = 1;
             // 
             // cbHidden
             // 
             tablePanel1.SetColumn(cbHidden, 0);
-            cbHidden.Location = new Point(3, 655);
+            cbHidden.Location = new Point(3, 591);
             cbHidden.MenuManager = ribbonControl1;
             cbHidden.Name = "cbHidden";
             cbHidden.Properties.Caption = "Hidden";
             tablePanel1.SetRow(cbHidden, 13);
-            cbHidden.Size = new Size(352, 18);
+            cbHidden.Size = new Size(352, 20);
             cbHidden.TabIndex = 13;
             // 
             // txtAuthorPicture
@@ -1042,28 +1059,28 @@ namespace ChurchServices.WinApp {
             txtAuthorPicture.Name = "txtAuthorPicture";
             txtAuthorPicture.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             tablePanel1.SetRow(txtAuthorPicture, 12);
-            txtAuthorPicture.Size = new Size(352, 300);
+            txtAuthorPicture.Size = new Size(352, 236);
             txtAuthorPicture.TabIndex = 12;
             // 
-            // labelControl6
+            // lblAuthorPicture
             // 
-            tablePanel1.SetColumn(labelControl6, 0);
-            labelControl6.Location = new Point(3, 330);
-            labelControl6.Name = "labelControl6";
-            tablePanel1.SetRow(labelControl6, 11);
-            labelControl6.Size = new Size(69, 13);
-            labelControl6.TabIndex = 11;
-            labelControl6.Text = "Author picture";
+            tablePanel1.SetColumn(lblAuthorPicture, 0);
+            lblAuthorPicture.Location = new Point(3, 330);
+            lblAuthorPicture.Name = "lblAuthorPicture";
+            tablePanel1.SetRow(lblAuthorPicture, 11);
+            lblAuthorPicture.Size = new Size(69, 13);
+            lblAuthorPicture.TabIndex = 11;
+            lblAuthorPicture.Text = "Author picture";
             // 
-            // labelControl5
+            // lblType
             // 
-            tablePanel1.SetColumn(labelControl5, 0);
-            labelControl5.Location = new Point(3, 285);
-            labelControl5.Name = "labelControl5";
-            tablePanel1.SetRow(labelControl5, 9);
-            labelControl5.Size = new Size(24, 13);
-            labelControl5.TabIndex = 10;
-            labelControl5.Text = "Type";
+            tablePanel1.SetColumn(lblType, 0);
+            lblType.Location = new Point(3, 285);
+            lblType.Name = "lblType";
+            tablePanel1.SetRow(lblType, 9);
+            lblType.Size = new Size(24, 13);
+            lblType.TabIndex = 10;
+            lblType.Text = "Type";
             // 
             // txtType
             // 
@@ -1098,25 +1115,25 @@ namespace ChurchServices.WinApp {
             txtLead.Size = new Size(352, 96);
             txtLead.TabIndex = 7;
             // 
-            // labelControl4
+            // lblLead
             // 
-            tablePanel1.SetColumn(labelControl4, 0);
-            labelControl4.Location = new Point(3, 138);
-            labelControl4.Name = "labelControl4";
-            tablePanel1.SetRow(labelControl4, 6);
-            labelControl4.Size = new Size(23, 13);
-            labelControl4.TabIndex = 6;
-            labelControl4.Text = "Lead";
+            tablePanel1.SetColumn(lblLead, 0);
+            lblLead.Location = new Point(3, 138);
+            lblLead.Name = "lblLead";
+            tablePanel1.SetRow(lblLead, 6);
+            lblLead.Size = new Size(23, 13);
+            lblLead.TabIndex = 6;
+            lblLead.Text = "Lead";
             // 
-            // labelControl3
+            // lblAuthor
             // 
-            tablePanel1.SetColumn(labelControl3, 0);
-            labelControl3.Location = new Point(3, 93);
-            labelControl3.Name = "labelControl3";
-            tablePanel1.SetRow(labelControl3, 4);
-            labelControl3.Size = new Size(33, 13);
-            labelControl3.TabIndex = 4;
-            labelControl3.Text = "Author";
+            tablePanel1.SetColumn(lblAuthor, 0);
+            lblAuthor.Location = new Point(3, 93);
+            lblAuthor.Name = "lblAuthor";
+            tablePanel1.SetRow(lblAuthor, 4);
+            lblAuthor.Size = new Size(33, 13);
+            lblAuthor.TabIndex = 4;
+            lblAuthor.Text = "Author";
             // 
             // txtDate
             // 
@@ -1131,15 +1148,15 @@ namespace ChurchServices.WinApp {
             txtDate.Size = new Size(352, 20);
             txtDate.TabIndex = 3;
             // 
-            // labelControl2
+            // lblDate
             // 
-            tablePanel1.SetColumn(labelControl2, 0);
-            labelControl2.Location = new Point(3, 48);
-            labelControl2.Name = "labelControl2";
-            tablePanel1.SetRow(labelControl2, 2);
-            labelControl2.Size = new Size(23, 13);
-            labelControl2.TabIndex = 2;
-            labelControl2.Text = "Date";
+            tablePanel1.SetColumn(lblDate, 0);
+            lblDate.Location = new Point(3, 48);
+            lblDate.Name = "lblDate";
+            tablePanel1.SetRow(lblDate, 2);
+            lblDate.Size = new Size(23, 13);
+            lblDate.TabIndex = 2;
+            lblDate.Text = "Date";
             // 
             // txtSubject
             // 
@@ -1152,16 +1169,6 @@ namespace ChurchServices.WinApp {
             txtSubject.Size = new Size(352, 20);
             txtSubject.TabIndex = 1;
             // 
-            // labelControl1
-            // 
-            tablePanel1.SetColumn(labelControl1, 0);
-            labelControl1.Location = new Point(3, 3);
-            labelControl1.Name = "labelControl1";
-            tablePanel1.SetRow(labelControl1, 0);
-            labelControl1.Size = new Size(36, 13);
-            labelControl1.TabIndex = 0;
-            labelControl1.Text = "Subject";
-            // 
             // sidePanel2
             // 
             sidePanel2.Controls.Add(editor);
@@ -1172,17 +1179,35 @@ namespace ChurchServices.WinApp {
             sidePanel2.TabIndex = 4;
             sidePanel2.Text = "sidePanel2";
             // 
-            // txtAuthor
+            // lblPassage
             // 
-            tablePanel1.SetColumn(txtAuthor, 0);
-            txtAuthor.Location = new Point(3, 112);
-            txtAuthor.MenuManager = ribbonControl1;
-            txtAuthor.Name = "txtAuthor";
-            txtAuthor.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            txtAuthor.Properties.Items.AddRange(new object[] { "Krzysztof Radzimski", "Zbigniew Kępiński" });
-            tablePanel1.SetRow(txtAuthor, 5);
-            txtAuthor.Size = new Size(352, 20);
-            txtAuthor.TabIndex = 1;
+            tablePanel1.SetColumn(lblPassage, 0);
+            lblPassage.Location = new Point(3, 620);
+            lblPassage.Name = "lblPassage";
+            tablePanel1.SetRow(lblPassage, 14);
+            lblPassage.Size = new Size(40, 13);
+            lblPassage.TabIndex = 14;
+            lblPassage.Text = "Passage";
+            // 
+            // lblSubject
+            // 
+            tablePanel1.SetColumn(lblSubject, 0);
+            lblSubject.Location = new Point(3, 3);
+            lblSubject.Name = "lblSubject";
+            tablePanel1.SetRow(lblSubject, 0);
+            lblSubject.Size = new Size(36, 13);
+            lblSubject.TabIndex = 15;
+            lblSubject.Text = "Subject";
+            // 
+            // txtPassage
+            // 
+            tablePanel1.SetColumn(txtPassage, 0);
+            txtPassage.Location = new Point(3, 643);
+            txtPassage.MenuManager = ribbonControl1;
+            txtPassage.Name = "txtPassage";
+            tablePanel1.SetRow(txtPassage, 15);
+            txtPassage.Size = new Size(352, 20);
+            txtPassage.TabIndex = 16;
             // 
             // ArticleEditorForm
             // 
@@ -1206,6 +1231,7 @@ namespace ChurchServices.WinApp {
             ((System.ComponentModel.ISupportInitialize)tablePanel1).EndInit();
             tablePanel1.ResumeLayout(false);
             tablePanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)txtAuthor.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)cbHidden.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)txtAuthorPicture.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)txtType.Properties).EndInit();
@@ -1214,7 +1240,7 @@ namespace ChurchServices.WinApp {
             ((System.ComponentModel.ISupportInitialize)txtDate.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)txtSubject.Properties).EndInit();
             sidePanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)txtAuthor.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtPassage.Properties).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1334,22 +1360,24 @@ namespace ChurchServices.WinApp {
         private DevExpress.XtraBars.Navigation.TabPane tabs;
         private DevExpress.XtraBars.Navigation.TabNavigationPage tabSettings;
         private DevExpress.Utils.Layout.TablePanel tablePanel1;
-        private DevExpress.XtraEditors.LabelControl labelControl3;
+        private DevExpress.XtraEditors.LabelControl lblAuthor;
         private DevExpress.XtraEditors.DateEdit txtDate;
-        private DevExpress.XtraEditors.LabelControl labelControl2;
+        private DevExpress.XtraEditors.LabelControl lblDate;
         private DevExpress.XtraEditors.TextEdit txtSubject;
-        private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraEditors.MemoEdit txtLead;
-        private DevExpress.XtraEditors.LabelControl labelControl4;
+        private DevExpress.XtraEditors.LabelControl lblLead;
         private DevExpress.XtraEditors.SimpleButton btnPreviewHtml;
         private DevExpress.XtraEditors.LookUpEdit txtType;
         private DevExpress.XtraEditors.PictureEdit txtAuthorPicture;
-        private DevExpress.XtraEditors.LabelControl labelControl6;
-        private DevExpress.XtraEditors.LabelControl labelControl5;
+        private DevExpress.XtraEditors.LabelControl lblAuthorPicture;
+        private DevExpress.XtraEditors.LabelControl lblType;
         private DevExpress.XtraBars.BarButtonItem btnQuote;
         private DevExpress.XtraEditors.CheckEdit cbHidden;
         private DevExpress.XtraBars.BarButtonItem btnReplaceAllSiglum;
         private DevExpress.XtraBars.BarButtonItem btnRemoveHostUrlFromHyperlinks;
         private DevExpress.XtraEditors.ComboBoxEdit txtAuthor;
+        private DevExpress.XtraEditors.LabelControl lblSubject;
+        private DevExpress.XtraEditors.LabelControl lblPassage;
+        private DevExpress.XtraEditors.TextEdit txtPassage;
     }
 }

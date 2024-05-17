@@ -13,17 +13,26 @@
 
 namespace ChurchServices.WebApp.Controllers {
     public class ArticlesController : Controller {
+        private const string ALL_ARTICLES = "AllArticles";
         private readonly ILogger<ArticlesController> _logger;
-
-        public ArticlesController(ILogger<ArticlesController> logger) {
+        private readonly IMemoryCache MemoryCache;
+        public ArticlesController(ILogger<ArticlesController> logger, IMemoryCache memoryCache) {
             _logger = logger;
+            MemoryCache = memoryCache;
         }
 
         public IActionResult Index() {
             var view = new XPView(new UnitOfWork(), typeof(Article)) {
                 CriteriaString = "[Hidden] = 0"
             };
-            List<ArticleInfoBase> list = GetArticlesListByView(view);
+
+            List<ArticleInfoBase> list;
+            MemoryCache.TryGetValue(ALL_ARTICLES, out list);
+            if (list != null) {
+                return View(list);
+            }
+
+            list = GetArticlesListByView(view);
 
             return View(list);
         }
@@ -31,10 +40,17 @@ namespace ChurchServices.WebApp.Controllers {
         [Route("/[controller]/{AuthorName}")]
         public IActionResult GetByAuthorName(string AuthorName) {
             AuthorName = AuthorName.Replace("+", " ").Replace("-", " ");
+
+            List<ArticleInfoBase> list;
+            MemoryCache.TryGetValue(ALL_ARTICLES, out list);
+            if (list != null) {
+                return View("Index", list.Where(x => x.AuthorName == AuthorName).ToList());
+            }
+
             var view = new XPView(new UnitOfWork(), typeof(Article)) {
                 CriteriaString = $"[Hidden] = 0 AND [AuthorName] = '{AuthorName}'"
             };
-            List<ArticleInfoBase> list = GetArticlesListByView(view);
+            list = GetArticlesListByView(view);
 
             return View("Index", list);
         }
@@ -47,42 +63,33 @@ namespace ChurchServices.WebApp.Controllers {
             view.Properties.Add(new ViewProperty("Lead", SortDirection.None, "[Lead]", false, true));
             view.Properties.Add(new ViewProperty("Subject", SortDirection.None, "[Subject]", false, true));
             view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+            view.Properties.Add(new ViewProperty("Passage", SortDirection.None, "[Passage]", false, true));
 
-            var leaded = 4;
             var list = new List<ArticleInfoBase>();
 
             foreach (ViewRecord item in view) {
-                if (leaded > 0) {
-                    leaded--;
-                    list.Add(new ArticleInfo() {
-                        AuthorName = item["AuthorName"].ToString(),
-                        AuthorPicture = item["AuthorPicture"].IsNotNull() ? Convert.ToBase64String((byte[])item["AuthorPicture"]) : String.Empty,
-                        Date = Convert.ToDateTime(item["Date"].ToString()),
-                        Id = item["Oid"].ToInt(),
-                        Lead = item["Lead"].ToString(),
-                        Subject = item["Subject"].ToString(),
-                        Type = ((ArticleType)item["Type"]).GetDescription()
-                    });
-                }
-                else {
-                    list.Add(new ArticleInfoBase() {
-                        Id = item["Oid"].ToInt(),
-                        Subject = item["Subject"].ToString(),
-                        AuthorName = item["AuthorName"].ToString(),
-                        Date = Convert.ToDateTime(item["Date"].ToString())
-                    });
-                }
+                list.Add(new ArticleInfo() {
+                    AuthorName = item["AuthorName"].ToString(),
+                    AuthorPicture = item["AuthorPicture"].IsNotNull() ? Convert.ToBase64String((byte[])item["AuthorPicture"]) : String.Empty,
+                    Date = Convert.ToDateTime(item["Date"].ToString()),
+                    Id = item["Oid"].ToInt(),
+                    Lead = item["Lead"].ToString(),
+                    Subject = item["Subject"].ToString(),
+                    Type = ((ArticleType)item["Type"]).GetDescription(),
+                    Passage = item["Passage"]?.ToString()
+                });
             }
-
+            MemoryCache.Set(ALL_ARTICLES, list);
             return list;
         }
     }
-    
+
     public class ArticleInfoBase {
         public int Id { get; set; }
         public string Subject { get; set; }
         public string AuthorName { get; set; }
         public DateTime Date { get; set; }
+        public string Passage { get; set; } = String.Empty;
 
         public string GetDaysAgo() {
             const int SECOND = 1;
@@ -142,5 +149,9 @@ namespace ChurchServices.WebApp.Controllers {
         public string Lead { get; set; }
         public string AuthorPicture { get; set; }
         public string Type { get; set; }
+    }
+
+    public class ArticleViewInfo : ArticleInfo {
+        public string Text { get; set; }
     }
 }

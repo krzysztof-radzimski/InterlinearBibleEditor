@@ -2,7 +2,7 @@
 @{
     var atitle = "Artykuł";
     if (Model != null && Model.Article != null) {
-        atitle = $"{Model.Article.Type.GetDescription()} :: {Model.Article.Subject}";
+        atitle = $"{Model.Article.Type} :: {Model.Article.Subject}";
     }
 
     ViewData["Title"] = atitle;
@@ -35,8 +35,8 @@
         <meta property="og:site_name" content="@__host" />
         <meta property="og:title" content="@Model.Article.Subject - @Configuration["PageTitle"]" />
         <meta property="og:description" content="@Model.Article.Lead" />
-        <meta property="og:image" content="@__host/api/ArticleImage?id=@Model.Article.Oid" />
-        <meta property="og:url" content="@__host/Article?id=@Model.Article.Oid" />
+        <meta property="og:image" content="@__host/api/ArticleImage?id=@Model.Article.Id" />
+        <meta property="og:url" content="@__host/Article?id=@Model.Article.Id" />
         <meta property="og:type" content="article" />
         <meta property="og:locale" content="pl_PL" />
         <meta property="og:article:author" content="@Model.Article.AuthorName">
@@ -71,7 +71,9 @@
  }
 
 @if (Model != null) {
-    <div class="row shadow-lg article-width">
+    var passage = Model.Article.Passage != null ? $"{Model.Article.Passage}" : "";
+
+    <div class="row shadow-lg article-width" style="position: relative;">
 
         <div class="col p-4 d-flex flex-column position-static">
             <div class="btn-group" style="max-width:150px;">
@@ -82,13 +84,13 @@
                         return " " + m.Value.Trim() + "&nbsp;";
                     }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-                    var url1 = $"/api/ArticleDownload/{Model.Article.Oid}/Docx";
-                    var url2 = $"/api/ArticleDownload/{Model.Article.Oid}/Pdf";
-                    var jsonUrl1 = $"/api/ArticlesData/{Model.Article.Oid}";
+                    var url1 = $"/api/ArticleDownload/{Model.Article.Id}/Docx";
+                    var url2 = $"/api/ArticleDownload/{Model.Article.Id}/Pdf";
+                    var jsonUrl1 = $"/api/ArticlesData/{Model.Article.Id}";
                     var jsonUrl2 = $"/api/ArticlesData/{Model.Article.AuthorName.Replace(" ","-")}";
                 }
 
-                <span class="btn btn-light d-inline-block text-success fw-bold" role="button">@Model.Article.Type.GetDescription()</span>
+                <span class="btn btn-light d-inline-block text-success fw-bold" role="button">@Model.Article.Type</span>
 
                 <button class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-download"></i>
@@ -108,10 +110,16 @@
             @if (Model.Article.Date > DateTime.MinValue) {
                 <div class="mb-1 text-muted">@Html.Raw(Model.Article.Date.GetDatePl())</div>
             }
+            
         </div>
 
+        
+
         @if (Model.Article.AuthorPicture.IsNotNull()) {
-            <div class="d-lg-block" style="background-image: url('data:image/png;base64, @Convert.ToBase64String(Model.Article.AuthorPicture)'); background-position: center center; background-repeat: no-repeat; background-size: cover; max-width: 350px; width: 100%; min-height: 245px;"></div>
+            <div class="d-lg-block" style="background-image: url('data:image/png;base64, @(Model.Article.AuthorPicture)'); background-position: center center; background-repeat: no-repeat; background-size: cover; max-width: 350px; width: 100%; min-height: 245px;"></div>
+        }
+        @if (passage.IsNotNullOrEmpty()){
+            <strong class="d-inline-block mb-2 text-success pill-white float-end" style="right: 5px; bottom: 5px; position: absolute; width: auto; padding: 10px;">@passage</strong>
         }
     </div>
     <div class="article-width">

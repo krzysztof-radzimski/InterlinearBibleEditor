@@ -15,6 +15,10 @@ using System.Text;
 
 namespace ChurchServices.WebApp.Controllers {
     public abstract class JsonControllerBase : Controller {
+        protected readonly IConfiguration Configuration;
+        public JsonControllerBase(IConfiguration configuration) {
+            Configuration = configuration;
+        }
         protected IActionResult FileJson(object data, string fileDownloadName) {
             var json = JsonConvert.SerializeObject(data, Formatting.Indented);
             var fileContents = Encoding.UTF8.GetBytes(json);

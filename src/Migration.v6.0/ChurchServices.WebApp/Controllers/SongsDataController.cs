@@ -17,6 +17,7 @@ namespace ChurchServices.WebApp.Controllers {
     [ApiController]
     [Route("/api/[controller]")]
     public class SongsDataController : JsonControllerBase {
+        public SongsDataController(IConfiguration configuration) : base(configuration) { }
         public IActionResult Get() {
             var songs = GetSongData();
             return FileJson(songs, "Pieśni.json");

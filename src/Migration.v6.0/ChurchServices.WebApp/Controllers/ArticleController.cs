@@ -24,20 +24,34 @@ namespace ChurchServices.WebApp.Controllers {
         public IActionResult Index(int id) {
             var article = new XPQuery<Article>(new UnitOfWork()).Where(x => x.Oid == id && !x.Hidden).FirstOrDefault();
             if (article.IsNotNull()) {
-                return View(new ArticleControllerModel() { Article = article });
+                return View(new ArticleControllerModel() {
+                    Article = new ArticleViewInfo() {
+                        AuthorName = article.AuthorName,
+                        Passage = article.Passage,
+                        AuthorPicture = article.AuthorPicture.IsNotNull() ? Convert.ToBase64String(article.AuthorPicture) : String.Empty,
+                        Date = article.Date,
+                        Id = article.Oid,
+                        Lead = article.Lead,
+                        Subject = article.Subject,
+                        Text = article.Text,
+                        Type = article.Type.GetDescription()
+                    }
+                });
             }
             else {
                 var dl = new SimpleDataLayer(new InMemoryDataStore());
                 var uow = new UnitOfWork(dl);
                 return View(new ArticleControllerModel() {
-                    Article = new Article(uow) {
+                    Article = new ArticleViewInfo() {
                         AuthorName = "Brak artykułu",
                         AuthorPicture = null,
                         Date = DateTime.MinValue,
                         Lead = $"Nie znaleziono artykułu o numerze {id}!",
-                        DocumentData = null,
                         Text = String.Empty,
-                        Type = ArticleType.Article
+                        Type = ArticleType.Article.GetDescription(),
+                        Passage = String.Empty,
+                        Subject = String.Empty, 
+                        Id = id
                     }
                 });
             }
@@ -52,7 +66,19 @@ namespace ChurchServices.WebApp.Controllers {
                 var id = value.ToLower().Replace("?id=", "").Trim().ToInt();
                 var article = new XPQuery<Article>(new UnitOfWork()).Where(x => x.Oid == id && !x.Hidden).FirstOrDefault();
                 if (article.IsNotNull()) {
-                    return View(new ArticleControllerModel() { Article = article });
+                    return View(new ArticleControllerModel() {
+                        Article = new ArticleViewInfo() {
+                            AuthorName = article.AuthorName,
+                            Passage = article.Passage,
+                            AuthorPicture = article.AuthorPicture.IsNotNull() ? Convert.ToBase64String(article.AuthorPicture) : String.Empty,
+                            Date = article.Date,
+                            Id = article.Oid,
+                            Lead = article.Lead,
+                            Subject = article.Subject,
+                            Text = article.Text,
+                            Type = article.Type.GetDescription()
+                        }
+                    });
                 }
             }
             return View();

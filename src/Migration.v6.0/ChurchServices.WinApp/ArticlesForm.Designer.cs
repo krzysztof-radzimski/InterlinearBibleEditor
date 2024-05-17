@@ -25,115 +25,101 @@ namespace ChurchServices.WinApp {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ArticlesForm));
-            this.ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
-            this.btnAddArticle = new DevExpress.XtraBars.BarButtonItem();
-            this.btnDeleteArticle = new DevExpress.XtraBars.BarButtonItem();
-            this.rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            this.grid = new DevExpress.XtraGrid.GridControl();
-            this.gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
-            ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
-            this.SuspendLayout();
+            ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
+            btnAddArticle = new DevExpress.XtraBars.BarButtonItem();
+            btnDeleteArticle = new DevExpress.XtraBars.BarButtonItem();
+            rpHome = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            grid = new DevExpress.XtraGrid.GridControl();
+            gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
+            ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)grid).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView).BeginInit();
+            SuspendLayout();
             // 
             // ribbonControl1
             // 
-            this.ribbonControl1.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(45, 48, 45, 48);
-            this.ribbonControl1.ExpandCollapseItem.Id = 0;
-            this.ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.ribbonControl1.ExpandCollapseItem,
-            this.ribbonControl1.SearchEditItem,
-            this.btnAddArticle,
-            this.btnDeleteArticle});
-            this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.ribbonControl1.MaxItemId = 3;
-            this.ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
-            this.ribbonControl1.Name = "ribbonControl1";
-            this.ribbonControl1.OptionsMenuMinWidth = 495;
-            this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
-            this.rpHome});
-            this.ribbonControl1.Size = new System.Drawing.Size(1200, 172);
+            ribbonControl1.ExpandCollapseItem.Id = 0;
+            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, btnAddArticle, btnDeleteArticle });
+            ribbonControl1.Location = new Point(0, 0);
+            ribbonControl1.MaxItemId = 3;
+            ribbonControl1.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
+            ribbonControl1.Name = "ribbonControl1";
+            ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { rpHome });
+            ribbonControl1.Size = new Size(800, 158);
             // 
             // btnAddArticle
             // 
-            this.btnAddArticle.Caption = "Add new article";
-            this.btnAddArticle.Id = 1;
-            this.btnAddArticle.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnAddArticle.ImageOptions.SvgImage")));
-            this.btnAddArticle.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
-            this.btnAddArticle.Name = "btnAddArticle";
-            this.btnAddArticle.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAddArticle_ItemClick);
+            btnAddArticle.Caption = "Add new article";
+            btnAddArticle.Id = 1;
+            btnAddArticle.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btnAddArticle.ImageOptions.SvgImage");
+            btnAddArticle.ItemShortcut = new DevExpress.XtraBars.BarShortcut(Keys.Control | Keys.N);
+            btnAddArticle.Name = "btnAddArticle";
+            btnAddArticle.ItemClick += btnAddArticle_ItemClick;
             // 
             // btnDeleteArticle
             // 
-            this.btnDeleteArticle.Caption = "Delete";
-            this.btnDeleteArticle.Id = 2;
-            this.btnDeleteArticle.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnDeleteArticle.ImageOptions.SvgImage")));
-            this.btnDeleteArticle.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete));
-            this.btnDeleteArticle.Name = "btnDeleteArticle";
-            this.btnDeleteArticle.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDeleteArticle_ItemClick);
+            btnDeleteArticle.Caption = "Delete";
+            btnDeleteArticle.Id = 2;
+            btnDeleteArticle.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btnDeleteArticle.ImageOptions.SvgImage");
+            btnDeleteArticle.ItemShortcut = new DevExpress.XtraBars.BarShortcut(Keys.Control | Keys.Delete);
+            btnDeleteArticle.Name = "btnDeleteArticle";
+            btnDeleteArticle.ItemClick += btnDeleteArticle_ItemClick;
             // 
             // rpHome
             // 
-            this.rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
-            this.ribbonPageGroup1});
-            this.rpHome.Name = "rpHome";
-            this.rpHome.Text = "Home";
+            rpHome.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1 });
+            rpHome.Name = "rpHome";
+            rpHome.Text = "Home";
             // 
             // ribbonPageGroup1
             // 
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnAddArticle);
-            this.ribbonPageGroup1.ItemLinks.Add(this.btnDeleteArticle);
-            this.ribbonPageGroup1.Name = "ribbonPageGroup1";
-            this.ribbonPageGroup1.Text = "ribbonPageGroup1";
+            ribbonPageGroup1.ItemLinks.Add(btnAddArticle);
+            ribbonPageGroup1.ItemLinks.Add(btnDeleteArticle);
+            ribbonPageGroup1.Name = "ribbonPageGroup1";
+            ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
             // grid
             // 
-            this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grid.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grid.Location = new System.Drawing.Point(0, 172);
-            this.grid.MainView = this.gridView;
-            this.grid.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.grid.MenuManager = this.ribbonControl1;
-            this.grid.Name = "grid";
-            this.grid.Size = new System.Drawing.Size(1200, 555);
-            this.grid.TabIndex = 2;
-            this.grid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridView});
+            grid.Dock = DockStyle.Fill;
+            grid.Location = new Point(0, 158);
+            grid.MainView = gridView;
+            grid.MenuManager = ribbonControl1;
+            grid.Name = "grid";
+            grid.Size = new Size(800, 292);
+            grid.TabIndex = 2;
+            grid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView });
             // 
             // gridView
             // 
-            this.gridView.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.gridView.DetailHeight = 565;
-            this.gridView.GridControl = this.grid;
-            this.gridView.Name = "gridView";
-            this.gridView.OptionsBehavior.Editable = false;
-            this.gridView.OptionsBehavior.ReadOnly = true;
-            this.gridView.OptionsFind.AlwaysVisible = true;
-            this.gridView.OptionsFind.FindMode = DevExpress.XtraEditors.FindMode.FindClick;
-            this.gridView.OptionsView.ColumnAutoWidth = false;
-            this.gridView.OptionsView.ShowGroupPanel = false;
-            this.gridView.OptionsView.ShowIndicator = false;
-            this.gridView.DoubleClick += new System.EventHandler(this.gridView_DoubleClick);
+            gridView.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            gridView.GridControl = grid;
+            gridView.Name = "gridView";
+            gridView.OptionsBehavior.Editable = false;
+            gridView.OptionsBehavior.ReadOnly = true;
+            gridView.OptionsEditForm.PopupEditFormWidth = 533;
+            gridView.OptionsFind.AlwaysVisible = true;
+            gridView.OptionsFind.FindMode = DevExpress.XtraEditors.FindMode.FindClick;
+            gridView.OptionsView.ColumnAutoWidth = false;
+            gridView.OptionsView.ShowGroupPanel = false;
+            gridView.OptionsView.ShowIndicator = false;
+            gridView.DoubleClick += gridView_DoubleClick;
             // 
             // ArticlesForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1200, 727);
-            this.Controls.Add(this.grid);
-            this.Controls.Add(this.ribbonControl1);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.Name = "ArticlesForm";
-            this.Ribbon = this.ribbonControl1;
-            this.Text = "ArticlesForm";
-            ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(6F, 13F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Controls.Add(grid);
+            Controls.Add(ribbonControl1);
+            Name = "ArticlesForm";
+            Ribbon = ribbonControl1;
+            Text = "ArticlesForm";
+            ((System.ComponentModel.ISupportInitialize)ribbonControl1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)grid).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

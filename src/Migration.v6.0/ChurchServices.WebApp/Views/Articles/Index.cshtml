@@ -10,29 +10,42 @@
             oneAuthor = authors.First();
         }
     }
+    var articlesWithImageCount = 5;
 }
 
 <div class="max-width-1000" style="padding-top: 20px;">
     @Html.Partial("~/Views/Shared/_Baner.cshtml")
     @if (oneAuthor.IsNotNullOrEmpty()) {
-        <h1><i class="fas fa-newspaper"></i> @ViewData["Title"] :: @oneAuthor</h1>
+        <h1>
+            <i class="fas fa-newspaper"></i>&nbsp;<span>@ViewData["Title"] :: @oneAuthor</span>
+            <a href="/Articles" class="btn btn-outline-dark" style="float: right;">Więcej...</a>
+        </h1>
     }
     else {
-        <h1><i class="fas fa-newspaper"></i> @ViewData["Title"]</h1>
+        <h1 class="col">
+            <i class="fas fa-newspaper"></i>&nbsp;<span>@ViewData["Title"]</span><span>&nbsp;</span>
+            <div class="dropdown" style="float: right;">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Wybierz autora
+                </a>
+
+                <ul class="dropdown-menu">
+                    @foreach (var item in authors) {
+                        <li><a class="dropdown-item" href="/Articles/@item.Replace(" ","-")">@item</a></li>
+                    }
+                </ul>
+            </div>
+          
+        </h1>
     }
 
-    @if (oneAuthor.IsNullOrEmpty()) {
-        <div>
-            @foreach (var item in authors) {
-                <a href="/Articles/@item.Replace(" ","-")">@item</a>
-                <span> | </span>
-            }                      
-        </div>
-        <br />
-    }
+    
+
     <div class="row">
         @foreach (var item in Model) {
-            if (item is ChurchServices.WebApp.Controllers.ArticleInfo) {
+            var passage = item.Passage != null ? $", {item.Passage}" : "";
+            if (articlesWithImageCount >= 0) {
+                articlesWithImageCount--;
                 var _item = item as ChurchServices.WebApp.Controllers.ArticleInfo;
                 var lead = _item.Lead;
                 lead = System.Text.RegularExpressions.Regex.Replace(lead, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
@@ -43,7 +56,7 @@
                     <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
                         <div class="row g-0 m-0">
                             <div class="col-md-4 d-lg-block">
-                                <div class="d-lg-block" style="background-image: url('data:image/png;base64, @_item.AuthorPicture'); background-repeat: no-repeat; background-position: center center; background-size: cover; max-width: 350px; width: 100%; height: 245px;"></div>
+                                <div class="d-lg-block  sermon-image-home" style="background-image: url('data:image/png;base64, @_item.AuthorPicture');"></div>
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
@@ -56,7 +69,7 @@
                                         <p class="card-text article-days-ago"><small class="text-muted">@item.GetDaysAgo()</small></p>
                                     }
                                 </div>
-                                <strong class="d-inline-block mb-2 text-success pill-white float-end" style="right: 15px; bottom: 15px; position: absolute;">@_item.Type</strong>
+                                <strong class="d-inline-block mb-2 text-success pill-white float-end sermon-passage-home">@_item.Type@passage</strong>
                             </div>
                         </div>
                     </div>
@@ -70,7 +83,7 @@
 
                 <div style="display: table-row;">
                     <div style="display: table-cell; vertical-align: top; padding-top: 10px; padding-right: 5px;">@Html.Raw(item.Date.GetShortDatePl())</div>
-                    <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><a href="/Article/@item.Id" class="link text-decoration-none">@item.Subject</a></div>
+                    <div style="display: table-cell; vertical-align: top; padding-top: 10px;"><a href="/Article/@item.Id" class="link text-decoration-none">@item.Subject@passage</a></div>
                     @if (oneAuthor.IsNullOrEmpty()) {
                         <div style="display: table-cell; vertical-align: top; padding-top: 10px; font-size: 80%;"><i>@Html.Raw(item.AuthorName.GetInitials())</i></div>
                     }

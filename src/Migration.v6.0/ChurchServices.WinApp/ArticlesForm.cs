@@ -1,10 +1,8 @@
-﻿using DevExpress.Xpo;
+﻿using ChurchServices.Data.Model;
+using ChurchServices.Extensions;
+using DevExpress.Xpo;
 using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraEditors;
-using ChurchServices.Extensions;
-using ChurchServices.Data.Model;
-using System;
-using System.Linq;
 
 namespace ChurchServices.WinApp {
     public partial class ArticlesForm : RibbonForm {
@@ -17,9 +15,10 @@ namespace ChurchServices.WinApp {
             LoadData();
         }
 
-        internal void LoadData() {
+        internal void LoadData(Article selected = null) {
             view = new XPView(Uow, typeof(Article));
             view.Properties.Add(new ViewProperty("Id", SortDirection.None, "[Oid]", false, true));
+            view.Properties.Add(new ViewProperty("Passage", SortDirection.None, "[Passage]", false, true));
             view.Properties.Add(new ViewProperty("Subject", SortDirection.None, "[Subject]", false, true));
             view.Properties.Add(new ViewProperty("AuthorName", SortDirection.None, "[AuthorName]", false, true));
             view.Properties.Add(new ViewProperty("Date", SortDirection.None, "[Date]", false, true));
@@ -28,6 +27,12 @@ namespace ChurchServices.WinApp {
             view.Properties.Add(new ViewProperty("Hidden", SortDirection.None, "[Hidden]", false, true));
             grid.DataSource = view;
             gridView.BestFitColumns();
+
+            if (selected != null) {
+                var idx = gridView.LocateByValue("Id", selected.Oid);
+                gridView.FocusedRowHandle = idx;
+                gridView.SelectRow(idx);
+            }
         }
 
         private void btnAddArticle_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
@@ -35,7 +40,8 @@ namespace ChurchServices.WinApp {
                 AuthorName = String.Empty,
                 Date = DateTime.Now,
                 Lead = "",
-                Subject = ""
+                Subject = "",
+                Passage = ""
             });
             frm.Icon = null;
             frm.IconOptions.SvgImage = btnAddArticle.ImageOptions.SvgImage;
@@ -46,16 +52,31 @@ namespace ChurchServices.WinApp {
         private void gridView_DoubleClick(object sender, EventArgs e) {
             var record = gridView.GetFocusedRow() as ViewRecord;
             if (record.IsNotNull()) {
-                var article = new XPQuery<Article>(Uow).Where(x => x.Oid == record["Id"].ToInt()).FirstOrDefault();
-                if (article.IsNotNull()) {
-                    gridView.ShowLoadingPanel();
-                
-                    var frm = new ArticleEditorForm(article);                  
-                    frm.IconOptions.SvgImage = btnAddArticle.ImageOptions.SvgImage;
-                    frm.MdiParent = this.MdiParent;
-                    frm.Show();
+                var hitInfo = gridView.CalcHitInfo(grid.PointToClient(Control.MousePosition));
+                if (hitInfo.Column != null) {
+                    var columnName = hitInfo.Column.FieldName;
+                    if (columnName == "Hidden") {
+                        var article = new XPQuery<Article>(Uow).Where(x => x.Oid == record["Id"].ToInt()).FirstOrDefault();
+                        if (article.IsNotNull()) {
+                            article.Hidden = !article.Hidden;
+                            article.Save();
+                            Uow.CommitChanges();
+                            LoadData(article);
+                        }
+                    }
+                    else {
+                        var article = new XPQuery<Article>(Uow).Where(x => x.Oid == record["Id"].ToInt()).FirstOrDefault();
+                        if (article.IsNotNull()) {
+                            gridView.ShowLoadingPanel();
 
-                    gridView.HideLoadingPanel();
+                            var frm = new ArticleEditorForm(article);
+                            frm.IconOptions.SvgImage = btnAddArticle.ImageOptions.SvgImage;
+                            frm.MdiParent = this.MdiParent;
+                            frm.Show();
+
+                            gridView.HideLoadingPanel();
+                        }
+                    }
                 }
             }
         }

@@ -13,6 +13,6 @@
 
 namespace ChurchServices.WebApp.Models {
     public class ArticleControllerModel {    
-        public Article Article { get; set; } 
+        public ArticleViewInfo Article { get; set; } 
     }
 }

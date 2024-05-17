@@ -59,7 +59,7 @@
     font-size: 120%;
     background-clip: text;
     text-align: left;
-    font-stretch:extra-condensed;
+    font-stretch: extra-condensed;
 }
 
 .smt-60 {
@@ -210,8 +210,33 @@ a {
 .ml-6 {
     margin-left: 2rem !important;
 }
-/* Sticky footer styles
--------------------------------------------------- */
+
+.sermon-passage-home {
+    right: 15px;
+    bottom: 15px;
+    position: absolute;
+    width: auto;
+}
+
+.sermon-image-home {
+    background-repeat: no-repeat;
+    background-size: cover;
+    max-width: 350px;
+    width: 100%;
+    height: 245px;
+}
+
+@media (max-width: 991px) {
+    .sermon-passage-home {
+        top: 10px;
+        bottom: inherit;
+    }
+
+    .sermon-image-home {
+        max-width: inherit;
+    }
+}
+
 html {
     font-size: 14px;
 }
@@ -498,6 +523,7 @@ hr.fancy-line {
     margin-bottom: 1em;
     cursor: pointer;
 }
+
 #course {
     border-radius: 0.5em;
     margin-bottom: 1em;
@@ -575,6 +601,7 @@ hr.fancy-line {
     #WalicowLogo {
         max-width: 100%;
     }
+
     .OldLondonH1 {
         font-size: 400%;
     }
@@ -616,7 +643,7 @@ hr.fancy-line {
     background-clip: padding-box;
     border: 1px solid rgba(0,0,0,.15);
     border-radius: .25rem;
-    padding: 1em; 
+    padding: 1em;
 }
 
 @media only screen and (max-width: 1920px) {
@@ -737,9 +764,11 @@ img {
     padding-bottom: 10px;
     max-width: 90%;
 }
+
 .text-justify {
     text-align: justify !important;
 }
+
 #translation-introduction {
     text-align: justify;
     font-size: 1.1rem !important;
@@ -920,7 +949,7 @@ img {
 }
 
 #footnotes {
-    text-align: left;    
+    text-align: left;
 }
 
     #footnotes .bible-content {
@@ -935,6 +964,7 @@ img {
 .col-min-w-song-text {
     min-width: 600px !important;
 }
+
 @media only screen and (max-width: 400px) {
     .col-min-w-song-text {
         min-width: 60% !important;
@@ -973,24 +1003,25 @@ img {
     .col-min-w-song-text {
         min-width: 700px !important;
     }
-	
-	textarea.form-control {
-		font-size: 120%;		
-	}
+
+    textarea.form-control {
+        font-size: 120%;
+    }
 }
 /************************** DARK **********************************/
 @media (prefers-color-scheme: dark) {
     ::-webkit-scrollbar-track {
         background: rgba(var(--bs-dark-rgb));
     }
-	::placeholder {
-		color: #C8C8C8 !important;
-		opacity: 1; /* Firefox */
-	}
 
-	::-ms-input-placeholder { /* Edge 12 -18 */
-		color: #C8C8C8 !important;
-	}
+    ::placeholder {
+        color: #C8C8C8 !important;
+        opacity: 1; /* Firefox */
+    }
+
+    ::-ms-input-placeholder { /* Edge 12 -18 */
+        color: #C8C8C8 !important;
+    }
 
     html {
         background-color: rgba(var(--bs-dark-rgb)) !important;
@@ -998,27 +1029,29 @@ img {
 
     body {
         background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
-        background-image: url('../img/background-2024-dark.jpg?ID=2');       
+        background-image: url('../img/background-2024-dark.jpg?ID=2');
     }
 
     h1, h2, h3, h4, h5, .list-group-item {
         color: #C8C8C8;
     }
-	
-	p, figure, li, div, .form-label, .form-text {
-		color: #C8C8C8;
-	}
-	
-	textarea.form-control {
-		background-color: black !important;
-		color: #ad9a73 !important;		
-	}
-	.btn-primary {
-		color: white !important;		
-	}
-	.alert-secondary {
-		color: black !important;
-	}
+
+    p, figure, li, div, .form-label, .form-text {
+        color: #C8C8C8;
+    }
+
+    textarea.form-control {
+        background-color: black !important;
+        color: #ad9a73 !important;
+    }
+
+    .btn-primary {
+        color: white !important;
+    }
+
+    .alert-secondary {
+        color: black !important;
+    }
 
     .baner-img {
         background-image: url('/img/baptysci-logo-wnd-white.png');

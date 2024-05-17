@@ -126,6 +126,7 @@ namespace ChurchServices.WebApp.Utils {
             view.Properties.Add(new ViewProperty("Lead", SortDirection.None, "[Lead]", false, true));
             view.Properties.Add(new ViewProperty("Subject", SortDirection.None, "[Subject]", false, true));
             view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
+            view.Properties.Add(new ViewProperty("Passage", SortDirection.None, "[Passage]", false, true));
 
             lastFourArticles = new List<ArticleInfo>();
             foreach (ViewRecord item in view) {
@@ -136,7 +137,8 @@ namespace ChurchServices.WebApp.Utils {
                     Id = item["Oid"].ToInt(),
                     Lead = item["Lead"].ToString(),
                     Subject = item["Subject"].ToString(),
-                    Type = ((ArticleType)item["Type"]).GetDescription()
+                    Type = ((ArticleType)item["Type"]).GetDescription(),
+                    Passage = item["Passage"]?.ToString()
                 });
             }
             MemoryCache.Set(LASTFOURARTICLES, lastFourArticles);

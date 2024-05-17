@@ -1,17 +1,14 @@
-﻿using DevExpress.Xpo;
+﻿using ChurchServices.Data.Export.Controllers;
+using ChurchServices.Data.Model;
+using ChurchServices.Extensions;
+using ChurchServices.WinApp.Controllers;
+using DevExpress.Xpo;
 using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraRichEdit;
 using DevExpress.XtraRichEdit.Commands;
-using ChurchServices.Extensions;
-using ChurchServices.Data.Export.Controllers;
-using ChurchServices.Data.Model;
-using ChurchServices.WinApp.Controllers;
-using System;
 using System.Data;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -103,6 +100,7 @@ namespace ChurchServices.WinApp {
                 txtSubject.Text = Article.Subject;
                 txtDate.DateTime = Article.Date;
                 cbHidden.Checked = Article.Hidden;
+                txtPassage.Text = Article.Passage;
 
                 if (Article.DocumentData.IsNotNull()) {
                     editor.LoadDocument(Article.DocumentData);
@@ -138,6 +136,7 @@ namespace ChurchServices.WinApp {
                 Article.Subject = txtSubject.Text;
                 Article.Type = (ArticleType)txtType.EditValue;
                 Article.Hidden = cbHidden.Checked;
+                Article.Passage = txtPassage.Text;
 
                 if (txtAuthorPicture.Image.IsNotNull()) {
                     var mem = new MemoryStream();
@@ -159,7 +158,7 @@ namespace ChurchServices.WinApp {
 
                 var articles = MdiParent.MdiChildren.Where(x => x is ArticlesForm).FirstOrDefault();
                 if (articles.IsNotNull()) {
-                    (articles as ArticlesForm).LoadData();
+                    (articles as ArticlesForm).LoadData(Article);
                 }
             }
         }
