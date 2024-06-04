@@ -47,7 +47,7 @@ namespace ChurchServices.WinApp.Controllers {
         bool inList = false;
         List<string> footnotes = new List<string>();
         List<string> endnotes = new List<string>();
-        
+
         protected XHtmlDocumentExporterOptions Options { get { return options; } }
         protected internal StreamWriter DocumentContentWriter { get { return documentContentWriter; } set { documentContentWriter = value; } }
 
@@ -55,7 +55,7 @@ namespace ChurchServices.WinApp.Controllers {
            : base(documentModel) {
             Guard.ArgumentNotNull(options, "options");
             this.options = options;
-           }
+        }
 
         public virtual void Export(Stream outputStream) {
             this.outputStream = outputStream;
@@ -101,21 +101,13 @@ namespace ChurchServices.WinApp.Controllers {
         }
         private string GetTextRunText(TextRun run, PieceTable pieceTable) {
             string text = run.GetPlainText(pieceTable.TextBuffer);
-            return GetTextRunText(run, text);
-            //text = text.Replace("\u00A0", " ");
-            //text = text.Replace("\v", " ");
-            //if (!hyperlinkExporting) {
-            //    return text;
-            //}
-            //else {
-            //    if (text.StartsWith("HYPERLINK")) { return String.Empty; }
-            //    return text;
-            //}
+            return GetTextRunText(run, text);         
         }
 
         private string GetTextRunHtml(TextRun run, string text) {
             text = text.Replace("\u00A0", "&nbsp;");
             text = text.Replace("\v", "<br/>");
+            text = text.Replace("\t", "&emsp;");
 
             if (!hyperlinkExporting) {
                 var span = @"<span";
@@ -160,53 +152,12 @@ namespace ChurchServices.WinApp.Controllers {
         private string GetTextRunHtml(TextRun run, PieceTable pieceTable) {
             string text = run.GetPlainText(pieceTable.TextBuffer);
             return GetTextRunHtml(run, text);
-            //text = text.Replace("\u00A0", "&nbsp;");
-            //text = text.Replace("\v", "<br/>");
-
-            //if (!hyperlinkExporting) {
-            //    var span = @"<span";
-            //    var _class = @" class=""";
-            //    var style = @" style=""";
-            //    if (run.Script == CharacterFormattingScript.Superscript)
-            //        style += "vertical-align: super; ";
-            //    if (run.Script == CharacterFormattingScript.Subscript)
-            //        style += "vertical-align: sub; ";
-            //    if (run.FontBold)
-            //        style += "font-weight: bold; ";
-            //    if (run.FontItalic)
-            //        style += "font-style: italic; ";
-            //    if (run.FontUnderlineType != UnderlineType.None)
-            //        style += "text-decoration: underline; ";
-            //    if (run.FontStrikeoutType != StrikeoutType.None)
-            //        style += "text-decoration: line-through; ";
-            //    if (run.ForeColorIndex != DevExpress.Office.Model.ColorModelInfoCache.EmptyColorIndex) {
-            //        var color = ColorTranslator.ToHtml(DocumentModel.GetColor(run.ForeColorIndex));
-            //        if (color == "#FF0000") {
-            //            _class += "text-danger";
-            //        }
-            //        else {
-            //            style += $"color: {ColorTranslator.ToHtml(DocumentModel.GetColor(run.ForeColorIndex)).ToLower()}; ";
-            //        }
-            //    }
-
-            //    style += @"""";
-            //    _class += @"""";
-
-            //    if (_class.Trim().Replace(" ", "") != @"class=""""") { span += _class; }
-            //    if (_class.Trim().Replace(" ", "") != @"style=""""") { span += style; }
-            //    span += $">{text}</span>";
-            //    return span;
-            //}
-            //else {
-            //    if (text.StartsWith("HYPERLINK")) { return String.Empty; }
-            //    return text;
-            //}
-
         }
         protected override void ExportTextRun(TextRun run) {
             string text = run.GetPlainText(PieceTable.TextBuffer);
             text = text.Replace("\u00A0", "&nbsp;");
             text = text.Replace("\v", "<br/>");
+            text = text.Replace("\t", "&emsp;");
 
             if (!hyperlinkExporting) {
                 var span = @"<span";
@@ -336,13 +287,14 @@ namespace ChurchServices.WinApp.Controllers {
                         else if (item.Type == RunType.TextRun) {
                             if (flag) { continue; }
                             var _run = item as TextRun;
-                            
+
                             var _text = _run.GetPlainText(info.Note.TextBuffer);
                             titleText += GetTextRunText(_run, _text);
 
                             if (_run.CharacterStyle != null && _run.CharacterStyle.LocalizedStyleName == "Hyperlink") {
                                 hiperlinkText += GetTextRunText(_run, _text);
-                            } else {
+                            }
+                            else {
                                 if (hiperlinkText.IsNotNullOrEmpty()) {
                                     text += $"{hiperlinkText}</a>";
                                     hiperlinkText = "";
@@ -401,8 +353,6 @@ namespace ChurchServices.WinApp.Controllers {
 
                     footnotes.Add(text);
                     footnotes.Add("<br/>");
-                    //var text = info.Note.TextBuffer.ToString().Replace("#", "").Trim();
-                    //footnotes.Add($"<a id=\"footnote{info.Number}\" name=\"footnote{info.Number}\"></a><span style=\"vertical-align: super; font-size: smaller;\">{info.NumberText}</span>&nbsp;{text}<br/>");
                 }
             }
         }
@@ -489,15 +439,20 @@ namespace ChurchServices.WinApp.Controllers {
                         inList = false;
                         DocumentContentWriter.Write("</ol>");
                     }
-
+                    var pclass = @" class=""fs-5 mt-3""";
+                    var tstyle = "";
+                    if (inTable) {
+                        pclass = "";
+                        tstyle = " margin-bottom: 0;";
+                    }
                     if (paragraph.Alignment == ParagraphAlignment.Center) {
-                        DocumentContentWriter.Write(@"<p class=""fs-5 mt-3"" style=""text-align: center;"">");
+                        DocumentContentWriter.Write(@$"<p{pclass} style=""text-align: center;{tstyle}"">");
                     }
                     else if (paragraph.Alignment == ParagraphAlignment.Right) {
-                        DocumentContentWriter.Write(@"<p class=""fs-5 mt-3"" style=""text-align: right;"">");
+                        DocumentContentWriter.Write(@$"<p{pclass} style=""text-align: right;{tstyle}"">");
                     }
                     else {
-                        DocumentContentWriter.Write(@"<p class=""fs-5 mt-3"">");
+                        DocumentContentWriter.Write(@$"<p{pclass} style=""{tstyle}"">");
                     }
                 }
             }
@@ -562,6 +517,30 @@ namespace ChurchServices.WinApp.Controllers {
                     return hyperlinkInfo;
             }
             return default;
+        }
+
+        private bool inTable = false;
+        protected override ParagraphIndex ExportTable(TableInfo tableInfo) {
+            inTable = true;
+            DocumentContentWriter.Write(@"<table class=""table table-striped""");
+            var idx = base.ExportTable(tableInfo);
+            DocumentContentWriter.Write("</table>");
+            inTable = false;
+            return idx;
+        }
+        protected override void ExportRow(TableRow row, TableInfo tableInfo) {
+            DocumentContentWriter.Write("<tr>");
+            base.ExportRow(row, tableInfo);
+            DocumentContentWriter.Write("</tr>");
+        }
+        protected override void ExportCell(TableCell cell, TableInfo tableInfo) {
+            var s = "";
+            if (cell.ColumnSpan > 1) {
+                s += @$" colspan=""{cell.ColumnSpan}""";
+            }
+            DocumentContentWriter.Write($"<td{s}>");
+            base.ExportCell(cell, tableInfo);
+            DocumentContentWriter.Write("</td>");
         }
     }
     public static class XHtmlDocumentFormat {

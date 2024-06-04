@@ -116,13 +116,13 @@
         
 
         @if (Model.Article.AuthorPicture.IsNotNull()) {
-            <div class="d-lg-block" style="background-image: url('data:image/png;base64, @(Model.Article.AuthorPicture)'); background-position: center center; background-repeat: no-repeat; background-size: cover; max-width: 350px; width: 100%; min-height: 245px;"></div>
+            <div class="d-lg-block article-picture" style="background-image: url('data:image/png;base64, @(Model.Article.AuthorPicture)');"></div>
         }
         @if (passage.IsNotNullOrEmpty()){
             <strong class="d-inline-block mb-2 text-success pill-white float-end" style="right: 5px; bottom: 5px; position: absolute; width: auto; padding: 10px;">@passage</strong>
         }
     </div>
-    <div class="article-width">
+    <div id="immersive-reader-content" class="article-width">
         @{
             var text = Model.Article.Text;
 
