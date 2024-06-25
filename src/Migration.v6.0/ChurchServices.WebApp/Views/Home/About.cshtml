@@ -2,40 +2,16 @@
     ViewData["Title"] = "O nas, Kim jesteśmy?";
 }
 @inject IConfiguration Configuration 
+@model HtmlFileData
 
 <div class="clearfix max-width-1000" style="padding-top: 20px;">
     @Html.Partial("~/Views/Shared/_Baner.cshtml")    
     <h1><i class="fas fa-place-of-worship"></i> @ViewData["Title"]</h1>
     @Html.Partial("~/Views/Shared/_ChatGPT.cshtml")
-    <p class="fs-5">Począwszy od 23 września 2023 roku, jesteśmy samodzielnym zborem Kościoła Chrześcijan Baptystów w&#160;Rzeczpospolitej Polskiej. Poprzednio, od września 2015 roku, funkcjonowaliśmy jako placówka <a href="https://baptysci.waw.pl/formularz-kontaktowy/placowki-zboru/" class="link-success text-decoration-none" target="_blank">zboru w&#160;Warszawie <i class="fa-solid fa-up-right-from-square"></i></a>. Działamy na podstawie <a href="https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU19950970480" class="text-decoration-none" target="_blank">ustawy o stosunku państwa do Kościoła Chrześcijan Baptystów w&#160;Rzeczypospolitej Polskiej <i class="fa-solid fa-up-right-from-square"></i></a>.</p>
-      
-    <p class="fs-5">
-        Jesteśmy grupą chrześcijan, którzy nie chcą być w "kościele", ale być Kościołem Jezusa Chrystusa w&#160;Nowym Dworze Mazowieckim.
-        Nie tak wielkie znaczenie ma budynek kościelny czy przyjęty porządek nabożeństwa.
-        Najważniejszy jest Bóg Ojciec, Syn i&#160;Duch Święty, któremu należy się wszelka cześć, chwała i&#160;szacunek, którego czcimy i wielbimy. 
-        Istotny jest również człowiek, za którego nasz Pan oddał swoje życie i&#160;przelał bezcenną krew na krzyżu.
-    </p>
 
-    <figure class="text-center">
-        <blockquote class="blockquote">
-            “Będziesz miłował Pana, Boga swego, z&#160;całego serca swego i&#160;z&#160;całej duszy swojej, i&#160;z&#160;całej myśli swojej. To jest największe i&#160;pierwsze przykazanie. A&#160;drugie podobne temu: Będziesz miłował bliźniego swego jak siebie samego. Na tych dwóch przykazaniach opiera się cały zakon i&#160;prorocy.”
-        </blockquote>
-        <figcaption class="blockquote-footer">
-            <a href="../BW/470/22/37,38,39,40" class="text-decoration-none">Ewangelia Mateusza <cite>22:37-40</cite></a>
-        </figcaption>
-    </figure>
-
-    <p class="fs-5">
-        Jeżeli postrzegasz kościół Jezusa Chrystusa jako wspólnotę powołanych dzieci Bożych i&#160;masz podobne pragnienie by
-        taka społeczność rozrastała się w&#160;Nowym Dworze Mazowieckim i&#160;okolicach to, prosimy, módl się by Bóg błogosławił
-        i&#160;pomnażał liczbę tych, którzy mają być zbawieni.
-    </p>
-
-    <p class="fs-5">
-        Naszym celem nie jest rozwijanie ludzkiej organizacji, ale społeczności, której jedynym Zbawcą i&#160;głową jest Jezus Chrystus,
-        ku chwale Boga Ojca, w&#160;której jest miejsce na przemożne działanie Ducha Świętego, w&#160;której głoszona jest
-        pełna ewangelia, ewangelia skupiona wokół osoby Jezusa Chrystusa, Jego życia, Jego zbawczej śmierci na krzyżu i&#160;Jego zmartwychwstania.
-    </p>
+    @if (Model != null) {
+        @Html.Raw(Model.Data)
+    }
 
     <h2>Dane kontaktowe</h2>
     <p id="Brama" class="fs-5 float-sm-end w-25 text-center shadow p-3 mb-3 rounded"><img src="~/img/brama.jpg" style="width: 100%;" /></p>
@@ -50,7 +26,7 @@
         muzyka: <a href="https://soundcloud.com/koscioljezusa/" class="text-decoration-none"><i class="fab fa-soundcloud"></i> soundcloud.com/koscioljezusa <i class="fa-solid fa-up-right-from-square"></i></a><br />
         facebook:  <a href="https://www.facebook.com/koscioljezusa" class="text-decoration-none"><i class="fab fa-facebook"></i> www.facebook.com/koscioljezusa <i class="fa-solid fa-up-right-from-square"></i></a><br />
         youtube: <a href="https://youtube.com/@@baptysci-ndm" title="Nasz kanał na YouTube" class="text-decoration-none"><i class="fab fa-youtube"></i> youtube.com <i class="fa-solid fa-up-right-from-square"></i></a><br />
-        www:  <a href="@Configuration["HostUrl"]" class="text-decoration-none"><i class="fas fa-globe"></i> @Configuration["HostUrl"]</a> |  <a href="https://baptysci.pl/zbory" class="text-decoration-none">www.baptysci.pl  <i class="fa-solid fa-up-right-from-square"></i></a> | <a href="https://baptysci.waw.pl/formularz-kontaktowy/placowki-zboru/" class="text-decoration-none">www.baptysci.waw.pl  <i class="fa-solid fa-up-right-from-square"></i></a><br />
+        www:  <a href="@Configuration["HostUrl"]" class="text-decoration-none"><i class="fas fa-globe"></i> @Configuration["HostUrl"]</a> |  <a href="https://baptysci.pl/zbory" class="text-decoration-none">www.baptysci.pl  <i class="fa-solid fa-up-right-from-square"></i></a><br />
     </p>
     <p class="fs-6">
         <strong>Konto bankowe</strong>:<br />

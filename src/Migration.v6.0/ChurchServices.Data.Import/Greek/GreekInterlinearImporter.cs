@@ -1,15 +1,9 @@
-﻿using DevExpress.Xpo;
+﻿using ChurchServices.Data.Model;
 using ChurchServices.Extensions;
-using ChurchServices.Data.Model;
+using DevExpress.Xpo;
 using Microsoft.Data.Sqlite;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ChurchServices.Data.Import.Greek {
-    //public class GreekInterlinearBuilder {
-    //}
-
     public class GreekNewTestamentInterlinearBuilder {
         const string NAME = "NPI+";
         const string EMPTY_TRANSLATION = "---";

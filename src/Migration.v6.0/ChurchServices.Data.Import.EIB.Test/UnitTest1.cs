@@ -1,6 +1,7 @@
 ﻿using ChurchServices.Data.Import.EIB.Model;
 using ChurchServices.Data.Import.EIB.Model.Bible;
 using ChurchServices.Data.Import.EIB.Model.Osis;
+using ChurchServices.Data.Import.Hebrew;
 using ChurchServices.Data.Model;
 using ChurchServices.Extensions;
 using DevExpress.Xpo;
@@ -22,6 +23,26 @@ namespace ChurchServices.Data.Import.EIB.Test {
                 connectionString: @"XpoProvider=SQLite;data source=..\..\..\..\..\..\db\IBE.SQLite3");
         }
 
+        [TestMethod]
+        public void ImportBHS() {
+            var bhs = new BHSInterlinearBuilder();
+            var uow = new UnitOfWork();
+            bhs.Build(uow, @"C:\Users\krzysztof.radzimski\Downloads\BHSEk+\BHSEk+.SQLite3");
+        }
+
+        [TestMethod]
+        public void ImportLHB() {
+            var bhs = new LhbBuilder();
+            var uow = new UnitOfWork();
+            bhs.Build(uow, @"C:\Users\krzysztof.radzimski\Downloads\LHBc\LHBc.SQLite3");
+        }
+
+        [TestMethod]
+        public void ImportHSB() {
+            var bhs = new HBSTransliterationBuilder();
+            var uow = new UnitOfWork();
+            bhs.Build(uow, @"C:\Users\krzysztof.radzimski\Downloads\HSB+\HSB+.SQLite3");
+        }
 
         [TestMethod]
         public void TestOsisModel() {

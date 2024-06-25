@@ -37,11 +37,13 @@ namespace ChurchServices.WebApp.Controllers {
                     value = value.Substring(0, value.IndexOf("&"));
                 }
                 var id = value.ToLower().Replace("?id=", "").Trim().ToInt();
-                var song = new XPQuery<Song>(new UnitOfWork()).Where(x => x.Number == id).FirstOrDefault();
-                if (song.IsNotNull()) {
-                    var maxNumber = TranslationInfoController.GetSongs().Select(x => x.Number).Max();
-                    var result = new SongControllerModel() { Song = song, MaxNumber = maxNumber };
-                    return View(result);
+                if (id > 0) {
+                    var song = new XPQuery<Song>(new UnitOfWork()).Where(x => x.Number == id).FirstOrDefault();
+                    if (song.IsNotNull()) {
+                        var maxNumber = TranslationInfoController.GetSongs().Select(x => x.Number).Max();
+                        var result = new SongControllerModel() { Song = song, MaxNumber = maxNumber };
+                        return View(result);
+                    }
                 }
             }
             return View();

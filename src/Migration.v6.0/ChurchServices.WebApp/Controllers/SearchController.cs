@@ -11,6 +11,8 @@
 
   ===================================================================================*/
 
+using Microsoft.AspNetCore.Http;
+
 namespace ChurchServices.WebApp.Controllers {
     public class SearchController : Controller {
         private const string TYPE_QUERY = "&type=";
@@ -21,6 +23,19 @@ namespace ChurchServices.WebApp.Controllers {
             Logger = logger;
             BibleTag = bibleTag;
             TranslationInfoController = translationInfoController;
+        }
+
+        [Route("[controller]/{text}/{range}")]
+        public IActionResult Index(string text, string range) {
+            if (text.IsNotNullOrWhiteSpace()) {
+                var type = SearchRangeType.All;
+                if (range.IsNotNullOrWhiteSpace()) {
+                    type = range.GetEnumByCategory<SearchRangeType>();
+                }
+                var words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                return _Search(words, type);
+            }
+            return View();
         }
 
         public IActionResult Index() {
@@ -56,16 +71,16 @@ namespace ChurchServices.WebApp.Controllers {
             return View();
         }
 
-        public IActionResult Siglum(string text, string type) {            
+        public IActionResult Siglum(string text, string type) {
             if (text.IsNotNullOrEmpty() && text.Length > 0) {
                 var session = new UnitOfWork();
                 var url = string.Empty;
 
                 if (type.IsNotNullOrEmpty() && type == "compare") {
-                    url= BibleTag.GetRecognizedCompareUrl(session, text);
+                    url = BibleTag.GetRecognizedCompareUrl(session, text);
                 }
 
-                if (url.IsNullOrEmpty()){
+                if (url.IsNullOrEmpty()) {
                     url = BibleTag.GetRecognizedSiglumUrl(session, text);
                 }
 
@@ -137,6 +152,22 @@ namespace ChurchServices.WebApp.Controllers {
                         criteria += GetRangeCriteriaString(470, 500);
                         break;
                     }
+                case SearchRangeType.Historical: {
+                        criteria += GetRangeCriteriaString(60, 190);
+                        break;
+                    }
+                case SearchRangeType.Wisdom: {
+                        criteria += GetRangeCriteriaString(220, 260);
+                        break;
+                    }
+                case SearchRangeType.Prophets: {
+                        criteria += GetRangeCriteriaString(290, 460);
+                        break;
+                    }
+                case SearchRangeType.CatholicLetters: {
+                        criteria += GetRangeCriteriaString(660, 720);
+                        break;
+                    }
             }
 
 
@@ -153,14 +184,6 @@ namespace ChurchServices.WebApp.Controllers {
                 var _index = record["Index"];
                 if (_index.IsNotNull()) {
                     var index = new VerseIndex(_index.ToString());
-                    //if (type != SearchRangeType.All) {
-                    //    if (type == SearchRangeType.Psalms && index.NumberOfBook != 230) { continue; }
-                    //    if (type == SearchRangeType.Pentateuch && (index.NumberOfBook < 10 || index.NumberOfBook > 50)) { continue; }
-                    //    if (type == SearchRangeType.Gospel && (index.NumberOfBook < 470 || index.NumberOfBook > 500)) { continue; }
-                    //    if (type == SearchRangeType.NewTestament && (index.NumberOfBook < 470 || index.NumberOfBook > 730)) { continue; }
-                    //    if (type == SearchRangeType.OldTestament && index.NumberOfBook >= 470) { continue; }
-                    //    if (type == SearchRangeType.PaulsLetters && (index.NumberOfBook < 520 || index.NumberOfBook > 640)) { continue; }
-                    //}
                     var baseBookShortcut = bookShortcuts.Where(x => x.Key == index.NumberOfBook).Select(x => x.Value).FirstOrDefault();
                     var translation = translationNames.Where(x => x.Key == index.TranslationName).FirstOrDefault();
                     if (translation.IsNull() || translation.Key.IsNull()) { continue; }
@@ -262,6 +285,15 @@ namespace ChurchServices.WebApp.Controllers {
         [Description("w Piecioksięgu (Tora)")]
         [Category("T")]
         Pentateuch,
+        [Description("w Księgach historycznych")]
+        [Category("H")]
+        Historical,
+        [Description("w Księgach mądrościowych")]
+        [Category("W")]
+        Wisdom,
+        [Description("w Księgach prorockich")]
+        [Category("PR")]
+        Prophets,
         [Description("w Ewangeliach")]
         [Category("E")]
         Gospel,
@@ -271,5 +303,8 @@ namespace ChurchServices.WebApp.Controllers {
         [Description("w listach ap. Pawła")]
         [Category("PL")]
         PaulsLetters,
+        [Description("w listach powszechnych")]
+        [Category("LK")]
+        CatholicLetters,
     }
 }

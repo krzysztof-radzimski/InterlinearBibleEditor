@@ -22,6 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\ChurchServices.Data.Import\ChurchServices.Data.Import.csproj" />
 		<ProjectReference Include="..\ChurchServices.Data.Import.EIB\ChurchServices.Data.Import.EIB.csproj" />
 		<ProjectReference Include="..\ChurchServices.Data\ChurchServices.Data.csproj" />
 		<ProjectReference Include="..\ChurchServices.Extensions\ChurchServices.Extensions.csproj" />

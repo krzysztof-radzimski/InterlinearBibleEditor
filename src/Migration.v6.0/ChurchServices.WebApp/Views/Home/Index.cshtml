@@ -4,19 +4,19 @@
 }
 
 @inject IConfiguration Configuration
-@model List<ChurchServices.WebApp.Controllers.ArticleInfo>
+@model HomePageModel
 
 <div class="max-width-1000" style="padding-top: 20px;">
     @Html.Partial("~/Views/Shared/_Baner.cshtml")
     @Html.Partial("~/Views/Shared/_ChatGPT.cshtml")
        
     <div class="embed-responsive embed-responsive-16by9 shadow-lg">
-        <iframe id="YouTubeFrame" width="560" height="600" src="https://www.youtube.com/embed/videoseries?list=PLUYRCCWSMh69waBP7LPvu_aAm8pkKL6Gh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe id="YouTubeFrame" width="560" height="600" src="https://www.youtube.com/embed/videoseries?list=PLUYRCCWSMh6_oq4Lj7JWva8JCxRgpf_o5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
     <br/>
 
-    @if (Model.IsNotNull() && Model.Count > 0) {
-        foreach (var item in Model) {
+    @if (Model.IsNotNull() && Model.Articles.IsNotNull() && Model.Articles.Count > 0) {
+        foreach (var item in Model.Articles) {
             var passage = item.Passage != null ? $", {item.Passage}" : "";
             var lead = item.Lead;
             lead = System.Text.RegularExpressions.Regex.Replace(lead, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
@@ -56,110 +56,9 @@
     </p>
     @Html.Partial("~/Views/Shared/_CourseBaner.cshtml")
     
-    <div id="immersive-reader-content">
-        <h2>Słowo powitania</h2>
-
-        <p class="fs-5 mt-3">
-            Cieszymy się, że trafiłeś na tę stronę. Pragniemy przekazać Ci, dobrą nowinę o&#160;Królestwie naszego Pana i&#160;Zbawiciela Jezusa Chrystusa:
-        </p>
-        <figure class="text-center">
-            <blockquote class="blockquote">
-                “Albowiem tak Bóg umiłował świat, że Syna Swego jednorodzonego dał,<br />aby każdy, kto weń wierzy, nie zginął, ale miał żywot wieczny”
-            </blockquote>
-            <figcaption class="blockquote-footer">
-                <a href="BW/500/3/16" class="text-decoration-none">Ewangelia Jana <cite>3:16</cite></a>
-            </figcaption>
-        </figure>
-
-        <p class="fs-5">
-            Ta dobra nowina czyli ewangelia wzywa wszystkich ludzi o&#160;szczerym, pokornym sercu:
-        </p>
-        <figure class="text-center">
-            <blockquote class="blockquote">
-                “Upamiętajcie się, albowiem przybliżyło się Królestwo Niebios”
-            </blockquote>
-            <figcaption class="blockquote-footer">
-                <a href="BW/470/3/2" class="text-decoration-none">Ewangelia Mateusza <cite>3:2</cite></a>
-            </figcaption>
-        </figure>
-
-        <p class="fs-5">
-            Obecne społeczeństwo idzie szeroką drogą, wygodnej, niezobowiązującej religijności,
-            “<span class="italic">jednakże wąska jest droga i&#160;ciasna brama prowadząca  do życia i&#160;niewielu jest takich, którzy ją znajdują</span>”
-            (<a href="BW/470/7/13,14" class="text-decoration-none">Mat 7:13,14</a>). Droga ta oznacza uznanie swojej grzeszności, szczere nawrócenie i&#160;podążanie śladami Pana Jezusa Chrystusa.
-            Jak to zrobić? To jest właśnie sedno ewangelii:
-        </p>
-
-        <figure class="text-center">
-            <blockquote class="blockquote">
-                “Uwierz w&#160;Pana Jezusa, a&#160;będziesz zbawiony, ty i&#160;twój dom.”
-            </blockquote>
-            <figcaption class="blockquote-footer">
-                <a href="BW/510/16/31" class="text-decoration-none">Dzieje Apostolskie <cite>16:31</cite></a>
-            </figcaption>
-        </figure>
-
-        <p class="fs-5">
-            Ten kto prawdziwie uwierzył, że Jezus Chrystus jest prawdziwym, obiecanym Mesjaszem, Panem i&#160;Królem,
-            wierzy w&#160;jego dzieło zbawienia dokonane na krzyżu, ten otrzymuje zadatek Ducha Świętego,
-            który uzdalnia go do prowadzenia świętego życia.
-        </p>
-
-        <figure class="text-center">
-            <blockquote class="blockquote">
-                “Albo czy nie wiecie, że niesprawiedliwi Królestwa Bożego nie odziedziczą?<br />Nie łudźcie się!
-                Ani wszetecznicy, ani bałwochwalcy ani cudzołożnicy, ani rozpustnicy, ani mężołożnicy, ani złodzieje,
-                ani chciwcy, ani pijacy, ani oszczercy, ani zdziercy Królestwa Bożego nie odziedziczą.<br />
-                <strong>
-                    A takimi niektórzy z&#160;was byli; aleście obmyci, uświęceni, i&#160;usprawiedliwieni
-                    w&#160;imieniu Pana Jezusa Chrystusa i&#160;w&#160;Duchu Boga naszego
-                </strong>”
-            </blockquote>
-            <figcaption class="blockquote-footer">
-                <a href="BW/530/6/9,10,11" class="text-decoration-none">1 List do Koryntian <cite>6:9-11</cite></a>
-            </figcaption>
-        </figure>
-
-        <p id="Brama" class="fs-5 float-sm-end w-25 text-center shadow p-3 mx-lg-5 bg-body rounded"><img src="~/img/brama.jpg" style="width: 100%;" /></p>
-
-        <p class="fs-5">
-            Wejdź na tę wąską drogę chrześcijańską, spotkaj się z&#160;nami. <a class="text-decoration-none" href="/Home/Service">
-                Zgromadzamy się każdej <b>
-                    niedzieli
-                    o&#160;godzinie 11:00
-                </b> oraz w&#160;każdy <b>czwartek o&#160;godzinie 17:30</b>
-            </a>.
-            Przyjdź takim jakim jesteś, bo nasz Pan również powiedział:
-        </p>
-
-        <figure class="text-center">
-            <blockquote class="blockquote">
-                “<strong>Pójdźcie do mnie wszyscy</strong>, którzy jesteście spracowani i&#160;obciążeni,
-                <br />a&#160;Ja wam dam ukojenie.<br />Weźcie na siebie moje jarzmo i&#160;uczcie się ode mnie, że jestem cichy i&#160;pokornego serca,
-                <strong>a&#160;znajdziecie ukojenie dla dusz waszych</strong>.<br />Albowiem jarzmo moje jest miłe,
-                a&#160;brzemię moje lekkie.”
-            </blockquote>
-            <figcaption class="blockquote-footer">
-                <a href="BW/470/11/28,29,30" class="text-decoration-none">Ewangelia Mateusza <cite>11:28-30</cite></a>
-            </figcaption>
-        </figure>
-
-        <p class="fs-5">
-            Prawdziwym sensem ludzkiego istnienia jest miłość do Boga i&#160;każdego człowieka.
-            Bóg żywy i&#160;prawdziwy jest niewyczerpanym źródłem tej miłości, gdyż “Bóg jest miłością” (<a href="/BW/690/4/16" class="text-decoration-none">1&#160;Jan&#160;4:16</a>).
-            Nic piękniejszego nie może spotkać człowieka, jak doświadczyć tej miłości, której źródłem jest Bóg.
-        </p>
-    </div>
-    <hr class="fancy-line" />
-    <p class="fs-6">
-        <img src="~/img/baptysci-logo-2023.svg" style="float:left; height: 100px; max-width: 30%; margin-right: 10px;" />
-        <strong>
-            Zbór Kościoła Chrześcijan Baptystów<br />
-            w Nowym Dworze Mazowieckim
-        </strong><br />
-        ul. Sukienna 52 - sala na piętrze<br />
-        05-100 Nowy Dwór Mazowiecki
-    </p>
+    @if (Model != null && Model.Info != null) {
+        @Html.Raw(Model.Info.Data)
+    }
 </div>
 
 

@@ -57,31 +57,46 @@ namespace ChurchServices.WebApp.Controllers {
             }
         }
         public IActionResult Index() {
+            var id = 0;
             var qs = Request.QueryString;
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 3) {
                 var value = qs.Value;
                 if (value.Contains("&")) {
                     value = value.Substring(0, value.IndexOf("&"));
                 }
-                var id = value.ToLower().Replace("?id=", "").Trim().ToInt();
-                var article = new XPQuery<Article>(new UnitOfWork()).Where(x => x.Oid == id && !x.Hidden).FirstOrDefault();
-                if (article.IsNotNull()) {
-                    return View(new ArticleControllerModel() {
-                        Article = new ArticleViewInfo() {
-                            AuthorName = article.AuthorName,
-                            Passage = article.Passage,
-                            AuthorPicture = article.AuthorPicture.IsNotNull() ? Convert.ToBase64String(article.AuthorPicture) : String.Empty,
-                            Date = article.Date,
-                            Id = article.Oid,
-                            Lead = article.Lead,
-                            Subject = article.Subject,
-                            Text = article.Text,
-                            Type = article.Type.GetDescription()
-                        }
-                    });
+                id = value.ToLower().Replace("?id=", "").Trim().ToInt();
+                if (id > 0) {
+                    var article = new XPQuery<Article>(new UnitOfWork()).Where(x => x.Oid == id && !x.Hidden).FirstOrDefault();
+                    if (article.IsNotNull()) {
+                        return View(new ArticleControllerModel() {
+                            Article = new ArticleViewInfo() {
+                                AuthorName = article.AuthorName,
+                                Passage = article.Passage,
+                                AuthorPicture = article.AuthorPicture.IsNotNull() ? Convert.ToBase64String(article.AuthorPicture) : String.Empty,
+                                Date = article.Date,
+                                Id = article.Oid,
+                                Lead = article.Lead,
+                                Subject = article.Subject,
+                                Text = article.Text,
+                                Type = article.Type.GetDescription()
+                            }
+                        });
+                    }
                 }
             }
-            return View();
+            return View(new ArticleControllerModel() {
+                Article = new ArticleViewInfo() {
+                    AuthorName = "Brak artykułu",
+                    AuthorPicture = null,
+                    Date = DateTime.MinValue,
+                    Lead = $"Nie znaleziono artykułu o numerze {id}!",
+                    Text = String.Empty,
+                    Type = ArticleType.Article.GetDescription(),
+                    Passage = String.Empty,
+                    Subject = String.Empty,
+                    Id = id
+                }
+            });
         }
     }
 

@@ -58,6 +58,9 @@
                                 <li>
                                     <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="AboutBible"><div style="display: inline-block; width: 25px;"><i class="fas fa-bible"></i></div> O Biblii, czyli Piśmie Świętym Starego i Nowego Przymierza</a>
                                 </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="BibleByVerse" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fa-solid fa-lines-leaning"></i></div> Biblia Internetowa</a>
+                                </li>
 
                                     @{
                                         var first = true;
@@ -208,7 +211,7 @@
                                 }
 
                             <li><hr class="dropdown-divider"></li>
-                            <a class="nav-link menu-item-a" href="/Search/Siglum" data-bs-toggle="tooltip"
+                            <a class="dropdown-item" href="/Search/Siglum" data-bs-toggle="tooltip"
                                data-bs-placement="bottom"
                                data-bs-title="Schemat siglów biblijnych"><i class="fa-solid fa-magnifying-glass-arrow-right"></i>&nbsp;Schemat Siglum</a>
                         </ul>

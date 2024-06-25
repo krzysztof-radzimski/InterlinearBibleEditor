@@ -22,13 +22,19 @@ namespace ChurchServices.WebApp.Controllers {
         }
 
         public IActionResult Index() {
-            return View(TranslationInfoController.GetLastFourArticles());
+            var model = new HomePageModel() {
+                Articles = TranslationInfoController.GetLastFourArticles(),
+                Info = GetHomeFileData()
+            };
+            return View(model);
         }
+        private HtmlFileData GetHomeFileData() => GetFileData("download\\home.html", "Nie udało się wczytać wyznania wiary.");
 
         public IActionResult WhatWeBelieve() => View(GetConfessionFileData());
         private HtmlFileData GetConfessionFileData() => GetFileData("download\\confession.html", "Nie udało się wczytać wyznania wiary.");
 
-        public IActionResult About() => View();
+        public IActionResult About() => View(GetAboutFileData());
+        private HtmlFileData GetAboutFileData() => GetFileData("download\\about.html", "Nie udało się pliku informacyjnego.");
 
         public IActionResult Service() => View();
 

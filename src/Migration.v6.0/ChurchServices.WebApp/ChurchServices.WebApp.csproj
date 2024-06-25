@@ -1,35 +1,43 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>disable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Platforms>AnyCPU</Platforms>
-    <ApplicationIcon>BibleIcon.ico</ApplicationIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Platforms>AnyCPU</Platforms>
+		<ApplicationIcon>BibleIcon.ico</ApplicationIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="BibleIcon.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Controllers\UrlShortenerController.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Aspose.Words" Version="22.3.0" />
-    <PackageReference Include="DevExpress.Xpo" Version="23.1.5" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
-    <PackageReference Include="LinqKit.Core" Version="1.2.2" />    
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.6" />    
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<_ContentIncludedByDefault Remove="wwwroot\download\About.html" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ChurchServices.Data.Export\ChurchServices.Data.Export.csproj" />
-    <ProjectReference Include="..\ChurchServices.Data\ChurchServices.Data.csproj" />
-    <ProjectReference Include="..\ChurchServices.Extensions\ChurchServices.Extensions.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="BibleIcon.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\download\journal\2024\" />
-    <Folder Include="wwwroot\download\study\" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Aspose.Words" Version="22.3.0" />
+		<PackageReference Include="DevExpress.Xpo" Version="23.1.5" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
+		<PackageReference Include="LinqKit.Core" Version="1.2.2" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.6" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ChurchServices.Data.Export\ChurchServices.Data.Export.csproj" />
+		<ProjectReference Include="..\ChurchServices.Data\ChurchServices.Data.csproj" />
+		<ProjectReference Include="..\ChurchServices.Extensions\ChurchServices.Extensions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="wwwroot\download\journal\2024\" />
+		<Folder Include="wwwroot\download\study\" />
+	</ItemGroup>
 
 </Project>

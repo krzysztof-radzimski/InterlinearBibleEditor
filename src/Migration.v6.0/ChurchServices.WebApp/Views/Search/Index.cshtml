@@ -62,7 +62,7 @@
                 var translationSymbol = @item.Key;
                 if (translationSymbol == "PBD") { translationSymbol = "SNPPD"; }
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link@_active" id="@item.Key.ToLower()-tab" data-bs-toggle="tab" data-bs-target="#@item.Key.ToLower()" type="button" role="tab" aria-controls="@item.Key.ToLower()" aria-selected="@_true" title="@translationName">@translationSymbol</button>
+                    <button class="nav-link@_active" id="@item.Key.ToLower()-tab" data-bs-toggle="tab" data-bs-target="#@item.Key.ToLower()" type="button" role="tab" aria-controls="@item.Key.ToLower()" aria-selected="@_true" data-bs-title="@translationName">@translationSymbol</button>
                 </li>
             }
 
@@ -93,11 +93,10 @@
                                 <div class="col p-1">
                                     @Html.Raw(text)
                                 </div>
-                                <div class="col-auto p-1" style="width: 5%; min-width: 50px;">
-                                    <a class="dropdown-item" onclick="copyToClipboard3('@verse.SimpleText')" style="cursor: pointer;" title="Kopiuj treść @verse.BookShortcut @verse.Chapter:@verse.Verse"><i class="far fa-copy"></i></a>
-                                </div>
-                                <div class="col-auto p-1" style="width: 5%; min-width: 50px;">
-                                    <a class="dropdown-item" style="cursor: pointer;" title="Porównaj tłumaczeń @verse.BookShortcut @verse.Chapter:@verse.Verse" href="/CompareVerse?id=@verse.Index"><i class="fas fa-fish"></i></a>
+                                <div class="col-auto p-1" style="width: 5%; min-width: 120px; text-align:center;">
+                                    <a onclick="copyToClipboard3('@verse.SimpleText')" style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść @verse.BookShortcut @verse.Chapter:@verse.Verse"><i class="far fa-copy"></i></a>
+                                    <a style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-title="Porównaj tłumaczeń @verse.BookShortcut @verse.Chapter:@verse.Verse" href="/CompareVerse/@verse.Translation/@verse.Book/@verse.Chapter/@verse.Verse"><i class="fas fa-fish"></i></a>
+                                    <a href="/BibleByVerse/@verse.Book/@verse.Chapter/@verse.Verse" style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-title="Otwórz w module 'Biblia Internetowa'"><i class="fa-solid fa-lines-leaning"></i></a>
                                 </div>
                             </div>
                         }

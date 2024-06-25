@@ -19,7 +19,15 @@ namespace ChurchServices.Data.Model {
         public int NumberOfVerse { get; }
         public string Index { get; }
         private VerseIndex() { }
-        public VerseIndex(string index) {
+        public VerseIndex(string translationName, int numberOfBook, int numberOfChapter, int numberOfVerse) : this() {
+            TranslationName = translationName;
+            NumberOfBook = numberOfBook;
+            NumberOfChapter = numberOfChapter;
+            NumberOfVerse = numberOfVerse;
+            Index = $"{translationName}.{numberOfBook}.{numberOfChapter}.{numberOfVerse}";
+        }
+
+        public VerseIndex(string index) : this() {
             try {
                 Index = index;
                 var regex = new Regex(@"(?<translation>[A-Z0-9]+)\.(?<book>[0-9]+)\.(?<chapter>[0-9]+)\.(?<verse>[0-9]+)");

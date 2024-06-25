@@ -420,7 +420,7 @@ namespace ChurchServices.Data.Export.Controllers {
                     baseBook = baseBooks.Where(x => x.BookName.ToLower() == siglum.BookShortcut.ToLower()).FirstOrDefault();
                 }
                 if (baseBook != null) {
-                    return $"/CompareVerse?id={siglum.TranslationName}.{baseBook.NumberOfBook}.{siglum.NumberOfChapter}.{siglum.NumbersOfVerses.First()}";
+                    return $"/CompareVerse/{siglum.TranslationName}/{baseBook.NumberOfBook}/{siglum.NumberOfChapter}/{siglum.NumbersOfVerses.First()}";
                 }
             }
             return null;

@@ -36,9 +36,11 @@ namespace ChurchServices.WebApp.Controllers {
                     lang = Language.Hebrew;
                 }
                 var id = _id.ToInt();
-                var strongCode = new XPQuery<StrongCode>(new UnitOfWork()).Where(x => x.Code == id && x.Lang == lang).FirstOrDefault();
-                if (strongCode.IsNotNull()) {
-                    return View(strongCode);
+                if (id > 0) {
+                    var strongCode = new XPQuery<StrongCode>(new UnitOfWork()).Where(x => x.Code == id && x.Lang == lang).FirstOrDefault();
+                    if (strongCode.IsNotNull()) {
+                        return View(strongCode);
+                    }
                 }
             }
             return View();

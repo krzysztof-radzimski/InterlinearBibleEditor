@@ -1,0 +1,211 @@
+﻿@model BibleByVerseModel
+@{
+    if (Model != null) {
+        ViewData["Title"] = Model.Title;
+    }
+    else {
+        ViewData["Title"] = "Biblia internetowa";
+    }
+
+    var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
+    var permalink = "";
+   if (Model != null) {   permalink = @"<a href=""" + __host +  this.Context.Request.Path + @$""" title=""{Model.Title}"" target=""_blank"">" + Model.Title +"</a>";
+   }
+}
+@section HeaderScripts {
+    <style>
+        .grow-wrap textarea {
+            resize: none;
+            overflow: auto;
+            border: none;
+        }
+
+        .orginal-text {
+            font-size: 180%;
+            text-align: end;
+        }
+
+        .orginal-text-translit {
+            font-size: 120%;
+            text-align: end;
+        }
+        .translated-text {
+            font-size: 120%;
+            text-align: justify-all;
+            margin-right: 35px;
+        }
+
+        .text-gradient-church-service {
+            margin-right: 35px;
+        }
+
+        .b-0 {
+            float: right;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .b-1 {
+            float: right;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .b-2 {
+            float: right;
+            position: absolute;
+            top: 10px;
+            right: 50px;
+        }
+
+        .card-body h3 {
+            text-align: center;
+        }
+    </style>
+}
+
+<div style="padding-top: 20px;">
+
+    <form id="bibleForm" method="get">
+        <div class="input-group mb-3" role="group">
+
+            <select class="form-select" aria-label="Wybierz księgę biblijną" id="book" name="book" data-bs-toggle="tooltip">
+                @if (Model != null) {
+                    @foreach (var book in Model.Books) {
+                        if (book.Number == Model.Book) {
+                            <option value="@book.Number" data-bs-toggle="tooltip" data-bs-title="@book.FullName" selected>@book.Name - @book.FullName</option>
+                        }
+                        else {
+                            <option value="@book.Number" data-bs-toggle="tooltip" data-bs-title="@book.FullName">@book.Name - @book.FullName</option>
+                        }
+                    }
+                }
+            </select>
+
+            <input class="input-group-text" type="number" name="chapter" id="chapter" aria-label="Numer rozdziału" placeholder="Numer rozdziału" value="@Model.Chapter" style="width: 80px;" min="1" max="500" />
+            <input class="input-group-text" type="number" name="verse" id="verse" aria-label="Numer wersetu" placeholder="Numer wersetu" value="@Model.Verse" style="width: 80px;" min="1" max="500" />
+            @if (Model.Verse > 1) {
+                <a href="/BibleByVerse/@Model.Book/@Model.Chapter/@(Model.Verse-1)" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Przejdź do poprzedniego wersetu"><i class="fa-solid fa-angles-left"></i></a>
+            }
+            @if (Model.Verse < Model.VerseCount) {
+                <a href="/BibleByVerse/@Model.Book/@Model.Chapter/@(Model.Verse+1)" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Przejdź do kolejnego wersetu"><i class="fa-solid fa-angles-right"></i></a>
+            }
+            <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="Otwórz wybrany werset"><i class="fa-regular fa-folder-open"></i></button>
+        </div>
+    </form>
+
+    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
+        <div class="card-body">
+            <h3 class="text-gradient-church-service">Tekst oryginalny</h3>
+            <a class="btn btn-secondary b-0" onclick="copyToClipboard3('@Model.OrginalText')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
+            <p class="card-text orginal-text">@Html.Raw(Model.OrginalText)</p>
+           
+        </div>
+    </div>
+
+    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
+        <div class="card-body">
+            <h3 class="text-gradient-church-service">Tekst z akcentami</h3>
+            <a class="btn btn-secondary b-0" onclick="copyToClipboard3('@Model.VovelsText')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
+
+            @if (Model.Book > 460) {
+                <a class="btn btn-secondary b-2" href="/TRO16/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Interlinearny Przekład Textus Receptus Oblubienicy"><i class="fa fa-book-bible"></i></a>
+            }
+            else
+            {
+                <a class="btn btn-secondary b-2" href="/HSB/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Interlinearny Przekład Hebrew Study Bible"><i class="fa fa-book-bible"></i></a>
+            }
+            <p class="card-text orginal-text">@Html.Raw(Model.VovelsText)</p>
+            <p class="card-text orginal-text-translit">@Html.Raw(Model.Transliteration)</p>
+        </div>
+    </div>
+
+    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
+        <div class="card-body">
+            <h3 class="text-gradient-church-service">Przekład Dosłowny EIB</h3>
+            <a class="btn btn-secondary b-0" onclick="copyToClipboard3('@Model.SNPD')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
+            <a class="btn btn-secondary b-1" href="/CompareVerse/PBD/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Porównaj z innymi przekładami"><i class="fas fa-fish"></i></a>
+            <p class="card-text translated-text">@Html.Raw(Model.SNPD)</p>
+        </div>
+    </div>
+    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
+        <div class="card-body">
+            <h3 class="text-gradient-church-service">Biblia Warszawska</h3>
+            <a class="btn btn-secondary b-0" onclick="copyToClipboard3('@Model.BW')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
+            <a class="btn btn-secondary b-1" href="/CompareVerse/BW/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Porównaj z innymi przekładami"><i class="fas fa-fish"></i></a>
+            <p class="card-text translated-text">@Html.Raw(Model.BW)</p>
+        </div>
+    </div>
+    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
+        <div class="card-body">
+            <h3 class="text-gradient-church-service">Uwspółcześniona Biblia Gdańska</h3>
+            <a class="btn btn-secondary b-0" onclick="copyToClipboard3('@Model.UBG')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
+            <a class="btn btn-secondary b-1" href="/CompareVerse/UBG18/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Porównaj z innymi przekładami"><i class="fas fa-fish"></i></a>
+            <p class="card-text translated-text">@Html.Raw(Model.UBG)</p>
+        </div>
+    </div>
+    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
+        <div class="card-body">
+            <h3 class="text-gradient-church-service">Biblia Tysiąclecia</h3>
+            <a class="btn btn-secondary b-0" onclick="copyToClipboard3('@Model.BT')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
+            <a class="btn btn-secondary b-1" href="/CompareVerse/BT99/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Porównaj z innymi przekładami"><i class="fas fa-fish"></i></a>
+            <p class="card-text translated-text">@Html.Raw(Model.BT)</p>
+        </div>
+    </div>
+
+
+    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
+        <div class="card-body">
+            <p>
+                Wersety:
+                @for (int i = 1; i <= Model.VerseCount; i++) {
+                    <a href="/BibleByVerse/@Model.Book/@Model.Chapter/@i" data-bs-toggle="tooltip" data-bs-title="@Model.Shortcut @Model.Chapter:@i">@i</a>
+                    <span> </span>
+                }
+            </p>
+            <p>
+                Rozdziały:
+                @for (int i = 1; i <= Model.ChapterCount; i++) {
+                    <a href="/BibleByVerse/@Model.Book/@i/1" data-bs-toggle="tooltip" data-bs-title="@Model.Shortcut @i:1">@i</a>
+                    <span> </span>
+                }
+            </p>
+            <p>
+                Księgi: 
+                @foreach(var b in Model.Books) {
+                    <a href="/BibleByVerse/@b.Number/1/1" data-bs-toggle="tooltip" data-bs-title="@b.FullName 1:1">@b.Name</a>
+                    <span> </span>
+                }
+            </p>
+            <p>
+                Link do umieszczenia na stronę: <a class="btn btn-secondary" onclick="copyToClipboard3('@permalink')" data-bs-toggle="tooltip" data-bs-title="Kopiuj kod HTML do schowka"><i class="fa-regular fa-copy"></i></a>
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('bibleForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const bookName = document.getElementById('book').value;
+            const chapter = document.getElementById('chapter').value;
+            const verse = document.getElementById('verse').value;
+            const url = `/BibleByVerse/${bookName}/${chapter}/${verse}`;
+            window.location.href = url;
+        });
+
+        function onSelectChange() {
+            var selectedOption = document.getElementById('book').value;
+            var chapter = document.getElementById('chapter');
+            chapter.value = '1';
+            var verse = document.getElementById('verse');
+            verse.value = '1';
+        }
+
+        // Dodanie nasłuchiwacza zdarzenia zmiany na select
+        document.getElementById('book').addEventListener('change', onSelectChange);
+    </script>
+}
