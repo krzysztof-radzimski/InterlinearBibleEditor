@@ -11,8 +11,6 @@
 
   ===================================================================================*/
 
-using System.Xml.Linq;
-
 namespace ChurchServices.WebApp.Controllers {
     public class CompareVerseController : Controller {
         protected readonly IBibleTagController BibleTag;
@@ -24,6 +22,10 @@ namespace ChurchServices.WebApp.Controllers {
         [Route("/[controller]/{trans}/{book}/{chapter}/{verse}")]
         public IActionResult Index(string trans, int book, int chapter, int verse) {
             return View(GetModel(new VerseIndex(trans, book, chapter, verse)));
+        }
+        [Route("/[controller]/{trans}/{book}/{chapter}/{verse}/{literal}")]
+        public IActionResult Index(string trans, int book, int chapter, int verse, bool literal) {
+            return View(GetModel(new VerseIndex(trans, book, chapter, verse), literal));
         }
         public IActionResult Index() {
             var qs = Request.QueryString;
@@ -49,7 +51,7 @@ namespace ChurchServices.WebApp.Controllers {
             return null;
         }
 
-        private CompareVerseModel GetModel(VerseIndex vi, bool literalOnly = false) {
+        internal CompareVerseModel GetModel(VerseIndex vi, bool literalOnly = false) {
             var uow = new UnitOfWork();
 
             var baseBookShortcut = "";
@@ -93,6 +95,7 @@ namespace ChurchServices.WebApp.Controllers {
             viewTranslation.Properties.Add(new ViewProperty("Name", SortDirection.None, "[Name]", false, true));
             viewTranslation.Properties.Add(new ViewProperty("Description", SortDirection.None, "[Description]", false, true));
             viewTranslation.Properties.Add(new ViewProperty("Type", SortDirection.Descending, "[Type]", false, true));
+            viewTranslation.Properties.Add(new ViewProperty("Language", SortDirection.Descending, "[Language]", false, true));
 
             var indexes = new List<string>();
             foreach (ViewRecord item in viewTranslation) {
@@ -105,7 +108,8 @@ namespace ChurchServices.WebApp.Controllers {
                     TranslationName = item["Name"].ToString(),
                     TranslationDescription = item["Description"].ToString(),
                     TranslationType = (TranslationType)item["Type"],
-                    SortIndex = ((TranslationType)item["Type"]).GetCategory().ToInt()
+                    SortIndex = ((TranslationType)item["Type"]).GetCategory().ToInt(),
+                    Language = (Language)item["Language"]
                 };
                 verses.Add(cvi);
             }
@@ -117,13 +121,37 @@ namespace ChurchServices.WebApp.Controllers {
             _view.Properties.Add(new ViewProperty("Index", SortDirection.None, "[Index]", false, true));
             _view.Properties.Add(new ViewProperty("Text", SortDirection.Descending, "[Text]", false, true));
 
+            var translateModel = GetTranslationControllerModel(uow);
+
             foreach (ViewRecord item in _view) {
                 var idx = item["Index"].ToString();
                 var text = item["Text"].ToString();
+                var text2 = item["Text"].ToString();
                 var cvi = verses.Where(x => x.Index.Index == idx).FirstOrDefault();
                 if (cvi.IsNotNull()) {
                     cvi.Text = text;
-                    cvi.HtmlText = text
+
+                    if (text2.Contains("<n>") && text2.Contains("<x>")) {
+                        text2 = BibleTag.GetInternalVerseRangeText(text2, translateModel);
+                        text2 = BibleTag.GetInternalVerseText(text2, translateModel);
+                        text2 = BibleTag.GetExternalVerseRangeText(text2, translateModel);
+                        text2 = BibleTag.GetExternalVerseText(text2, translateModel);
+                        text2 = BibleTag.GetInternalVerseListText(text2, translateModel);
+                        text2 = BibleTag.GetMultiChapterRangeText(text2, translateModel);
+
+                        text2 = text2.Replace("**********", "<sup>10)</sup>");
+                        text2 = text2.Replace("*********", "<sup>9)</sup>");
+                        text2 = text2.Replace("********", "<sup>8)</sup>");
+                        text2 = text2.Replace("*******", "<sup>7)</sup>");
+                        text2 = text2.Replace("******", "<sup>6)</sup>");
+                        text2 = text2.Replace("*****", "<sup>5)</sup>");
+                        text2 = text2.Replace("****", "<sup>4)</sup>");
+                        text2 = text2.Replace("***", "<sup>3)</sup>");
+                        text2 = text2.Replace("**", "<sup>2)</sup>");
+                        text2 = text2.Replace("*", "<sup>1)</sup>");
+                    }
+
+                    cvi.HtmlText = text2
                             .Replace("―", String.Empty)
                             .Replace("<n>", @"<span class=""text-muted"">")
                             .Replace("</n>", "</span>")
@@ -135,6 +163,30 @@ namespace ChurchServices.WebApp.Controllers {
 
             result.Verses = verses.Where(x => x.Text.IsNotNullOrEmpty()).OrderBy(x => x.SortIndex).ToList();
 
+            return result;
+        }
+
+        public TranslationControllerModel GetTranslationControllerModel(UnitOfWork uow = null) {
+            if (uow == null) { uow = new UnitOfWork(); }
+            return new TranslationControllerModel(new XPQuery<Translation>(uow).Where(x => x.Name == "BW").FirstOrDefault(), books: GetBookBases(uow));
+        }
+
+        protected List<BookBaseInfo> GetBookBases(UnitOfWork uow = null) {
+            var result = new List<BookBaseInfo>();
+            if (uow == null) { uow = new UnitOfWork(); }
+            var books = new XPQuery<BookBase>(uow).ToList();
+            foreach (var item in books) {
+                result.Add(new BookBaseInfo() {
+                    BookName = item.BookName,
+                    BookShortcut = item.BookShortcut,
+                    BookTitle = item.BookTitle,
+                    Color = item.Color,
+                    NumberOfBook = item.NumberOfBook,
+                    StatusBiblePart = item.StatusBiblePart,
+                    StatusBookType = item.StatusBookType,
+                    StatusCanonType = item.StatusCanonType
+                });
+            }
             return result;
         }
     }

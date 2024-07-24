@@ -10,6 +10,22 @@ namespace ChurchServices.Data.Import.Hebrew {
         const string NAME = "HSB+";
         private List<StrongCode> Strongs = null;
         private List<BookBase> BaseBooks = null;
+
+        public void RepairVerseText(UnitOfWork uow) {
+            var result = new XPQuery<Translation>(uow).Where(x => x.Name == NAME).FirstOrDefault();
+            if (result != null) {
+                foreach (var book in result.Books) {
+                    foreach (var chapter in book.Chapters) {
+                        foreach (var verse in chapter.Verses) {
+                            verse.Text = verse.GetSourceText();
+                        }
+                    }
+                }
+
+                uow.CommitChanges();
+            }
+        }
+
         public void Build(UnitOfWork uow, string path) {
             var translation = CreateTranslation(uow);
             if (translation != null) {
@@ -170,11 +186,11 @@ namespace ChurchServices.Data.Import.Hebrew {
                     xml = XElement.Parse(xmlText);
                 }
                 catch (Exception ex) {
-                    if (ex != null) { 
-                    
+                    if (ex != null) {
+
                     }
                     xml = null;
-                }                
+                }
 
                 HBSVerseWordInfo word = null;
                 foreach (var node in xml.Nodes()) {

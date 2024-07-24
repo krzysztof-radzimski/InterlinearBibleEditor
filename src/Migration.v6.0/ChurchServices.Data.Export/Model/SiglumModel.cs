@@ -18,4 +18,10 @@ namespace ChurchServices.Data.Export.Model {
         public int NumberOfChapter { get; set; }
         public int[] NumbersOfVerses { get; set; }
     }
+
+    public class SimpleSiglumModel {
+        public int BookNumber{ get; set; }
+        public int NumberOfChapter { get; set; }
+        public int NumberOfVerse { get; set; }
+    }
 }

@@ -21,5 +21,6 @@ namespace ChurchServices.Data.Export.Model {
         public string HtmlText { get; set; }
         public string SimpleText { get; set; }
         public int SortIndex { get; set; }
+        public Language Language { get; set; }
     }
 }

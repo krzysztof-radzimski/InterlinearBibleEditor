@@ -13,6 +13,24 @@
 
 namespace ChurchServices.Extensions {
     public static class StringExtensions {
+        public static bool ContainsNonMark(this string input, char mark ) {
+            foreach (char c in input) {
+                if (c != mark) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static int CountMark(this string input, char mark) {
+            int count = 0;
+            foreach (char c in input) {
+                if (c == mark) {
+                    count++;
+                }
+            }
+            return count;
+        }
+
         public static bool IsNotNullOrEmpty(this string text) {
             return !String.IsNullOrEmpty(text);
         }

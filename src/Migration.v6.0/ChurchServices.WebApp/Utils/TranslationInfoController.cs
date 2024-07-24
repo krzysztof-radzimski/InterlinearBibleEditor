@@ -14,6 +14,7 @@
 namespace ChurchServices.WebApp.Utils {
     public interface ITranslationInfoController {
         List<Grouping<string, TranslationInfo>> GetBibleTranslations();
+        string[] GetTranslationNames(string postfix = null);
         List<Grouping<string, TranslationInfo>> GetPatrologyTranslations();
         List<ArticleInfo> GetLastFourArticles();
         List<SongsInfo> GetSongs();
@@ -30,6 +31,23 @@ namespace ChurchServices.WebApp.Utils {
         private readonly IMemoryCache MemoryCache;
 
         public TranslationInfoController(IMemoryCache memoryCache) { MemoryCache = memoryCache; }
+
+        public string[] GetTranslationNames(string postfix = null) {
+            var names = new List<string>();
+            foreach (var translation in GetBibleTranslations()) {
+                foreach (var info in translation) {
+                    names.Add(info.Name.Replace("+", ""));
+                }
+            }
+
+            if (postfix.IsNotNullOrEmpty()) {
+                for (int i = 0; i < names.Count; i++) {
+                    names[i] = names[i] + postfix;
+                }
+            }
+
+            return names.ToArray();
+        }
         public List<Grouping<string, TranslationInfo>> GetBibleTranslations() {
             List<Grouping<string, TranslationInfo>> _allTranslations;
             MemoryCache.TryGetValue(BIBLETRANSLATIONS, out _allTranslations);

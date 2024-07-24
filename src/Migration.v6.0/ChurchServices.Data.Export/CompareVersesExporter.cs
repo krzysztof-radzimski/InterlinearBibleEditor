@@ -11,13 +11,15 @@
 
   ===================================================================================*/
 
+using ChurchServices.Data.Export.Controllers;
+
 namespace ChurchServices.Data.Export {
     public class CompareVersesExporter : BaseExporter {
         private int footNoteIndex = 1;
         private CompareVersesExporter() : base() { }
         public CompareVersesExporter(byte[] asposeLicense, string host) : base(asposeLicense, host) { }
 
-        public byte[] Export(CompareVerseModel model, ExportSaveFormat saveFormat) {
+        public byte[] Export(CompareVerseModel model, ExportSaveFormat saveFormat, IBibleTagController bibleTag, TranslationControllerModel transModel) {
             if (model.IsNull()) { throw new ArgumentNullException("model"); }
             var builder = GetDocumentBuilder();
 
@@ -59,8 +61,10 @@ namespace ChurchServices.Data.Export {
                 var translationName = item.TranslationName;
                 var translationDesc = item.TranslationDescription;
                 var translationType = item.TranslationType.GetDescription();
-                Dictionary<int, string> footNotes = null;
-                var itemHtml = GetVerseHtml(model, item, out footNotes);
+                //Dictionary<int, string> footNotes = null;
+                //var itemHtml = GetVerseHtml(model, item, out footNotes);
+
+                var itemHtml = GetVerseHtml(model, item);
 
                 builder.InsertCell();
                 builder.Writeln(translationName);
@@ -70,12 +74,31 @@ namespace ChurchServices.Data.Export {
                 builder.Writeln(translationDesc);
                 builder.InsertCell();
 
-                builder.InsertHtml($"{itemHtml}");
-                if (footNotes.IsNotNull() && footNotes.Count > 0) {
-                    foreach (var footNote in footNotes) {
-                        builder.InsertFootnote(FootnoteType.Footnote, footNote.Value, $"{footNote.Key})");
+                foreach (var hItem in itemHtml) {
+                    if (hItem.Footnote) {
+                        var footnoteText = hItem.Text;
+                        if (footnoteText.Contains("<x>")) {
+                            footnoteText = bibleTag.GetInternalVerseRangeText(footnoteText, transModel);
+                            footnoteText = bibleTag.GetInternalVerseText(footnoteText, transModel);
+                            footnoteText = bibleTag.GetExternalVerseRangeText(footnoteText, transModel);
+                            footnoteText = bibleTag.GetExternalVerseText(footnoteText, transModel);
+                            footnoteText = bibleTag.GetInternalVerseListText(footnoteText, transModel);
+                            footnoteText = bibleTag.GetMultiChapterRangeText(footnoteText, transModel);
+                        }
+                        footnoteText = footnoteText.Replace("&nbsp;", " ");
+                        builder.InsertFootnote(FootnoteType.Footnote, footnoteText, $"{hItem.FootNoteNumber})");
+                    }
+                    else {
+                        builder.InsertHtml(hItem.Text);
                     }
                 }
+
+                //builder.InsertHtml($"{itemHtml}");
+                //if (footNotes.IsNotNull() && footNotes.Count > 0) {
+                //    foreach (var footNote in footNotes) {
+                //        builder.InsertFootnote(FootnoteType.Footnote, footNote.Value, $"{footNote.Key})");
+                //    }
+                //}
 
                 builder.EndRow();
             }
@@ -86,11 +109,13 @@ namespace ChurchServices.Data.Export {
             return SaveBuilder(saveFormat, builder);
         }
 
-        private string GetVerseHtml(CompareVerseModel model, CompareVerseInfo verse, out Dictionary<int, string> notes) {
-            notes = null;
+        // https://localhost:44378/CompareVerse/PBD/470/24/14
+
+        private List<VerseHtmlItemModel> GetVerseHtml(CompareVerseModel model, CompareVerseInfo verse) {
+            var result = new List<VerseHtmlItemModel>();
             var footNotes = new Dictionary<int, string>();
-          
-            var text = " " + verse.Text;
+
+            var text = verse.Text;
             if (text.Contains("<n>") && text.Contains("*")) {
                 var footNoteTextPattern = GetFootnotesPattern();
 
@@ -111,59 +136,74 @@ namespace ChurchServices.Data.Export {
                 }, RegexOptions.IgnoreCase);
             }
 
-            text = FormatVerseText(text, model.Part);
+            if (footNotes.Count > 0) {
+                var t = text.Split(" ");
+                foreach (var item in t) {
+                    if (item.Contains("*")) {
 
-            //// Słowa Jezusa
-            //text = text.Replace("<J>", @"<span style=""color: darkred;"">").Replace("</J>", "</span>");
+                        var n = 0;
+                        if (item.ContainsNonMark('*')) {
+                            n = item.CountMark('*');
+                            result.Add(new VerseHtmlItemModel() { Text = $"<span> {FormatVerseText(item.Replace("*",""), model.Part)}</span>" });
+                        }
+                        else {
+                            n = item.Trim().Length;
+                        }
+                        
+                        var note = String.Empty;
+                        footNotes.TryGetValue(n, out note);
+                        result.Add(new VerseHtmlItemModel() {
+                            FootNoteNumber = n,
+                            Footnote = true,
+                            Text = FormatVerseText(note, model.Part)
+                        });
+                    }
+                    else {
+                        result.Add(new VerseHtmlItemModel() { Text = $"<span> {FormatVerseText(item, model.Part)}</span>"  });
+                    }
+                }
+            }
+            else {
+                result.Add(new VerseHtmlItemModel() { Text = $"<span> {FormatVerseText(text, model.Part)}</span>" });
+            }
 
-            //// Elementy dodane
-            //text = text.Replace("<n>", @"<span style=""color: darkgray;"">").Replace("</n>", "</span>");
-
-            //text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
-
-            //// zamiana na imię Boże
-            //if (model.Part == BiblePart.OldTestament) {
-            //    text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
-            //        var prefix = m.Groups["prefix"].Value;
-            //        return $"{prefix}JAHWE{m.Value.Last()}";
-            //    });
-            //}
-            //if (model.Part == BiblePart.OldTestament) {
-            //    text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>JHWH)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
-            //        var prefix = m.Groups["prefix"].Value;
-            //        return $"{prefix}JAHWE{m.Value.Last()}";
-            //    });
-            //}
-            //if (model.Part == BiblePart.OldTestament) {
-            //    text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(a)?(y)?(ie)?(ę)?(o)?)[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
-            //        var prefix = m.Groups["prefix"].Value;
-            //        return $"{prefix}JAHWE{m.Value.Last()}";
-            //    });
-            //}
-            //if (model.Part == BiblePart.NewTestament) {
-            //    text = System.Text.RegularExpressions.Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(?<ending>(a)?(y)?(ie)?(ę)?(o)?))[\s\,\.\:\""\'\”ʼ]", delegate (System.Text.RegularExpressions.Match m) {
-            //        var prefix = m.Groups["prefix"].Value;
-            //        var ending = m.Groups["ending"].Value;
-            //        var root = "Pan";
-            //        if (ending == "ie") { root += "u"; }
-            //        if (ending == "o") { root += "ie"; }
-            //        if (ending == "y" || ending == "ę") { root += "a"; }
-            //        return $"{prefix}{root}{m.Value.Last()}";
-            //    });
-            //}
-
-            //// usuwam sierotki
-            //text = System.Text.RegularExpressions.Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
-            //    return " " + m.Value.Trim() + "&nbsp;";
-            //}, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
-            //// usuwam puste przypisy
-            //text = System.Text.RegularExpressions.Regex.Replace(text, @"\[[0-9]+\]", delegate (System.Text.RegularExpressions.Match m) {
-            //    return String.Empty;
-            //}, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
-            notes = footNotes;
-            return text;
+            return result;
         }
+        //private string GetVerseHtml(CompareVerseModel model, CompareVerseInfo verse, out Dictionary<int, string> notes) {
+        //    notes = null;
+        //    var footNotes = new Dictionary<int, string>();
+
+        //    var text = " " + verse.Text;
+        //    if (text.Contains("<n>") && text.Contains("*")) {
+        //        var footNoteTextPattern = GetFootnotesPattern();
+
+        //        text = Regex.Replace(text, footNoteTextPattern, delegate (Match m) {
+        //            if (m.Groups != null && m.Groups.Count > 0) {
+        //                for (var i = 1; i < 8; i++) {
+        //                    var groupName = $"f{i}";
+        //                    if (m.Groups[groupName] != null && m.Groups[groupName].Success) {
+        //                        var groupValue = m.Groups[groupName].Value;
+        //                        footNotes.Add(footNoteIndex, groupValue);
+        //                        footNoteIndex++;
+        //                    }
+        //                }
+        //            }
+
+        //            var result = String.Empty;
+        //            return result;
+        //        }, RegexOptions.IgnoreCase);
+        //    }
+
+        //    text = FormatVerseText(text, model.Part);
+
+        //    notes = footNotes;
+        //    return text;
+        //}
+    }
+
+    class VerseHtmlItemModel {
+        public bool Footnote { get; set; }
+        public int FootNoteNumber { get; set; } = 0;
+        public string Text { get; set; }
     }
 }

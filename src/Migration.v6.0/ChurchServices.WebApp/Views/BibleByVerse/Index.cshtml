@@ -1,7 +1,7 @@
 ﻿@model BibleByVerseModel
 @{
     if (Model != null) {
-        ViewData["Title"] = Model.Title;
+        ViewData["Title"] = $"Biblia internetowa {Model.Title}";
     }
     else {
         ViewData["Title"] = "Biblia internetowa";
@@ -9,65 +9,79 @@
 
     var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
     var permalink = "";
-   if (Model != null) {   permalink = @"<a href=""" + __host +  this.Context.Request.Path + @$""" title=""{Model.Title}"" target=""_blank"">" + Model.Title +"</a>";
-   }
+    if (Model != null) {
+        permalink = @"<a href=""" + __host + this.Context.Request.Path + @$""" title=""{Model.Title}"" target=""_blank"">" + Model.Title + "</a>";
+    }
+    var __style = "";
+    if (Model != null)
+    {
+        foreach (var cc in Model.Books.Select(x => x.Color).Distinct())
+        {
+            __style += $".bc-{cc.Replace("#", "")} {{ background-color: {cc}; opacity: 0.6; color : black !important;}} .bc-{cc.Replace("#", "")}:hover {{ background-color: {cc}; color : black !important; opacity: 1;}} ";
+        }
+
+        @if (Model.Book > 460)
+        {
+            __style += ".orginal-text {font-size: 150%;text-align: justify;} .orginal-text-translit { font-size: 120%; text-align: justify; } .b-1 {float: right; padding-left: 10px; }";
+
+        }
+        else {
+            __style += @".orginal-text {font-size: 150%;text-align: end;} .orginal-text-translit {font-size: 120%;text-align: end;} .b-1 { position: absolute; bottom: 5px; left: 5px; padding-right: 10px; } ";
+        }
+    }
 }
 @section HeaderScripts {
+    <meta name="description" content="Biblia Internetowa zawiera tekst źródłowy w języku hgebrajskim lub greckim oraz uznane tłumaczenia poszczególnych wersetów biblijnych: Przekład Dosłowny Ewangelicznego Instytutu Biblijnego, Biblia Warszawska, Biblia Tysiąclecia i Uwspółczeńsniona Biblia Gdańska. Strona umożliwia przejście do całego rozdziału, intuicyjny wybór innych wersetów i możliwość porównania z większą ilością przekładów.">
+    <meta name="keywords" content="Biblia Internetowa, Pismo Święte, wersety biblijne, Biblia, Słowo Boże">
+
     <style>
+        @@media (prefers-color-scheme: dark) { 
+            .btn {color:whitesmoke !important;}
+            .btn:hover {color:white !important;}
+        }
+
         .grow-wrap textarea {
             resize: none;
             overflow: auto;
             border: none;
         }
-
-        .orginal-text {
-            font-size: 180%;
-            text-align: end;
-        }
-
-        .orginal-text-translit {
-            font-size: 120%;
-            text-align: end;
-        }
+        
         .translated-text {
-            font-size: 120%;
+            font-size: 100%;
             text-align: justify-all;
-            margin-right: 35px;
         }
 
         .text-gradient-church-service {
-            margin-right: 35px;
+            
+        }
+
+        @@media (max-width: 768px) {
+            .text-gradient-church-service {
+                
+                
+            }
         }
 
         .b-0 {
-            float: right;
-            position: absolute;
-            top: 10px;
-            right: 10px;
+            float: right;                  
+            padding-left: 10px;
         }
-
-        .b-1 {
-            float: right;
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-        }
-
-        .b-2 {
-            float: right;
-            position: absolute;
-            top: 10px;
-            right: 50px;
-        }
-
+        
         .card-body h3 {
             text-align: center;
+            font-size: 100%;
         }
+        
+        .pb-20 {padding-bottom: 20px;}      
+        
+        @__style
+
+      
     </style>
 }
 
 <div style="padding-top: 20px;">
-
+    <h1><i class="fa-solid fa-lines-leaning"></i>&nbsp;Biblia Internetowa</h1>
     <form id="bibleForm" method="get">
         <div class="input-group mb-3" role="group">
 
@@ -96,98 +110,138 @@
         </div>
     </form>
 
-    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
-        <div class="card-body">
+    <div class="card bg-transparent m-0 p-0">
+        <span class="card-body">
             <h3 class="text-gradient-church-service">Tekst oryginalny</h3>
-            <a class="btn btn-secondary b-0" onclick="copyToClipboard3('@Model.OrginalText')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
-            <p class="card-text orginal-text">@Html.Raw(Model.OrginalText)</p>
-           
+            <p class="card-text orginal-text">
+                <span class="btn-group b-1" role="group" aria-label="">
+                    <a class="btn btn-warning" onclick="copyToClipboard3('@Model.OrginalText')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
+                    @if (Model.Book > 460) {
+                        <a class="btn btn-danger" href="/TRO16/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Interlinearny Przekład Textus Receptus Oblubienicy"><i class="fa fa-book-bible"></i></a>
+                    }
+                    else {
+                        <a class="btn btn-danger" href="/HSB/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Interlinearny Przekład Hebrew Study Bible"><i class="fa fa-book-bible"></i></a>
+                    }
+                </span>@Html.Raw(Model.OrginalText)          
+            </p>
         </div>
     </div>
 
-    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
+    <div class="card bg-transparent m-0 p-0">
         <div class="card-body">
-            <h3 class="text-gradient-church-service">Tekst z akcentami</h3>
-            <a class="btn btn-secondary b-0" onclick="copyToClipboard3('@Model.VovelsText')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
+           <h3 class="text-gradient-church-service">@Model.VovelsName</h3>
+           <p class="card-text orginal-text"><span class="btn-group b-1" role="group" aria-label="">
+                <a class="btn btn-warning" onclick="copyToClipboard3('@Model.VovelsText')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
 
-            @if (Model.Book > 460) {
-                <a class="btn btn-secondary b-2" href="/TRO16/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Interlinearny Przekład Textus Receptus Oblubienicy"><i class="fa fa-book-bible"></i></a>
-            }
-            else
-            {
-                <a class="btn btn-secondary b-2" href="/HSB/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Interlinearny Przekład Hebrew Study Bible"><i class="fa fa-book-bible"></i></a>
-            }
-            <p class="card-text orginal-text">@Html.Raw(Model.VovelsText)</p>
+                @if (Model.Book > 460) {
+                    <a class="btn btn-danger" href="/TRO16/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Interlinearny Przekład Textus Receptus Oblubienicy"><i class="fa fa-book-bible"></i></a>
+                }
+                else {
+                    <a class="btn btn-danger" href="/HSB/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Interlinearny Przekład Hebrew Study Bible"><i class="fa fa-book-bible"></i></a>
+                }
+            </span>@Html.Raw(Model.VovelsText)
+           </p>
             <p class="card-text orginal-text-translit">@Html.Raw(Model.Transliteration)</p>
         </div>
     </div>
 
-    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
+    <div class="card bg-transparent m-0 p-0">
         <div class="card-body">
             <h3 class="text-gradient-church-service">Przekład Dosłowny EIB</h3>
-            <a class="btn btn-secondary b-0" onclick="copyToClipboard3('@Model.SNPD')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
-            <a class="btn btn-secondary b-1" href="/CompareVerse/PBD/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Porównaj z innymi przekładami"><i class="fas fa-fish"></i></a>
-            <p class="card-text translated-text">@Html.Raw(Model.SNPD)</p>
+            <p class="card-text translated-text"><span class="btn-group b-0" role="group" aria-label="">
+                <a class="btn btn-warning" onclick="copyToClipboard3('@Model.SNPD')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
+
+                <a class="btn btn-danger" href="/PBD/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Przekład Dosłowny EIB"><i class="fa fa-book-bible"></i></a>
+
+                <a class="btn btn-success" href="/CompareVerse/PBD/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Porównaj z innymi przekładami"><i class="fas fa-fish"></i></a>
+            </span>@Html.Raw(Model.SNPD)</p>
         </div>
     </div>
-    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
+    <div class="card bg-transparent m-0 p-0">
         <div class="card-body">
             <h3 class="text-gradient-church-service">Biblia Warszawska</h3>
-            <a class="btn btn-secondary b-0" onclick="copyToClipboard3('@Model.BW')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
-            <a class="btn btn-secondary b-1" href="/CompareVerse/BW/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Porównaj z innymi przekładami"><i class="fas fa-fish"></i></a>
-            <p class="card-text translated-text">@Html.Raw(Model.BW)</p>
+             <p class="card-text translated-text"><span class="btn-group b-0" role="group" aria-label="">
+                <a class="btn btn-warning" onclick="copyToClipboard3('@Model.BW')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
+
+                <a class="btn btn-danger" href="/BW/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Biblia Warszawska"><i class="fa fa-book-bible"></i></a>
+
+                 <a class="btn btn-success" href="/CompareVerse/BW/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Porównaj z innymi przekładami"><i class="fas fa-fish"></i></a>
+            </span>@Html.Raw(Model.BW)</p>
         </div>
     </div>
-    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
-        <div class="card-body">
-            <h3 class="text-gradient-church-service">Uwspółcześniona Biblia Gdańska</h3>
-            <a class="btn btn-secondary b-0" onclick="copyToClipboard3('@Model.UBG')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
-            <a class="btn btn-secondary b-1" href="/CompareVerse/UBG18/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Porównaj z innymi przekładami"><i class="fas fa-fish"></i></a>
-            <p class="card-text translated-text">@Html.Raw(Model.UBG)</p>
-        </div>
-    </div>
-    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
+
+    <div class="card bg-transparent m-0 p-0">
         <div class="card-body">
             <h3 class="text-gradient-church-service">Biblia Tysiąclecia</h3>
-            <a class="btn btn-secondary b-0" onclick="copyToClipboard3('@Model.BT')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
-            <a class="btn btn-secondary b-1" href="/CompareVerse/BT99/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Porównaj z innymi przekładami"><i class="fas fa-fish"></i></a>
-            <p class="card-text translated-text">@Html.Raw(Model.BT)</p>
+            <p class="card-text translated-text"><span class="btn-group b-0" role="group" aria-label="">
+                <a class="btn btn-warning" onclick="copyToClipboard3('@Model.BT')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
+
+                <a class="btn btn-danger" href="/BT99/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Biblia Tysiąclecia"><i class="fa fa-book-bible"></i></a>
+
+                <a class="btn btn-success" href="/CompareVerse/BT99/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Porównaj z innymi przekładami"><i class="fas fa-fish"></i></a>
+            </span>@Html.Raw(Model.BT)</p>
+        </div>
+    </div>
+
+    <div class="card bg-transparent m-0 p-0">
+        <div class="card-body">
+            <h3 class="text-gradient-church-service">Uwspółcześniona Biblia Gdańska</h3>
+             <p class="card-text translated-text"><span class="btn-group b-0" role="group" aria-label="">
+                <a class="btn btn-warning" onclick="copyToClipboard3('@Model.UBG')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
+
+                <a class="btn btn-danger" href="/UBG18/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Uwspółcześniona Biblia Gdańska"><i class="fa fa-book-bible"></i></a>
+
+                <a class="btn btn-success" href="/CompareVerse/UBG18/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Porównaj z innymi przekładami"><i class="fas fa-fish"></i></a>
+            </span>@Html.Raw(Model.UBG)</p>
+        </div>
+    </div>
+
+    <div class="card bg-transparent m-0 p-0">
+        <div class="card-body">
+            <h3 class="text-gradient-church-service">Biblia Gdańska</h3>
+             <p class="card-text translated-text"><span class="btn-group b-0" role="group" aria-label="">
+                <a class="btn btn-warning" onclick="copyToClipboard3('@Model.BG')" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść wersetu"><i class="fa-regular fa-copy"></i></a>
+
+                <a class="btn btn-danger" href="/BG/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Uwspółcześniona Biblia Gdańska"><i class="fa fa-book-bible"></i></a>
+
+                <a class="btn btn-success" href="/CompareVerse/BG/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Porównaj z innymi przekładami"><i class="fas fa-fish"></i></a>
+            </span>@Html.Raw(Model.BG)</p>
         </div>
     </div>
 
 
-    <div class="card bg-transparent m-0 p-0 shadow-lg mb-3">
+    <div class="card bg-transparent m-0 p-0">
         <div class="card-body">
-            <p>
-                Wersety:
+            <h4 class="text-start">Wersety:</h4>
+            <div class="input-group pb-20" role="group" aria-label="">
                 @for (int i = 1; i <= Model.VerseCount; i++) {
-                    <a href="/BibleByVerse/@Model.Book/@Model.Chapter/@i" data-bs-toggle="tooltip" data-bs-title="@Model.Shortcut @Model.Chapter:@i">@i</a>
-                    <span> </span>
+                    <a class="btn btn-outline-success" style="font-size: 60% !important;" href="/BibleByVerse/@Model.Book/@Model.Chapter/@i" data-bs-toggle="tooltip" data-bs-title="@Model.Shortcut @Model.Chapter:@i">@i</a>
                 }
-            </p>
-            <p>
-                Rozdziały:
+            </div>
+
+            <h4 class="text-start">Rozdziały:</h4>
+            <div class="input-group pb-20" role="group" aria-label="">
                 @for (int i = 1; i <= Model.ChapterCount; i++) {
-                    <a href="/BibleByVerse/@Model.Book/@i/1" data-bs-toggle="tooltip" data-bs-title="@Model.Shortcut @i:1">@i</a>
-                    <span> </span>
+                    <a class="btn btn-outline-primary" style="font-size: 60% !important;" href="/BibleByVerse/@Model.Book/@i/1" data-bs-toggle="tooltip" data-bs-title="@Model.Shortcut @i:1">@i</a>
                 }
-            </p>
-            <p>
-                Księgi: 
-                @foreach(var b in Model.Books) {
-                    <a href="/BibleByVerse/@b.Number/1/1" data-bs-toggle="tooltip" data-bs-title="@b.FullName 1:1">@b.Name</a>
-                    <span> </span>
+            </div>
+            
+            <h4 class="text-start">Księgi:</h4>
+            <div class="input-group pb-20" style="max-width: 100%;" role="group" aria-label="">
+                @foreach (var b in Model.Books) {
+                    <a class="btn btn-outline-secondary book-btn bc-@b.Color.Replace("#","")" href="/BibleByVerse/@b.Number/1/1" data-bs-toggle="tooltip" data-bs-title="@b.FullName 1:1">@b.Name</a>                    
                 }
-            </p>
+            </div>
+            
             <p>
-                Link do umieszczenia na stronę: <a class="btn btn-secondary" onclick="copyToClipboard3('@permalink')" data-bs-toggle="tooltip" data-bs-title="Kopiuj kod HTML do schowka"><i class="fa-regular fa-copy"></i></a>
+                Link do umieszczenia na stronę: <a class="btn btn-warning" onclick="copyToClipboard3('@permalink')" data-bs-toggle="tooltip" data-bs-title="Kopiuj kod HTML do schowka"><i class="fa-regular fa-copy"></i></a>
             </p>
         </div>
     </div>
 </div>
 
 @section Scripts {
-    <script>
+    <script>       
         document.getElementById('bibleForm').addEventListener('submit', function (event) {
             event.preventDefault();
             const bookName = document.getElementById('book').value;

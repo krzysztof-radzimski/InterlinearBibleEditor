@@ -35,9 +35,15 @@ namespace ChurchServices.WebApp.Controllers {
             var uow = new UnitOfWork();
             string orginalText = "";
             string vovelsText = "";
+            string vovelsName = "";
             string transliteration = "";
 
-            var baseBooks = new XPQuery<BookBase>(uow).Where(x => x.Status.CanonType == CanonType.Canon).OrderBy(x => x.NumberOfBook).Select(x => new BibleByVerseBookInfo() { Name = x.BookShortcut, Number = x.NumberOfBook, FullName = x.BookTitle });
+            var baseBooks = new XPQuery<BookBase>(uow).Where(x => x.Status.CanonType == CanonType.Canon).OrderBy(x => x.NumberOfBook).Select(x => new BibleByVerseBookInfo() {
+                Name = x.BookShortcut,
+                Number = x.NumberOfBook,
+                FullName = x.BookTitle,
+                Color = x.Color
+            });
             if (!baseBooks.Select(x => x.Number).Contains(book)) { return GetModel(10, 1, 1); }
 
             if (book > 460) {
@@ -47,6 +53,7 @@ namespace ChurchServices.WebApp.Controllers {
                 var npi = new XPQuery<Verse>(uow).Where(x => x.Index == $"NPI.{book}.{chapter}.{verse}").First();
                 vovelsText = npi.GetSourceText();
                 transliteration = npi.GetTransliterationText();
+                vovelsName = "Nestle Aland 28";
             }
             else {
                 var lhb = new XPQuery<Verse>(uow).Where(x => x.Index == $"LHB.{book}.{chapter}.{verse}").FirstOrDefault();
@@ -56,6 +63,7 @@ namespace ChurchServices.WebApp.Controllers {
                 var hsb = new XPQuery<Verse>(uow).Where(x => x.Index == $"HSB.{book}.{chapter}.{verse}").First();
                 vovelsText = hsb.GetSourceText();
                 transliteration = hsb.GetTransliterationText();
+                vovelsName = "Biblia Hebraica Stuttgartensia";
             }
 
             var model = new BibleByVerseModel() {
@@ -64,6 +72,7 @@ namespace ChurchServices.WebApp.Controllers {
                 Verse = verse,
                 OrginalText = orginalText,
                 VovelsText = vovelsText,
+                VovelsName = vovelsName,
                 Books = baseBooks.ToList(),
                 Transliteration = transliteration
             };
@@ -76,6 +85,7 @@ namespace ChurchServices.WebApp.Controllers {
             var bw = new XPQuery<Verse>(uow).Where(x => x.Index == $"BW.{book}.{chapter}.{verse}").First();
             model.BW = bw.Text;
             model.UBG = new XPQuery<Verse>(uow).Where(x => x.Index == $"UBG18.{book}.{chapter}.{verse}").First().Text;
+            model.BG = new XPQuery<Verse>(uow).Where(x => x.Index == $"BG.{book}.{chapter}.{verse}").First().Text;
             model.SNPD = new XPQuery<Verse>(uow).Where(x => x.Index == $"PBD.{book}.{chapter}.{verse}").First().Text;
             model.SNPD = model.SNPD.Substring(0, model.SNPD.IndexOf("<n>")).Replace("<n>", "").Replace("*", "");
 

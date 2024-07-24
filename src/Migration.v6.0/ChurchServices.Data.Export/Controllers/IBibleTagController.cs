@@ -40,8 +40,9 @@ namespace ChurchServices.Data.Export.Controllers {
         string RepairStrongs(string input);
 
         Verse GetRecognizedSiglumVerse(Session session, string input);
-        string GetRecognizedSiglumUrl(Session session, string input);
+        string GetRecognizedSiglumUrl(Session session, string input, string translationName = null);
         string GetRecognizedCompareUrl(Session session, string input);
         SiglumModel RecognizeSiglum(string input);
+        SimpleSiglumModel RecognizeSimpleSiglum(Session session, string input);
     }
 }

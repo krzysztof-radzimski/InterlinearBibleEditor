@@ -232,7 +232,7 @@ namespace ChurchServices.Data.Export {
         }
 
         protected string GetFootnotesPattern() {
-            var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\·\…\d\–\?\־\’\’\‘\#\᾽\…";
+            var footNoteTextPatternFragment = @"\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\·\…\d\–\?\־\’\’\‘\#\᾽\…\—\‎\𝔓\´";
             var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
             var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
             var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";

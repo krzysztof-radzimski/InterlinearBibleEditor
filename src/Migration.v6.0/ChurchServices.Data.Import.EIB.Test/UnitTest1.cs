@@ -45,6 +45,13 @@ namespace ChurchServices.Data.Import.EIB.Test {
         }
 
         [TestMethod]
+        public void RepairVerseTextInHSB() {
+            var bhs = new HBSTransliterationBuilder();
+            var uow = new UnitOfWork();
+            bhs.RepairVerseText(uow);
+        }
+
+        [TestMethod]
         public void TestOsisModel() {
             var service = new OsisModelService();
             var model = service.GetModelFromFile(@"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\snpd.osis.v3.xml");
@@ -1256,6 +1263,49 @@ P – papirus<br />
             }
             else {
                 Assert.Fail();
+            }
+        }
+
+
+        [TestMethod]
+        public void ReplaceSNPDInDatabaseFromEibModel() {
+            const string TRANSLATION = "PBD";
+            var bservice = new BibleModelService();
+            var bmodel = bservice.GetBibleModelFromFile(@"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\snpd.eib.xml");
+            if (bmodel != null) {
+                var uow = new UnitOfWork();
+
+                var subTitles = new XPQuery<Subtitle>(uow).Where(x => x.ParentChapter.Index.StartsWith($"{TRANSLATION}.")).ToList();
+                if (subTitles.Count > 0) {
+                    uow.Delete(subTitles);
+                    uow.CommitChanges();
+                }
+                foreach (var book in bmodel.Books) {                    
+                    foreach (var chapter in book.Chapters) {
+                        var title = "";
+                        foreach (var item in chapter.Items) {
+                            if (item is FormattedText) {
+                                title = (item as FormattedText).ToString();
+                            }
+                            else if (item is VerseModel) {
+                                var verse = item as VerseModel;
+                                if (title.IsNotNullOrEmpty()) {
+                                    var dbTitle = new Subtitle(uow) {
+                                        BeforeVerseNumber = verse.NumberOfVerse,
+                                        Level = 2,
+                                        ParentChapter = new XPQuery<Chapter>(uow).Where(x=>x.Index == $"{TRANSLATION}.{book.NumberOfBook}.{chapter.NumberOfChapter}").FirstOrDefault(),
+                                        Text = title
+                                    };
+                                    dbTitle.Save();
+                                    title = "";
+                                }
+                            }
+                        }
+                    }
+                }
+
+                uow.CommitChanges();
+                uow.PurgeDeletedObjects();
             }
         }
 

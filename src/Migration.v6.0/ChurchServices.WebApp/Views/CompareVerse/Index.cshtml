@@ -8,10 +8,10 @@
     var name = Model.GetSiglum();
     var title = $"Porównanie tłumaczeń {name}";
     var literalTitle = $"Porównanie tłumaczeń dosłownych {name}";
-    var previousText = Model.Index.NumberOfVerse > 1 ? $"{Model.Index.TranslationName}.{Model.Index.NumberOfBook}.{Model.Index.NumberOfChapter}.{Model.Index.NumberOfVerse - 1}" : "";
+    var previousText = Model.Index.NumberOfVerse > 1 ? $"{Model.Index.TranslationName}/{Model.Index.NumberOfBook}/{Model.Index.NumberOfChapter}/{Model.Index.NumberOfVerse - 1}" : "";
     var previousIsDisabled = Model.Index.NumberOfVerse > 1 ? "" : "disabled";
 
-    var nextText = Model.Index.NumberOfVerse < Model.LastVerseNumberOfChapter ? $"{Model.Index.TranslationName}.{Model.Index.NumberOfBook}.{Model.Index.NumberOfChapter}.{Model.Index.NumberOfVerse + 1}" : "";
+    var nextText = Model.Index.NumberOfVerse < Model.LastVerseNumberOfChapter ? $"{Model.Index.TranslationName}/{Model.Index.NumberOfBook}/{Model.Index.NumberOfChapter}/{Model.Index.NumberOfVerse + 1}" : "";
     var nextIsDisabled = Model.LastVerseNumberOfChapter == Model.Index.NumberOfVerse ? "disabled" : "";
 
     ViewData["Title"] = title;
@@ -23,28 +23,28 @@
                     <span style="font-size: 200%;"><i class="fa-solid fa-fish"></i> @title</span>
                 </p>
                 <div class="row btn-group">
-                    <a href="/CompareVerse?id=@previousText" class="btn btn-light d-inline-block col-auto @previousIsDisabled" role="button" title="Poprzedni werset rozdziału" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left" alt="Poprzedni werset rozdziału"></i></a>
+                    <a href="/CompareVerse/@previousText" class="btn btn-light d-inline-block col-auto @previousIsDisabled" role="button" title="Poprzedni werset rozdziału" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-left" alt="Poprzedni werset rozdziału"></i></a>
                     <div class="dropdown d-grid gap-2 d-md-flex justify-content-md-end col-auto" style="width: auto;">
                         <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
                             Zapisz @name
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook" style="min-width: 250px; ">
-                            <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@Model.Index.Index"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Zapisz&nbsp;PDF</a></li>
-                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@Model.Index.Index"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Zapisz&nbsp;DOCX</a></li>
+                            <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf/@Model.Index.TranslationName/@Model.Index.NumberOfBook/@Model.Index.NumberOfChapter/@Model.Index.NumberOfVerse"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Zapisz&nbsp;PDF</a></li>
+                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx/@Model.Index.TranslationName/@Model.Index.NumberOfBook/@Model.Index.NumberOfChapter/@Model.Index.NumberOfVerse"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Zapisz&nbsp;DOCX</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@Model.Index.Index&literal=true"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Tylko&nbsp;dosł.&nbsp;PDF</a></li>
-                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@Model.Index.Index&literal=true"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Tylko&nbsp;dosł.&nbsp;DOCX</a></li>
+                            <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf/@Model.Index.TranslationName/@Model.Index.NumberOfBook/@Model.Index.NumberOfChapter/@Model.Index.NumberOfVerse/@true"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Tylko&nbsp;dosł.&nbsp;PDF</a></li>
+                            <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx/@Model.Index.TranslationName/@Model.Index.NumberOfBook/@Model.Index.NumberOfChapter/@Model.Index.NumberOfVerse/@true"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Tylko&nbsp;dosł.&nbsp;DOCX</a></li>
                             <li><hr class="dropdown-divider"></li>
                             @if (Model.LiteralOnly) {
-                                <li><a class="dropdown-item" href="/CompareVerse?q=@Model.Index.Index"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;@title</a></li>
+                                <li><a class="dropdown-item" href="/CompareVerse/@Model.Index.TranslationName/@Model.Index.NumberOfBook/@Model.Index.NumberOfChapter/@Model.Index.NumberOfVerse"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;@title</a></li>
                             }
                             else {
-                                <li><a class="dropdown-item" href="/CompareVerse?q=@Model.Index.Index&literal=true"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;@literalTitle</a></li>
+                                <li><a class="dropdown-item" href="/CompareVerse/@Model.Index.TranslationName/@Model.Index.NumberOfBook/@Model.Index.NumberOfChapter/@Model.Index.NumberOfVerse/@true"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;@literalTitle</a></li>
                             }
-
+                            <li><a class="dropdown-item" href="/BibleByVerse/@Model.Index.NumberOfBook/@Model.Index.NumberOfChapter/@Model.Index.NumberOfVerse"><i class="fa-solid fa-lines-leaning" style="width:18px;"></i>&nbsp;Pokaż w Biblii Internetowej</a></li>
                         </ul>
                     </div>
-                    <a href="/CompareVerse?id=@nextText" class="btn btn-light d-inline-block col-auto @nextIsDisabled" role="button" title="Następny werset rozdziału" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-right" alt="Następny werset rozdziału"></i></a>
+                    <a href="/CompareVerse/@nextText" class="btn btn-light d-inline-block col-auto @nextIsDisabled" role="button" title="Następny werset rozdziału" aria-pressed="true" style="max-width: 50px;"><i class="far fa-arrow-alt-circle-right" alt="Następny werset rozdziału"></i></a>
                     <span class="btn btn-light d-inline-block disabled col-auto"> @Model.BookName rozdział @Model.Index.NumberOfChapter zawiera @Model.LastVerseNumberOfChapter wersetów.</span>
                 </div>
             </div>
@@ -72,12 +72,14 @@
                     var simpleText = item.SimpleText;
 
                     var link = $@"<a href=""/{index.TranslationName}/{index.NumberOfBook}/{index.NumberOfChapter}/{index.NumberOfVerse}"" class=""text-decoration-none"" title=""{translationDesc}"">{translationName}</a>";
+                    var style = "";
+                    if (item.Language == Language.English) { style = @"style=""text-align: right;"""; }
 
                     <div class="row p-1 @styles">
                         <div class="col-auto p-1 border-bottom" style="width: 8%; font-size: 80%; min-width: 50px;">@Html.Raw(link)</div>
                         <div class="col-auto p-1 border-bottom border-start" style="width: 8%; font-size: 80%; min-width: 100px;">@translationType</div>
                         <div class="col-auto p-1 border-bottom border-start" style="width: 15%; font-size: 80%; min-width: 100px">@translationDesc</div>
-                        <div class="col p-1 border-start border-bottom" id="verseText_@index.TranslationName">@Html.Raw(verseText)</div>
+                        <div class="col p-1 border-start border-bottom" id="verseText_@index.TranslationName" @Html.Raw(style)>@Html.Raw(verseText)</div>
                         <div class="col-auto p-1 border-bottom border-start" style="width: 5%; min-width: 50px;"><a class="dropdown-item" onclick="copyToClipboard3('@simpleText')" style="cursor: pointer;" title="Kopiuj treść wersetu"><i class="far fa-copy"></i></a></div>
                     </div>
                 }

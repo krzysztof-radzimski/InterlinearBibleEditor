@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 
 namespace ChurchServices.WinApp {
     public partial class TranslationsForm : RibbonForm {
@@ -46,8 +47,34 @@ namespace ChurchServices.WinApp {
             var selected = gridView.GetFocusedRow() as ViewRecord;
             if (selected.IsNotNull()) {
                 var id = selected["Id"].ToInt();
+
+                // Pobierz wskaźnik do aktualnie wybranej komórki
+                Point pt = gridView.GridControl.PointToClient(Control.MousePosition);
+                // Znajdź row handle i column handle
+                GridHitInfo info = gridView.CalcHitInfo(pt);
+
+                // Sprawdź, czy kliknięcie było na komórce
+                if (info.InRowCell && info.Column.FieldName == "OpenAccess") {
+                    // Pobierz wartość komórki
+                    bool currentValue = (bool)gridView.GetRowCellValue(info.RowHandle, info.Column);
+                    // Odwróć wartość
+                    var trans = new XPQuery<Translation>(view.Session).Where(x => x.Oid == id).FirstOrDefault();
+                    trans.OpenAccess = !currentValue;
+                    trans.Save();
+                    (view.Session as UnitOfWork).CommitChanges();
+
+                    LoadData();
+
+                    var idx = gridView.LocateByValue("Id", id);
+                    gridView.FocusedRowHandle = idx;
+                    gridView.SelectRow(idx);
+
+                    return;
+                }
+
+
                 var frm = new TranslationEditForm(id, view.Session as UnitOfWork) {
-                    MdiParent = this.MdiParent                    
+                    MdiParent = this.MdiParent
                 };
                 frm.ObjectSaved += new EventHandler(delegate (object _sender, EventArgs args) {
 

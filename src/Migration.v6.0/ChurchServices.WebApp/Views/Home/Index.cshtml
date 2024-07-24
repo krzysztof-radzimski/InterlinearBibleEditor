@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Strona startowa";
+    ViewData["Title"] = "Strona główna";
     var host = this.Context.Request.Host;
 }
 
@@ -8,12 +8,13 @@
 
 <div class="max-width-1000" style="padding-top: 20px;">
     @Html.Partial("~/Views/Shared/_Baner.cshtml")
-    @Html.Partial("~/Views/Shared/_ChatGPT.cshtml")
+    
        
     <div class="embed-responsive embed-responsive-16by9 shadow-lg">
         <iframe id="YouTubeFrame" width="560" height="600" src="https://www.youtube.com/embed/videoseries?list=PLUYRCCWSMh6_oq4Lj7JWva8JCxRgpf_o5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
     <br/>
+    @Html.Partial("~/Views/Shared/_ChatGPT.cshtml")
 
     @if (Model.IsNotNull() && Model.Articles.IsNotNull() && Model.Articles.Count > 0) {
         foreach (var item in Model.Articles) {
@@ -42,7 +43,7 @@
             </a>
         }
         <div class="d-flex flex-row-reverse mt-3">
-            <a href="/Articles" class="btn btn-secondary">Więcej...</a>
+            <a href="/Articles" class="btn btn-outline-success">Więcej...</a>
         </div>
         <br />
     }

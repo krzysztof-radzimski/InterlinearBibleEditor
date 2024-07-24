@@ -168,7 +168,7 @@ namespace ChurchServices.Data.Export.Controllers {
         }
         public string GetInternalVerseRangeText(string input, TranslationControllerModel model) {
             input = Regex.Replace(input, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (Match m) {
-                var translationName = model.Translation.Name.Replace("+", "").Replace("'", "");
+                //var translationName = model.Translation.Name.Replace("+", "").Replace("'", "");
                 var numberOfBook = m.Groups["book"].Value.ToInt();
                 var bookShortcut = model.Books.Where(x => x.NumberOfBook == numberOfBook).First().BookShortcut;
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();
@@ -426,7 +426,7 @@ namespace ChurchServices.Data.Export.Controllers {
             return null;
         }
 
-        public string GetRecognizedSiglumUrl(Session session, string input) {
+        public string GetRecognizedSiglumUrl(Session session, string input, string translationName = null) {
             var siglum = RecognizeSiglum(input);
             if (siglum != null) {
                 var books = new XPQuery<BookBase>(session).ToList();
@@ -438,7 +438,8 @@ namespace ChurchServices.Data.Export.Controllers {
                     baseBook = baseBooks.Where(x => x.BookName.ToLower() == siglum.BookShortcut.ToLower()).FirstOrDefault();
                 }
                 if (baseBook != null) {
-                    var result = $"/{siglum.TranslationName}/{baseBook.NumberOfBook}/{siglum.NumberOfChapter}";
+                    if (translationName.IsNullOrEmpty()) { translationName = siglum.TranslationName; }
+                    var result = $"/{translationName}/{baseBook.NumberOfBook}/{siglum.NumberOfChapter}";
                     if (siglum.NumbersOfVerses != null) {
                         if (siglum.NumbersOfVerses.Length == 1 && siglum.NumbersOfVerses[0] == 1) {
                             // nothing
@@ -452,6 +453,21 @@ namespace ChurchServices.Data.Export.Controllers {
                         }
                     }
                     return result;
+                }
+            }
+            return default;
+        }
+
+        public SimpleSiglumModel RecognizeSimpleSiglum(Session session, string input) {
+            var siglum = RecognizeSiglum(input);
+            if (siglum != null) {
+                var book = new XPQuery<BookBase>(session).Where(x => x.BookShortcut.ToLower() == siglum.BookShortcut.ToLower()).FirstOrDefault();
+                if (book != null) {
+                    return new SimpleSiglumModel() {
+                        BookNumber = book.NumberOfBook,
+                        NumberOfChapter = siglum.NumberOfChapter,
+                        NumberOfVerse = siglum.NumbersOfVerses != null && siglum.NumbersOfVerses.Length > 0 ? siglum.NumbersOfVerses.First() : 1
+                    };
                 }
             }
             return default;

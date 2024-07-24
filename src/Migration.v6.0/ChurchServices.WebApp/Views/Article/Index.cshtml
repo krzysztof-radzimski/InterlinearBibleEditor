@@ -10,8 +10,7 @@
     var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
     var __path = this.Context.Request.Path;
     HtmlAgilityPack.HtmlNodeCollection headings = null;
-    if (Model != null && Model.Article != null)
-    {
+    if (Model != null && Model.Article != null) {
         var document = new HtmlAgilityPack.HtmlDocument();
         var html = $@"<!DOCTYPE html>
 <html>
@@ -68,7 +67,7 @@
             </div>
         </div>
     }
- }
+}
 
 @if (Model != null) {
     var passage = Model.Article.Passage != null ? $"{Model.Article.Passage}" : "";
@@ -87,7 +86,7 @@
                     var url1 = $"/api/ArticleDownload/{Model.Article.Id}/Docx";
                     var url2 = $"/api/ArticleDownload/{Model.Article.Id}/Pdf";
                     var jsonUrl1 = $"/api/ArticlesData/{Model.Article.Id}";
-                    var jsonUrl2 = $"/api/ArticlesData/{Model.Article.AuthorName.Replace(" ","-")}";
+                    var jsonUrl2 = $"/api/ArticlesData/{Model.Article.AuthorName.Replace(" ", "-")}";
                 }
 
                 <span class="btn btn-light d-inline-block text-success fw-bold" role="button">@Model.Article.Type</span>
@@ -110,15 +109,15 @@
             @if (Model.Article.Date > DateTime.MinValue) {
                 <div class="mb-1 text-muted">@Html.Raw(Model.Article.Date.GetDatePl())</div>
             }
-            
+
         </div>
 
-        
+
 
         @if (Model.Article.AuthorPicture.IsNotNull()) {
             <div class="d-lg-block article-picture" style="background-image: url('data:image/png;base64, @(Model.Article.AuthorPicture)');"></div>
         }
-        @if (passage.IsNotNullOrEmpty()){
+        @if (passage.IsNotNullOrEmpty()) {
             <strong class="d-inline-block mb-2 text-success pill-white float-end" style="right: 5px; bottom: 5px; position: absolute; width: auto; padding: 10px;">@passage</strong>
         }
     </div>
@@ -130,6 +129,9 @@
             text = System.Text.RegularExpressions.Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (System.Text.RegularExpressions.Match m) {
                 return " " + m.Value.Trim() + "&nbsp;";
             }, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                // zmieniam sposób wyświetlania podpowieni
+
         }
 
         @Html.Raw(text)
@@ -141,4 +143,20 @@ else {
         <p>Nie ma artykułu lub kazania o takim identyfikatorze w naszej bazie</p>
         <a href="/Articles" class="text-decoration-none" title="Więcej artykułów"><i class="far fa-arrow-alt-circle-left"></i> Pokaż listę artykułów</a>
     </div>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const links = document.querySelectorAll('a[title]');
+
+            links.forEach(link => {
+                if (!link.hasAttribute('data-bs-toggle')) {
+                    link.setAttribute('data-bs-toggle', 'tooltip');
+                    link.setAttribute('data-bs-title', link.getAttribute('title'));
+                    link.removeAttribute("title");
+                }
+            });
+        });
+    </script>
 }

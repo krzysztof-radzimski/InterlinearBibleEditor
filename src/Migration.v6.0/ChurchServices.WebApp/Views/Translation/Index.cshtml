@@ -591,7 +591,8 @@ else {
             }
         }
 
-
+        var interlinear = Model.Translation.Type == TranslationType.Interlinear;
+        var twoColumnsClass = interlinear ? "" : "two-columns";
         var footNoteIndex = 1;
         var footNoteRefIndex = 0;
         var footNotes = new List<FootnoteInfo>();
@@ -607,7 +608,83 @@ else {
             }
         }
 
-        <div class="lh-base fs-6" id="chapterContent">
+        if (interlinear)
+        {
+            var chapterString = book.NumberOfBook == 230 ? Model.Translation.ChapterPsalmString : book.BaseBook.BookName;
+            var translatedChapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {chapterString} {chapter.NumberOfChapter}. ";
+            var transliteratedChapterText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
+            var sourceChapterText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
+            @foreach (var verse in chapter.Verses) {
+                translatedChapterText += $"{verse.NumberOfVerse}. {verse.GetTranslationText().Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
+                transliteratedChapterText += $"{verse.NumberOfVerse}. {verse.GetTransliterationText().Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
+                sourceChapterText += $"{verse.NumberOfVerse}. {verse.GetSourceText().Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace("<e>", "").Replace("</e>", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
+            }
+
+            <div class="dropdown d-grid gap-2 d-md-flex justify-content-center" style="width: auto;" id="divDownload">
+                <span> </span>
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
+                    Pobierz księgę
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook">
+                    <li><a class="dropdown-item" href="/api/DownloadInterlinearPdf?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Pobierz księgę w formacie PDF</a></li>
+                    <li><a class="dropdown-item" href="/api/DownloadInterlinearDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz księgę w formacie DOCX</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/api/DownloadInterlinearTranslationPdf?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Pobierz tłumaczenie księgi w formacie PDF</a></li>
+                    <li><a class="dropdown-item" href="/api/DownloadInterlinearTranslationDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz tłumaczenie księgi w formacie DOCX</a></li>
+
+                </ul>
+                <span> </span>
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadInterlinear" data-bs-toggle="dropdown" aria-expanded="false">
+                    Pobierz / kopiuj rozdział
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadInterlinear">
+                    <li><a class="dropdown-item" href="/api/DownloadInterlinearPdf?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Pobierz rozdział w formacie PDF</a></li>
+                    <li><a class="dropdown-item" href="/api/DownloadInterlinearDocx?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Pobierz rozdział w formacie DOCX</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@sourceChapterText')"><i class="fas fa-copy" style="width:18px;"></i>&nbsp;Kopiuj tekst grecki rozdziału</a></li>
+                    <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@transliteratedChapterText')"><i class="far fa-file-alt" style="width:18px;"></i>&nbsp;Kopiuj transliterację tekstu greckiego rozdziału</a></li>
+                    <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@translatedChapterText')"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść rozdziału</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#copyVersesModal"><i class="far fa-check-square" style="width:18px;"></i>&nbsp;Kopiuj wybrane wersety</a></li>
+                </ul>
+            </div>
+            <br />
+        }
+        else if (!Model.Translation.Hidden) {
+            var verses = chapter.Verses.OrderBy(x => x.NumberOfVerse);
+            var chapterString = book.NumberOfBook == 230 ? Model.Translation.ChapterPsalmString : book.BaseBook.BookName;
+            var chapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {chapterString} {chapter.NumberOfChapter}. ";
+            foreach (var verse in verses) {
+                var _verseText = BibleTagController.CleanVerseText(verse.Text, true);
+                _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
+                chapterText += $"{verse.NumberOfVerse}. {_verseText} ";
+            }
+            chapterText = Regex.Replace(chapterText, @"\s+", @" ");
+
+            <div class="dropdown d-grid gap-2 d-md-flex justify-content-center" style="width: auto;" id="divDownload">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
+                    Pobierz księgę
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadBook">
+                    <li><a class="dropdown-item" href="/api/DownloadDefaultPdf?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-pdf"></i>&nbsp;Pobierz księgę w formacie PDF</a></li>
+                    <li><a class="dropdown-item" href="/api/DownloadDefaultDocx?q=@Model.Translation.Name,@Model.Book"><i class="far fa-file-word"></i>&nbsp;Pobierz księgę w formacie DOCX</a></li>
+                </ul>
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadDefault" data-bs-toggle="dropdown" aria-expanded="false">
+                    Pobierz / kopiuj rozdział
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuDownloadDefault">
+                    <li><a class="dropdown-item" href="/api/DownloadDefaultPdf?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-pdf"></i>&nbsp;Pobierz rozdział w formacie PDF</a></li>
+                    <li><a class="dropdown-item" href="/api/DownloadDefaultDocx?q=@Model.Translation.Name,@Model.Book,@Model.Chapter"><i class="far fa-file-word"></i>&nbsp;Pobierz rozdział w formacie DOCX</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" style="cursor: pointer" onclick="copyToClipboard3('@chapterText')"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj treść rozdziału</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#copyVersesModal"><i class="far fa-check-square" style="width:18px;"></i>&nbsp;Kopiuj wybrane wersety</a></li>
+                </ul>
+            </div>
+            <br />
+        }
+
+        <div class="lh-base fs-6 @twoColumnsClass" id="chapterContent">
 
             @{
                 var __translationName = $"({Model.Translation.Name.Replace('\'', ' ')})";
@@ -652,11 +729,12 @@ else {
             </div>
 
             @if (chapter.IsNotNull()) {
-                if (Model.Translation.Type == TranslationType.Interlinear) {
+                if (interlinear) {
                     // --------------------------------------------------
                     // Wyswietlanie treści przekładu interlinearnego
                     // --------------------------------------------------
                     footNoteRefIndex = 1;
+                    @*
                     var chapterString = book.NumberOfBook == 230 ? Model.Translation.ChapterPsalmString : book.BaseBook.BookName;
                     var translatedChapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {chapterString} {chapter.NumberOfChapter}. ";
                     var transliteratedChapterText = $"{book.BaseBook.BookName} {chapter.NumberOfChapter}. ";
@@ -667,6 +745,7 @@ else {
                         sourceChapterText += $"{verse.NumberOfVerse}. {verse.GetSourceText().Replace("<n>", "").Replace("</n>", "").Replace("―", "").Replace("<e>", "").Replace("</e>", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "")} ";
                     }
 
+                    
                     <div class="dropdown d-grid gap-2 d-md-flex justify-content-center" style="width: auto;" id="divDownload">
                         <span> </span>
                         <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
@@ -696,6 +775,7 @@ else {
                         </ul>
                     </div>
                     <br />
+                    *@
 
                     @foreach (var verse in chapter.Verses) {
                         var verseIndex = verse.GetVerseIndex();
@@ -805,16 +885,16 @@ else {
                                             <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold verse-interlinear-btn" role="button" data-bs-toggle="" aria-expanded="false" style="font-size: 120%;" onclick="showDopdownMenu(this, 'verseDropDownMenu_@verse.NumberOfVerse')">@verse.NumberOfVerse.</a>
                                             <ul id="verseDropDownMenu_@verse.NumberOfVerse" class="my-dropdown" aria-labelledby="verseMenu_@verse.NumberOfVerse" style="max-height: 85%; overflow: auto;">
                                                 <li><span class="dropdown-header fs-5 disabled">@bookShortcut @chapterNumberString:@verse.NumberOfVerse&nbsp;<button class="btn btn-danger float-end" type="button" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');">Zamknij</button></span></li>
-                                                <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
-                                                <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index&literal=true" target="_blank" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
+                                                <li><a class="dropdown-item" href="/CompareVerse/@verseIndex.TranslationName/@verseIndex.NumberOfBook/@verseIndex.NumberOfChapter/@verseIndex.NumberOfVerse" target="_blank" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
+                                                <li><a class="dropdown-item" href="/CompareVerse/@verseIndex.TranslationName/@verseIndex.NumberOfBook/@verseIndex.NumberOfChapter/@verseIndex.NumberOfVerse/@true" target="_blank" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
                                                 @if (book.IsNT) {
                                                     <li><a class="dropdown-item" href="@verse.GetOblubienicaUrl()" target="_blank" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="fas fa-globe"></i>&nbsp;Porównaj w&nbsp;przekładzie interlinearnym Oblubienica.eu</a></li>
                                                 }
                                                 <li><hr class="dropdown-divider"></li>
-                                                <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie PDF</a></li>
-                                                <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie DOCX</a></li>
-                                                <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index&literal=true" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie PDF</a></li>
-                                                <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index&literal=true" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie DOCX</a></li>
+                                                <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf/@verseIndex.TranslationName/@verseIndex.NumberOfBook/@verseIndex.NumberOfChapter/@verseIndex.NumberOfVerse" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie PDF</a></li>
+                                                <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx/@verseIndex.TranslationName/@verseIndex.NumberOfBook/@verseIndex.NumberOfChapter/@verseIndex.NumberOfVerse" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie DOCX</a></li>
+                                                <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf/@verseIndex.TranslationName/@verseIndex.NumberOfBook/@verseIndex.NumberOfChapter/@verseIndex.NumberOfVerse/@true" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie PDF</a></li>
+                                                <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx/@verseIndex.TranslationName/@verseIndex.NumberOfBook/@verseIndex.NumberOfChapter/@verseIndex.NumberOfVerse/@true" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie DOCX</a></li>
 
                                                 <li><hr class="dropdown-divider"></li>
                                                 <li><a class="dropdown-item" onclick="copyToClipboard3('@siglum @verse.GetSourceText() (@verseIndex.TranslationName.Replace("'",""))'); hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');" style="cursor: pointer;"><i class="fas fa-copy" style="width:18px;"></i>&nbsp;Kopiuj tekst grecki</a></li>
@@ -899,14 +979,15 @@ else {
                 // ------------------------------------
                 else if (!Model.Translation.Hidden) {
                     var verses = chapter.Verses.OrderBy(x => x.NumberOfVerse);
-                    var chapterString = book.NumberOfBook == 230 ? Model.Translation.ChapterPsalmString : book.BaseBook.BookName;
-                    var chapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {chapterString} {chapter.NumberOfChapter}. ";
+
+                    @*  var chapterString = book.NumberOfBook == 230 ? Model.Translation.ChapterPsalmString : book.BaseBook.BookName;
+    var chapterText = $"({Model.Translation.Name.Replace('\'', ' ')}) {chapterString} {chapter.NumberOfChapter}. ";
                     foreach (var verse in verses) {
                         var _verseText = BibleTagController.CleanVerseText(verse.Text, true);
                         _verseText = System.Text.RegularExpressions.Regex.Replace(_verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
                         chapterText += $"{verse.NumberOfVerse}. {_verseText} ";
                     }
-                    chapterText = Regex.Replace(chapterText, @"\s+", @" ");
+                    chapterText = Regex.Replace(chapterText, @"\s+", @" "); 
 
                     <div class="dropdown d-grid gap-2 d-md-flex justify-content-center" style="width: auto;" id="divDownload">
                         <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuDownloadBook" data-bs-toggle="dropdown" aria-expanded="false">
@@ -928,6 +1009,7 @@ else {
                             <li><a class="dropdown-item" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#copyVersesModal"><i class="far fa-check-square" style="width:18px;"></i>&nbsp;Kopiuj wybrane wersety</a></li>
                         </ul>
                     </div>
+    *@
 
                     foreach (var verse in verses) {
                         //
@@ -974,7 +1056,7 @@ else {
 
                         var text = " " + verse.Text;
                         if (text.Contains("<n>") && text.Contains("*")) {
-                            var footNoteTextPatternFragment = @"״\½\+\­\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\·\…\d\–\?\־\’\’\‘\#\᾽\…";
+                            var footNoteTextPatternFragment = @"״\½\+\­\w\s\.\=\""\,\;\:\-\(\)\<\>\„\”\/\!\·\…\d\–\?\־\’\’\‘\#\᾽\…\—\‎\𝔓\´";
                             var f1 = $@"\[\*\s?(?<f1>[{footNoteTextPatternFragment}]+)\]";
                             var f2 = $@"\[\*\*\s?(?<f2>[{footNoteTextPatternFragment}]+)\]";
                             var f3 = $@"\[\*\*\*\s?(?<f3>[{footNoteTextPatternFragment}]+)\]";
@@ -1115,7 +1197,7 @@ else {
 
 
                         var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "active-verse" : "";
-
+                        var verseIndex = verse.GetVerseIndex();
                         var __verseText = BibleTagController.CleanVerseText(verse.Text, true);
                         __verseText = System.Text.RegularExpressions.Regex.Replace(__verseText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
                         var clipboardText = $"{book.BaseBook.BookShortcut} {chapter.NumberOfChapter}:{verse.NumberOfVerse} „{__verseText.Trim()}” ({Model.Translation.Name.Replace('\'', ' ')})";
@@ -1127,19 +1209,20 @@ else {
                                 <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold position-absolute verse-btn" role="button" data-bs-toggle="" aria-expanded="false" onclick="showDopdownMenu(this, 'verseDropDownMenu_@verse.NumberOfVerse')">@verse.NumberOfVerse.</a>&nbsp;&nbsp;<span id="verseMenuText_@verse.NumberOfVerse">@Html.Raw(text.Trim())</span>&nbsp;
                                 <ul id="verseDropDownMenu_@verse.NumberOfVerse" class="my-dropdown" aria-labelledby="verseMenu_@verse.NumberOfVerse" style="max-height: 85%; overflow: auto;">
                                     <li><span class="dropdown-header fs-5 disabled">@bookShortcut @chapterNumber:@verse.NumberOfVerse&nbsp;<button class="btn btn-danger float-end" type="button" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');">Zamknij</button></span></li>
-                                    <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index" target="_blank" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
-                                    <li><a class="dropdown-item" href="/CompareVerse?id=@verse.Index&literal=true" target="_blank" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
-
-
+                                    <li><a class="dropdown-item" href="/CompareVerse/@verseIndex.TranslationName/@verseIndex.NumberOfBook/@verseIndex.NumberOfChapter/@verseIndex.NumberOfVerse" target="_blank" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj tłumaczenia</a></li>
+                                    <li><a class="dropdown-item" href="/CompareVerse/@verseIndex.TranslationName/@verseIndex.NumberOfBook/@verseIndex.NumberOfChapter/@verseIndex.NumberOfVerse/@true" target="_blank" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="fas fa-fish" style="width:18px;"></i>&nbsp;Porównaj z tłumaczeniami dosłownymi</a></li>
+                                    
                                     <li><hr class="dropdown-divider"></li>
+
                                     <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie PDF</a></li>
-                                    <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie DOCX</a></li>
-                                    <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf?q=@verse.Index&literal=true" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie PDF</a></li>
-                                    <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx?q=@verse.Index&literal=true" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie DOCX</a></li>
+                                    <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx/@verseIndex.TranslationName/@verseIndex.NumberOfBook/@verseIndex.NumberOfChapter/@verseIndex.NumberOfVerse" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń w formacie DOCX</a></li>
+                                    <li><a class="dropdown-item" href="/api/DownloadCompareVersePdf/@verseIndex.TranslationName/@verseIndex.NumberOfBook/@verseIndex.NumberOfChapter/@verseIndex.NumberOfVerse/@true" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-pdf" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie PDF</a></li>
+                                    <li><a class="dropdown-item" href="/api/DownloadCompareVerseDocx/@verseIndex.TranslationName/@verseIndex.NumberOfBook/@verseIndex.NumberOfChapter/@verseIndex.NumberOfVerse/@true" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="far fa-file-word" style="width:18px;"></i>&nbsp;Porównanie tłumaczeń dosłownych w formacie DOCX</a></li>
 
 
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" onclick="copyToClipboard3('@clipboardText'); hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');" style="cursor: pointer;"><i class="far fa-copy" style="width:18px;"></i>&nbsp;Kopiuj werset</a></li>
+                                    <li><a class="dropdown-item" href="/BibleByVerse/@verseIndex.NumberOfBook/@verseIndex.NumberOfChapter/@verseIndex.NumberOfVerse" target="_blank" onclick="hideDopdownMenu('verseDropDownMenu_@verse.NumberOfVerse');"><i class="fa-solid fa-lines-leaning" style="width:18px;"></i>&nbsp;Pokaż w Biblii Internetowej</a></li>
                                     @if (book.IsNT) {
                                         <li><a class="dropdown-item" href="@verse.GetOblubienicaUrl()" target="_blank"><i class="fas fa-globe"></i>&nbsp;Porównaj w&nbsp;przekładzie interlinearnym Oblubienica.eu</a></li>
                                     }

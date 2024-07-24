@@ -2,6 +2,7 @@
     var callingUrl = this.Context.Request.Headers["Host"].ToString();
     var isLocal = callingUrl.Contains("localhost");
     var isDefault = callingUrl.Contains("jezusa.pl");
+    var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
 }
 @inject IConfiguration Configuration
 @inject ITranslationInfoController TranslationsController
@@ -11,12 +12,29 @@
 <head prefix="og: http://ogp.me/ns#">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow">
+
     <title>@ViewData["Title"] :: @Configuration["PageTitle"]</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/bootstrap-5.3.3-dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/font-awsome/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="icon" type="image/svg+xml" href="~/img/baptysci-logo-2023.svg" asp-append-version="true" />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="~/sitemap.xml">
     @RenderSection("HeaderScripts", required: false)
+
+    <script type="application/ld+json">
+        {
+          "@@context": "@__host",
+          "@@type": "WebPage",
+          "name": "@ViewData["Title"] :: Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim",
+          "description": "Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim :: @ViewData["Title"]. Oficjalna witryna Kościoła Chrześcijan Baptystów w Nowym Dworze Mazowieckim, na której prezentowane są podstawowe informacje o naszym zborze, szkice kazań oraz dostęp do wielu przekładów Pisma Świętego.",
+          "publisher": {
+            "@@type": "Organization",
+            "name": "Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim"
+          }
+        }
+    </script>
 </head>
 <body data-bs-spy="scroll" data-bs-target="#top-nav" data-bs-offset="0">
     <header>
@@ -45,7 +63,7 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Camps" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-child"></i></div> Obozy dla dzieci i młodzieży</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="LeadersMaterials" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-book-reader"></i></div> Materiały dla liderów</a></li>
                                 <li>
-                                    <a class="dropdown-item" href="https://chatgpt.com/g/g-EFuqOChJS" data-bs-toggle="tooltip" data-bs-title="Dowiedz się więcej o Kościele Chrześcijan Baptystów w Nowym Dworze Mazowieckim, korzystając z dedykowanego modelu ChatGPT"><div style="display: inline-block; width: 25px;position: relative; left: -5px;"><img src="/img/chatgpt.svg"/></div> ChatGPT</a>
+                                    <a class="dropdown-item" href="https://chatgpt.com/g/g-EFuqOChJS" data-bs-toggle="tooltip" data-bs-title="Dowiedz się więcej o Kościele Chrześcijan Baptystów w Nowym Dworze Mazowieckim, korzystając z dedykowanego modelu ChatGPT"><div style="display: inline-block; width: 25px;position: relative; left: -5px;"><img src="/img/chatgpt.svg" /></div> ChatGPT</a>
                                 </li>
                             </ul>
                         </li>
@@ -242,21 +260,23 @@
     </footer>
 
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/font-awsome/all.min.js"></script>
 
-    <script type="text/javascript">
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-    </script>
-
     @RenderSection("Scripts", required: false)
 
-   @*  
-       <div id="fb-root"></div>
-       <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v9.0" nonce="TGe91ewv"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        });
+    </script>
+
+    @*
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v9.0" nonce="TGe91ewv"></script>
     *@
 </body>
 </html>

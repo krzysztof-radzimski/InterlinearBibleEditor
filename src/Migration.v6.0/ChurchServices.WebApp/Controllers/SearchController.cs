@@ -11,6 +11,7 @@
 
   ===================================================================================*/
 
+using ChurchServices.Extensions;
 using Microsoft.AspNetCore.Http;
 
 namespace ChurchServices.WebApp.Controllers {
@@ -74,6 +75,34 @@ namespace ChurchServices.WebApp.Controllers {
         public IActionResult Siglum(string text, string type) {
             if (text.IsNotNullOrEmpty() && text.Length > 0) {
                 var session = new UnitOfWork();
+
+                // Uzyskanie nagłówków HTTP
+                var headers = HttpContext.Request.Headers;
+                // Uzyskanie referera (adres strony, z której przyszedł request)
+                var referer = headers["Referer"].ToString();
+                var host = headers["Host"].ToString();
+                var routing = referer.Substring(referer.IndexOf(host) + host.Length+1);
+                string translationName = null;
+
+                if (routing.Contains("BibleByVerse")) {
+                    var siglum = BibleTag.RecognizeSimpleSiglum(session, text);
+                    if (siglum != null) {
+                        return Redirect($"../BibleByVerse/{siglum.BookNumber}/{siglum.NumberOfChapter}/{siglum.NumberOfVerse}");
+                    }
+                }
+                else if (routing.Contains("CompareVerse")) {
+                    var siglum = BibleTag.RecognizeSimpleSiglum(session, text);
+                    if (siglum != null) {
+                        var s = routing.Substring(routing.IndexOf("/") + 1);
+                        var t = s.Substring(0, s.IndexOf("/")); 
+                        return Redirect($"../CompareVerse/{t}/{siglum.BookNumber}/{siglum.NumberOfChapter}/{siglum.NumberOfVerse}");
+                    }
+                }
+                else if (routing.StartWithAny(TranslationInfoController.GetTranslationNames("/"))) {
+                    translationName = routing.Substring(0, routing.IndexOf("/"));
+                }
+
+
                 var url = string.Empty;
 
                 if (type.IsNotNullOrEmpty() && type == "compare") {
@@ -81,7 +110,7 @@ namespace ChurchServices.WebApp.Controllers {
                 }
 
                 if (url.IsNullOrEmpty()) {
-                    url = BibleTag.GetRecognizedSiglumUrl(session, text);
+                    url = BibleTag.GetRecognizedSiglumUrl(session, text, translationName);
                 }
 
                 if (url.IsNotNullOrEmpty()) {
