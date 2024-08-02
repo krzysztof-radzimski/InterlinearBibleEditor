@@ -13,6 +13,16 @@
 
 namespace ChurchServices.WebApp.Controllers {
     public class GrammarsCodeController : Controller {
+        [Route("/[controller]/{code}")]
+        public IActionResult Index(string code) {
+            if (code.IsNotNullOrEmpty()) {
+                var grammarCode = new XPQuery<GrammarCode>(new UnitOfWork()).Where(x => x.GrammarCodeVariant1 == code).FirstOrDefault();
+                if (grammarCode.IsNotNull()) {
+                    return View(grammarCode);
+                }
+            }
+            return View();
+        }
         public IActionResult Index() {
             var qs = Request.QueryString;
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 3) {

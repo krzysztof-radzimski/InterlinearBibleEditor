@@ -19,6 +19,29 @@ namespace ChurchServices.WebApp.Controllers {
             _logger = logger;
         }
 
+        [Route("/[controller]/{code}")]
+        public IActionResult Index(string code) {
+            if (code.IsNotNullOrEmpty()) {
+                var number = String.Empty;
+                var lang = Language.Greek;
+                if (code.StartsWith("g", StringComparison.CurrentCultureIgnoreCase)) {
+                    number = code.Substring(1);
+                }
+                if (code.StartsWith("h", StringComparison.CurrentCultureIgnoreCase)) {
+                    number = code.Substring(1);
+                    lang = Language.Hebrew;
+                }
+                var id = number.ToInt();
+                if (id > 0) {
+                    var strongCode = new XPQuery<StrongCode>(new UnitOfWork()).Where(x => x.Code == id && x.Lang == lang).FirstOrDefault();
+                    if (strongCode.IsNotNull()) {
+                        return View(strongCode);
+                    }
+                }
+            }
+            return View();
+        }
+
         public IActionResult Index() {
             var qs = Request.QueryString;
             if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 3) {

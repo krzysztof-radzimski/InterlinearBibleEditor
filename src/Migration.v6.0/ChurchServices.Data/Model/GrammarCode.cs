@@ -116,11 +116,11 @@ namespace ChurchServices.Data.Model {
         public GrammarCode(Session session) : base(session) { }
 
 
-        public IReadOnlyCollection<KeyValuePair<string, string>> GetVersesInfo() {
+        public IReadOnlyCollection<KeyValuePair<string, string>> GetVersesInfo(int count) {
             var result = new Dictionary<string, string>();
             var bookShortcuts = new XPQuery<BookBase>(this.Session).Select(x => new KeyValuePair<int, string>(x.NumberOfBook, x.BookShortcut)).ToList();
             var verses = new List<int>();
-            var words = VerseWords.Where(x => x.Translation.IsNotNullOrEmpty());
+            var words = VerseWords.Take(count).Where(x => x.Translation.IsNotNullOrEmpty());
             foreach (var word in words) {
                 if (verses.Contains(word.ParentVerse.Oid)) { continue; }
 

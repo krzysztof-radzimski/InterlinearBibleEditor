@@ -3,13 +3,13 @@
 }
 @model StrongCode
 @{
-    var prev = Model.Code - 1;
-    var next = Model.Code + 1;
-    var definition = Model.Definition
+    var prev = Model != null ? Model.Code - 1 : 0;
+    var next = Model != null ? Model.Code + 1 : 0;
+    var definition = Model != null ? Model.Definition
         .Replace(@"href=""S:G", @"href=""StrongsCode?id=G")
         .Replace(@"href=""S:H", @"href=""StrongsCode?id=H")
         .Replace(@"href='S:G", @"href='StrongsCode?id=G")
-        .Replace(@"href='S:H", @"href='StrongsCode?id=H");
+        .Replace(@"href='S:H", @"href='StrongsCode?id=H") : String.Empty;
     var pattern = @"href\=[\'\""]B\:(?<book>[0-9]+)\s(?<chapter>[0-9]+)\:(?<verse>[0-9]+)[\'\""]";
     definition = System.Text.RegularExpressions.Regex.Replace(definition, pattern, delegate (System.Text.RegularExpressions.Match m) {
         var numberOfBook = m.Groups["book"].Value.ToInt();
@@ -98,7 +98,7 @@
                         var translationName = group.Key;
                         if (translationName == "NPI") { translationName = "Nowodworski Przekład Interlinearny"; }
                         if (translationName == "TRO16") { translationName = "Interlinearny Przekład Oblubienicy"; }
-                        
+
                         <p>&nbsp;</p>
                         <h2>@translationName</h2>
 
@@ -121,4 +121,7 @@
             }
         </div>
     </div>
+}else {
+    <h3>Nie znaleziono kodu Stronga o tym numerze.</h3>
+    
 }
