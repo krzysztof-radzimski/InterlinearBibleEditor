@@ -95,6 +95,9 @@
 .greek-font {
     font-family: "SBL Greek" !important;
 }
+.hebrew-font {
+    font-family: "SBL Hebrew" !important;
+}
 
 .article-days-ago {
     line-height: 0.9;

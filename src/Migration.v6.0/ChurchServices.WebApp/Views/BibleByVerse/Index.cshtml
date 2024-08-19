@@ -13,6 +13,9 @@
         permalink = @"<a href=""" + __host + this.Context.Request.Path + @$""" title=""{Model.Title}"" target=""_blank"">" + Model.Title + "</a>";
     }
     var __style = "";
+    var __styleFont = "";
+    var plorr = "";
+    var dirStyle = Model != null && Model.Book < 470 ? "dir=\"rtl\" style=\"text-align: right; " : "";
     if (Model != null)
     {
         foreach (var cc in Model.Books.Select(x => x.Color).Distinct())
@@ -22,11 +25,17 @@
 
         @if (Model.Book > 460)
         {
-            __style += ".orginal-text {font-size: 150%;text-align: justify;} .orginal-text-translit { font-size: 120%; text-align: justify; } .b-1 {float: right; padding-left: 10px; }";
+            __style += ".orginal-text {font-size: 150%;text-align: justify;} .orginal-text-translit { font-size: 105%; text-align: justify; } .b-1 {float: right; padding-left: 10px; }";
+            __styleFont = "greek-font";
+            plorr = "padding-right: 50px;";
+            dirStyle += "padding-right: 50px;\"";
 
         }
         else {
-            __style += @".orginal-text {font-size: 150%;text-align: end;} .orginal-text-translit {font-size: 120%;text-align: end;} .b-1 { position: absolute; bottom: 5px; left: 5px; padding-right: 10px; } ";
+            __style += @".orginal-text {font-size: 150%;text-align: end;} .orginal-text-translit {font-size: 105%;text-align: end;} .b-1 { position: absolute; bottom: 5px; left: 5px; padding-right: 10px; } ";
+            __styleFont = "hebrew-font";
+            plorr = "padding-left: 50px;";
+            dirStyle += "padding-left: 50px;\"";
         }
     }
 }
@@ -122,7 +131,7 @@
                     else {
                         <a class="btn btn-danger" href="/HSB/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Interlinearny Przekład Hebrew Study Bible"><i class="fa fa-book-bible"></i></a>
                     }
-                </span>@Html.Raw(Model.OrginalText)          
+                </span><span class="@__styleFont" style="@plorr">@Html.Raw(Model.OrginalText)  </span>        
             </p>
         </div>
     </div>
@@ -139,9 +148,17 @@
                 else {
                     <a class="btn btn-danger" href="/HSB/@Model.Book/@Model.Chapter/@Model.Verse" data-bs-toggle="tooltip" data-bs-title="Interlinearny Przekład Hebrew Study Bible"><i class="fa fa-book-bible"></i></a>
                 }
-            </span>@Html.Raw(Model.VovelsText)
+            </span>
            </p>
-            <p class="card-text orginal-text-translit">@Html.Raw(Model.Transliteration)</p>
+           
+            <div class="row" @Html.Raw(dirStyle)>
+            @foreach (var item in Model.Words) {
+                <div class="col-auto">
+                    <span class="@__styleFont orginal-text">@Html.Raw(item.OrginalText)</span><br/>
+                    <span class="orginal-text-translit">@Html.Raw(item.Transliteration)</span>
+                </div>
+            }
+            </div>
         </div>
     </div>
 

@@ -593,6 +593,7 @@ else {
 
         var interlinear = Model.Translation.Type == TranslationType.Interlinear;
         var twoColumnsClass = interlinear ? "" : "two-columns";
+        var dirStyle = interlinear && chapter.IsNotNull() && chapter.Verses.Count > 0 && chapter.Verses.First().VerseWords.Count > 0 && chapter.Verses.First().VerseWords.Where(x => x.StrongCode != null).First().StrongCode.Lang == Language.Hebrew ? "dir=\"rtl\" style=\"text-align: right;\"" : "";
         var footNoteIndex = 1;
         var footNoteRefIndex = 0;
         var footNotes = new List<FootnoteInfo>();
@@ -818,10 +819,10 @@ else {
                         var activeVerse = !String.IsNullOrEmpty(Model.Verse) && selectedVerses.Contains(verse.NumberOfVerse) ? "active-verse" : " ";
 
                         if (verse == chapter.Verses.First()) {
-                            @Html.Raw(@"<div class=""row"">")
+                            @Html.Raw(@$"<div class=""row"" {dirStyle}>")
                         }
                         else if (verse.StartFromNewLine) {
-                            @Html.Raw(@"</div><div class=""row"">")
+                            @Html.Raw(@$"</div><div class=""row"" {dirStyle}>")
                         }
 
                         //
@@ -880,7 +881,8 @@ else {
                                         // Numer wersetu
                                         //
                                         var chapterNumberString = Model.Translation.ChapterRomanNumbering ? chapter.NumberOfChapter.ArabicToRoman() : chapter.NumberOfChapter.ToString();
-                                        <div class="position-absolute verse-interlinear-div" style="left: -30px; font-weight: bold;">
+                                        var leftorright = dirStyle.IsNotNullOrEmpty() ? "right" : "left";
+                                        <div class="position-absolute verse-interlinear-div" style="@leftorright: -30px; font-weight: bold;">
                                             <a name="Verse_@verse.NumberOfVerse" id="Verse_@verse.NumberOfVerse" class="verse-number-b"></a>
                                             <a id="verseMenu_@verse.NumberOfVerse" class="btn btn-light fw-bold verse-interlinear-btn" role="button" data-bs-toggle="" aria-expanded="false" style="font-size: 120%;" onclick="showDopdownMenu(this, 'verseDropDownMenu_@verse.NumberOfVerse')">@verse.NumberOfVerse.</a>
                                             <ul id="verseDropDownMenu_@verse.NumberOfVerse" class="my-dropdown" aria-labelledby="verseMenu_@verse.NumberOfVerse" style="max-height: 85%; overflow: auto;">
@@ -933,7 +935,10 @@ else {
                                             </div>
                                         </div>
                                     }
-                                    <div class="row"><div class="col text-success greek-font">@word.SourceWord</div></div>
+                                    @{
+                                        var sourceWordFontClass = dirStyle.IsNotNullOrEmpty() ? "hebrew-font" : "greek-font";
+                                    }
+                                    <div class="row"><div class="col text-success @sourceWordFontClass">@word.SourceWord</div></div>
                                     <div class="row transliteration"><div class="col">@word.Transliteration</div></div>
                                     <div class="row @translationFontColor" style="@translationFontWeight position: relative; min-width: 70px; font-size: 120%;"><div class="col">@Html.Raw(translation)</div></div>
                                 </div>

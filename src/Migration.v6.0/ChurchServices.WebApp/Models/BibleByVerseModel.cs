@@ -17,6 +17,11 @@
         public string BG { get; set; }
         public int ChapterCount { get; set; }
         public int VerseCount { get; set; }
+        public List<BibleByVerseWordModel> Words { get; set; }
+    }
+    public class BibleByVerseWordModel {
+        public string OrginalText { get; set; }
+        public string Transliteration { get; set; }
     }
 
     public class BibleByVerseBookInfo {

@@ -109,10 +109,15 @@ namespace ChurchServices.Data.Model {
             return text.Trim();
         }
 
-        public string GetTransliterationText() {
+        public string GetTransliterationText(bool rtl=false) {
             var text = string.Empty;
             foreach (var item in VerseWords) {
-                text += item.Transliteration + " ";
+                if (rtl) {
+                    text = item.Transliteration.ReplaceAnyWith("",new string[] { ";",",","." }) + " " + text;
+                }
+                else {
+                    text += item.Transliteration + " ";
+                }
             }
             return text.Trim();
         }

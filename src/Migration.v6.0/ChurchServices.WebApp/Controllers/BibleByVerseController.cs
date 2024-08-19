@@ -45,7 +45,7 @@ namespace ChurchServices.WebApp.Controllers {
                 Color = x.Color
             });
             if (!baseBooks.Select(x => x.Number).Contains(book)) { return GetModel(10, 1, 1); }
-
+            var words = new List<BibleByVerseWordModel>();
             if (book > 460) {
                 var tro = new XPQuery<Verse>(uow).Where(x => x.Index == $"TRO16.{book}.{chapter}.{verse}").FirstOrDefault();
                 if (tro == null) { return GetModel(book, 1, 1); }
@@ -54,6 +54,10 @@ namespace ChurchServices.WebApp.Controllers {
                 vovelsText = npi.GetSourceText();
                 transliteration = npi.GetTransliterationText();
                 vovelsName = "Nestle Aland 28";
+
+                foreach (var word in npi.VerseWords) {
+                    words.Add(new BibleByVerseWordModel() { OrginalText = word.SourceWord, Transliteration = word.Transliteration });
+                }
             }
             else {
                 var lhb = new XPQuery<Verse>(uow).Where(x => x.Index == $"LHB.{book}.{chapter}.{verse}").FirstOrDefault();
@@ -62,8 +66,12 @@ namespace ChurchServices.WebApp.Controllers {
 
                 var hsb = new XPQuery<Verse>(uow).Where(x => x.Index == $"HSB.{book}.{chapter}.{verse}").First();
                 vovelsText = hsb.GetSourceText();
-                transliteration = hsb.GetTransliterationText();
+                transliteration = hsb.GetTransliterationText(true);
                 vovelsName = "Biblia Hebraica Stuttgartensia";
+
+                foreach (var word in hsb.VerseWords) {
+                    words.Add(new BibleByVerseWordModel() { OrginalText = word.SourceWord, Transliteration = word.Transliteration });
+                }
             }
 
             var model = new BibleByVerseModel() {
@@ -74,7 +82,8 @@ namespace ChurchServices.WebApp.Controllers {
                 VovelsText = vovelsText,
                 VovelsName = vovelsName,
                 Books = baseBooks.ToList(),
-                Transliteration = transliteration
+                Transliteration = transliteration,
+                Words = words
             };
 
             var baseBook = baseBooks.Where(x => x.Number == book).First();
@@ -93,83 +102,6 @@ namespace ChurchServices.WebApp.Controllers {
             model.VerseCount = bw.ParentChapter.NumberOfVerses;
 
             return model;
-        }
-    }
-
-    static class HebrewTransliterator {
-        //   בְּרֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַשָּׁמַ֖יִם וְאֵ֥ת הָאָֽרֶץ׃
-        private static Dictionary<string, string> Map = new Dictionary<string, string>() {
-            { "בְּ", "be" },
-            { "רֵ" , "re"},
-            { "שִׁ֖" , "sz"},
-            { "י" , "i"},
-            { "בָּ" , "ba"},
-            { "רָ֣" , "ra" },
-            { "אֱ", "e"},
-            { "לֹ", "lo"},
-            { "הִ֑", "h"},
-            { "אֵ֥" , "e"},
-            {  "הַ" , "ha"},
-            { "שָּׁ" , "sza"},
-            { "מַ֖", "ma"},
-            { "יִ" , "ji"},
-            {"וְ" , "we"},
-            { "הָ" ,"ha"},
-            { "אָֽ" , "a" },
-            { "רֶ", "re"},
-            { "שִׁ֖" , "sz"},
-
-            {"א", ""},
-            {"ב", "b"},
-            {"ג", "g"},
-            {"ד", "d"},
-            {"ה", "h"},
-            {"ו", "v"},
-            {"ז", "z"},
-            {"ח", "ch"},
-            {"ט", "t"},
-            {"כ", "k"},
-            {"ל", "l"},
-            {"מ", "m"},
-            {"נ", "n"},
-            {"ס", "s"},
-            {"ע", ""},
-            {"פ", "p"},
-            {"צ", "c"},
-            {"ק", "k"},
-            {"ר", "r"},
-            {"ש", "sz"},
-            {"ת", "t"},
-            {"ך", "k"},
-            {"ם", "m"},
-            {"ן", "n"},
-            {"ף", "f"},
-            {"ץ", "c"}
-        };
-
-        public static string Transliterate(this string hebrewText) {
-            var transliteratedText = new StringBuilder();
-            var _h = hebrewText.Clone().ToString();
-
-            while (_h.Length > 0) {
-                foreach (var l in Map) {
-                    if (_h.StartsWith(l.Key)) {
-                        _h = _h.Substring(l.Key.Length);
-                        transliteratedText.Append(l.Value);
-                    }
-                }
-            }
-
-
-
-            //foreach (char c in hebrewText) {
-            //    if (transliterationMap.ContainsKey(c))
-            //        transliteratedText.Append(transliterationMap[c]);
-            //    else
-            //        transliteratedText.Append(c); // Dodaje niezmapowane znaki bez zmian
-            //}
-
-            return transliteratedText.ToString();
         }
     }
 }
