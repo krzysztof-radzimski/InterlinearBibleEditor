@@ -5,13 +5,8 @@ using ChurchServices.Data.Import.Hebrew;
 using ChurchServices.Data.Model;
 using ChurchServices.Extensions;
 using DevExpress.Xpo;
-using DocumentFormat.OpenXml.Drawing;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using Microsoft.Extensions.Primitives;
 using System.Text;
 using System.Text.RegularExpressions;
-using static DevExpress.Data.Helpers.ExpressiveSortInfo;
 
 namespace ChurchServices.Data.Import.EIB.Test {
     [TestClass]
@@ -49,6 +44,19 @@ namespace ChurchServices.Data.Import.EIB.Test {
             var bhs = new HBSTransliterationBuilder();
             var uow = new UnitOfWork();
             bhs.RepairVerseText(uow);
+        }
+
+        [TestMethod]
+        public void CreateEmptyHB() {
+            var bhs = new HBSTransliterationBuilder();
+            var uow = new UnitOfWork();
+            bhs.CreateEmptyHB(uow, @"C:\Users\krzysztof.radzimski\Downloads\HSB+\HSB+.SQLite3");
+        }
+        [TestMethod]
+        public void RepairHNPIStrongCodes() {
+            var bhs = new HBSTransliterationBuilder();
+            var uow = new UnitOfWork();
+            bhs.RepairHNPIStrongCodes(uow, @"C:\Users\krzysztof.radzimski\Downloads\HSB+\HSB+.SQLite3");
         }
 
         [TestMethod]

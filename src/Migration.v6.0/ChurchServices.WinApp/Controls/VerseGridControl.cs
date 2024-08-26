@@ -311,6 +311,7 @@ namespace ChurchServices.WinApp.Controls {
 
             [DisplayName("Number")] public int Number { get; set; }
             [DisplayName("Strong's Code")] public int? StrongsCode { get; set; }
+            [DisplayName("Strong's Code Lang")] public Language? StrongsCodeLang { get; set; }
             [DisplayName("Grammar Code")] public string GrammarCode { get; set; }
             [DisplayName("Greek word")] public string SourceWord { get; set; }
             [DisplayName("Transliteration")] public string Transliteration { get; set; }
@@ -323,6 +324,7 @@ namespace ChurchServices.WinApp.Controls {
             public VerseWordInfo(VerseWord word) : this() {
                 Number = word.NumberOfVerseWord;
                 StrongsCode = word.StrongCode?.Code;
+                StrongsCodeLang = word.StrongCode?.Lang;
                 GrammarCode = word.GrammarCode?.GrammarCodeVariant1;
                 SourceWord = word.SourceWord;
                 Translation = word.Translation;
@@ -349,16 +351,14 @@ namespace ChurchServices.WinApp.Controls {
                         Word.GrammarCode = new XPQuery<GrammarCode>(Word.Session).Where(x => x.GrammarCodeVariant1 == GrammarCode).FirstOrDefault();
                     }
                 }
-                var differentLang = false;
-                if (Word.StrongCode.IsNotNull()) {
-                    differentLang = Word.StrongCode.Lang != Language.Greek;
-                }
-                if (StrongsCode.HasValue && (StrongsCode.Value != Word.StrongCode?.Code || differentLang)) {
+
+                if (StrongsCodeLang == null) { StrongsCodeLang = Language.Greek; }                
+                if (StrongsCode.HasValue && (StrongsCode.Value != Word.StrongCode?.Code)) {
                     if (!StrongsCode.HasValue) {
                         Word.StrongCode = null;
                     }
                     else {
-                        Word.StrongCode = new XPQuery<StrongCode>(Word.Session).Where(x => x.Code == StrongsCode.Value && x.Lang == Language.Greek).FirstOrDefault();
+                        Word.StrongCode = new XPQuery<StrongCode>(Word.Session).Where(x => x.Code == StrongsCode.Value && x.Lang == StrongsCodeLang).FirstOrDefault();
                     }
                 }
                 Word.Save();
@@ -396,7 +396,7 @@ namespace ChurchServices.WinApp.Controls {
                         var value = word.StrongsCode.HasValue ? word.StrongsCode.Value.ToString() : String.Empty;
                         var strongCode = XtraInputBox.Show("Insert Strong's code:", "Strong Codes", value);
                         if (strongCode.IsNotNullOrEmpty()) {
-                            var sc = new XPQuery<StrongCode>(Verse.Session).Where(x => x.Code == strongCode.ToInt() && x.Lang == Language.Greek).FirstOrDefault();
+                            var sc = new XPQuery<StrongCode>(Verse.Session).Where(x => x.Code == strongCode.ToInt() && x.Lang == word.StrongsCodeLang).FirstOrDefault();
                             if (sc.IsNotNull()) {
                                 word.StrongsCode = sc.Code;
                                 layoutView1.RefreshData();
@@ -474,7 +474,7 @@ namespace ChurchServices.WinApp.Controls {
                         var value = word.StrongsCode.HasValue ? word.StrongsCode.Value.ToString() : String.Empty;
                         var strongCode = XtraInputBox.Show("Insert Strong's code:", "Strong Codes", value);
                         if (strongCode.IsNotNullOrEmpty()) {
-                            var sc = new XPQuery<StrongCode>(Verse.Session).Where(x => x.Code == strongCode.ToInt() && x.Lang == Language.Greek).FirstOrDefault();
+                            var sc = new XPQuery<StrongCode>(Verse.Session).Where(x => x.Code == strongCode.ToInt() && x.Lang == word.StrongsCodeLang).FirstOrDefault();
                             if (sc.IsNotNull()) {
                                 word.StrongsCode = sc.Code;
                                 btnEditStrongsCode.Tag = sc;

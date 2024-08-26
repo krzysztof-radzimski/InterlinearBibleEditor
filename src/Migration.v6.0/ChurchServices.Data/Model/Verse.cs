@@ -97,7 +97,7 @@ namespace ChurchServices.Data.Model {
             var text = string.Empty;
             foreach (var item in VerseWords) {
                 text += item.SourceWord + " ";
-            } 
+            }
             return text.Trim();
         }
 
@@ -109,11 +109,11 @@ namespace ChurchServices.Data.Model {
             return text.Trim();
         }
 
-        public string GetTransliterationText(bool rtl=false) {
+        public string GetTransliterationText(bool rtl = false) {
             var text = string.Empty;
             foreach (var item in VerseWords) {
                 if (rtl) {
-                    text = item.Transliteration.ReplaceAnyWith("",new string[] { ";",",","." }) + " " + text;
+                    text = item.Transliteration.ReplaceAnyWith("", new string[] { ";", ",", "." }) + " " + text;
                 }
                 else {
                     text += item.Transliteration + " ";
@@ -174,6 +174,18 @@ namespace ChurchServices.Data.Model {
             if (translation == "PBD") { translation = "SNPPD"; }
             simpleText = Regex.Replace(simpleText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
             simpleText = $"{baseBookShortcut} {index.NumberOfChapter}:{index.NumberOfVerse} „{simpleText}” ({translation})";
+            return simpleText;
+        }
+
+        public string GetVerySimpleText() {
+            var verseText = Text;
+            var idxFootnotes = verseText.IndexOf("[*");
+            if (idxFootnotes > 0) {
+                verseText = verseText.Substring(0, idxFootnotes);
+            }
+            var simpleText = verseText.Replace("</t>", "").Replace("<t>", "").Replace("<pb/>", "").Replace("<n>", "").Replace("</n>", "").Replace("<e>", "").Replace("</e>", "").Replace("―", "").Replace('\'', ' ').Replace("<J>", "").Replace("</J>", "").Replace("<i>", "").Replace("</i>", "").Replace("*", "");
+            simpleText = Regex.Replace(simpleText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
+
             return simpleText;
         }
     }

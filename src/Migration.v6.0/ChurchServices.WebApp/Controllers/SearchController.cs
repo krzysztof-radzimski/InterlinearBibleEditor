@@ -11,9 +11,6 @@
 
   ===================================================================================*/
 
-using ChurchServices.Extensions;
-using Microsoft.AspNetCore.Http;
-
 namespace ChurchServices.WebApp.Controllers {
     public class SearchController : Controller {
         private const string TYPE_QUERY = "&type=";
@@ -81,7 +78,7 @@ namespace ChurchServices.WebApp.Controllers {
                 // Uzyskanie referera (adres strony, z której przyszedł request)
                 var referer = headers["Referer"].ToString();
                 var host = headers["Host"].ToString();
-                var routing = referer.Substring(referer.IndexOf(host) + host.Length+1);
+                var routing = referer.IsNotNullOrEmpty() ? referer.Substring(referer.IndexOf(host) + host.Length + 1) : String.Empty;
                 string translationName = null;
 
                 if (routing.Contains("BibleByVerse")) {
@@ -94,12 +91,12 @@ namespace ChurchServices.WebApp.Controllers {
                     var siglum = BibleTag.RecognizeSimpleSiglum(session, text);
                     if (siglum != null) {
                         var s = routing.Substring(routing.IndexOf("/") + 1);
-                        var t = s.Substring(0, s.IndexOf("/")); 
+                        var t = s.Substring(0, s.IndexOf("/"));
                         return Redirect($"../CompareVerse/{t}/{siglum.BookNumber}/{siglum.NumberOfChapter}/{siglum.NumberOfVerse}");
                     }
                 }
                 else if (routing.StartWithAny(TranslationInfoController.GetTranslationNames("/"))) {
-                    translationName = routing.Substring(0, routing.IndexOf("/"));
+                    translationName = routing.IsNotNullOrEmpty() ? routing.Substring(0, routing.IndexOf("/")) : String.Empty;
                 }
 
 
@@ -248,6 +245,90 @@ namespace ChurchServices.WebApp.Controllers {
 
         private string GetRangeCriteriaString(int start, int end) {
             return $" AND ([NumberOfBook] Between ({start},{end}))";
+        }
+    }
+
+    public class ScriptureModel {
+        public string Siglum { get; set; }
+        public string Text { get; set; }
+        public string Url { get; set; }
+    }
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ScriptureController : Controller {
+        private readonly IBibleTagController BibleTag;
+        public ScriptureController(IBibleTagController bibleTag) {
+            BibleTag = bibleTag;
+        }
+
+
+        // https://localhost:44378/api/Scripture?siglum=NPI Rdz 22:1-4
+        // https://localhost:44378/api/Scripture?siglum=/BW/560/1/3,4,5,6,7,8,9,10,11,12,13,14
+        [HttpGet]
+        public ActionResult<ScriptureModel> Get(string siglum) {
+            if (siglum.IsNotNullOrEmpty()) {
+                if (siglum.StartsWith("/")) {
+                    var t = siglum.Split('/', StringSplitOptions.RemoveEmptyEntries);
+                    if (t.Length > 3) {
+                        var translationName = t[0];
+                        var bookNumber = t[1];
+                        var chapterNumber = t[2];
+                        var versesNumbers = t[3];
+                        var session = new UnitOfWork();
+                        var book = new XPQuery<BookBase>(session).Where(x => x.NumberOfBook == bookNumber.ToInt()).FirstOrDefault();
+
+                        if (versesNumbers.Contains(",")) {
+                            var numbersOfVerses = versesNumbers.Split(",");
+                            var result = new ScriptureModel() { Siglum = "", Text = "", Url = $"" };
+                            foreach (var numberOfVerse in numbersOfVerses) {
+                                var index = $"{translationName}.{bookNumber}.{chapterNumber}.{numberOfVerse}";
+                                var verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
+                                result.Text += $" {verse.GetVerySimpleText()}";
+                                if (result.Siglum.IsNullOrEmpty()) {
+                                    var v = numbersOfVerses.Length > 1 ? $"{numbersOfVerses.First()}-{numbersOfVerses.Last()}" : $"{numbersOfVerses.First()}";
+                                    result.Siglum = $"{verse.ParentTranslation.Description}, {book.BookName} {chapterNumber}:{v}";
+                                    result.Url = $"/Search/Siglum?text={verse.ParentTranslation.Name.ReplaceAnyWith(String.Empty, "+", "'")} {book.BookShortcut} {chapterNumber}:{v}&type=";
+                                }
+                            }
+                            result.Text = result.Text.Trim();
+                            return result;
+                        }
+                        else {
+                           
+                            var index = $"{translationName}.{bookNumber}.{chapterNumber}.{versesNumbers}";
+                            var verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
+                            var result = new ScriptureModel() {
+                                Siglum = $"{verse.ParentTranslation.Description}, {book.BookName} {chapterNumber}:{versesNumbers}",
+                                Text = $"{verse.GetVerySimpleText().Trim()}",
+                                Url = $"/Search/Siglum?text={verse.ParentTranslation.Name.ReplaceAnyWith(String.Empty,"+","'")} {book.BookShortcut} {chapterNumber}:{versesNumbers}&type="
+                            };
+                            return result;
+                        }
+                    }
+                }
+
+
+                var recognized = BibleTag.RecognizeSiglum(siglum);
+                if (recognized != null) {
+                    var session = new UnitOfWork();
+                    var book = new XPQuery<BookBase>(session).Where(x => x.BookShortcut == recognized.BookShortcut).FirstOrDefault();
+                    var result = new ScriptureModel() { Siglum = "", Text = "", Url = $"/Search/Siglum?text={siglum}&type=" };
+                    foreach (var numberOfVerse in recognized.NumbersOfVerses) {
+                        var index = $"{recognized.TranslationName}.{book.NumberOfBook}.{recognized.NumberOfChapter}.{numberOfVerse}";
+                        var verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
+                        result.Text += $" {verse.GetVerySimpleText()}";
+                        if (result.Siglum.IsNullOrEmpty()) {
+                            var v = recognized.NumbersOfVerses.Length > 1 ? $"{recognized.NumbersOfVerses.First()}-{recognized.NumbersOfVerses.Last()}" : $"{recognized.NumbersOfVerses.First()}";
+                            result.Siglum = $"{verse.ParentTranslation.Description}, {book.BookName} {recognized.NumberOfChapter}:{v}";
+                        }
+                    }
+
+                    result.Text = result.Text.Trim();
+                    return result;
+                }
+            }
+            return default;
         }
     }
 

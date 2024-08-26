@@ -74,7 +74,10 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Camps" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-child"></i></div> Obozy dla dzieci i młodzieży</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="LeadersMaterials" asp-action="Index"><div style="display: inline-block; width: 25px;"><i class="fas fa-book-reader"></i></div> Materiały dla liderów</a></li>
                                 <li>
-                                    <a class="dropdown-item" href="https://chatgpt.com/g/g-EFuqOChJS" data-bs-toggle="tooltip" data-bs-title="Dowiedz się więcej o Kościele Chrześcijan Baptystów w Nowym Dworze Mazowieckim, korzystając z dedykowanego modelu ChatGPT"><div style="display: inline-block; width: 25px;position: relative; left: -5px;"><img src="/img/chatgpt.svg" /></div> ChatGPT</a>
+                                    <a class="dropdown-item" target="_blank" href="https://chatgpt.com/g/g-EFuqOChJS" data-bs-toggle="tooltip" data-bs-title="Dowiedz się więcej o Kościele Chrześcijan Baptystów w Nowym Dworze Mazowieckim, korzystając z dedykowanego modelu ChatGPT"><div style="display: inline-block; width: 25px;position: relative; left: -5px;"><img src="/img/chatgpt.svg" /></div> ChatGPT</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" target="_blank" href="https://www.bing.com/chat?sendquery=1&q=Ko%C5%9Bci%C3%B3%C5%82%20Chrze%C5%9Bcijan%20Baptyst%C3%B3w%20w%20Nowym%20Dworze%20Mazowieckim&form=HECODX" data-bs-toggle="tooltip" data-bs-title="Dowiedz się więcej o Kościele Chrześcijan Baptystów w Nowym Dworze Mazowieckim, korzystając z Copilot"><div style="display: inline-block; width: 20px;position: relative; left: -5px;"><img src="/img/copilot.svg" /></div> Copilot</a>
                                 </li>
                             </ul>
                         </li>
@@ -270,6 +273,25 @@
         </div>
     </footer>
 
+    <!-- Toasty Bootstrap -->
+    <div class="toast-container position-fixed" style="z-index: 1055;">
+        <div id="toastNotification" class="toast bg-solid-white" role="alert" aria-live="assertive" aria-atomic="true" data-bs-theme="dark" data-bs-autohide="true" data-bs-delay="10000">
+            <div class="toast-header">
+                <strong class="me-auto toast-siglum">Czekaj</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Zamknij"></button>
+            </div>
+            <div class="toast-body">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Ładowanie danych...</span>
+                </div>
+                Ładowanie danych...
+            </div>
+            <div class="toast-footer">               
+                <a href="" target="_blank" type="button" class="btn btn-primary btn-sm">Czytaj więcej...</a>
+            </div>
+        </div>
+    </div>
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
@@ -282,6 +304,113 @@
         document.addEventListener('DOMContentLoaded', function () {
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        });
+    </script>
+
+    <script>
+        // Funkcja do sprawdzenia, czy href zaczyna się od jednego z podanych ciągów
+        function shouldHandleLink(href) {
+            if (href) {
+                return href.startsWith("/BW/") ||
+                    href.startsWith("/UBG18/") ||
+                    href.startsWith("/PBD/") ||
+                    href.startsWith("/SNPD/") ||
+                    href.startsWith("/SNP18/") ||
+                    href.startsWith("/BT99/") ||
+                    href.startsWith("/NPI/");
+            }
+            return false;
+        }
+
+        // Przechwycenie zdarzenia dla wszystkich odpowiednich linków
+        document.querySelectorAll('a').forEach(function (link) {
+            if (shouldHandleLink(link.getAttribute('href'))) {
+                link.addEventListener('mouseover', function (event) {
+
+                    // Ustaw timeout na 1 sekundę przed wykonaniem zapytania do API
+                    timeoutId = setTimeout(() => {
+
+                        // Pobranie elementu Toast
+                        var toastElement = document.getElementById('toastNotification');
+
+                        var toastBody = document.querySelector('#toastNotification .toast-body');
+                        toastBody.innerHTML = "<div class='spinner-border' role='status'><span class='visually-hidden'>Ładowanie danych...</span></div>Ładowanie danych...";
+
+                        var toastSiglum = document.querySelector('#toastNotification .toast-siglum');
+                        toastSiglum.textContent = 'Czekaj';
+                                                
+                        // Ustawienie pozycji Toast w miejscu kursora
+                        var x = event.clientX;
+                        var y = event.clientY;
+
+                        // Sprawdź rozmiar okna przeglądarki
+                        var windowWidth = window.innerWidth;
+                        var windowHeight = window.innerHeight;
+
+                        // Dostosuj pozycję Toast, jeśli wychodzi poza ekran
+                        var toastWidth = 400;
+                        var toastHeight = 300;
+
+                        // Jeśli Toast wychodzi poza prawą krawędź ekranu
+                        if (x + toastWidth > windowWidth) {
+                            x = windowWidth - toastWidth - 10; // 10px margines
+                        }
+
+                        // Jeśli Toast wychodzi poza dolną krawędź ekranu
+                        if (y + toastHeight > windowHeight) {
+                            y = windowHeight - toastHeight - 10; // 10px margines
+                        }
+
+
+                        toastElement.style.left = x + 'px';
+                        toastElement.style.top = y + 'px';
+                        toastElement.style.position = 'fixed'; // Użyj pozycji fixed, aby Toast nie przesuwał się z przewijaniem strony
+
+                        // Pokaż Toast
+                        var toast = new bootstrap.Toast(toastElement);
+                        toast.show();
+
+                        var href = this.getAttribute('href');
+
+                        fetch(`/api/Scripture?siglum=${href}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                var toastBody = document.querySelector('#toastNotification .toast-body');
+                                var toastSiglum = document.querySelector('#toastNotification .toast-siglum');
+                                var toastUrl = document.querySelector('#toastNotification .toast-footer a');
+
+                                // Sprawdzenie, czy dane nie są null
+                                if (data && data.text) {
+                                    toastBody.textContent = data.text;
+                                    toastSiglum.textContent = data.siglum;
+                                    toastUrl.setAttribute('href', data.url);
+                                } else {
+                                    toastBody.textContent = "Nie znaleziono treści wersetu."; // Zastępcza wiadomość
+                                    toastSiglum.textContent = "Błąd";
+                                    toastUrl.setAttribute('href', href);
+                                }                               
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                var toastBody = document.querySelector('#toastNotification .toast-body');
+                                toastBody.textContent = "Nie znaleziono treści wersetu."; // Wiadomość w przypadku błędu
+
+                                var toastSiglum = document.querySelector('#toastNotification .toast-siglum');
+                                toastSiglum.textContent = "Błąd";
+                            });
+                    }, 2000); // 1000 ms = 1 sekunda
+                });
+
+                link.addEventListener('mouseout', function () {
+                    // Anuluj timeout, jeśli użytkownik opuści link przed upływem timeout
+                    clearTimeout(timeoutId);
+                });
+            }
         });
     </script>
 

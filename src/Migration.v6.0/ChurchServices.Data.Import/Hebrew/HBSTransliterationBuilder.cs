@@ -3,7 +3,6 @@ using ChurchServices.Extensions;
 using DevExpress.Xpo;
 using Microsoft.Data.Sqlite;
 using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ChurchServices.Data.Import.Hebrew {
     public class HBSTransliterationBuilder {
@@ -12,9 +11,9 @@ namespace ChurchServices.Data.Import.Hebrew {
         private List<BookBase> BaseBooks = null;
 
         public void RepairVerseText(UnitOfWork uow) {
-            var result = new XPQuery<Translation>(uow).Where(x => x.Name == NAME).FirstOrDefault();
-            if (result != null) {
-                foreach (var book in result.Books) {
+            var translation = new XPQuery<Translation>(uow).Where(x => x.Name == NAME).FirstOrDefault();
+            if (translation != null) {
+                foreach (var book in translation.Books) {
                     foreach (var chapter in book.Chapters) {
                         foreach (var verse in chapter.Verses) {
                             verse.Text = verse.GetSourceText();
@@ -24,6 +23,123 @@ namespace ChurchServices.Data.Import.Hebrew {
 
                 uow.CommitChanges();
             }
+        }
+
+        public void RepairHNPIStrongCodes(UnitOfWork uow, string path) {
+            const string HNPI = "HNPI";
+            var translation = new XPQuery<Translation>(uow).Where(x => x.Name == $"{HNPI}+").FirstOrDefault();
+            if (translation != null) {
+                Strongs = new XPQuery<StrongCode>(uow).Where(x => x.Lang == Language.Hebrew).ToList();
+                var connection = GetConnection(path);
+                var verses = GetVerses(connection);
+                if (translation != null) {
+                    foreach (var book in translation.Books) {
+                        foreach (var chapter in book.Chapters) {
+                            foreach (var verse in chapter.Verses) {
+                                var bhsVerse = verses.Where(x => x.Book == book.NumberOfBook &&
+                                                            x.Chapter == chapter.NumberOfChapter &&
+                                                            x.Verse == verse.NumberOfVerse).FirstOrDefault();
+
+                                var wordIndex = 1;
+                                foreach (var bhsWord in bhsVerse.Words) {
+                                    var word = verse.VerseWords.Where(x=>x.NumberOfVerseWord == wordIndex).FirstOrDefault();
+                                    if (word != null) {
+                                        var strong = GetStrongCode(bhsWord.StrongCode);
+                                        if (strong != null) {
+                                            word.StrongCode = strong;
+                                            word.Save();
+                                        }
+                                    }
+                                    wordIndex++;
+                                }
+                            }
+                        }
+                    }
+
+                    uow.CommitChanges();
+                }
+            }
+        }
+
+
+        public void CreateEmptyHB(UnitOfWork uow, string path) {
+            const string HNPI = "HNPI";
+            var translation = CreateTranslation(uow, $"{HNPI}+", "Hebrajsko-Polski Nowodworski Przekład Interlinearny", Language.Polish, "Rozdział");
+            if (translation != null) {
+                Strongs = new XPQuery<StrongCode>(uow).Where(x => x.Lang == Language.Hebrew).ToList();
+                BaseBooks = new XPQuery<BookBase>(uow).Where(x => x.Status.BiblePart == BiblePart.OldTestament).OrderBy(x => x.NumberOfBook).ToList();
+                var connection = GetConnection(path);
+                var verses = GetVerses(connection);
+
+                foreach (var baseBook in BaseBooks) {
+                    if (verses.Where(x => x.Book == baseBook.NumberOfBook).Count() == 0) {
+                        continue;
+                    }
+
+                    var chapterCount = verses.Where(x => x.Book == baseBook.NumberOfBook)
+                                             .Max(x => x.Chapter);
+
+                    var book = new Book(uow) {
+                        BaseBook = baseBook,
+                        BookName = baseBook.BookName,
+                        BookShortcut = baseBook.BookShortcut,
+                        Color = baseBook.Color,
+                        NumberOfBook = baseBook.NumberOfBook,
+                        NumberOfChapters = chapterCount,
+                        ParentTranslation = translation
+                    };
+                    book.Save();
+
+                    for (int chapterIndex = 1; chapterIndex <= chapterCount; chapterIndex++) {
+                        var versesCount = verses.Where(x => x.Book == baseBook.NumberOfBook &&
+                                                            x.Chapter == chapterIndex)
+                                                .Max(x => x.Verse);
+                        var chapter = new Chapter(uow) {
+                            NumberOfChapter = chapterIndex,
+                            NumberOfVerses = versesCount,
+                            ParentBook = book,
+                            Index = $"{HNPI}.{baseBook.NumberOfBook}.{chapterIndex}"
+                        };
+                        chapter.Save();
+
+                        for (int verseIndex = 1; verseIndex <= versesCount; verseIndex++) {
+                            var bhsVerse = verses.Where(x => x.Book == baseBook.NumberOfBook &&
+                                                             x.Chapter == chapterIndex &&
+                                                             x.Verse == verseIndex).FirstOrDefault();
+
+                            var verseText = "";
+
+                            if (bhsVerse != null) {
+                                var verse = new Verse(uow) {
+                                    NumberOfVerse = verseIndex,
+                                    ParentChapter = chapter,
+                                    Text = verseText,
+                                    Index = $"{HNPI}.{baseBook.NumberOfBook}.{chapterIndex}.{verseIndex}"
+                                };
+                                verse.Save();
+
+                                var wordIndex = 1;
+                                foreach (var word in bhsVerse.Words) {
+                                    var strong = GetStrongCode(word.StrongCode);
+                                    var verseWord = new VerseWord(uow) {
+                                        NumberOfVerseWord = wordIndex,
+                                        ParentVerse = verse,
+                                        SourceWord = word.Text,
+                                        Translation = String.Empty,
+                                        Transliteration = word.Transliteration,
+                                        StrongCode = strong
+                                    };
+
+                                    verseWord.Save();
+                                    wordIndex++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            uow.CommitChanges();
         }
 
         public void Build(UnitOfWork uow, string path) {
@@ -109,7 +225,7 @@ namespace ChurchServices.Data.Import.Hebrew {
         }
         private StrongCode GetStrongCode(int code) {
             if (code == 0) { return default; }
-            return Strongs.Where(x => x.Code == code).FirstOrDefault();
+            return Strongs.Where(x => x.Code == code && x.Lang == Language.Hebrew).FirstOrDefault();
         }
         private List<HBSVerseInfo> GetVerses(SqliteConnection connection) {
             var list = new List<HBSVerseInfo>();
@@ -132,16 +248,16 @@ namespace ChurchServices.Data.Import.Hebrew {
             return conn;
         }
 
-        private Translation CreateTranslation(UnitOfWork uow) {
-            var result = new XPQuery<Translation>(uow).Where(x => x.Name == NAME).FirstOrDefault();
+        private Translation CreateTranslation(UnitOfWork uow, string name = NAME, string description = "Hebrew Study Bible based on Westminster Leningrad Codex", Language lang = Language.English, string chapterString = "Chapter") {
+            var result = new XPQuery<Translation>(uow).Where(x => x.Name == name).FirstOrDefault();
             if (result.IsNull()) {
                 result = new Translation(uow) {
-                    Name = NAME,
-                    Description = "Hebrew Study Bible based on Westminster Leningrad Codex",
+                    Name = name,
+                    Description = description,
                     ChapterPsalmString = "Psalm",
-                    ChapterString = "Chapter",
+                    ChapterString = chapterString,
                     DetailedInfo = "",
-                    Language = Language.English,
+                    Language = lang,
                     Type = TranslationType.Interlinear,
                     BookType = TheBookType.Bible,
                     Introduction = "",
