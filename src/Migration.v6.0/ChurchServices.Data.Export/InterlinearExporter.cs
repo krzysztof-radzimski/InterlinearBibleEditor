@@ -490,6 +490,14 @@ namespace ChurchServices.Data.Export {
                 }
             }
 
+            if (par == null) {
+                par = builder.InsertParagraph();
+                par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
+                par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+                par.ParagraphFormat.KeepWithNext = false;
+                builder.MoveTo(par);
+            }
+
             if (verse.ParentChapter.NumberOfChapter != 0) { ExportVerseNumber(verse, par, builder); }
             foreach (var item in verse.VerseWords.OrderBy(x => x.NumberOfVerseWord)) {
                 ExportVerseWord(item, par, builder);
@@ -500,7 +508,7 @@ namespace ChurchServices.Data.Export {
         private void ExportVerseNumber(Verse verse, Paragraph par, DocumentBuilder builder) {
             var chapterNumber = verse.ParentTranslation.ChapterRomanNumbering ? verse.ParentChapter.NumberOfChapter.ArabicToRoman() : verse.ParentChapter.NumberOfChapter.ToString();
             var text = $"{chapterNumber}:{verse.NumberOfVerse}";
-            var shape = new Shape(par.Document, ShapeType.TextBox) {
+            var shape = new Shape(builder.Document, ShapeType.TextBox) {
                 Width = 30,
                 Height = 80,
                 BehindText = false,
@@ -510,7 +518,7 @@ namespace ChurchServices.Data.Export {
             shape.TextBox.FitShapeToText = true;
             shape.TextBox.TextBoxWrapMode = TextBoxWrapMode.None;
 
-            var shapePar = new Paragraph(par.Document);
+            var shapePar = new Paragraph(builder.Document);
             shape.AppendChild(shapePar);
 
             builder.MoveTo(shape.FirstParagraph);

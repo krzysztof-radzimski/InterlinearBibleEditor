@@ -71,7 +71,7 @@
                     verseText = item.HtmlText;
                     var simpleText = item.SimpleText;
 
-                    var link = $@"<a href=""/{index.TranslationName}/{index.NumberOfBook}/{index.NumberOfChapter}/{index.NumberOfVerse}"" class=""text-decoration-none"" title=""{translationDesc}"">{translationName}</a>";
+                    var link = $@"<a href=""/{index.TranslationName}/{index.NumberOfBook}/{index.NumberOfChapter}/{index.NumberOfVerse}"" class=""text-decoration-none""  data-bs-toggle=""tooltip"" data-bs-title=""{translationDesc}"">{translationName}</a>";
                     var style = "";
                     if (item.Language == Language.English) { style = @"style=""text-align: right;"""; }
 
@@ -80,7 +80,7 @@
                         <div class="col-auto p-1 border-bottom border-start" style="width: 8%; font-size: 80%; min-width: 100px;">@translationType</div>
                         <div class="col-auto p-1 border-bottom border-start" style="width: 15%; font-size: 80%; min-width: 100px">@translationDesc</div>
                         <div class="col p-1 border-start border-bottom" id="verseText_@index.TranslationName" @Html.Raw(style)>@Html.Raw(verseText)</div>
-                        <div class="col-auto p-1 border-bottom border-start" style="width: 5%; min-width: 50px;"><a class="dropdown-item" onclick="copyToClipboard3('@simpleText')" style="cursor: pointer;" title="Kopiuj treść wersetu"><i class="far fa-copy"></i></a></div>
+                        <div class="col-auto p-1 border-bottom border-start" style="width: 5%; min-width: 50px; text-align: center;"><a style="cursor: pointer;" onclick="copyToClipboard3('@simpleText')" style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-title="Kopiuj treść @name @translationName"><i class="far fa-copy"></i></a></div>
                     </div>
                 }
 

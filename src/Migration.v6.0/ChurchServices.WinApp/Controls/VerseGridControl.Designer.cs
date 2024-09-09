@@ -25,670 +25,628 @@ namespace ChurchServices.WinApp.Controls {
         /// </summary>
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VerseGridControl));
-            this.gridControl = new DevExpress.XtraGrid.GridControl();
-            this.layoutView1 = new DevExpress.XtraGrid.Views.Layout.LayoutView();
-            this.colNumber = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
-            this.layoutViewField_layoutViewColumn1 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
-            this.colStrongsCode = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
-            this.layoutViewField_layoutViewColumn1_1 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
-            this.colGrammarCode = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
-            this.layoutViewField_layoutViewColumn2 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
-            this.colSourceWord = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
-            this.layoutViewField_layoutViewColumn1_2 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
-            this.colTransliterate = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
-            this.layoutViewField_layoutViewColumn1_3 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
-            this.colTranslation = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
-            this.layoutViewField_layoutViewColumn1_4 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
-            this.colCitation = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
-            this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.layoutViewField_layoutViewColumn1_5 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
-            this.colWordOfGod = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
-            this.repositoryItemCheckEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.layoutViewField_layoutViewColumn1_6 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
-            this.colFootnote = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
-            this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
-            this.layoutViewField_layoutViewColumn1_7 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
-            this.layoutViewCard1 = new DevExpress.XtraGrid.Views.Layout.LayoutViewCard();
-            this.tabPane = new DevExpress.XtraBars.Navigation.TabPane();
-            this.tabVerseTranslations = new DevExpress.XtraBars.Navigation.TabNavigationPage();
-            this.gridTranslations = new DevExpress.XtraGrid.GridControl();
-            this.viewTranslations = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.tabStrongDictionary = new DevExpress.XtraBars.Navigation.TabNavigationPage();
-            this.tblStrong = new DevExpress.Utils.Layout.TablePanel();
-            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this.btnMoreBLB = new DevExpress.XtraEditors.SimpleButton();
-            this.btnMoreStronsCodeInfo = new DevExpress.XtraEditors.SimpleButton();
-            this.btnEditStrongsCode = new DevExpress.XtraEditors.SimpleButton();
-            this.vwStrongLocal = new Microsoft.Web.WebView2.WinForms.WebView2();
-            this.tabGrammarCode = new DevExpress.XtraBars.Navigation.TabNavigationPage();
-            this.wbGrammarCodes = new Microsoft.Web.WebView2.WinForms.WebView2();
-            this.tabSettings = new DevExpress.XtraBars.Navigation.TabNavigationPage();
-            this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
-            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
-            this.txtStoryTextLevel2 = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
-            this.txtStoryTextLevel1 = new DevExpress.XtraEditors.TextEdit();
-            this.cbStartFromNewLine = new DevExpress.XtraEditors.CheckEdit();
-            this.splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewCard1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tabPane)).BeginInit();
-            this.tabPane.SuspendLayout();
-            this.tabVerseTranslations.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridTranslations)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.viewTranslations)).BeginInit();
-            this.tabStrongDictionary.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tblStrong)).BeginInit();
-            this.tblStrong.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
-            this.panelControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.vwStrongLocal)).BeginInit();
-            this.tabGrammarCode.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.wbGrammarCodes)).BeginInit();
-            this.tabSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
-            this.tablePanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel2.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel1.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).BeginInit();
-            this.SuspendLayout();
+            gridControl = new DevExpress.XtraGrid.GridControl();
+            layoutView1 = new DevExpress.XtraGrid.Views.Layout.LayoutView();
+            colNumber = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
+            layoutViewField_layoutViewColumn1 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
+            colStrongsCode = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
+            layoutViewField_layoutViewColumn1_1 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
+            colGrammarCode = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
+            layoutViewField_layoutViewColumn2 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
+            colSourceWord = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
+            layoutViewField_layoutViewColumn1_2 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
+            colTransliterate = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
+            layoutViewField_layoutViewColumn1_3 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
+            colTranslation = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
+            layoutViewField_layoutViewColumn1_4 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
+            colCitation = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
+            repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            layoutViewField_layoutViewColumn1_5 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
+            colWordOfGod = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
+            repositoryItemCheckEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            layoutViewField_layoutViewColumn1_6 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
+            colFootnote = new DevExpress.XtraGrid.Columns.LayoutViewColumn();
+            repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+            layoutViewField_layoutViewColumn1_7 = new DevExpress.XtraGrid.Views.Layout.LayoutViewField();
+            layoutViewCard1 = new DevExpress.XtraGrid.Views.Layout.LayoutViewCard();
+            tabPane = new DevExpress.XtraBars.Navigation.TabPane();
+            tabVerseTranslations = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            gridTranslations = new DevExpress.XtraGrid.GridControl();
+            viewTranslations = new DevExpress.XtraGrid.Views.Grid.GridView();
+            tabStrongDictionary = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            tblStrong = new DevExpress.Utils.Layout.TablePanel();
+            panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            btnMoreBLB = new DevExpress.XtraEditors.SimpleButton();
+            btnMoreStronsCodeInfo = new DevExpress.XtraEditors.SimpleButton();
+            btnEditStrongsCode = new DevExpress.XtraEditors.SimpleButton();
+            vwStrongLocal = new Microsoft.Web.WebView2.WinForms.WebView2();
+            tabGrammarCode = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            wbGrammarCodes = new Microsoft.Web.WebView2.WinForms.WebView2();
+            tabSettings = new DevExpress.XtraBars.Navigation.TabNavigationPage();
+            tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
+            labelControl5 = new DevExpress.XtraEditors.LabelControl();
+            txtStoryTextLevel2 = new DevExpress.XtraEditors.TextEdit();
+            labelControl4 = new DevExpress.XtraEditors.LabelControl();
+            txtStoryTextLevel1 = new DevExpress.XtraEditors.TextEdit();
+            cbStartFromNewLine = new DevExpress.XtraEditors.CheckEdit();
+            splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
+            ((System.ComponentModel.ISupportInitialize)gridControl).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)repositoryItemCheckEdit1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)repositoryItemCheckEdit2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_6).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)repositoryItemMemoEdit1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_7).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewCard1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)tabPane).BeginInit();
+            tabPane.SuspendLayout();
+            tabVerseTranslations.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)gridTranslations).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)viewTranslations).BeginInit();
+            tabStrongDictionary.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)tblStrong).BeginInit();
+            tblStrong.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)panelControl1).BeginInit();
+            panelControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)vwStrongLocal).BeginInit();
+            tabGrammarCode.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)wbGrammarCodes).BeginInit();
+            tabSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)tablePanel1).BeginInit();
+            tablePanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)txtStoryTextLevel2.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtStoryTextLevel1.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)cbStartFromNewLine.Properties).BeginInit();
+            SuspendLayout();
             // 
             // gridControl
             // 
-            this.gridControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControl.Location = new System.Drawing.Point(0, 0);
-            this.gridControl.MainView = this.layoutView1;
-            this.gridControl.Name = "gridControl";
-            this.gridControl.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repositoryItemCheckEdit1,
-            this.repositoryItemCheckEdit2,
-            this.repositoryItemMemoEdit1});
-            this.gridControl.Size = new System.Drawing.Size(1294, 450);
-            this.gridControl.TabIndex = 0;
-            this.gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.layoutView1});
-            this.gridControl.ProcessGridKey += new System.Windows.Forms.KeyEventHandler(this.gridControl_ProcessGridKey);
+            gridControl.Dock = DockStyle.Fill;
+            gridControl.Location = new Point(0, 0);
+            gridControl.MainView = layoutView1;
+            gridControl.Name = "gridControl";
+            gridControl.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { repositoryItemCheckEdit1, repositoryItemCheckEdit2, repositoryItemMemoEdit1 });
+            gridControl.Size = new Size(1294, 450);
+            gridControl.TabIndex = 0;
+            gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { layoutView1 });
+            gridControl.ProcessGridKey += gridControl_ProcessGridKey;
             // 
             // layoutView1
             // 
-            this.layoutView1.Appearance.FieldEditingValue.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.layoutView1.Appearance.FieldEditingValue.Options.UseFont = true;
-            this.layoutView1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.layoutView1.CardCaptionFormat = "Word {0} of {1}";
-            this.layoutView1.CardHorzInterval = 20;
-            this.layoutView1.CardMinSize = new System.Drawing.Size(300, 20);
-            this.layoutView1.CardVertInterval = 20;
-            this.layoutView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.LayoutViewColumn[] {
-            this.colNumber,
-            this.colStrongsCode,
-            this.colGrammarCode,
-            this.colSourceWord,
-            this.colTransliterate,
-            this.colTranslation,
-            this.colCitation,
-            this.colWordOfGod,
-            this.colFootnote});
-            this.layoutView1.GridControl = this.gridControl;
-            this.layoutView1.Name = "layoutView1";
-            this.layoutView1.OptionsCustomization.AllowFilter = false;
-            this.layoutView1.OptionsCustomization.AllowSort = false;
-            this.layoutView1.OptionsMultiRecordMode.MultiColumnScrollBarOrientation = DevExpress.XtraGrid.Views.Layout.ScrollBarOrientation.Vertical;
-            this.layoutView1.OptionsMultiRecordMode.MultiRowScrollBarOrientation = DevExpress.XtraGrid.Views.Layout.ScrollBarOrientation.Vertical;
-            this.layoutView1.OptionsView.ContentAlignment = System.Drawing.ContentAlignment.TopLeft;
-            this.layoutView1.OptionsView.ShowCardBorderIfCaptionHidden = false;
-            this.layoutView1.OptionsView.ShowCardExpandButton = false;
-            this.layoutView1.OptionsView.ShowCardLines = false;
-            this.layoutView1.OptionsView.ShowFieldHints = false;
-            this.layoutView1.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
-            this.layoutView1.OptionsView.ShowHeaderPanel = false;
-            this.layoutView1.OptionsView.ViewMode = DevExpress.XtraGrid.Views.Layout.LayoutViewMode.MultiRow;
-            this.layoutView1.TemplateCard = this.layoutViewCard1;
-            this.layoutView1.Click += new System.EventHandler(this.layoutView1_Click);
-            this.layoutView1.DoubleClick += new System.EventHandler(this.layoutView1_DoubleClick);
+            layoutView1.Appearance.FieldEditingValue.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            layoutView1.Appearance.FieldEditingValue.Options.UseFont = true;
+            layoutView1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            layoutView1.CardCaptionFormat = "Word {0} of {1}";
+            layoutView1.CardHorzInterval = 20;
+            layoutView1.CardMinSize = new Size(300, 20);
+            layoutView1.CardVertInterval = 20;
+            layoutView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.LayoutViewColumn[] { colNumber, colStrongsCode, colGrammarCode, colSourceWord, colTransliterate, colTranslation, colCitation, colWordOfGod, colFootnote });
+            layoutView1.GridControl = gridControl;
+            layoutView1.Name = "layoutView1";
+            layoutView1.OptionsCustomization.AllowFilter = false;
+            layoutView1.OptionsCustomization.AllowSort = false;
+            layoutView1.OptionsMultiRecordMode.MultiColumnScrollBarOrientation = DevExpress.XtraGrid.Views.Layout.ScrollBarOrientation.Vertical;
+            layoutView1.OptionsMultiRecordMode.MultiRowScrollBarOrientation = DevExpress.XtraGrid.Views.Layout.ScrollBarOrientation.Vertical;
+            layoutView1.OptionsView.ContentAlignment = ContentAlignment.TopLeft;
+            layoutView1.OptionsView.ShowCardBorderIfCaptionHidden = false;
+            layoutView1.OptionsView.ShowCardExpandButton = false;
+            layoutView1.OptionsView.ShowCardLines = false;
+            layoutView1.OptionsView.ShowFieldHints = false;
+            layoutView1.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+            layoutView1.OptionsView.ShowHeaderPanel = false;
+            layoutView1.OptionsView.ViewMode = DevExpress.XtraGrid.Views.Layout.LayoutViewMode.MultiRow;
+            layoutView1.TemplateCard = layoutViewCard1;
+            layoutView1.Click += layoutView1_Click;
+            layoutView1.DoubleClick += layoutView1_DoubleClick;
             // 
             // colNumber
             // 
-            this.colNumber.AppearanceCell.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.colNumber.AppearanceCell.Options.UseFont = true;
-            this.colNumber.AppearanceCell.Options.UseTextOptions = true;
-            this.colNumber.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.colNumber.Caption = "Number";
-            this.colNumber.FieldName = "Number";
-            this.colNumber.LayoutViewField = this.layoutViewField_layoutViewColumn1;
-            this.colNumber.Name = "colNumber";
-            this.colNumber.OptionsColumn.AllowEdit = false;
-            this.colNumber.OptionsColumn.ReadOnly = true;
-            this.colNumber.OptionsFilter.AllowAutoFilter = false;
-            this.colNumber.OptionsFilter.AllowFilter = false;
+            colNumber.AppearanceCell.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            colNumber.AppearanceCell.Options.UseFont = true;
+            colNumber.AppearanceCell.Options.UseTextOptions = true;
+            colNumber.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            colNumber.Caption = "Number";
+            colNumber.FieldName = "Number";
+            colNumber.LayoutViewField = layoutViewField_layoutViewColumn1;
+            colNumber.Name = "colNumber";
+            colNumber.OptionsColumn.AllowEdit = false;
+            colNumber.OptionsColumn.ReadOnly = true;
+            colNumber.OptionsFilter.AllowAutoFilter = false;
+            colNumber.OptionsFilter.AllowFilter = false;
             // 
             // layoutViewField_layoutViewColumn1
             // 
-            this.layoutViewField_layoutViewColumn1.EditorPreferredWidth = 10;
-            this.layoutViewField_layoutViewColumn1.Location = new System.Drawing.Point(0, 0);
-            this.layoutViewField_layoutViewColumn1.Name = "layoutViewField_layoutViewColumn1";
-            this.layoutViewField_layoutViewColumn1.Size = new System.Drawing.Size(302, 22);
-            this.layoutViewField_layoutViewColumn1.TextLocation = DevExpress.Utils.Locations.Top;
-            this.layoutViewField_layoutViewColumn1.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutViewField_layoutViewColumn1.TextVisible = false;
+            layoutViewField_layoutViewColumn1.EditorPreferredWidth = 10;
+            layoutViewField_layoutViewColumn1.Location = new Point(0, 0);
+            layoutViewField_layoutViewColumn1.Name = "layoutViewField_layoutViewColumn1";
+            layoutViewField_layoutViewColumn1.Size = new Size(302, 22);
+            layoutViewField_layoutViewColumn1.TextLocation = DevExpress.Utils.Locations.Top;
+            layoutViewField_layoutViewColumn1.TextSize = new Size(0, 0);
+            layoutViewField_layoutViewColumn1.TextVisible = false;
             // 
             // colStrongsCode
             // 
-            this.colStrongsCode.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.colStrongsCode.AppearanceCell.Options.UseForeColor = true;
-            this.colStrongsCode.AppearanceCell.Options.UseTextOptions = true;
-            this.colStrongsCode.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            this.colStrongsCode.AppearanceHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.colStrongsCode.AppearanceHeader.Options.UseForeColor = true;
-            this.colStrongsCode.Caption = "Strong\'s Code";
-            this.colStrongsCode.FieldName = "StrongsCode";
-            this.colStrongsCode.LayoutViewField = this.layoutViewField_layoutViewColumn1_1;
-            this.colStrongsCode.Name = "colStrongsCode";
-            this.colStrongsCode.OptionsColumn.AllowEdit = false;
-            this.colStrongsCode.OptionsColumn.ReadOnly = true;
-            this.colStrongsCode.OptionsColumn.TabStop = false;
+            colStrongsCode.AppearanceCell.ForeColor = Color.FromArgb(255, 128, 0);
+            colStrongsCode.AppearanceCell.Options.UseForeColor = true;
+            colStrongsCode.AppearanceCell.Options.UseTextOptions = true;
+            colStrongsCode.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
+            colStrongsCode.AppearanceHeader.ForeColor = Color.FromArgb(255, 128, 0);
+            colStrongsCode.AppearanceHeader.Options.UseForeColor = true;
+            colStrongsCode.Caption = "Strong's Code";
+            colStrongsCode.FieldName = "StrongsCode";
+            colStrongsCode.LayoutViewField = layoutViewField_layoutViewColumn1_1;
+            colStrongsCode.Name = "colStrongsCode";
+            colStrongsCode.OptionsColumn.AllowEdit = false;
+            colStrongsCode.OptionsColumn.ReadOnly = true;
+            colStrongsCode.OptionsColumn.TabStop = false;
             // 
             // layoutViewField_layoutViewColumn1_1
             // 
-            this.layoutViewField_layoutViewColumn1_1.EditorPreferredWidth = 10;
-            this.layoutViewField_layoutViewColumn1_1.Location = new System.Drawing.Point(0, 22);
-            this.layoutViewField_layoutViewColumn1_1.Name = "layoutViewField_layoutViewColumn1_1";
-            this.layoutViewField_layoutViewColumn1_1.Size = new System.Drawing.Size(302, 22);
-            this.layoutViewField_layoutViewColumn1_1.TextSize = new System.Drawing.Size(75, 13);
+            layoutViewField_layoutViewColumn1_1.EditorPreferredWidth = 10;
+            layoutViewField_layoutViewColumn1_1.Location = new Point(0, 22);
+            layoutViewField_layoutViewColumn1_1.Name = "layoutViewField_layoutViewColumn1_1";
+            layoutViewField_layoutViewColumn1_1.Size = new Size(302, 22);
+            layoutViewField_layoutViewColumn1_1.TextSize = new Size(75, 13);
             // 
             // colGrammarCode
             // 
-            this.colGrammarCode.AppearanceCell.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.colGrammarCode.AppearanceCell.Options.UseForeColor = true;
-            this.colGrammarCode.AppearanceHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.colGrammarCode.AppearanceHeader.Options.UseForeColor = true;
-            this.colGrammarCode.Caption = "Grammar Code";
-            this.colGrammarCode.FieldName = "GrammarCode";
-            this.colGrammarCode.LayoutViewField = this.layoutViewField_layoutViewColumn2;
-            this.colGrammarCode.Name = "colGrammarCode";
-            this.colGrammarCode.OptionsColumn.AllowEdit = false;
-            this.colGrammarCode.OptionsColumn.ReadOnly = true;
-            this.colGrammarCode.OptionsColumn.TabStop = false;
+            colGrammarCode.AppearanceCell.ForeColor = Color.FromArgb(255, 192, 255);
+            colGrammarCode.AppearanceCell.Options.UseForeColor = true;
+            colGrammarCode.AppearanceHeader.ForeColor = Color.FromArgb(255, 192, 255);
+            colGrammarCode.AppearanceHeader.Options.UseForeColor = true;
+            colGrammarCode.Caption = "Grammar Code";
+            colGrammarCode.FieldName = "GrammarCode";
+            colGrammarCode.LayoutViewField = layoutViewField_layoutViewColumn2;
+            colGrammarCode.Name = "colGrammarCode";
+            colGrammarCode.OptionsColumn.AllowEdit = false;
+            colGrammarCode.OptionsColumn.ReadOnly = true;
+            colGrammarCode.OptionsColumn.TabStop = false;
             // 
             // layoutViewField_layoutViewColumn2
             // 
-            this.layoutViewField_layoutViewColumn2.EditorPreferredWidth = 10;
-            this.layoutViewField_layoutViewColumn2.Location = new System.Drawing.Point(0, 44);
-            this.layoutViewField_layoutViewColumn2.Name = "layoutViewField_layoutViewColumn2";
-            this.layoutViewField_layoutViewColumn2.Size = new System.Drawing.Size(302, 22);
-            this.layoutViewField_layoutViewColumn2.TextSize = new System.Drawing.Size(75, 13);
+            layoutViewField_layoutViewColumn2.EditorPreferredWidth = 10;
+            layoutViewField_layoutViewColumn2.Location = new Point(0, 44);
+            layoutViewField_layoutViewColumn2.Name = "layoutViewField_layoutViewColumn2";
+            layoutViewField_layoutViewColumn2.Size = new Size(302, 22);
+            layoutViewField_layoutViewColumn2.TextSize = new Size(75, 13);
             // 
             // colSourceWord
             // 
-            this.colSourceWord.AppearanceCell.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.colSourceWord.AppearanceCell.ForeColor = System.Drawing.Color.Salmon;
-            this.colSourceWord.AppearanceCell.Options.UseFont = true;
-            this.colSourceWord.AppearanceCell.Options.UseForeColor = true;
-            this.colSourceWord.AppearanceCell.Options.UseTextOptions = true;
-            this.colSourceWord.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.colSourceWord.Caption = "SourceWord";
-            this.colSourceWord.FieldName = "SourceWord";
-            this.colSourceWord.LayoutViewField = this.layoutViewField_layoutViewColumn1_2;
-            this.colSourceWord.Name = "colSourceWord";
-            this.colSourceWord.OptionsColumn.AllowEdit = false;
-            this.colSourceWord.OptionsColumn.ReadOnly = true;
-            this.colSourceWord.OptionsColumn.TabStop = false;
+            colSourceWord.AppearanceCell.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            colSourceWord.AppearanceCell.ForeColor = Color.Salmon;
+            colSourceWord.AppearanceCell.Options.UseFont = true;
+            colSourceWord.AppearanceCell.Options.UseForeColor = true;
+            colSourceWord.AppearanceCell.Options.UseTextOptions = true;
+            colSourceWord.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            colSourceWord.Caption = "SourceWord";
+            colSourceWord.FieldName = "SourceWord";
+            colSourceWord.LayoutViewField = layoutViewField_layoutViewColumn1_2;
+            colSourceWord.Name = "colSourceWord";
+            colSourceWord.OptionsColumn.AllowEdit = false;
+            colSourceWord.OptionsColumn.ReadOnly = true;
+            colSourceWord.OptionsColumn.TabStop = false;
             // 
             // layoutViewField_layoutViewColumn1_2
             // 
-            this.layoutViewField_layoutViewColumn1_2.EditorPreferredWidth = 10;
-            this.layoutViewField_layoutViewColumn1_2.Location = new System.Drawing.Point(0, 66);
-            this.layoutViewField_layoutViewColumn1_2.Name = "layoutViewField_layoutViewColumn1_2";
-            this.layoutViewField_layoutViewColumn1_2.Size = new System.Drawing.Size(302, 22);
-            this.layoutViewField_layoutViewColumn1_2.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutViewField_layoutViewColumn1_2.TextVisible = false;
+            layoutViewField_layoutViewColumn1_2.EditorPreferredWidth = 10;
+            layoutViewField_layoutViewColumn1_2.Location = new Point(0, 66);
+            layoutViewField_layoutViewColumn1_2.Name = "layoutViewField_layoutViewColumn1_2";
+            layoutViewField_layoutViewColumn1_2.Size = new Size(302, 22);
+            layoutViewField_layoutViewColumn1_2.TextSize = new Size(0, 0);
+            layoutViewField_layoutViewColumn1_2.TextVisible = false;
             // 
             // colTransliterate
             // 
-            this.colTransliterate.AppearanceCell.ForeColor = System.Drawing.Color.PaleGreen;
-            this.colTransliterate.AppearanceCell.Options.UseForeColor = true;
-            this.colTransliterate.AppearanceCell.Options.UseTextOptions = true;
-            this.colTransliterate.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.colTransliterate.Caption = "Transliteration";
-            this.colTransliterate.FieldName = "Transliteration";
-            this.colTransliterate.LayoutViewField = this.layoutViewField_layoutViewColumn1_3;
-            this.colTransliterate.Name = "colTransliterate";
-            this.colTransliterate.OptionsColumn.AllowEdit = false;
-            this.colTransliterate.OptionsColumn.ReadOnly = true;
-            this.colTransliterate.OptionsColumn.TabStop = false;
+            colTransliterate.AppearanceCell.ForeColor = Color.PaleGreen;
+            colTransliterate.AppearanceCell.Options.UseForeColor = true;
+            colTransliterate.AppearanceCell.Options.UseTextOptions = true;
+            colTransliterate.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            colTransliterate.Caption = "Transliteration";
+            colTransliterate.FieldName = "Transliteration";
+            colTransliterate.LayoutViewField = layoutViewField_layoutViewColumn1_3;
+            colTransliterate.Name = "colTransliterate";
+            colTransliterate.OptionsColumn.AllowEdit = false;
+            colTransliterate.OptionsColumn.ReadOnly = true;
+            colTransliterate.OptionsColumn.TabStop = false;
             // 
             // layoutViewField_layoutViewColumn1_3
             // 
-            this.layoutViewField_layoutViewColumn1_3.EditorPreferredWidth = 10;
-            this.layoutViewField_layoutViewColumn1_3.Location = new System.Drawing.Point(0, 88);
-            this.layoutViewField_layoutViewColumn1_3.Name = "layoutViewField_layoutViewColumn1_3";
-            this.layoutViewField_layoutViewColumn1_3.Size = new System.Drawing.Size(302, 22);
-            this.layoutViewField_layoutViewColumn1_3.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutViewField_layoutViewColumn1_3.TextVisible = false;
+            layoutViewField_layoutViewColumn1_3.EditorPreferredWidth = 10;
+            layoutViewField_layoutViewColumn1_3.Location = new Point(0, 88);
+            layoutViewField_layoutViewColumn1_3.Name = "layoutViewField_layoutViewColumn1_3";
+            layoutViewField_layoutViewColumn1_3.Size = new Size(302, 22);
+            layoutViewField_layoutViewColumn1_3.TextSize = new Size(0, 0);
+            layoutViewField_layoutViewColumn1_3.TextVisible = false;
             // 
             // colTranslation
             // 
-            this.colTranslation.AppearanceCell.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.colTranslation.AppearanceCell.ForeColor = System.Drawing.Color.Gold;
-            this.colTranslation.AppearanceCell.Options.UseFont = true;
-            this.colTranslation.AppearanceCell.Options.UseForeColor = true;
-            this.colTranslation.AppearanceCell.Options.UseTextOptions = true;
-            this.colTranslation.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.colTranslation.Caption = "Translation";
-            this.colTranslation.FieldName = "Translation";
-            this.colTranslation.LayoutViewField = this.layoutViewField_layoutViewColumn1_4;
-            this.colTranslation.Name = "colTranslation";
+            colTranslation.AppearanceCell.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            colTranslation.AppearanceCell.ForeColor = Color.Gold;
+            colTranslation.AppearanceCell.Options.UseFont = true;
+            colTranslation.AppearanceCell.Options.UseForeColor = true;
+            colTranslation.AppearanceCell.Options.UseTextOptions = true;
+            colTranslation.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            colTranslation.Caption = "Translation";
+            colTranslation.FieldName = "Translation";
+            colTranslation.LayoutViewField = layoutViewField_layoutViewColumn1_4;
+            colTranslation.Name = "colTranslation";
             // 
             // layoutViewField_layoutViewColumn1_4
             // 
-            this.layoutViewField_layoutViewColumn1_4.AppearanceItemCaption.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.layoutViewField_layoutViewColumn1_4.AppearanceItemCaption.Options.UseFont = true;
-            this.layoutViewField_layoutViewColumn1_4.EditorPreferredWidth = 10;
-            this.layoutViewField_layoutViewColumn1_4.Location = new System.Drawing.Point(0, 110);
-            this.layoutViewField_layoutViewColumn1_4.Name = "layoutViewField_layoutViewColumn1_4";
-            this.layoutViewField_layoutViewColumn1_4.Size = new System.Drawing.Size(302, 18);
-            this.layoutViewField_layoutViewColumn1_4.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutViewField_layoutViewColumn1_4.TextVisible = false;
+            layoutViewField_layoutViewColumn1_4.AppearanceItemCaption.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            layoutViewField_layoutViewColumn1_4.AppearanceItemCaption.Options.UseFont = true;
+            layoutViewField_layoutViewColumn1_4.EditorPreferredWidth = 10;
+            layoutViewField_layoutViewColumn1_4.Location = new Point(0, 110);
+            layoutViewField_layoutViewColumn1_4.Name = "layoutViewField_layoutViewColumn1_4";
+            layoutViewField_layoutViewColumn1_4.Size = new Size(302, 18);
+            layoutViewField_layoutViewColumn1_4.TextSize = new Size(0, 0);
+            layoutViewField_layoutViewColumn1_4.TextVisible = false;
             // 
             // colCitation
             // 
-            this.colCitation.Caption = "Citation";
-            this.colCitation.ColumnEdit = this.repositoryItemCheckEdit1;
-            this.colCitation.FieldName = "Citation";
-            this.colCitation.LayoutViewField = this.layoutViewField_layoutViewColumn1_5;
-            this.colCitation.Name = "colCitation";
-            this.colCitation.OptionsColumn.TabStop = false;
+            colCitation.Caption = "Citation";
+            colCitation.ColumnEdit = repositoryItemCheckEdit1;
+            colCitation.FieldName = "Citation";
+            colCitation.LayoutViewField = layoutViewField_layoutViewColumn1_5;
+            colCitation.Name = "colCitation";
+            colCitation.OptionsColumn.TabStop = false;
             // 
             // repositoryItemCheckEdit1
             // 
-            this.repositoryItemCheckEdit1.AutoHeight = false;
-            this.repositoryItemCheckEdit1.Name = "repositoryItemCheckEdit1";
+            repositoryItemCheckEdit1.AutoHeight = false;
+            repositoryItemCheckEdit1.Name = "repositoryItemCheckEdit1";
             // 
             // layoutViewField_layoutViewColumn1_5
             // 
-            this.layoutViewField_layoutViewColumn1_5.EditorPreferredWidth = 10;
-            this.layoutViewField_layoutViewColumn1_5.Location = new System.Drawing.Point(0, 128);
-            this.layoutViewField_layoutViewColumn1_5.Name = "layoutViewField_layoutViewColumn1_5";
-            this.layoutViewField_layoutViewColumn1_5.Size = new System.Drawing.Size(302, 20);
-            this.layoutViewField_layoutViewColumn1_5.TextSize = new System.Drawing.Size(75, 13);
+            layoutViewField_layoutViewColumn1_5.EditorPreferredWidth = 10;
+            layoutViewField_layoutViewColumn1_5.Location = new Point(0, 128);
+            layoutViewField_layoutViewColumn1_5.Name = "layoutViewField_layoutViewColumn1_5";
+            layoutViewField_layoutViewColumn1_5.Size = new Size(302, 20);
+            layoutViewField_layoutViewColumn1_5.TextSize = new Size(75, 13);
             // 
             // colWordOfGod
             // 
-            this.colWordOfGod.AppearanceHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.colWordOfGod.AppearanceHeader.Options.UseForeColor = true;
-            this.colWordOfGod.Caption = "Word of God";
-            this.colWordOfGod.ColumnEdit = this.repositoryItemCheckEdit2;
-            this.colWordOfGod.FieldName = "WordOfGod";
-            this.colWordOfGod.LayoutViewField = this.layoutViewField_layoutViewColumn1_6;
-            this.colWordOfGod.Name = "colWordOfGod";
-            this.colWordOfGod.OptionsColumn.TabStop = false;
+            colWordOfGod.AppearanceHeader.ForeColor = Color.FromArgb(255, 128, 0);
+            colWordOfGod.AppearanceHeader.Options.UseForeColor = true;
+            colWordOfGod.Caption = "Word of God";
+            colWordOfGod.ColumnEdit = repositoryItemCheckEdit2;
+            colWordOfGod.FieldName = "WordOfGod";
+            colWordOfGod.LayoutViewField = layoutViewField_layoutViewColumn1_6;
+            colWordOfGod.Name = "colWordOfGod";
+            colWordOfGod.OptionsColumn.TabStop = false;
             // 
             // repositoryItemCheckEdit2
             // 
-            this.repositoryItemCheckEdit2.AutoHeight = false;
-            this.repositoryItemCheckEdit2.Name = "repositoryItemCheckEdit2";
+            repositoryItemCheckEdit2.AutoHeight = false;
+            repositoryItemCheckEdit2.Name = "repositoryItemCheckEdit2";
             // 
             // layoutViewField_layoutViewColumn1_6
             // 
-            this.layoutViewField_layoutViewColumn1_6.EditorPreferredWidth = 10;
-            this.layoutViewField_layoutViewColumn1_6.Location = new System.Drawing.Point(0, 148);
-            this.layoutViewField_layoutViewColumn1_6.Name = "layoutViewField_layoutViewColumn1_6";
-            this.layoutViewField_layoutViewColumn1_6.Size = new System.Drawing.Size(302, 20);
-            this.layoutViewField_layoutViewColumn1_6.TextSize = new System.Drawing.Size(75, 13);
+            layoutViewField_layoutViewColumn1_6.EditorPreferredWidth = 10;
+            layoutViewField_layoutViewColumn1_6.Location = new Point(0, 148);
+            layoutViewField_layoutViewColumn1_6.Name = "layoutViewField_layoutViewColumn1_6";
+            layoutViewField_layoutViewColumn1_6.Size = new Size(302, 20);
+            layoutViewField_layoutViewColumn1_6.TextSize = new Size(75, 13);
             // 
             // colFootnote
             // 
-            this.colFootnote.AppearanceCell.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.colFootnote.AppearanceCell.Options.UseFont = true;
-            this.colFootnote.AppearanceCell.Options.UseTextOptions = true;
-            this.colFootnote.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            this.colFootnote.Caption = "Footnote";
-            this.colFootnote.ColumnEdit = this.repositoryItemMemoEdit1;
-            this.colFootnote.FieldName = "Footnote";
-            this.colFootnote.LayoutViewField = this.layoutViewField_layoutViewColumn1_7;
-            this.colFootnote.Name = "colFootnote";
-            this.colFootnote.OptionsColumn.TabStop = false;
+            colFootnote.AppearanceCell.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            colFootnote.AppearanceCell.Options.UseFont = true;
+            colFootnote.AppearanceCell.Options.UseTextOptions = true;
+            colFootnote.AppearanceCell.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            colFootnote.Caption = "Footnote";
+            colFootnote.ColumnEdit = repositoryItemMemoEdit1;
+            colFootnote.FieldName = "Footnote";
+            colFootnote.LayoutViewField = layoutViewField_layoutViewColumn1_7;
+            colFootnote.Name = "colFootnote";
+            colFootnote.OptionsColumn.TabStop = false;
             // 
             // repositoryItemMemoEdit1
             // 
-            this.repositoryItemMemoEdit1.LinesCount = 5;
-            this.repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
-            this.repositoryItemMemoEdit1.NullValuePrompt = "Insert footnote text";
-            this.repositoryItemMemoEdit1.ShowNullValuePrompt = DevExpress.XtraEditors.ShowNullValuePromptOptions.EmptyValue;
+            repositoryItemMemoEdit1.LinesCount = 5;
+            repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
+            repositoryItemMemoEdit1.NullValuePrompt = "Insert footnote text";
+            repositoryItemMemoEdit1.ShowNullValuePrompt = DevExpress.XtraEditors.ShowNullValuePromptOptions.EmptyValue;
             // 
             // layoutViewField_layoutViewColumn1_7
             // 
-            this.layoutViewField_layoutViewColumn1_7.AppearanceItemCaption.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.layoutViewField_layoutViewColumn1_7.AppearanceItemCaption.Options.UseFont = true;
-            this.layoutViewField_layoutViewColumn1_7.EditorPreferredWidth = 300;
-            this.layoutViewField_layoutViewColumn1_7.Location = new System.Drawing.Point(0, 168);
-            this.layoutViewField_layoutViewColumn1_7.Name = "layoutViewField_layoutViewColumn1_7";
-            this.layoutViewField_layoutViewColumn1_7.Size = new System.Drawing.Size(302, 71);
-            this.layoutViewField_layoutViewColumn1_7.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutViewField_layoutViewColumn1_7.TextVisible = false;
+            layoutViewField_layoutViewColumn1_7.AppearanceItemCaption.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            layoutViewField_layoutViewColumn1_7.AppearanceItemCaption.Options.UseFont = true;
+            layoutViewField_layoutViewColumn1_7.EditorPreferredWidth = 300;
+            layoutViewField_layoutViewColumn1_7.Location = new Point(0, 168);
+            layoutViewField_layoutViewColumn1_7.Name = "layoutViewField_layoutViewColumn1_7";
+            layoutViewField_layoutViewColumn1_7.Size = new Size(302, 71);
+            layoutViewField_layoutViewColumn1_7.TextSize = new Size(0, 0);
+            layoutViewField_layoutViewColumn1_7.TextVisible = false;
             // 
             // layoutViewCard1
             // 
-            this.layoutViewCard1.HeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
-            this.layoutViewCard1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutViewField_layoutViewColumn1,
-            this.layoutViewField_layoutViewColumn1_1,
-            this.layoutViewField_layoutViewColumn2,
-            this.layoutViewField_layoutViewColumn1_2,
-            this.layoutViewField_layoutViewColumn1_3,
-            this.layoutViewField_layoutViewColumn1_4,
-            this.layoutViewField_layoutViewColumn1_5,
-            this.layoutViewField_layoutViewColumn1_6,
-            this.layoutViewField_layoutViewColumn1_7});
-            this.layoutViewCard1.Name = "layoutViewCard1";
+            layoutViewCard1.HeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
+            layoutViewCard1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutViewField_layoutViewColumn1, layoutViewField_layoutViewColumn1_1, layoutViewField_layoutViewColumn2, layoutViewField_layoutViewColumn1_2, layoutViewField_layoutViewColumn1_3, layoutViewField_layoutViewColumn1_4, layoutViewField_layoutViewColumn1_5, layoutViewField_layoutViewColumn1_6, layoutViewField_layoutViewColumn1_7 });
+            layoutViewCard1.Name = "layoutViewCard1";
             // 
             // tabPane
             // 
-            this.tabPane.Controls.Add(this.tabVerseTranslations);
-            this.tabPane.Controls.Add(this.tabStrongDictionary);
-            this.tabPane.Controls.Add(this.tabGrammarCode);
-            this.tabPane.Controls.Add(this.tabSettings);
-            this.tabPane.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tabPane.Location = new System.Drawing.Point(0, 460);
-            this.tabPane.Name = "tabPane";
-            this.tabPane.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] {
-            this.tabVerseTranslations,
-            this.tabStrongDictionary,
-            this.tabGrammarCode,
-            this.tabSettings});
-            this.tabPane.RegularSize = new System.Drawing.Size(1294, 250);
-            this.tabPane.SelectedPage = this.tabVerseTranslations;
-            this.tabPane.Size = new System.Drawing.Size(1294, 250);
-            this.tabPane.TabIndex = 1;
-            this.tabPane.TabStop = false;
-            this.tabPane.Text = "tabPane1";
+            tabPane.Controls.Add(tabVerseTranslations);
+            tabPane.Controls.Add(tabStrongDictionary);
+            tabPane.Controls.Add(tabGrammarCode);
+            tabPane.Controls.Add(tabSettings);
+            tabPane.Dock = DockStyle.Bottom;
+            tabPane.Location = new Point(0, 460);
+            tabPane.Name = "tabPane";
+            tabPane.Pages.AddRange(new DevExpress.XtraBars.Navigation.NavigationPageBase[] { tabVerseTranslations, tabStrongDictionary, tabGrammarCode, tabSettings });
+            tabPane.RegularSize = new Size(1294, 250);
+            tabPane.SelectedPage = tabVerseTranslations;
+            tabPane.Size = new Size(1294, 250);
+            tabPane.TabIndex = 1;
+            tabPane.TabStop = false;
+            tabPane.Text = "tabPane1";
             // 
             // tabVerseTranslations
             // 
-            this.tabVerseTranslations.Caption = "Translations";
-            this.tabVerseTranslations.Controls.Add(this.gridTranslations);
-            this.tabVerseTranslations.Name = "tabVerseTranslations";
-            this.tabVerseTranslations.Size = new System.Drawing.Size(1294, 217);
+            tabVerseTranslations.Caption = "Translations";
+            tabVerseTranslations.Controls.Add(gridTranslations);
+            tabVerseTranslations.Name = "tabVerseTranslations";
+            tabVerseTranslations.Size = new Size(1294, 217);
             // 
             // gridTranslations
             // 
-            this.gridTranslations.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridTranslations.Location = new System.Drawing.Point(0, 0);
-            this.gridTranslations.MainView = this.viewTranslations;
-            this.gridTranslations.Name = "gridTranslations";
-            this.gridTranslations.Size = new System.Drawing.Size(1294, 217);
-            this.gridTranslations.TabIndex = 0;
-            this.gridTranslations.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.viewTranslations});
+            gridTranslations.Dock = DockStyle.Fill;
+            gridTranslations.Location = new Point(0, 0);
+            gridTranslations.MainView = viewTranslations;
+            gridTranslations.Name = "gridTranslations";
+            gridTranslations.Size = new Size(1294, 217);
+            gridTranslations.TabIndex = 0;
+            gridTranslations.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { viewTranslations });
             // 
             // viewTranslations
             // 
-            this.viewTranslations.Appearance.Row.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.viewTranslations.Appearance.Row.Options.UseFont = true;
-            this.viewTranslations.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.viewTranslations.GridControl = this.gridTranslations;
-            this.viewTranslations.Name = "viewTranslations";
-            this.viewTranslations.OptionsBehavior.Editable = false;
-            this.viewTranslations.OptionsBehavior.ReadOnly = true;
-            this.viewTranslations.OptionsView.BestFitMode = DevExpress.XtraGrid.Views.Grid.GridBestFitMode.Full;
-            this.viewTranslations.OptionsView.ShowColumnHeaders = false;
-            this.viewTranslations.OptionsView.ShowDetailButtons = false;
-            this.viewTranslations.OptionsView.ShowGroupExpandCollapseButtons = false;
-            this.viewTranslations.OptionsView.ShowGroupPanel = false;
-            this.viewTranslations.OptionsView.ShowIndicator = false;
+            viewTranslations.Appearance.Row.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            viewTranslations.Appearance.Row.Options.UseFont = true;
+            viewTranslations.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            viewTranslations.GridControl = gridTranslations;
+            viewTranslations.Name = "viewTranslations";
+            viewTranslations.OptionsBehavior.Editable = false;
+            viewTranslations.OptionsBehavior.ReadOnly = true;
+            viewTranslations.OptionsView.BestFitMode = DevExpress.XtraGrid.Views.Grid.GridBestFitMode.Full;
+            viewTranslations.OptionsView.ShowColumnHeaders = false;
+            viewTranslations.OptionsView.ShowDetailButtons = false;
+            viewTranslations.OptionsView.ShowGroupExpandCollapseButtons = false;
+            viewTranslations.OptionsView.ShowGroupPanel = false;
+            viewTranslations.OptionsView.ShowIndicator = false;
             // 
             // tabStrongDictionary
             // 
-            this.tabStrongDictionary.Caption = "Strong";
-            this.tabStrongDictionary.Controls.Add(this.tblStrong);
-            this.tabStrongDictionary.Name = "tabStrongDictionary";
-            this.tabStrongDictionary.Size = new System.Drawing.Size(1294, 217);
+            tabStrongDictionary.Caption = "Strong";
+            tabStrongDictionary.Controls.Add(tblStrong);
+            tabStrongDictionary.Name = "tabStrongDictionary";
+            tabStrongDictionary.Size = new Size(1294, 217);
             // 
             // tblStrong
             // 
-            this.tblStrong.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 100F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
-            this.tblStrong.Controls.Add(this.panelControl1);
-            this.tblStrong.Controls.Add(this.vwStrongLocal);
-            this.tblStrong.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tblStrong.Location = new System.Drawing.Point(0, 0);
-            this.tblStrong.Name = "tblStrong";
-            this.tblStrong.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F)});
-            this.tblStrong.Size = new System.Drawing.Size(1294, 217);
-            this.tblStrong.TabIndex = 0;
+            tblStrong.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] { new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 100F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F) });
+            tblStrong.Controls.Add(panelControl1);
+            tblStrong.Controls.Add(vwStrongLocal);
+            tblStrong.Dock = DockStyle.Fill;
+            tblStrong.Location = new Point(0, 0);
+            tblStrong.Name = "tblStrong";
+            tblStrong.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] { new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F) });
+            tblStrong.Size = new Size(1294, 217);
+            tblStrong.TabIndex = 0;
+            tblStrong.Paint += tblStrong_Paint;
             // 
             // panelControl1
             // 
-            this.panelControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.tblStrong.SetColumn(this.panelControl1, 0);
-            this.panelControl1.Controls.Add(this.btnMoreBLB);
-            this.panelControl1.Controls.Add(this.btnMoreStronsCodeInfo);
-            this.panelControl1.Controls.Add(this.btnEditStrongsCode);
-            this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl1.Location = new System.Drawing.Point(3, 3);
-            this.panelControl1.Name = "panelControl1";
-            this.tblStrong.SetRow(this.panelControl1, 0);
-            this.panelControl1.Size = new System.Drawing.Size(100, 211);
-            this.panelControl1.TabIndex = 4;
+            panelControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            tblStrong.SetColumn(panelControl1, 0);
+            panelControl1.Controls.Add(btnMoreBLB);
+            panelControl1.Controls.Add(btnMoreStronsCodeInfo);
+            panelControl1.Controls.Add(btnEditStrongsCode);
+            panelControl1.Dock = DockStyle.Fill;
+            panelControl1.Location = new Point(3, 3);
+            panelControl1.Name = "panelControl1";
+            tblStrong.SetRow(panelControl1, 0);
+            panelControl1.Size = new Size(100, 211);
+            panelControl1.TabIndex = 4;
             // 
             // btnMoreBLB
             // 
-            this.btnMoreBLB.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnMoreBLB.ImageOptions.SvgImage")));
-            this.btnMoreBLB.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
-            this.btnMoreBLB.Location = new System.Drawing.Point(6, 64);
-            this.btnMoreBLB.Name = "btnMoreBLB";
-            this.btnMoreBLB.Size = new System.Drawing.Size(85, 23);
-            this.btnMoreBLB.TabIndex = 2;
-            this.btnMoreBLB.Text = "More BLB";
-            this.btnMoreBLB.Click += new System.EventHandler(this.btnMoreBLB_Click);
+            btnMoreBLB.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btnMoreBLB.ImageOptions.SvgImage");
+            btnMoreBLB.ImageOptions.SvgImageSize = new Size(16, 16);
+            btnMoreBLB.Location = new Point(6, 64);
+            btnMoreBLB.Name = "btnMoreBLB";
+            btnMoreBLB.Size = new Size(85, 23);
+            btnMoreBLB.TabIndex = 2;
+            btnMoreBLB.Text = "More BLB";
+            btnMoreBLB.Click += btnMoreBLB_Click;
             // 
             // btnMoreStronsCodeInfo
             // 
-            this.btnMoreStronsCodeInfo.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnMoreStronsCodeInfo.ImageOptions.SvgImage")));
-            this.btnMoreStronsCodeInfo.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
-            this.btnMoreStronsCodeInfo.Location = new System.Drawing.Point(6, 35);
-            this.btnMoreStronsCodeInfo.Name = "btnMoreStronsCodeInfo";
-            this.btnMoreStronsCodeInfo.Size = new System.Drawing.Size(85, 23);
-            this.btnMoreStronsCodeInfo.TabIndex = 1;
-            this.btnMoreStronsCodeInfo.Text = "More BH";
-            this.btnMoreStronsCodeInfo.Click += new System.EventHandler(this.btnMoreStronsCodeInfo_Click);
+            btnMoreStronsCodeInfo.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btnMoreStronsCodeInfo.ImageOptions.SvgImage");
+            btnMoreStronsCodeInfo.ImageOptions.SvgImageSize = new Size(16, 16);
+            btnMoreStronsCodeInfo.Location = new Point(6, 35);
+            btnMoreStronsCodeInfo.Name = "btnMoreStronsCodeInfo";
+            btnMoreStronsCodeInfo.Size = new Size(85, 23);
+            btnMoreStronsCodeInfo.TabIndex = 1;
+            btnMoreStronsCodeInfo.Text = "More BH";
+            btnMoreStronsCodeInfo.Click += btnMoreStronsCodeInfo_Click;
             // 
             // btnEditStrongsCode
             // 
-            this.btnEditStrongsCode.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnEditStrongsCode.ImageOptions.SvgImage")));
-            this.btnEditStrongsCode.ImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
-            this.btnEditStrongsCode.Location = new System.Drawing.Point(6, 6);
-            this.btnEditStrongsCode.Name = "btnEditStrongsCode";
-            this.btnEditStrongsCode.Size = new System.Drawing.Size(85, 23);
-            this.btnEditStrongsCode.TabIndex = 0;
-            this.btnEditStrongsCode.Text = "Edit";
-            this.btnEditStrongsCode.Click += new System.EventHandler(this.btnEditStrongsCode_Click);
+            btnEditStrongsCode.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("btnEditStrongsCode.ImageOptions.SvgImage");
+            btnEditStrongsCode.ImageOptions.SvgImageSize = new Size(16, 16);
+            btnEditStrongsCode.Location = new Point(6, 6);
+            btnEditStrongsCode.Name = "btnEditStrongsCode";
+            btnEditStrongsCode.Size = new Size(85, 23);
+            btnEditStrongsCode.TabIndex = 0;
+            btnEditStrongsCode.Text = "Edit";
+            btnEditStrongsCode.Click += btnEditStrongsCode_Click;
             // 
             // vwStrongLocal
             // 
-            this.vwStrongLocal.AllowExternalDrop = true;
-            this.tblStrong.SetColumn(this.vwStrongLocal, 1);
-            this.vwStrongLocal.CreationProperties = null;
-            this.vwStrongLocal.DefaultBackgroundColor = System.Drawing.Color.Transparent;
-            this.vwStrongLocal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vwStrongLocal.Location = new System.Drawing.Point(109, 3);
-            this.vwStrongLocal.Name = "vwStrongLocal";
-            this.tblStrong.SetRow(this.vwStrongLocal, 0);
-            this.vwStrongLocal.Size = new System.Drawing.Size(1182, 211);
-            this.vwStrongLocal.TabIndex = 3;
-            this.vwStrongLocal.ZoomFactor = 1D;
+            vwStrongLocal.AllowExternalDrop = true;
+            tblStrong.SetColumn(vwStrongLocal, 1);
+            vwStrongLocal.CreationProperties = null;
+            vwStrongLocal.DefaultBackgroundColor = Color.Transparent;
+            vwStrongLocal.Dock = DockStyle.Fill;
+            vwStrongLocal.Location = new Point(109, 3);
+            vwStrongLocal.Name = "vwStrongLocal";
+            tblStrong.SetRow(vwStrongLocal, 0);
+            vwStrongLocal.Size = new Size(1182, 211);
+            vwStrongLocal.TabIndex = 3;
+            vwStrongLocal.ZoomFactor = 1D;
             // 
             // tabGrammarCode
             // 
-            this.tabGrammarCode.Caption = "Grammar Code";
-            this.tabGrammarCode.Controls.Add(this.wbGrammarCodes);
-            this.tabGrammarCode.Name = "tabGrammarCode";
-            this.tabGrammarCode.Size = new System.Drawing.Size(1294, 217);
+            tabGrammarCode.Caption = "Grammar Code";
+            tabGrammarCode.Controls.Add(wbGrammarCodes);
+            tabGrammarCode.Name = "tabGrammarCode";
+            tabGrammarCode.Size = new Size(1294, 217);
             // 
             // wbGrammarCodes
             // 
-            this.wbGrammarCodes.AllowExternalDrop = true;
-            this.wbGrammarCodes.CreationProperties = null;
-            this.wbGrammarCodes.DefaultBackgroundColor = System.Drawing.Color.Transparent;
-            this.wbGrammarCodes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.wbGrammarCodes.Location = new System.Drawing.Point(0, 0);
-            this.wbGrammarCodes.Name = "wbGrammarCodes";
-            this.wbGrammarCodes.Size = new System.Drawing.Size(1294, 217);
-            this.wbGrammarCodes.TabIndex = 1;
-            this.wbGrammarCodes.ZoomFactor = 1D;
+            wbGrammarCodes.AllowExternalDrop = true;
+            wbGrammarCodes.CreationProperties = null;
+            wbGrammarCodes.DefaultBackgroundColor = Color.Transparent;
+            wbGrammarCodes.Dock = DockStyle.Fill;
+            wbGrammarCodes.Location = new Point(0, 0);
+            wbGrammarCodes.Name = "wbGrammarCodes";
+            wbGrammarCodes.Size = new Size(1294, 217);
+            wbGrammarCodes.TabIndex = 1;
+            wbGrammarCodes.ZoomFactor = 1D;
             // 
             // tabSettings
             // 
-            this.tabSettings.Caption = "Settings";
-            this.tabSettings.Controls.Add(this.tablePanel1);
-            this.tabSettings.Name = "tabSettings";
-            this.tabSettings.Size = new System.Drawing.Size(1294, 217);
+            tabSettings.Caption = "Settings";
+            tabSettings.Controls.Add(tablePanel1);
+            tabSettings.Name = "tabSettings";
+            tabSettings.Size = new Size(1294, 217);
             // 
             // tablePanel1
             // 
-            this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 1F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 99F)});
-            this.tablePanel1.Controls.Add(this.labelControl5);
-            this.tablePanel1.Controls.Add(this.txtStoryTextLevel2);
-            this.tablePanel1.Controls.Add(this.labelControl4);
-            this.tablePanel1.Controls.Add(this.txtStoryTextLevel1);
-            this.tablePanel1.Controls.Add(this.cbStartFromNewLine);
-            this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablePanel1.Location = new System.Drawing.Point(0, 0);
-            this.tablePanel1.Name = "tablePanel1";
-            this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(1294, 217);
-            this.tablePanel1.TabIndex = 3;
+            tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] { new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 1F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 99F) });
+            tablePanel1.Controls.Add(labelControl5);
+            tablePanel1.Controls.Add(txtStoryTextLevel2);
+            tablePanel1.Controls.Add(labelControl4);
+            tablePanel1.Controls.Add(txtStoryTextLevel1);
+            tablePanel1.Controls.Add(cbStartFromNewLine);
+            tablePanel1.Dock = DockStyle.Fill;
+            tablePanel1.Location = new Point(0, 0);
+            tablePanel1.Name = "tablePanel1";
+            tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] { new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F) });
+            tablePanel1.Size = new Size(1294, 217);
+            tablePanel1.TabIndex = 3;
             // 
             // labelControl5
             // 
-            this.tablePanel1.SetColumn(this.labelControl5, 1);
-            this.labelControl5.Location = new System.Drawing.Point(16, 77);
-            this.labelControl5.Name = "labelControl5";
-            this.tablePanel1.SetRow(this.labelControl5, 3);
-            this.labelControl5.Size = new System.Drawing.Size(88, 13);
-            this.labelControl5.TabIndex = 3;
-            this.labelControl5.Text = "Story title - level 2";
+            tablePanel1.SetColumn(labelControl5, 1);
+            labelControl5.Location = new Point(16, 66);
+            labelControl5.Name = "labelControl5";
+            tablePanel1.SetRow(labelControl5, 3);
+            labelControl5.Size = new Size(88, 13);
+            labelControl5.TabIndex = 3;
+            labelControl5.Text = "Story title - level 2";
             // 
             // txtStoryTextLevel2
             // 
-            this.tablePanel1.SetColumn(this.txtStoryTextLevel2, 1);
-            this.txtStoryTextLevel2.Location = new System.Drawing.Point(16, 100);
-            this.txtStoryTextLevel2.Name = "txtStoryTextLevel2";
-            this.tablePanel1.SetRow(this.txtStoryTextLevel2, 4);
-            this.txtStoryTextLevel2.Size = new System.Drawing.Size(1275, 20);
-            this.txtStoryTextLevel2.TabIndex = 3;
+            tablePanel1.SetColumn(txtStoryTextLevel2, 1);
+            txtStoryTextLevel2.Location = new Point(16, 89);
+            txtStoryTextLevel2.Name = "txtStoryTextLevel2";
+            tablePanel1.SetRow(txtStoryTextLevel2, 4);
+            txtStoryTextLevel2.Size = new Size(1275, 20);
+            txtStoryTextLevel2.TabIndex = 3;
             // 
             // labelControl4
             // 
-            this.tablePanel1.SetColumn(this.labelControl4, 1);
-            this.labelControl4.Location = new System.Drawing.Point(16, 29);
-            this.labelControl4.Name = "labelControl4";
-            this.tablePanel1.SetRow(this.labelControl4, 1);
-            this.labelControl4.Size = new System.Drawing.Size(88, 13);
-            this.labelControl4.TabIndex = 2;
-            this.labelControl4.Text = "Story title - level 1";
+            tablePanel1.SetColumn(labelControl4, 1);
+            labelControl4.Location = new Point(16, 23);
+            labelControl4.Name = "labelControl4";
+            tablePanel1.SetRow(labelControl4, 1);
+            labelControl4.Size = new Size(88, 13);
+            labelControl4.TabIndex = 2;
+            labelControl4.Text = "Story title - level 1";
             // 
             // txtStoryTextLevel1
             // 
-            this.tablePanel1.SetColumn(this.txtStoryTextLevel1, 1);
-            this.txtStoryTextLevel1.Location = new System.Drawing.Point(16, 48);
-            this.txtStoryTextLevel1.Name = "txtStoryTextLevel1";
-            this.tablePanel1.SetRow(this.txtStoryTextLevel1, 2);
-            this.txtStoryTextLevel1.Size = new System.Drawing.Size(1275, 20);
-            this.txtStoryTextLevel1.TabIndex = 1;
+            tablePanel1.SetColumn(txtStoryTextLevel1, 1);
+            txtStoryTextLevel1.Location = new Point(16, 43);
+            txtStoryTextLevel1.Name = "txtStoryTextLevel1";
+            tablePanel1.SetRow(txtStoryTextLevel1, 2);
+            txtStoryTextLevel1.Size = new Size(1275, 20);
+            txtStoryTextLevel1.TabIndex = 1;
             // 
             // cbStartFromNewLine
             // 
-            this.tablePanel1.SetColumn(this.cbStartFromNewLine, 1);
-            this.cbStartFromNewLine.Location = new System.Drawing.Point(16, 3);
-            this.cbStartFromNewLine.Name = "cbStartFromNewLine";
-            this.cbStartFromNewLine.Properties.Caption = "Start from new line";
-            this.tablePanel1.SetRow(this.cbStartFromNewLine, 0);
-            this.cbStartFromNewLine.Size = new System.Drawing.Size(1275, 20);
-            this.cbStartFromNewLine.TabIndex = 0;
+            tablePanel1.SetColumn(cbStartFromNewLine, 1);
+            cbStartFromNewLine.Location = new Point(16, 3);
+            cbStartFromNewLine.Name = "cbStartFromNewLine";
+            cbStartFromNewLine.Properties.Caption = "Start from new line";
+            tablePanel1.SetRow(cbStartFromNewLine, 0);
+            cbStartFromNewLine.Size = new Size(1275, 20);
+            cbStartFromNewLine.TabIndex = 0;
             // 
             // splitterControl1
             // 
-            this.splitterControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitterControl1.Location = new System.Drawing.Point(0, 450);
-            this.splitterControl1.Name = "splitterControl1";
-            this.splitterControl1.Size = new System.Drawing.Size(1294, 10);
-            this.splitterControl1.TabIndex = 2;
-            this.splitterControl1.TabStop = false;
+            splitterControl1.Dock = DockStyle.Bottom;
+            splitterControl1.Location = new Point(0, 450);
+            splitterControl1.Name = "splitterControl1";
+            splitterControl1.Size = new Size(1294, 10);
+            splitterControl1.TabIndex = 2;
+            splitterControl1.TabStop = false;
             // 
             // VerseGridControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.gridControl);
-            this.Controls.Add(this.splitterControl1);
-            this.Controls.Add(this.tabPane);
-            this.Name = "VerseGridControl";
-            this.Size = new System.Drawing.Size(1294, 710);
-            this.Load += new System.EventHandler(this.VerseGridControl_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.gridControl)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewField_layoutViewColumn1_7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutViewCard1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tabPane)).EndInit();
-            this.tabPane.ResumeLayout(false);
-            this.tabVerseTranslations.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridTranslations)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.viewTranslations)).EndInit();
-            this.tabStrongDictionary.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tblStrong)).EndInit();
-            this.tblStrong.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
-            this.panelControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.vwStrongLocal)).EndInit();
-            this.tabGrammarCode.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.wbGrammarCodes)).EndInit();
-            this.tabSettings.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
-            this.tablePanel1.ResumeLayout(false);
-            this.tablePanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel2.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtStoryTextLevel1.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbStartFromNewLine.Properties)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(6F, 13F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(gridControl);
+            Controls.Add(splitterControl1);
+            Controls.Add(tabPane);
+            Name = "VerseGridControl";
+            Size = new Size(1294, 710);
+            Load += VerseGridControl_Load;
+            ((System.ComponentModel.ISupportInitialize)gridControl).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)repositoryItemCheckEdit1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)repositoryItemCheckEdit2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_6).EndInit();
+            ((System.ComponentModel.ISupportInitialize)repositoryItemMemoEdit1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewField_layoutViewColumn1_7).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutViewCard1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)tabPane).EndInit();
+            tabPane.ResumeLayout(false);
+            tabVerseTranslations.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)gridTranslations).EndInit();
+            ((System.ComponentModel.ISupportInitialize)viewTranslations).EndInit();
+            tabStrongDictionary.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)tblStrong).EndInit();
+            tblStrong.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)panelControl1).EndInit();
+            panelControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)vwStrongLocal).EndInit();
+            tabGrammarCode.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)wbGrammarCodes).EndInit();
+            tabSettings.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)tablePanel1).EndInit();
+            tablePanel1.ResumeLayout(false);
+            tablePanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)txtStoryTextLevel2.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtStoryTextLevel1.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)cbStartFromNewLine.Properties).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion

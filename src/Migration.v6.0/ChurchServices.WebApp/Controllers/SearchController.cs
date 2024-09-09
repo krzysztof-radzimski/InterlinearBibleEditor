@@ -11,6 +11,8 @@
 
   ===================================================================================*/
 
+using ChurchServices.WebApp.Utils;
+
 namespace ChurchServices.WebApp.Controllers {
     public class SearchController : Controller {
         private const string TYPE_QUERY = "&type=";
@@ -205,7 +207,7 @@ namespace ChurchServices.WebApp.Controllers {
             view.Properties.Add(new ViewProperty("NumberOfBook", SortDirection.None, "[NumberOfBook]", false, true));
 
             var model = new SearchResultsModel(words) { SearchType = type, Links = dic };
-
+            TranslationControllerModel translateModel = null;
             foreach (ViewRecord record in view) {
                 var _index = record["Index"];
                 if (_index.IsNotNull()) {
@@ -215,6 +217,28 @@ namespace ChurchServices.WebApp.Controllers {
                     if (translation.IsNull() || translation.Key.IsNull()) { continue; }
                     var translationDesc = translation.Value;
                     var verseText = record["VerseText"].ToString();
+
+                    if (verseText.Contains("<n>") && verseText.Contains("<x>")) {
+                        if (translateModel == null) { translateModel = GetTranslationControllerModel(session); }
+                        verseText = BibleTag.GetInternalVerseRangeText(verseText, translateModel);
+                        verseText = BibleTag.GetInternalVerseText(verseText, translateModel);
+                        verseText = BibleTag.GetExternalVerseRangeText(verseText, translateModel);
+                        verseText = BibleTag.GetExternalVerseText(verseText, translateModel);
+                        verseText = BibleTag.GetInternalVerseListText(verseText, translateModel);
+                        verseText = BibleTag.GetMultiChapterRangeText(verseText, translateModel);
+
+                        verseText = verseText.Replace("**********", "<sup>10)</sup>");
+                        verseText = verseText.Replace("*********", "<sup>9)</sup>");
+                        verseText = verseText.Replace("********", "<sup>8)</sup>");
+                        verseText = verseText.Replace("*******", "<sup>7)</sup>");
+                        verseText = verseText.Replace("******", "<sup>6)</sup>");
+                        verseText = verseText.Replace("*****", "<sup>5)</sup>");
+                        verseText = verseText.Replace("****", "<sup>4)</sup>");
+                        verseText = verseText.Replace("***", "<sup>3)</sup>");
+                        verseText = verseText.Replace("**", "<sup>2)</sup>");
+                        verseText = verseText.Replace("*", "<sup>1)</sup>");
+                    }
+
                     verseText = verseText
                             .Replace("―", String.Empty)
                             .Replace("<n>", @"<span class=""text-muted"">")
@@ -246,6 +270,15 @@ namespace ChurchServices.WebApp.Controllers {
         private string GetRangeCriteriaString(int start, int end) {
             return $" AND ([NumberOfBook] Between ({start},{end}))";
         }
+
+        public TranslationControllerModel GetTranslationControllerModel(UnitOfWork uow = null) {
+            if (uow == null) { uow = new UnitOfWork(); }
+            return new TranslationControllerModel(new Translation() {
+                Name = "BW",
+                Description = "Biblia Warszawska",
+                Language = Language.Polish
+            }, books: TranslationInfoController.GetBookBases(uow));
+        }
     }
 
     public class ScriptureModel {
@@ -258,8 +291,10 @@ namespace ChurchServices.WebApp.Controllers {
     [Route("api/[controller]")]
     public class ScriptureController : Controller {
         private readonly IBibleTagController BibleTag;
-        public ScriptureController(IBibleTagController bibleTag) {
+        private readonly ITranslationInfoController TranslationInfoController;
+        public ScriptureController(IBibleTagController bibleTag, ITranslationInfoController translationInfoController) {
             BibleTag = bibleTag;
+            TranslationInfoController = translationInfoController;
         }
 
 
@@ -270,13 +305,17 @@ namespace ChurchServices.WebApp.Controllers {
             if (siglum.IsNotNullOrEmpty()) {
                 if (siglum.StartsWith("/")) {
                     var t = siglum.Split('/', StringSplitOptions.RemoveEmptyEntries);
-                    if (t.Length > 3) {
+                    if (t.Length >= 3) {
                         var translationName = t[0];
+                        if (translationName == "SNPPD" || translationName == "SNPD") { translationName = "PBD"; }
+                        if (translationName == "SNPL") { translationName = "SNP18"; }
+                        if (translationName == "PNS") { translationName = "PNS1997"; }
+
                         var bookNumber = t[1];
                         var chapterNumber = t[2];
-                        var versesNumbers = t[3];
+                        var versesNumbers = t.Length == 3 ? "1" : t[3];
                         var session = new UnitOfWork();
-                        var book = new XPQuery<BookBase>(session).Where(x => x.NumberOfBook == bookNumber.ToInt()).FirstOrDefault();
+                        var book = TranslationInfoController.GetBookBases(session).Where(x => x.NumberOfBook == bookNumber.ToInt()).FirstOrDefault();
 
                         if (versesNumbers.Contains(",")) {
                             var numbersOfVerses = versesNumbers.Split(",");
@@ -295,15 +334,21 @@ namespace ChurchServices.WebApp.Controllers {
                             return result;
                         }
                         else {
-                           
+                            if (translationName == "SNPPD" || translationName == "SNPD") { translationName = "PBD"; }
+                            if (translationName == "SNPL") { translationName = "SNP18"; }
+                            if (translationName == "PNS") { translationName = "PNS1997"; }
+
                             var index = $"{translationName}.{bookNumber}.{chapterNumber}.{versesNumbers}";
                             var verse = new XPQuery<Verse>(session).Where(x => x.Index == index).FirstOrDefault();
-                            var result = new ScriptureModel() {
-                                Siglum = $"{verse.ParentTranslation.Description}, {book.BookName} {chapterNumber}:{versesNumbers}",
-                                Text = $"{verse.GetVerySimpleText().Trim()}",
-                                Url = $"/Search/Siglum?text={verse.ParentTranslation.Name.ReplaceAnyWith(String.Empty,"+","'")} {book.BookShortcut} {chapterNumber}:{versesNumbers}&type="
-                            };
-                            return result;
+                            if (verse != null) {
+                                var result = new ScriptureModel() {
+                                    Siglum = $"{verse.ParentTranslation.Description}, {book.BookName} {chapterNumber}:{versesNumbers}",
+                                    Text = $"{verse.GetVerySimpleText().Trim()}",
+                                    Url = $"/Search/Siglum?text={verse.ParentTranslation.Name.ReplaceAnyWith(String.Empty, "+", "'")} {book.BookShortcut} {chapterNumber}:{versesNumbers}&type="
+                                };
+                                return result;
+                            }
+                            return default;
                         }
                     }
                 }

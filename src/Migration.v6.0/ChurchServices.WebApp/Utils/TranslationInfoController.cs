@@ -68,7 +68,7 @@ namespace ChurchServices.WebApp.Utils {
 
             var model = new List<TranslationInfo>();
             foreach (ViewRecord item in view) {
-                model.Add(new TranslationInfo() {
+                var tInfo = new TranslationInfo() {
                     Type = (TranslationType)item["Type"],
                     Name = item["Name"].ToString().Replace("'", ""),
                     Description = item["Description"].ToString(),
@@ -76,14 +76,17 @@ namespace ChurchServices.WebApp.Utils {
                     Recommended = (bool)item["Recommended"],
                     PasswordRequired = !((bool)item["OpenAccess"]),
                     Language = (Language)item["Language"]
-                });
+                };
+                if (tInfo.Name == "PBD") { tInfo.Name = "SNPD"; }
+                if (tInfo.Name == "SNP18") { tInfo.Name = "SNPL"; }
+                model.Add(tInfo);
             }
 
             _allTranslations = new List<Grouping<string, TranslationInfo>> {
-                new Grouping<string, TranslationInfo>(TranslationType.Interlinear.GetDescription(), model.Where(x => x.Type == TranslationType.Interlinear)),
-                new Grouping<string, TranslationInfo>(TranslationType.Literal.GetDescription(), model.Where(x => x.Type == TranslationType.Literal)),
-                new Grouping<string, TranslationInfo>(TranslationType.Default.GetDescription(), model.Where(x => x.Type == TranslationType.Default)),
-                new Grouping<string, TranslationInfo>(TranslationType.Dynamic.GetDescription(), model.Where(x => x.Type == TranslationType.Dynamic))
+                new Grouping<string, TranslationInfo>(TranslationType.Interlinear.GetDescription(), model.Where(x => x.Type == TranslationType.Interlinear).OrderBy(x=>x.Description)),
+                new Grouping<string, TranslationInfo>(TranslationType.Literal.GetDescription(), model.Where(x => x.Type == TranslationType.Literal).OrderBy(x=>x.Description)),
+                new Grouping<string, TranslationInfo>(TranslationType.Default.GetDescription(), model.Where(x => x.Type == TranslationType.Default).OrderBy(x=>x.Description)),
+                new Grouping<string, TranslationInfo>(TranslationType.Dynamic.GetDescription(), model.Where(x => x.Type == TranslationType.Dynamic).OrderBy(x=>x.Description))
             };
             MemoryCache.Set(BIBLETRANSLATIONS, _allTranslations);
             return _allTranslations;

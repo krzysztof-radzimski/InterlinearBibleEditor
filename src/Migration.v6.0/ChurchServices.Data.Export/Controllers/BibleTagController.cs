@@ -58,7 +58,12 @@ namespace ChurchServices.Data.Export.Controllers {
             }
             if (translation == "PBD") { translation = "SNPPD"; }
             simpleText = Regex.Replace(simpleText, @"\<f\>\[[0-9]+\]\<\/f\>", "");
-            simpleText = $"{baseBookShortcut} {index.NumberOfChapter}:{index.NumberOfVerse} „{simpleText}” ({translation})";
+            if (simpleText.IndexOf("[*") > -1) {
+                simpleText = simpleText.Substring(0, simpleText.IndexOf("[*"));
+                simpleText = simpleText.Replace("*", String.Empty);
+                simpleText = simpleText.Trim();
+            }
+            simpleText = $"„{simpleText}” ({baseBookShortcut} {index.NumberOfChapter}:{index.NumberOfVerse} {translation})";
             return simpleText;
         }
 
@@ -168,7 +173,6 @@ namespace ChurchServices.Data.Export.Controllers {
         }
         public string GetInternalVerseRangeText(string input, TranslationControllerModel model) {
             input = Regex.Replace(input, @"\<x\>(?<book>[0-9]+)\s(?<chapter>[0-9]+)(\s)?\:(\s)?(?<verseStart>[0-9]+)\-(?<verseEnd>[0-9]+)\<\/x\>", delegate (Match m) {
-                //var translationName = model.Translation.Name.Replace("+", "").Replace("'", "");
                 var numberOfBook = m.Groups["book"].Value.ToInt();
                 var bookShortcut = model.Books.Where(x => x.NumberOfBook == numberOfBook).First().BookShortcut;
                 var numberOfChapter = m.Groups["chapter"].Value.ToInt();

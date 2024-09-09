@@ -172,6 +172,8 @@ namespace ChurchServices.WebApp.Controllers {
         }
 
         protected List<BookBaseInfo> GetBookBases(UnitOfWork uow = null) {
+            if (TranslationInfoController != null) { return TranslationInfoController.GetBookBases(uow); }
+
             var result = new List<BookBaseInfo>();
             if (uow == null) { uow = new UnitOfWork(); }
             var books = new XPQuery<BookBase>(uow).ToList();

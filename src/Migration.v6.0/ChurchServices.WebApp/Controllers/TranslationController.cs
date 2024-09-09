@@ -22,7 +22,9 @@ namespace ChurchServices.WebApp.Controllers {
 
         [TranslationAuthorize]
         public IActionResult Index(string translationName, string book = null, string chapter = null, string verse = null) {
-            if (translationName == "SNPPD") { translationName = "PBD"; }
+            if (translationName == "SNPPD" || translationName == "SNPD") { translationName = "PBD"; }
+            if (translationName == "SNPL") { translationName = "SNP18"; }
+            if (translationName == "PNS") { translationName = "PNS1997"; }
 
             // adresy skrótowe
             if (!String.IsNullOrEmpty(translationName) && book.IsNull() && translationName.Length == 5) {

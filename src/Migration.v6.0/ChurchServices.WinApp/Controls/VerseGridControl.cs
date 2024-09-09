@@ -352,7 +352,7 @@ namespace ChurchServices.WinApp.Controls {
                     }
                 }
 
-                if (StrongsCodeLang == null) { StrongsCodeLang = Language.Greek; }                
+                if (StrongsCodeLang == null) { StrongsCodeLang = Language.Greek; }
                 if (StrongsCode.HasValue && (StrongsCode.Value != Word.StrongCode?.Code)) {
                     if (!StrongsCode.HasValue) {
                         Word.StrongCode = null;
@@ -645,7 +645,8 @@ namespace ChurchServices.WinApp.Controls {
         private void btnMoreStronsCodeInfo_Click(object sender, EventArgs e) {
             var strongsCode = btnMoreStronsCodeInfo.Tag as StrongCode;
             if (strongsCode.IsNotNull()) {
-                var url = $"https://biblehub.com/greek/{strongsCode.Code}.htm";
+                var lang = strongsCode.Lang == Language.Greek ? "greek" : "hebrew";
+                var url = $"https://biblehub.com/{lang}/{strongsCode.Code}.htm";
                 System.Diagnostics.Process.Start("explorer.exe", url);
             }
         }
@@ -653,11 +654,14 @@ namespace ChurchServices.WinApp.Controls {
         private void btnMoreBLB_Click(object sender, EventArgs e) {
             var strongsCode = btnMoreStronsCodeInfo.Tag as StrongCode;
             if (strongsCode.IsNotNull()) {
-                var url = $"https://www.blueletterbible.org/lexicon/g{strongsCode.Code}/nkjv/tr/0-1/";
+                var lang = strongsCode.Lang == Language.Greek ? "g" : "h";
+                var url = $"https://www.blueletterbible.org/lexicon/{lang}{strongsCode.Code}/nkjv/tr/0-1/";
                 System.Diagnostics.Process.Start("explorer.exe", url);
             }
         }
 
+        private void tblStrong_Paint(object sender, PaintEventArgs e) {
 
+        }
     }
 }
