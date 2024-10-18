@@ -40,4 +40,11 @@
 		<Folder Include="wwwroot\download\study\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="Views\Home\SiglumUrlPrepare.cshtml">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
 </Project>

@@ -286,8 +286,90 @@
                 </div>
                 Ładowanie danych...
             </div>
-            <div class="toast-footer">               
+            <div class="toast-footer">
                 <a href="" target="_blank" type="button" class="btn btn-primary btn-sm">Czytaj więcej...</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Półprzezroczysta nakładka blokująca stronę -->
+    <div id="cookieOverlay" class="cookie-overlay"></div>
+    <!-- Panel informacyjny o cookies -->
+    <div id="cookieConsent" class="cookie-consent">
+        <div class="container">
+            <p class="mb-2">"@Configuration["PageTitle"]" oraz nasi zaufani Partnerzy wykorzystuje pliki cookie w&nbsp;celu obsługi stron internetowych, dostarczania usług użytkownikom, wyświetlania spersonalizowanych treści czy też realizacji naszych celów. Poniżej zamieściliśmy więcej informacji o&nbsp;tym, z&nbsp;jakich plików korzystamy. Do Ciebie należy decyzja, czy zaakceptujesz wszystkie, odrzucisz wszystkie poza niezbędnymi, czy dokonasz indywidualnego wyboru. W&nbsp;dowolnym momencie możesz zmienić zdanie i&nbsp;zmodyfikować swój wybór poprzez przycisk w&nbsp;lewym dolnym rogu.</p>
+            <p class="mb-2">Zgoda na pliki cookies jest dobrowolna i&nbsp;można ją wycofać lub zmodyfikować w dowolnym momencie klikając w&nbsp;przycisk ciasteczka w&nbsp;lewym dolnym rogu strony. Więcej informacji znajdziesz w&nbsp;<a href="/home/privacy" target="_blank">polityce plików cookies</a>.</p>
+            <div class="accordion" id="cookiesAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="switch1" checked disabled />
+                                <label class="form-check-label" for="switch1">Niezbędne</label>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapse1" class="accordion-collapse collapse" data-bs-parent="#cookiesAccordion">
+                        <div class="accordion-body">
+                            <p>Niezbędne ciasteczka służą do zapewnienia prawidłowego funkcjonowania naszej strony internetowej, właściwej obsługi naszych użytkowników, przez którą rozumiemy m.in. zapewnienie bezpieczeństwa czy prawidłowe dostarczenie i&nbsp;dostosowanie usługi. Nie umożliwiają one identyfikacji konkretnego użytkownika. Niezbędne pliki cookie pozwalają nam również zrealizować podstawowe cele naszej firmy, do których należy np. zapewnienie prawidłowej i&nbsp;niezakłóconej komunikacji, zagwarantowanie obsługi na najwyższym poziomie, dostosowanie treści odpowiadającej użytkownikom oraz ich ochrona przed oszustwami. Pliki te pozwalają korzystać naszym użytkownikom z&nbsp;wybranych usług. Ponieważ są to pliki niezbędne, nie można ich wyłączyć. </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input me-2" type="checkbox" role="switch" id="switch2" />
+                                <label class="form-check-label" for="switch2">Kierunkowe i reklamowe</label>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#cookiesAccordion">
+                        <div class="accordion-body">
+                            <p>Te pliki pozwalają nam dopasować naszą ofertę do potrzeb naszych użytkowników. Cookie kierunkowe pokazują nam w jaki sposób użytkownicy korzystają z naszych stron internetowych dzięki czemu możemy dostosować reklamę i&nbsp;tym samym usługę lub produkt, który będzie zgodny z&nbsp;oczekiwaniami użytkownika. Na podstawie cookie reklamowych budowany jest profil zainteresowań użytkownika i&nbsp;dopasowywane są reklamy tak, aby nie otrzymywał on treści, które go nie interesują. Pliki te nie są bezpośrednim nośnikiem danych osobowych, a identyfikują wyłącznie przeglądarkę urządzenia. Cookie reklamowe i&nbsp;kierunkowe umożliwiają dostarczenie interesujących użytkownika reklam, zgodnych z&nbsp;jego zainteresowaniami. </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input me-2" type="checkbox" role="switch" id="switch3" />
+                                <label class="form-check-label" for="switch3">Wydajnościowe i analityczne</label>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#cookiesAccordion">
+                        <div class="accordion-body">
+                            <p>Pliki analityczne i wydajnościowe służą do poprawy wydajności naszej strony internetowej i&nbsp;służą wyłącznie naszym wewnętrznym celom. Są to dane anonimowe i&nbsp;niepozwalające na identyfikację konkretnego użytkownika. Ich głównym zadaniem jest pokazanie nam co jest najbardziej i najmniej popularne, jak wygląda ruch na naszych stronach. Dzięki tym plikom możemy udoskonalić naszą ofertę i&nbsp;ulepszyć świadczone usługi, dostosować wyniki do potrzeb użytkownika. Te anonimowe statystyki mogą być udostępniane na potrzeby prowadzonej komunikacji zewnętrznej. Wydajnościowe pliki cookie pozwalają nam również zweryfikować czego poszukują nasi użytkownicy, co pozwala nam ulepszyć wyniki naszej strony. </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input me-2" type="checkbox" role="switch" id="switch4" />
+                                <label class="form-check-label" for="switch4">Media społecznościowe</label>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#cookiesAccordion">
+                        <div class="accordion-body">
+                            <p>Pliki cookie należące do mediów społecznościowych umożliwiają udostępnianie treści naszej strony internetowej w mediach społecznościowych takich jak Facebook, X czy Instagram. Są one plikami łączącymi naszą stronę z popularnymi serwisami. Kontrolę nad tymi plikami sprawują wymienione platformy. Dzięki tym plikom mamy możliwość powiązania kont użytkowników z treściami na naszej stronie, czyli uwierzytelniania użytkownika. Właśnie te pliki zapewniają możliwość dodawania komentarzy czy umożliwiają dostarczenie reklamy w mediach społecznościowych.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Przyciski -->
+            <div class="mt-3">
+                <button class="btn btn-success mb-2" onclick="setCookiePreferences('acceptAll')">Akceptuj wszystkie</button>
+                <button class="btn btn-primary mb-2" onclick="setCookiePreferences('custom')">Dostosuj wybory</button>
+                <button class="btn btn-danger  mb-2" onclick="setCookiePreferences('rejectAll')">Odrzuć wszystkie</button>
             </div>
         </div>
     </div>
@@ -304,10 +386,37 @@
         document.addEventListener('DOMContentLoaded', function () {
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-        });
-    </script>
 
-    <script>
+            // Sprawdzenie, czy użytkownik już wyraził zgodę na cookies
+            if (localStorage.getItem('cookiePreferences')) {
+                document.getElementById('cookieConsent').style.display = 'none';
+                document.getElementById('cookieOverlay').style.display = 'none';
+            } else {
+                document.getElementById('cookieConsent').style.display = 'block';
+                document.getElementById('cookieOverlay').style.display = 'block';
+            }
+        });
+
+        function setCookiePreferences(choice) {
+            let preferences = {
+                necessary: document.getElementById('switch1').checked,
+                targeted: document.getElementById('switch2').checked,
+                performance: document.getElementById('switch3').checked,
+                social: document.getElementById('switch4').checked
+            };
+
+            if (choice === 'acceptAll') {
+                preferences = { necessary: true, targeted: true, performance: true, social: true };
+            } else if (choice === 'rejectAll') {
+                preferences = { necessary: true, targeted: false, performance: false, social: false };
+            }
+
+            localStorage.setItem('cookiePreferences', JSON.stringify(preferences));
+            document.getElementById('cookieConsent').style.display = 'none';
+            document.getElementById('cookieOverlay').style.display = 'none';
+
+        }
+
         // Funkcja do sprawdzenia, czy href zaczyna się od jednego z podanych ciągów
         function shouldHandleLink(href) {
             if (href) {
@@ -340,7 +449,7 @@
 
                         var toastSiglum = document.querySelector('#toastNotification .toast-siglum');
                         toastSiglum.textContent = 'Czekaj';
-                                                
+
                         // Ustawienie pozycji Toast w miejscu kursora
                         var x = event.clientX;
                         var y = event.clientY;
@@ -395,7 +504,7 @@
                                     toastBody.textContent = "Nie znaleziono treści wersetu."; // Zastępcza wiadomość
                                     toastSiglum.textContent = "Błąd";
                                     toastUrl.setAttribute('href', href);
-                                }                               
+                                }
                             })
                             .catch(error => {
                                 console.error('Error:', error);

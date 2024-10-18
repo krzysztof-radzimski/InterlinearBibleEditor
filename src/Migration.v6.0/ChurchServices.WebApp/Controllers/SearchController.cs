@@ -11,8 +11,6 @@
 
   ===================================================================================*/
 
-using ChurchServices.WebApp.Utils;
-
 namespace ChurchServices.WebApp.Controllers {
     public class SearchController : Controller {
         private const string TYPE_QUERY = "&type=";
@@ -281,11 +279,7 @@ namespace ChurchServices.WebApp.Controllers {
         }
     }
 
-    public class ScriptureModel {
-        public string Siglum { get; set; }
-        public string Text { get; set; }
-        public string Url { get; set; }
-    }
+
 
     [ApiController]
     [Route("api/[controller]")]
@@ -297,6 +291,25 @@ namespace ChurchServices.WebApp.Controllers {
             TranslationInfoController = translationInfoController;
         }
 
+        [HttpGet("url/{siglum}")]
+        public ActionResult<ScriptureModel> GetUrl(string siglum) {
+            if (siglum.IsNotNullOrEmpty()) {                
+                var session = new UnitOfWork();
+                var url = BibleTag.GetRecognizedSiglumUrl(session, siglum);
+
+                return new ScriptureModel() {
+                    Siglum = siglum,
+                    Url = $"https://kosciol-jezusa.pl{url}",
+                    Text = ""
+                };
+            }
+
+            return new ScriptureModel() {
+                Siglum = siglum,
+                Url = "",
+                Text = ""
+            };
+        }
 
         // https://localhost:44378/api/Scripture?siglum=NPI Rdz 22:1-4
         // https://localhost:44378/api/Scripture?siglum=/BW/560/1/3,4,5,6,7,8,9,10,11,12,13,14
@@ -377,33 +390,33 @@ namespace ChurchServices.WebApp.Controllers {
         }
     }
 
-    [ApiController]
-    [Route("api/[controller]")]
-    public class GetSiglumUrlController : Controller {
-        private readonly IBibleTagController BibleTag;
-        private readonly IConfiguration Configuration;
-        public GetSiglumUrlController(IBibleTagController bibleTag, IConfiguration configuration) {
-            BibleTag = bibleTag;
-            Configuration = configuration;
-        }
+    //[ApiController]
+    //[Route("api/[controller]")]
+    //public class GetSiglumUrlController : Controller {
+    //    private readonly IBibleTagController BibleTag;
+    //    private readonly IConfiguration Configuration;
+    //    public GetSiglumUrlController(IBibleTagController bibleTag, IConfiguration configuration) {
+    //        BibleTag = bibleTag;
+    //        Configuration = configuration;
+    //    }
 
-        [HttpGet]
-        public async Task<IActionResult> Get() {
-            var qs = Request.QueryString;
+    //    [HttpGet]
+    //    public async Task<IActionResult> Get() {
+    //        var qs = Request.QueryString;
 
-            if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 5) {
-                var text = HttpUtility.UrlDecode(qs.Value).RemoveAny("?q=");
-                if (text.IsNotNullOrEmpty() && text.Length > 0) {
-                    var session = new UnitOfWork();
-                    var url = BibleTag.GetRecognizedSiglumUrl(session, text);
-                    if (url.IsNotNullOrEmpty()) {
-                        return Ok($"{Configuration["HostUrl"]}{url}");
-                    }
-                }
-            }
-            return NotFound();
-        }
-    }
+    //        if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 5) {
+    //            var text = HttpUtility.UrlDecode(qs.Value).RemoveAny("?q=");
+    //            if (text.IsNotNullOrEmpty() && text.Length > 0) {
+    //                var session = new UnitOfWork();
+    //                var url = BibleTag.GetRecognizedSiglumUrl(session, text);
+    //                if (url.IsNotNullOrEmpty()) {
+    //                    return Ok($"{Configuration["HostUrl"]}{url}");
+    //                }
+    //            }
+    //        }
+    //        return NotFound();
+    //    }
+    //}
 
     public class SearchResultsModel : List<SearchItemModel> {
         public IEnumerable<string> Words { get; }
@@ -461,5 +474,11 @@ namespace ChurchServices.WebApp.Controllers {
         [Description("w listach powszechnych")]
         [Category("LK")]
         CatholicLetters,
+    }
+
+    public class ScriptureModel {
+        public string Siglum { get; set; }
+        public string Text { get; set; }
+        public string Url { get; set; }
     }
 }

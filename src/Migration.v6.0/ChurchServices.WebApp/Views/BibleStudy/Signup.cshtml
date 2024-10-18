@@ -5,7 +5,7 @@
 @model BibleStudyUserModel
 
 <div class="clearfix max-width-1000" style="padding-top: 20px;">
-    @Html.Partial("~/Views/Shared/_CourseBaner.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/_CourseBaner.cshtml")
 
     <h2>Rejestracja / Logowanie</h2>
     <form asp-controller="BibleStudy" asp-action="Index" method="post">

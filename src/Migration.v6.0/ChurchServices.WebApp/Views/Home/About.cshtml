@@ -5,9 +5,9 @@
 @model HtmlFileData
 
 <div class="clearfix max-width-1000" style="padding-top: 20px;">
-    @Html.Partial("~/Views/Shared/_Baner.cshtml")    
+    @await Html.PartialAsync("~/Views/Shared/_Baner.cshtml")    
     <h1><i class="fas fa-place-of-worship"></i> @ViewData["Title"]</h1>
-    @Html.Partial("~/Views/Shared/_ChatGPT.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/_ChatGPT.cshtml")
 
     @if (Model != null) {
         @Html.Raw(Model.Data)

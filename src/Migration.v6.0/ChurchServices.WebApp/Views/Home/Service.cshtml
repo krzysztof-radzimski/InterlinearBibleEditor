@@ -4,9 +4,9 @@
 @inject IConfiguration Configuration 
 <div class="max-width-1000" style="padding-top: 20px;">
     
-    @Html.Partial("~/Views/Shared/_Baner.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/_Baner.cshtml")
     <h1><i class="fas fa-church"></i> @ViewData["Title"]</h1>
-    @Html.Partial("~/Views/Shared/_ChatGPT.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/_ChatGPT.cshtml")
     <p class="fs-5 mt-3">
         Zapraszamy na nabożeństwo, które odbywa się każdej <strong>niedzieli</strong> o&#160;godzinie <strong>11:00</strong>
         oraz grupę biblijną, która odbywa się w&#160;każdy <strong>czwartek</strong> o&#160;godzinie <strong>17:30</strong>. (<a href="../BW/650/10/25" target="_blank" class="text-decoration-none">Heb 10:25</a>). W <strong>soboty</strong> o&#160;godzinie <strong>17:00</strong> spotykamy się na modlitwie. (<a href="../BW/510/16/16" target="_blank" class="text-decoration-none">Dz 16:16</a>). W&#160;<strong>poniedziałki</strong> od godziny <strong>17:30 do 19:30</strong> pełniony jest dyżur duszpasterski.

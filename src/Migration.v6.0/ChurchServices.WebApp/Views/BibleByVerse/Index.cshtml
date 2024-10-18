@@ -156,6 +156,9 @@
                 <div class="col-auto">
                     <span class="@__styleFont orginal-text">@Html.Raw(item.OrginalText)</span><br/>
                     <span class="orginal-text-translit">@Html.Raw(item.Transliteration)</span>
+                    @if (item.Translation.IsNotNullOrEmpty()) {
+                        <br/><span class="orginal-text-translit">@Html.Raw(item.Translation)</span>                      
+                    }
                 </div>
             }
             </div>

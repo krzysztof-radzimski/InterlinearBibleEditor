@@ -2,59 +2,56 @@
     ViewData["Title"] = "Polityka prywatności";
 }
 @inject IConfiguration Configuration 
+<style>
+    li {
+        font-size: 100% !important;
+    }
+</style>
 <div class="max-width-1000" style="padding-top: 20px;">
-     @Html.Partial("~/Views/Shared/_Baner.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/_Baner.cshtml")
     <h1><i class="fas fa-balance-scale"></i> @ViewData["Title"]</h1>
 
     <h5>Zastrzeżenia prawne</h5>
     <p>
-        Wszelkie treści, materiały oraz elementy graficzne zamieszczone na stronie @Configuration["HostUrl"] chronione są prawem autorskim.
-        Materiały zawarte na niniejszej stronie mogą być wykorzystywane lub rozpowszechniane jedynie w&#160;celach informacyjnych oraz wyłącznie
-        z&#160;niniejszą notą o prawach autorskich oraz ze wskazaniem źródła informacji: @Configuration["HostUrl"].
-        Ewentualne zastrzeżone znaki towarowe oraz loga są własnością ich włascicieli.
+        Wszelkie treści, materiały oraz elementy graficzne zamieszczone na stronie @Configuration["HostUrl"] chronione są prawem autorskim. Materiały zawarte na niniejszej stronie mogą być wykorzystywane lub rozpowszechniane jedynie w&#160;celach informacyjnych oraz wyłącznie z&#160;niniejszą notą o&nbsp;prawach autorskich oraz ze wskazaniem źródła informacji: @Configuration["HostUrl"]. Ewentualne zastrzeżone znaki towarowe oraz loga są własnością ich włascicieli.
     </p>
 
     <h5>Ważne: Strona wykorzystuje pliki cookies.</h5>
     <p>
-        W ramach naszej witryny stosujemy pliki cookies w&#160;celu świadczenia Państwu usług na najwyższym poziomie,
-        w&#160;tym w&#160;sposób dostosowany do indywidualnych potrzeb. Korzystanie z&#160;witryny bez zmiany ustawień dotyczących cookies oznacza,
-        że będą one zamieszczane w&#160;Państwa urządzeniu końcowym. Możecie Państwo dokonać w&#160;każdym czasie zmiany ustawień dotyczących cookies.      
+        W&nbsp;ramach naszej witryny stosujemy pliki cookies w&#160;celu świadczenia Państwu usług na najwyższym poziomie, w&#160;tym w&#160;sposób dostosowany do indywidualnych potrzeb. Korzystanie z&#160;witryny bez zmiany ustawień dotyczących cookies oznacza, że będą one zamieszczane w&#160;Państwa urządzeniu końcowym. Możecie Państwo dokonać w&#160;każdym czasie zmiany ustawień dotyczących cookies.      
     </p>
 
     <h5>Polityka cookies</h5>
     <ol start="1">
-        <li>Serwis nie zbiera w sposób automatyczny żadnych informacji, z&nbsp;wyjątkiem informacji zawartych w plikach cookies.</li>
+        <li>Serwis nie zbiera w&nbsp;sposób automatyczny żadnych informacji, z&nbsp;wyjątkiem informacji zawartych w&nbsp;plikach cookies.</li>
         <li>
-            Pliki cookies (tzw. „ciasteczka”) stanowią dane informatyczne, w szczególności pliki tekstowe, które przechowywane
-            są w urządzeniu końcowym Użytkownika Serwisu i&nbsp;przeznaczone są do korzystania ze stron internetowych Serwisu.
-            Cookies zazwyczaj zawierają nazwę strony internetowej, z&nbsp;której pochodzą, czas przechowywania ich na urządzeniu końcowym oraz&nbsp;unikalny numer.
+            Pliki cookies (tzw. „ciasteczka”) stanowią dane informatyczne, w&nbsp;szczególności pliki tekstowe, które przechowywane są w&nbsp;urządzeniu końcowym Użytkownika Serwisu i&nbsp;przeznaczone są do korzystania ze stron internetowych Serwisu. Cookies zazwyczaj zawierają nazwę strony internetowej, z&nbsp;której pochodzą, czas przechowywania ich na urządzeniu końcowym oraz&nbsp;unikalny numer.
         </li>
         <li>
-            Podmiotem zamieszczającym na urządzeniu końcowym Użytkownika Serwisu pliki cookies oraz&nbsp;uzyskującym do nich dostęp jest operator
-            Serwisu @Configuration["HostUrl"] z&nbsp;siedzibą pod adresem ul. Kopernika 48 05-180 Nowy Dwór Mazowiecki.
+            Podmiotem zamieszczającym na urządzeniu końcowym Użytkownika Serwisu pliki cookies oraz&nbsp;uzyskującym do nich dostęp jest operator Serwisu @Configuration["HostUrl"] z&nbsp;siedzibą pod adresem ul.&nbsp;Sukienna&nbsp;52, 05-180 Nowy Dwór Mazowiecki.
         </li>
-        <li>Pliki cookies wykorzystywane są w celu:</li>
-    </ol>
-    <div class="letter">
-        <p>a)      dostosowania zawartości stron internetowych Serwisu do preferencji Użytkownika oraz&nbsp;optymalizacji korzystania ze stron internetowych; w szczególności pliki te pozwalają rozpoznać urządzenie Użytkownika Serwisu i&nbsp;odpowiednio wyświetlić stronę internetową, dostosowaną do jego indywidualnych potrzeb;</p>
-        <p>b)      tworzenia statystyk, które pomagają zrozumieć, w jaki sposób Użytkownicy Serwisu korzystają ze stron internetowych, co umożliwia ulepszanie ich struktury i&nbsp;zawartości;</p>
-        <p>c)       utrzymanie sesji Użytkownika Serwisu (po zalogowaniu), dzięki której Użytkownik nie musi na każdej podstronie Serwisu ponownie wpisywać loginu i&nbsp;hasła;</p>
-    </div>
-    <ol start="5">
-        <li>W ramach Serwisu stosowane są dwa zasadnicze rodzaje plików cookies: „sesyjne”  (<i>session cookies</i>) oraz&nbsp;„stałe” (<i>persistent cookies</i>). Cookies „sesyjne” są plikami tymczasowymi, które przechowywane są w urządzeniu końcowym Użytkownika do czasu wylogowania, opuszczenia strony internetowej lub wyłączenia oprogramowania (przeglądarki internetowej). „Stałe” pliki cookies przechowywane są w urządzeniu końcowym Użytkownika przez&nbsp;czas określony w parametrach plików cookies lub do czasu ich usunięcia przez&nbsp;Użytkownika.</li>
-        <li>W ramach Serwisu stosowane są następujące rodzaje plików cookies:</li>
-    </ol>
-    <div class="letter">
-        <p>a)      „niezbędne” pliki cookies, umożliwiające korzystanie z&nbsp;usług dostępnych w ramach Serwisu, np. uwierzytelniające pliki cookies wykorzystywane do usług wymagających uwierzytelniania w ramach Serwisu;</p>
-        <p>b)      pliki cookies służące do zapewnienia bezpieczeństwa, np. wykorzystywane do wykrywania nadużyć w zakresie uwierzytelniania w ramach Serwisu;</p>
-        <p>c)       „wydajnościowe” pliki cookies, umożliwiające zbieranie informacji o&nbsp;sposobie korzystania ze stron internetowych Serwisu;</p>
-        <p>d)      „funkcjonalne” pliki cookies, umożliwiające „zapamiętanie” wybranych przez&nbsp;Użytkownika ustawień i&nbsp;personalizację interfejsu Użytkownika, np. w zakresie wybranego języka lub regionu, z&nbsp;którego pochodzi Użytkownik, rozmiaru czcionki, wyglądu strony internetowej itp.;</p>
-        <p>e)      „reklamowe” pliki cookies, umożliwiające dostarczanie Użytkownikom treści reklamowych bardziej dostosowanych do ich zainteresowań.</p>
-    </div>
-    <ol start="7">
-        <li>W wielu przypadkach oprogramowanie służące do przeglądania stron internetowych (przeglądarka internetowa) domyślnie dopuszcza przechowywanie plików cookies w urządzeniu końcowym Użytkownika. Użytkownicy Serwisu mogą dokonać w każdym czasie zmiany ustawień dotyczących plików cookies. Ustawienia te mogą zostać zmienione w szczególności w taki sposób, aby blokować automatyczną obsługę plików cookies w ustawieniach przeglądarki internetowej bądź informować o&nbsp;ich każdorazowym zamieszczeniu w urządzeniu Użytkownika Serwisu. Szczegółowe informacje o&nbsp;możliwości i&nbsp;sposobach obsługi plików cookies dostępne są w ustawieniach oprogramowania (przeglądarki internetowej).</li>
+        <li>Pliki cookies wykorzystywane są w&nbsp;celu:
+            <ol type="a">
+                <li>dostosowania zawartości stron internetowych Serwisu do preferencji Użytkownika oraz&nbsp;optymalizacji korzystania ze stron internetowych; w szczególności pliki te pozwalają rozpoznać urządzenie Użytkownika Serwisu i&nbsp;odpowiednio wyświetlić stronę internetową, dostosowaną do jego indywidualnych potrzeb;</li>
+                <li>tworzenia statystyk, które pomagają zrozumieć, w jaki sposób Użytkownicy Serwisu korzystają ze stron internetowych, co umożliwia ulepszanie ich struktury i&nbsp;zawartości;</li>
+                <li>utrzymanie sesji Użytkownika Serwisu (po zalogowaniu), dzięki której Użytkownik nie musi na każdej podstronie Serwisu ponownie wpisywać loginu i&nbsp;hasła;</li>
+            </ol>
+        </li>
+
+        <li>W ramach Serwisu stosowane są dwa zasadnicze rodzaje plików cookies: „sesyjne”  (<i>session cookies</i>) oraz&nbsp;„stałe” (<i>persistent cookies</i>). Cookies „sesyjne” są plikami tymczasowymi, które przechowywane są w&nbsp;urządzeniu końcowym Użytkownika do czasu wylogowania, opuszczenia strony internetowej lub wyłączenia oprogramowania (przeglądarki internetowej). „Stałe” pliki cookies przechowywane są w urządzeniu końcowym Użytkownika przez&nbsp;czas określony w&nbsp;parametrach plików cookies lub do czasu ich usunięcia przez&nbsp;Użytkownika.</li>
+        <li>W ramach Serwisu stosowane są następujące rodzaje plików cookies:
+            <ol type="a">
+                <li>„niezbędne” pliki cookies, umożliwiające korzystanie z&nbsp;usług dostępnych w ramach Serwisu, np. uwierzytelniające pliki cookies wykorzystywane do usług wymagających uwierzytelniania w ramach Serwisu;</li>
+                <li>pliki cookies służące do zapewnienia bezpieczeństwa, np. wykorzystywane do wykrywania nadużyć w zakresie uwierzytelniania w ramach Serwisu;</li>
+                <li>„wydajnościowe” pliki cookies, umożliwiające zbieranie informacji o&nbsp;sposobie korzystania ze stron internetowych Serwisu;</li>
+                <li>„funkcjonalne” pliki cookies, umożliwiające „zapamiętanie” wybranych przez&nbsp;Użytkownika ustawień i&nbsp;personalizację interfejsu Użytkownika, np. w zakresie wybranego języka lub regionu, z&nbsp;którego pochodzi Użytkownik, rozmiaru czcionki, wyglądu strony internetowej itp.;</li>
+                <li>„reklamowe” pliki cookies, umożliwiające dostarczanie Użytkownikom treści reklamowych bardziej dostosowanych do ich zainteresowań.</li>
+            </ol>
+        </li>
+
+        <li>W wielu przypadkach oprogramowanie służące do przeglądania stron internetowych (przeglądarka internetowa) domyślnie dopuszcza przechowywanie plików cookies w urządzeniu końcowym Użytkownika. Użytkownicy Serwisu mogą dokonać w&nbsp;każdym czasie zmiany ustawień dotyczących plików cookies. Ustawienia te mogą zostać zmienione w&nbsp;szczególności w&nbsp;taki sposób, aby blokować automatyczną obsługę plików cookies w ustawieniach przeglądarki internetowej bądź informować o&nbsp;ich każdorazowym zamieszczeniu w urządzeniu Użytkownika Serwisu. Szczegółowe informacje o&nbsp;możliwości i&nbsp;sposobach obsługi plików cookies dostępne są w ustawieniach oprogramowania (przeglądarki internetowej).</li>
         <li>Operator Serwisu informuje, że ograniczenia stosowania plików cookies mogą wpłynąć na niektóre funkcjonalności dostępne na stronach internetowych Serwisu.</li>
-        <li>Pliki cookies zamieszczane w urządzeniu końcowym Użytkownika Serwisu i&nbsp;wykorzystywane mogą być również przez&nbsp;współpracujących z&nbsp;operatorem Serwisu reklamodawców oraz&nbsp;partnerów.</li>
-        <li>Więcej informacji na temat plików cookies dostępnych jest pod adresem http://wszystkoociasteczkach.pl/ lub w sekcji „Pomoc” w menu przeglądarki internetowej.</li>
+        <li>Pliki cookies zamieszczane w&nbsp;urządzeniu końcowym Użytkownika Serwisu i&nbsp;wykorzystywane mogą być również przez&nbsp;współpracujących z&nbsp;operatorem Serwisu reklamodawców oraz&nbsp;partnerów.</li>
+        <li>Więcej informacji na temat plików cookies dostępnych jest pod adresem http://wszystkoociasteczkach.pl/ lub w&nbsp;sekcji „Pomoc” w&nbsp;menu przeglądarki internetowej.</li>
     </ol>
 </div>

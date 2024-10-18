@@ -8,7 +8,7 @@
 
 <div class="clearfix max-width-1000" style="padding-top: 20px;">
     @if (Model.Data != null) {
-        @Html.Partial("~/Views/Shared/_CourseBaner.cshtml")
+        @await Html.PartialAsync("~/Views/Shared/_CourseBaner.cshtml")
         <h2>Błąd</h2>
         <div class="alert alert-warning" role="alert">@Model.Data</div>
         <p id="start-button-p">

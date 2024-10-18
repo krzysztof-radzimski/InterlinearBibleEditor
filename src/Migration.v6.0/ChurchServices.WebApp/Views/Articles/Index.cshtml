@@ -14,7 +14,7 @@
 }
 
 <div class="max-width-1000" style="padding-top: 20px;">
-    @Html.Partial("~/Views/Shared/_Baner.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/_Baner.cshtml")
     @if (oneAuthor.IsNotNullOrEmpty()) {
         <h1>
             <i class="fas fa-newspaper"></i>&nbsp;<span>@ViewData["Title"] :: @oneAuthor</span>

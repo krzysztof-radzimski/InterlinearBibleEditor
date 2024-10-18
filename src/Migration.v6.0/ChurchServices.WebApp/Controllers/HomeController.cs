@@ -14,11 +14,12 @@
 namespace ChurchServices.WebApp.Controllers {
     public class HomeController : ChurchControllerBase {
         private readonly ILogger<HomeController> Logger;
-
+        private readonly IBibleTagController BibleTag;
         private readonly ITranslationInfoController TranslationInfoController;
-        public HomeController(ILogger<HomeController> logger, ITranslationInfoController translationInfoController, IWebHostEnvironment webHostEnvironment) : base(webHostEnvironment) {
+        public HomeController(IBibleTagController bibleTag, ILogger<HomeController> logger, ITranslationInfoController translationInfoController, IWebHostEnvironment webHostEnvironment) : base(webHostEnvironment) {
             Logger = logger;
             TranslationInfoController = translationInfoController;
+            BibleTag = bibleTag;
         }
 
         public IActionResult Index() {
@@ -55,6 +56,19 @@ namespace ChurchServices.WebApp.Controllers {
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error() {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult SiglumUrlPrepare() => View();
+
+        [HttpPost]
+        public IActionResult SiglumUrlPrepare(ScriptureModel model) {
+            if (model !=null&& model.Siglum.IsNotNullOrEmpty()) {
+                using (var controller = new ScriptureController(BibleTag, TranslationInfoController)) {
+                    var m = controller.GetUrl(model.Siglum);
+                    return View(m.Value);
+                }
+            }
+            return View();
         }
     }
 }

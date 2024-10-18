@@ -9,7 +9,7 @@
         public string OrginalText { get; set; }
         public string VovelsText { get; set; }
         public string VovelsName { get; set; }
-        public string Transliteration {  get; set; }
+        public string Transliteration { get; set; }
         public string SNPD { get; set; }
         public string BW { get; set; }
         public string BT { get; set; }
@@ -22,6 +22,7 @@
     public class BibleByVerseWordModel {
         public string OrginalText { get; set; }
         public string Transliteration { get; set; }
+        public string Translation { get; set; }
     }
 
     public class BibleByVerseBookInfo {

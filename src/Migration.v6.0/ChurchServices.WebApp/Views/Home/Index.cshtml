@@ -7,14 +7,14 @@
 @model HomePageModel
 
 <div class="max-width-1000" style="padding-top: 20px;">
-    @Html.Partial("~/Views/Shared/_Baner.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/_Baner.cshtml")
     
        
     <div class="embed-responsive embed-responsive-16by9 shadow-lg">
         <iframe id="YouTubeFrame" width="560" height="600" src="https://www.youtube.com/embed/videoseries?list=PLUYRCCWSMh6_oq4Lj7JWva8JCxRgpf_o5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
     <br/>
-    @Html.Partial("~/Views/Shared/_ChatGPT.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/_ChatGPT.cshtml")
 
     @if (Model.IsNotNull() && Model.Articles.IsNotNull() && Model.Articles.Count > 0) {
         foreach (var item in Model.Articles) {
@@ -55,7 +55,7 @@
            data-bs-title="Kliknij, aby zalogować się do swojego indywidualnego studium Ewangelii wg św. Jana lub utworzyć nowy profil"
            href="/BibleStudy/Signup"><i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp;Zapisz się</a>
     </p>
-    @Html.Partial("~/Views/Shared/_CourseBaner.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/_CourseBaner.cshtml")
     
     @if (Model != null && Model.Info != null) {
         @Html.Raw(Model.Info.Data)

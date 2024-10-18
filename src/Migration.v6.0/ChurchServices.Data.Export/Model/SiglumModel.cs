@@ -20,7 +20,7 @@ namespace ChurchServices.Data.Export.Model {
     }
 
     public class SimpleSiglumModel {
-        public int BookNumber{ get; set; }
+        public int BookNumber { get; set; }
         public int NumberOfChapter { get; set; }
         public int NumberOfVerse { get; set; }
     }

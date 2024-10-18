@@ -14,7 +14,7 @@
     </style>
 }
 <div class="max-width-1000" style="padding-top: 20px;">
-    @Html.Partial("~/Views/Shared/_Baner.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/_Baner.cshtml")
     <h1><i class="fas fa-file-contract"></i> @ViewData["Title"]</h1><br />
 
     @if (Model != null) {

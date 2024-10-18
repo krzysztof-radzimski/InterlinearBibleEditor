@@ -56,7 +56,11 @@ namespace ChurchServices.WebApp.Controllers {
                 vovelsName = "Nestle Aland 28";
 
                 foreach (var word in npi.VerseWords) {
-                    words.Add(new BibleByVerseWordModel() { OrginalText = word.SourceWord, Transliteration = word.Transliteration });
+                    words.Add(new BibleByVerseWordModel() {
+                        OrginalText = word.SourceWord,
+                        Transliteration = word.Transliteration,
+                        Translation = word.Translation
+                    });
                 }
             }
             else {
@@ -64,13 +68,17 @@ namespace ChurchServices.WebApp.Controllers {
                 if (lhb == null) { return GetModel(book, 1, 1); }
                 orginalText = lhb.Text;
 
-                var hsb = new XPQuery<Verse>(uow).Where(x => x.Index == $"HSB.{book}.{chapter}.{verse}").First();
+                var hsb = new XPQuery<Verse>(uow).Where(x => x.Index == $"HNPI.{book}.{chapter}.{verse}").First();
                 vovelsText = hsb.GetSourceText();
                 transliteration = hsb.GetTransliterationText(true);
                 vovelsName = "Biblia Hebraica Stuttgartensia";
 
                 foreach (var word in hsb.VerseWords) {
-                    words.Add(new BibleByVerseWordModel() { OrginalText = word.SourceWord, Transliteration = word.Transliteration });
+                    words.Add(new BibleByVerseWordModel() {
+                        OrginalText = word.SourceWord,
+                        Transliteration = word.Transliteration,
+                        Translation = word.Translation
+                    });
                 }
             }
 

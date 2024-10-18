@@ -11,7 +11,7 @@
     </style>
 }
 <div class="max-width-1000" style="padding-top: 20px;">
-    @Html.Partial("~/Views/Shared/_Baner.cshtml")
+    @await Html.PartialAsync("~/Views/Shared/_Baner.cshtml")
     <h1 class="OldLondonH1">@ViewData["Title"]</h1>
     <h2 style="text-align:center;">Kościoła Chrześcijan Baptystów w&#160;Nowym Dworze Mazowieckim</h2>
     @if (Model != null) {

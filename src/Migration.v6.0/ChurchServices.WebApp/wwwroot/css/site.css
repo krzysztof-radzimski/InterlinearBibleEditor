@@ -78,7 +78,7 @@
 #toastNotification .btn-close {
     filter: none;
     color: #C8C8C8 !important;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FFF'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") !important;   
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FFF'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") !important;
 }
 
 .article-picture {
@@ -1332,4 +1332,43 @@ img {
     .footer {
         background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
     }
+}
+
+
+/************COOKIES*************/
+/* Styl dla pó³przezroczystego overlay */
+.cookie-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* pó³przezroczysty czarny */
+    z-index: 999; /* Zablokowanie interakcji ze stron¹ */
+    display: none; /* Ukryty, dopóki nie potrzebny */
+}
+
+/* Styl dla panelu cookies */
+.cookie-consent {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    z-index: 1000; /* Wy¿szy ni¿ overlay, aby by³o widoczne */
+    display: none; /* Ukryty, dopóki nie potrzebny */
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+    .cookie-consent p {
+        margin: 0;
+        padding: 0;
+        text-align: justify;
+    }    
+
+.fixed-top {
+    z-index: 999 !important;
 }
