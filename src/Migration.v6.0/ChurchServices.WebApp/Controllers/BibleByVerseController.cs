@@ -55,13 +55,28 @@ namespace ChurchServices.WebApp.Controllers {
                 transliteration = npi.GetTransliterationText();
                 vovelsName = "Nestle Aland 28";
 
+
                 foreach (var word in npi.VerseWords) {
+                    var wordTranslation = word.Translation;
+                    if (wordTranslation == null || wordTranslation.IsNullOrWhiteSpace()) {
+                        var _word = tro.VerseWords.ToList().Where(x => x.NumberOfVerseWord == word.NumberOfVerseWord && x.StrongCode != null && x.StrongCodeValue == word.StrongCodeValue).FirstOrDefault();
+                        if (_word != null) {
+                            wordTranslation = _word.Translation;
+                        }
+                        else {
+                            _word = tro.VerseWords.ToList().Where(x => x.StrongCode != null && x.StrongCodeValue == word.StrongCodeValue).FirstOrDefault();
+                            if (_word != null) {
+                                wordTranslation = _word.Translation;
+                            }
+                        }
+                    }
                     words.Add(new BibleByVerseWordModel() {
                         OrginalText = word.SourceWord,
                         Transliteration = word.Transliteration,
-                        Translation = word.Translation
+                        Translation = wordTranslation
                     });
                 }
+
             }
             else {
                 var lhb = new XPQuery<Verse>(uow).Where(x => x.Index == $"LHB.{book}.{chapter}.{verse}").FirstOrDefault();

@@ -46,6 +46,20 @@
 
         gtag('config', 'AW-434960238');
     </script>
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; 
+            w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'}); 
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; 
+            j.async = true; 
+            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl; 
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-K4PT4Q8Z');</script>
+    <!-- End Google Tag Manager -->
+
 </head>
 <body data-bs-spy="scroll" data-bs-target="#top-nav" data-bs-offset="0">
     <header>
@@ -220,6 +234,9 @@
                             <a class="dropdown-item" href="/Search/Siglum" data-bs-toggle="tooltip"
                                data-bs-placement="bottom"
                                data-bs-title="Schemat siglów biblijnych"><i class="fa-solid fa-magnifying-glass-arrow-right"></i>&nbsp;Schemat Siglum</a>
+                            <a class="dropdown-item" href="/Home/SiglumUrlPrepare" data-bs-toggle="tooltip"
+                               data-bs-placement="bottom"
+                               data-bs-title="Zamiana Siglum na Url"><i class="fa-solid fa-bolt"></i>&nbsp;Zamiana Siglum na Url</a>
                         </ul>
                     </div>
                 </form>
@@ -529,5 +546,12 @@
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v9.0" nonce="TGe91ewv"></script>
     *@
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K4PT4Q8Z"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
 </body>
 </html>

@@ -21,8 +21,19 @@ namespace ChurchServices.Data.Export {
             if (outputPath.IsNullOrEmpty()) { throw new ArgumentNullException("outputPath"); }
 
             var builder = GetDocumentBuilder();
+            builder.Document.FirstSection.PageSetup.TextColumns.SetCount(2);
+
+            var isFirstBook = true;
 
             foreach (var book in translation.Books.OrderBy(x => x.NumberOfBook)) {
+                if (!isFirstBook) {
+                    builder.InsertParagraph();
+                    builder.ParagraphFormat.ClearFormatting();
+                }
+                else {
+                    isFirstBook = false;
+                }
+
                 ExportBookName(book, builder);
                 var chapters = book.Chapters.OrderBy(x => x.NumberOfChapter).ToArray();
                 foreach (var chapter in chapters) {
@@ -41,16 +52,65 @@ namespace ChurchServices.Data.Export {
                         ExportVerse(item, ref par, builder);
                     }
 
-                    if (chapters.Last() == chapter && addFooter) { WriteFooter(book.ParentTranslation, par, builder); }
-                    else {
-                        builder.MoveTo(par);
-                    }
+                    builder.MoveTo(par);
                 }
             }
 
             builder.MoveToDocumentEnd();
 
+            var _par = builder.InsertParagraph();
+            WriteFooter(translation, _par, builder);
+
+            builder.MoveToDocumentEnd();
+
             SaveBuilder(saveFormat, outputPath, builder);
+        }
+        public virtual byte[] Export(Translation translation, ExportSaveFormat saveFormat, bool addFooter = true) {
+            if (translation.IsNull()) { throw new ArgumentNullException("translation"); }
+
+            var builder = GetDocumentBuilder();
+            builder.Document.FirstSection.PageSetup.TextColumns.SetCount(2);
+
+            var isFirstBook = true;
+
+            foreach (var book in translation.Books.OrderBy(x => x.NumberOfBook)) {
+                if (!isFirstBook) {
+                    builder.InsertParagraph();
+                    builder.ParagraphFormat.ClearFormatting();
+                }
+                else {
+                    isFirstBook = false;
+                }
+
+                ExportBookName(book, builder);
+                var chapters = book.Chapters.OrderBy(x => x.NumberOfChapter).ToArray();
+                foreach (var chapter in chapters) {
+
+                    ExportChapterNumber(chapter, builder, false);
+                    Paragraph par = null;
+                    if (chapter.Subtitles.Count == 0) {
+                        par = builder.InsertParagraph();
+                        par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
+                        par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+                    }
+
+                    foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
+                        ExportVerse(item, ref par, builder);
+                    }
+
+                    if (par != null) { builder.MoveTo(par); }
+                }
+            }
+
+            if (addFooter) {
+                builder.MoveToDocumentEnd();
+                var _par = builder.InsertParagraph();
+                WriteFooter(translation, _par, builder);
+            }
+
+            builder.MoveToDocumentEnd();
+
+            return SaveBuilder(saveFormat, builder);
         }
         public virtual void Export(Book book, ExportSaveFormat saveFormat, string outputPath, bool addFooter = true, bool addBookAndHeader = true) {
             if (book.IsNull()) { throw new ArgumentNullException("book"); }

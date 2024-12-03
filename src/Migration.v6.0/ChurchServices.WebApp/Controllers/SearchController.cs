@@ -300,6 +300,7 @@ namespace ChurchServices.WebApp.Controllers {
                 return new ScriptureModel() {
                     Siglum = siglum,
                     Url = $"https://kosciol-jezusa.pl{url}",
+                    ShortUrl = url,
                     Text = ""
                 };
             }
@@ -307,6 +308,7 @@ namespace ChurchServices.WebApp.Controllers {
             return new ScriptureModel() {
                 Siglum = siglum,
                 Url = "",
+                ShortUrl ="",
                 Text = ""
             };
         }
@@ -480,5 +482,6 @@ namespace ChurchServices.WebApp.Controllers {
         public string Siglum { get; set; }
         public string Text { get; set; }
         public string Url { get; set; }
+        public string ShortUrl {  get; set; }
     }
 }

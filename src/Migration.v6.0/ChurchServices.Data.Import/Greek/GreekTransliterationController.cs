@@ -41,7 +41,7 @@ namespace ChurchServices.Data.Import.Greek {
                 if (verse.IsNotNull()) {
                     var value = string.Empty;
                     var svalue = string.Empty;
-                    foreach (var item in verse.VerseWords) {
+                    foreach (var item in verse.VerseWords.OrderBy(x => x.NumberOfVerseWord)) {
                         svalue += item.SourceWord + " ";
                         value += TransliterateWord(item.SourceWord) + " ";
                     }
@@ -55,7 +55,7 @@ namespace ChurchServices.Data.Import.Greek {
                 var verse = new DevExpress.Xpo.XPQuery<Model.Verse>(uow).Where(x => x.Index == index.Index).FirstOrDefault();
                 if (verse.IsNotNull()) {
                     var value = string.Empty;
-                    foreach (var item in verse.VerseWords) {
+                    foreach (var item in verse.VerseWords.OrderBy(x => x.NumberOfVerseWord)) {
                         value += TransliterateWord(item.SourceWord) + " ";
                     }
                     return value.Trim();

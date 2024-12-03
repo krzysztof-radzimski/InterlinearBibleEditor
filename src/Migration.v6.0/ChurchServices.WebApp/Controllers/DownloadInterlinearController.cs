@@ -13,10 +13,13 @@
 
 namespace ChurchServices.WebApp.Controllers {
     public abstract class DownloadInterlinearController : Controller {
+        private string DownloadFileName = null;
         protected readonly IConfiguration Configuration;
+        protected readonly IWebHostEnvironment WebHostEnvironment;
         protected abstract ExportSaveFormat Format { get; }
-        public DownloadInterlinearController(IConfiguration configuration) {
+        public DownloadInterlinearController(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) {
             Configuration = configuration;
+            WebHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -94,8 +97,41 @@ namespace ChurchServices.WebApp.Controllers {
 
                 return new MemoryStream(result);
             }
+            else if (queryString.IsNotNullOrWhiteSpace() && paramsTable.Length == 1) {
+                var translationName = paramsTable[0];
 
-            return default;
+                var fileName = $"{translationName.Replace("+", "").Trim()}.{Format.ToString().ToLower()}";
+                DownloadFileName = fileName;
+                var filePath = Path.Combine(WebHostEnvironment.WebRootPath, $"download\\bible\\{fileName}");
+                if (System.IO.File.Exists(filePath)) {
+                    var filePathData = await System.IO.File.ReadAllBytesAsync(filePath);
+                    return new MemoryStream(filePathData);
+                }
+
+                var uow = new UnitOfWork();
+
+                var trans = new XPQuery<Translation>(uow).Where(x => !x.Hidden && x.Name == translationName).FirstOrDefault();
+                if (trans.IsNull() && translationName.EndsWith(" ")) {
+                    translationName = translationName.Trim() + "+";
+                    trans = new XPQuery<Translation>(uow).Where(x => x.Name == translationName).FirstOrDefault();
+                }
+                if (trans.IsNull()) { return default; }
+                if (!trans.OpenAccess && !User.Identity.IsAuthenticated) {
+                    throw new AuthException();
+                }
+
+                byte[] licData = await GetLicData();
+                var host = (this.Request.IsHttps ? "https://" : "http://") + this.Request.Host;
+                var result = new InterlinearExporter(licData, host).Export(trans, Format);
+
+                if (!System.IO.File.Exists(filePath) && result != null) {
+                    await System.IO.File.WriteAllBytesAsync(filePath, result);
+                }
+
+                return new MemoryStream(result);
+            }
+
+                return default;
         }
 
         private async Task<byte[]> GetLicData() {
@@ -113,13 +149,13 @@ namespace ChurchServices.WebApp.Controllers {
     [Route("api/[controller]")]
     public class DownloadInterlinearDocxController : DownloadInterlinearController {
         protected override ExportSaveFormat Format => ExportSaveFormat.Docx;
-        public DownloadInterlinearDocxController(IConfiguration configuration) : base(configuration) { }
+        public DownloadInterlinearDocxController(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment) { }
     }
 
     [ApiController]
     [Route("api/[controller]")]
     public class DownloadInterlinearPdfController : DownloadInterlinearController {
         protected override ExportSaveFormat Format => ExportSaveFormat.Pdf;
-        public DownloadInterlinearPdfController(IConfiguration configuration) : base(configuration) { }
+        public DownloadInterlinearPdfController(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration,webHostEnvironment) { }
     }
 }

@@ -76,8 +76,10 @@ namespace ChurchServices.Data.Model {
         public string FootnoteText {
             get { return footnoteText; }
             set { SetPropertyValue(nameof(FootnoteText), ref footnoteText, value); }
-        }              
+        }
 
         public VerseWord(Session session) : base(session) { }
+
+        [NonPersistent] public int StrongCodeValue { get { return StrongCode != null ? StrongCode.Code : 0; } }
     }
 }

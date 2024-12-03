@@ -127,14 +127,16 @@ namespace ChurchServices.Data.Export {
                         if (footnoteText != null) {
                             var _par = builder.CurrentParagraph;
                             builder.Font.Size = 10;
-                            var footnote = builder.InsertFootnote(FootnoteType.Footnote, "", $"{footnoteText.Index})");
+                            var footnoteMark = $"{verse.NumberOfVerse}{numInVerse.ToAlphabetString()}";
+                            var footnote = builder.InsertFootnote(FootnoteType.Footnote, "", $"{footnoteMark})");
+                            builder.Write(" ");
 
                             builder.MoveTo(footnote.LastParagraph);
                             builder.InsertHtml($"&nbsp;{footnoteText.Value}");
                             foreach (Inline run in builder.CurrentParagraph.ChildNodes) {
                                 run.Font.Size = 8;
                             }
-                            builder.MoveTo(par);
+                            builder.MoveTo(_par);
 
                             numInVerse++;
                         }
@@ -155,6 +157,7 @@ namespace ChurchServices.Data.Export {
                 if (footNotes.Count > 0) {
                     foreach (var item in footNotes) {
                         builder.InsertFootnote(FootnoteType.Footnote, item.Value, $"{item.Index})");
+                        builder.Write(" ");
                     }
                 }
                 builder.Write(" ");

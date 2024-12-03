@@ -11,8 +11,6 @@
 
   ===================================================================================*/
 
-using System.Xml.Linq;
-
 namespace ChurchServices.Data.Export {
     public abstract class BaseExporter {
         protected System.Drawing.Graphics g;
@@ -43,7 +41,7 @@ namespace ChurchServices.Data.Export {
             var document = new Document();
 
             document.FirstSection.PageSetup.DifferentFirstPageHeaderFooter = true;
-
+            //document.FirstSection.PageSetup.TextColumns.SetCount(1);
             document.FirstSection.PageSetup.PaperSize = PaperSize.A4;
             document.FirstSection.PageSetup.Orientation = Orientation.Portrait;
             document.FirstSection.PageSetup.TopMargin = (2.5F).CentimetersToPoints();
@@ -74,7 +72,7 @@ namespace ChurchServices.Data.Export {
             h1.Font.Italic = false;
             h1.Font.Name = "Times New Roman";
             h1.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-            h1.ParagraphFormat.LineSpacing = 18;
+            //h1.ParagraphFormat.LineSpacing = 18;
             h1.ParagraphFormat.KeepWithNext = true;
 
             var h2 = document.Styles.Add(StyleType.Paragraph, "Nagłówek 2");

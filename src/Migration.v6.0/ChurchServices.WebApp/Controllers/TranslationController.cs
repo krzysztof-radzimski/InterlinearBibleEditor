@@ -11,6 +11,9 @@
 
   ===================================================================================*/
 
+using Aspose.Words;
+using System.Xml.Serialization;
+
 namespace ChurchServices.WebApp.Controllers {
     public class TranslationController : Controller {
         private readonly IConfiguration Configuration;
@@ -39,8 +42,18 @@ namespace ChurchServices.WebApp.Controllers {
             if (result != null) {
                 return View(result);
             }
-
             return View();
         }
+
+        [HttpPost]
+        public IActionResult DownloadStructureInfo([FromBody] BibleStructureInfo model) {
+            var serializer = new XmlSerializer(typeof(BibleStructureInfo));
+            using (var memoryStream = new MemoryStream()) {
+                serializer.Serialize(memoryStream, model);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return File(memoryStream.ToArray(), "application/xml", $"{model.Name}.xml");
+            }
+        }
+
     }
 }

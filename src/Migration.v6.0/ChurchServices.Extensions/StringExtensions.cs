@@ -263,7 +263,20 @@ namespace ChurchServices.Extensions {
             }
             return default;
         }
+        public static string ToAlphabetString(this int number) {
+            if (number < 1)
+                throw new ArgumentOutOfRangeException(nameof(number), "Liczba musi być większa lub równa 1.");
 
+            string result = string.Empty;
+            int current = number - 1;
+
+            while (current >= 0) {
+                result = (char)('a' + (current % 26)) + result;
+                current = (current / 26) - 1;
+            }
+
+            return result;
+        }
         public static string ArabicToRoman(this int arabicNumeral) {
 
             string romanNumeral = "";

@@ -579,8 +579,8 @@ namespace ChurchServices.WinApp {
 
                 var c = new GreekTransliterationController();
 
-                foreach (var verse in verses) {
-                    foreach (var verseWord in verse.VerseWords) {
+                foreach (var verse in verses.OrderBy(x => x.NumberOfVerse)) {
+                    foreach (var verseWord in verse.VerseWords.OrderBy(x => x.NumberOfVerseWord)) {
                         var sourceWord = verseWord.SourceWord.RemoveAny(".", ":", ",", ";", "·", "—", "-", ")", "(", "]", "[", "’", ";", "\"", "?");
 
                         if (verseWord.Translation.IsNullOrEmpty()) {

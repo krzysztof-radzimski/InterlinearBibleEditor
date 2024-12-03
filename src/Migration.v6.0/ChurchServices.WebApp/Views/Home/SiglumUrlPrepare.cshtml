@@ -1,13 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Zamiana Siglum na URL";
     var _url = Model != null ? Model.Url : String.Empty;
+    var _shorturl = Model != null ? Model.ShortUrl : String.Empty;
 }
 @inject IConfiguration Configuration
 @model ScriptureModel
 <div class="max-width-1000" style="padding-top: 20px;">
     @await Html.PartialAsync("~/Views/Shared/_Baner.cshtml")
 
-    <h1><i class="fas fa-balance-scale"></i> @ViewData["Title"]</h1>
+    <h1><i class="fa-solid fa-bolt"></i> @ViewData["Title"]</h1>
     <form method="post" style="background-color: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
         <div class="form-group">
             <label asp-for="Siglum" class="control-label">Siglum</label>
@@ -25,6 +26,20 @@
                         data-bs-placement="bottom"
                         data-bs-title="Kopiuj URL"
                         onclick="copyToClipboard3('@_url')">
+                    <i class="far fa-copy"></i>
+                </button>
+            </div>
+
+
+            <div class="input-group">
+                <input type="text" name="ShortUrl" value="@_shorturl" class="form-control" disabled />
+                <button id="copy-button"
+                        type="button"
+                        class="btn btn-light topnav-button"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        data-bs-title="Kopiuj URL"
+                        onclick="copyToClipboard3('@_shorturl')">
                     <i class="far fa-copy"></i>
                 </button>
             </div>

@@ -22,6 +22,7 @@ namespace ChurchServices.Data.Export.Model {
         public int NTBookNumber { get; }
         public int LogosBookNumber { get; }
         public List<TranslationInfo> Translations { get; }
+        public BibleStructureInfo StructureInfo { get; }
         public TranslationControllerModel(Translation t, string book = null, string chapter = null, string verse = null, List<BookBaseInfo> books = null) {
             Translation = t;
             Book = book;
@@ -31,6 +32,38 @@ namespace ChurchServices.Data.Export.Model {
             Books = books;
             NTBookNumber = GetNTBookNumber();
             LogosBookNumber = GetLogosBookNumber();
+
+            if (book == null) {
+                StructureInfo = new BibleStructureInfo() { Name = t.Name, Type = Translation.Type, Books = new List<BibleBookStructureInfo>() };
+                foreach (var b in Books.OrderBy(x => x.NumberOfBook)) {
+                    var tb = t.Books.Where(x => x.NumberOfBook == b.NumberOfBook).FirstOrDefault();
+                    if (tb != null) {
+                        var bookInfo = new BibleBookStructureInfo() {
+                            NumberOfBook = b.NumberOfBook,
+                            Title = b.BookTitle,
+                            BookShortcut = tb.BookShortcut,
+                            BaseBookShortcut = b.BookShortcut,
+                            Chapters = new List<BibleBookChapterStructureInfo>(),
+                            ChapterStartNumber = 1,
+                            ChapterEndNumber = tb.Chapters != null && tb.Chapters.Count > 0 ? tb.Chapters.Max(x => x.NumberOfChapter) : 0,
+                            IsNotTranslated = Translation.Type == TranslationType.Interlinear && !tb.IsTranslated && Translation.BookType == TheBookType.Bible,
+                            Color = tb.Color,
+                            IsInterlinearBible = Translation.Type == TranslationType.Interlinear && Translation.BookType == TheBookType.Bible,
+                            FirstTranslatedChapter = Translation.Type == TranslationType.Interlinear ? (tb.Chapters != null && tb.Chapters.Count > 0 && tb.Chapters.Where(x => x.IsTranslated).Any() ? tb.Chapters.Where(x => x.IsTranslated).Min(x => x.NumberOfChapter) : 0) : (tb.Chapters != null && tb.Chapters.Count > 0 ? tb.Chapters.Min(x => x.NumberOfChapter) : 0)
+                        };
+
+                        foreach (var c in tb.Chapters.OrderBy(x => x.NumberOfChapter)) {
+                            var chapterInfo = new BibleBookChapterStructureInfo() {
+                                ChapterNumber = c.NumberOfChapter,
+                                VerseStartNumber = 1,
+                                VerseEndNumber = c.Verses.Max(x => x.NumberOfVerse)
+                            };
+                            bookInfo.Chapters.Add(chapterInfo);
+                        }
+                        StructureInfo.Books.Add(bookInfo);
+                    }
+                }
+            }
         }
 
         private int GetNTBookNumber() {

@@ -43,19 +43,19 @@
             </a>
         }
         <div class="d-flex flex-row-reverse mt-3">
-            <a href="/Articles" class="btn btn-outline-success">Więcej...</a>
+            <a href="/Articles" class="btn btn-success"><i class="fa-regular fa-newspaper"></i>&nbsp;Więcej...</a>
         </div>
         <br />
     }
     
-    <p id="start-button-p">
+@*     <p id="start-button-p">
         <a id="start-button" class="btn btn-warning"
            data-bs-toggle="tooltip"
            data-bs-placement="bottom"
            data-bs-title="Kliknij, aby zalogować się do swojego indywidualnego studium Ewangelii wg św. Jana lub utworzyć nowy profil"
            href="/BibleStudy/Signup"><i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp;Zapisz się</a>
-    </p>
-    @await Html.PartialAsync("~/Views/Shared/_CourseBaner.cshtml")
+    </p> *@
+@* @await Html.PartialAsync("~/Views/Shared/_CourseBaner.cshtml") *@
     
     @if (Model != null && Model.Info != null) {
         @Html.Raw(Model.Info.Data)

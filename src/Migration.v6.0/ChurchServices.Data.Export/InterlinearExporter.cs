@@ -11,11 +11,10 @@
 
   ===================================================================================*/
 
-using ChurchServices.Data.Model;
-
 namespace ChurchServices.Data.Export {
     public class InterlinearExporter : BaseExporter {
         private int footNoteIndex = 1;
+        private int currentVerseNumber = 1;
 
         private Controllers.IBibleTagController BibleTagController;
         private TranslationControllerModel TranslateModel;
@@ -110,14 +109,104 @@ namespace ChurchServices.Data.Export {
             return SaveBuilder(saveFormat, builder);
         }
 
-        public void Export(Translation translation, ExportSaveFormat saveFormat, string outputPath) {
+        public void Export(Translation translation, ExportSaveFormat saveFormat, string outputPath, bool addFooter = false) {
             if (translation.IsNull()) { throw new ArgumentNullException("translation"); }
             if (outputPath.IsNullOrEmpty()) { throw new ArgumentNullException("outputPath"); }
 
             if (translation.Type != TranslationType.Interlinear) { throw new Exception("Wrong translation type!"); }
 
             var builder = GetDocumentBuilder();
+            var isFirstBook = true;
+
+            foreach (var book in translation.Books.OrderBy(x => x.NumberOfBook)) {
+                if (!book.IsTranslated) { continue; }
+                if (!isFirstBook) {
+                    builder.InsertParagraph();
+                    builder.ParagraphFormat.ClearFormatting();
+                }
+                else {
+                    isFirstBook = false;
+                }
+
+                ExportBookName(book, builder);
+
+                var chapters = book.Chapters.Where(x => x.IsTranslated).OrderBy(x => x.NumberOfChapter).ToArray();
+                foreach (var chapter in chapters) {
+                    ExportChapterNumber(chapter, builder, false);
+
+                    Paragraph par = null;
+                    if (chapter.Subtitles.Count == 0) {
+                        par = builder.InsertParagraph();
+                        par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
+                        par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+                    }
+
+                    foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
+                        ExportVerse(item, ref par, builder);
+                    }
+
+                    if (par != null) { builder.MoveTo(par); }
+                }
+            }
+
+            if (addFooter) {
+                builder.MoveToDocumentEnd();
+                var _par = builder.InsertParagraph();
+                WriteFooter(translation, _par, builder);
+            }
+
+            builder.MoveToDocumentEnd();
+
             SaveBuilder(saveFormat, outputPath, builder);
+        }
+
+        public byte[] Export(Translation translation, ExportSaveFormat saveFormat, bool addFooter = false) {
+            if (translation.IsNull()) { throw new ArgumentNullException("translation"); }
+
+            if (translation.Type != TranslationType.Interlinear) { throw new Exception("Wrong translation type!"); }
+
+            var builder = GetDocumentBuilder();
+            var isFirstBook = true;
+
+            foreach (var book in translation.Books.OrderBy(x => x.NumberOfBook)) {
+                if (!book.IsTranslated) { continue; }
+                if (!isFirstBook) {
+                    builder.InsertParagraph();
+                    builder.ParagraphFormat.ClearFormatting();
+                }
+                else {
+                    isFirstBook = false;
+                }
+
+                ExportBookName(book, builder);
+
+                var chapters = book.Chapters.Where(x => x.IsTranslated).OrderBy(x => x.NumberOfChapter).ToArray();
+                foreach (var chapter in chapters) {
+                    ExportChapterNumber(chapter, builder, false);
+
+                    Paragraph par = null;
+                    if (chapter.Subtitles.Count == 0) {
+                        par = builder.InsertParagraph();
+                        par.ParagraphFormat.Style = builder.Document.Styles["Normal"];
+                        par.ParagraphFormat.Alignment = ParagraphAlignment.Left;
+                    }
+
+                    foreach (var item in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
+                        ExportVerse(item, ref par, builder);
+                    }
+
+                    if (par != null) { builder.MoveTo(par); }
+                }
+            }
+           
+            if (addFooter) {
+                builder.MoveToDocumentEnd();
+                var _par = builder.InsertParagraph();
+                WriteFooter(translation, _par, builder);
+            }
+
+            builder.MoveToDocumentEnd();
+            return SaveBuilder(saveFormat, builder);
         }
 
         public void Export(Book book, ExportSaveFormat saveFormat, string outputPath, bool addFooter = true, bool addBookAndHeader = true) {
@@ -499,6 +588,7 @@ namespace ChurchServices.Data.Export {
             }
 
             if (verse.ParentChapter.NumberOfChapter != 0) { ExportVerseNumber(verse, par, builder); }
+            currentVerseNumber = verse.NumberOfVerse;
             foreach (var item in verse.VerseWords.OrderBy(x => x.NumberOfVerseWord)) {
                 ExportVerseWord(item, par, builder);
             }
@@ -571,14 +661,14 @@ namespace ChurchServices.Data.Export {
             builder.Font.Bold = false;
             builder.Font.Italic = false;
             builder.Font.Color = Color.DarkGreen;
-            builder.Write(word.SourceWord);
+            builder.Write(word.SourceWord != null ? word.SourceWord : "–");
             builder.InsertBreak(BreakType.LineBreak);
 
             builder.Font.Size = 9;
             builder.Font.Bold = false;
             builder.Font.Italic = false;
             builder.Font.Color = Color.MidnightBlue;
-            builder.Write(word.Transliteration);
+            builder.Write(word.Transliteration != null ? word.Transliteration : "–");
             builder.InsertBreak(BreakType.LineBreak);
 
             builder.Font.Size = 11;
@@ -653,15 +743,19 @@ namespace ChurchServices.Data.Export {
 
                     builder.MoveTo(par);
 
-                    var footnote = builder.InsertFootnote(FootnoteType.Footnote, "");
+                    var footnoteMark = $"{currentVerseNumber}{word.NumberOfVerseWord.ToAlphabetString()}";
+                    var footnote = builder.InsertFootnote(FootnoteType.Footnote, "", $"{footnoteMark})");
                     footnote.Font.Position = 12;
                     footnote.Font.Color = Color.Black;
                     footnote.Font.Bold = true;
 
                     builder.MoveTo(footnote.LastParagraph);
                     builder.InsertHtml($"<sup>)</sup>&nbsp;{footnoteText}");
-                    foreach (Inline run in builder.CurrentParagraph.ChildNodes) {
-                        run.Font.Size = 8;
+                    foreach (var node in builder.CurrentParagraph.ChildNodes) {
+                        if (node is Inline) {
+                            var run = (Inline)node;
+                            run.Font.Size = 8;
+                        }
                     }
                     builder.MoveTo(par);
                 }

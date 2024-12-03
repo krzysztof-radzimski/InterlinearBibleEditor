@@ -801,9 +801,9 @@ namespace ChurchServices.WinApp {
                 else {
                     var theBook = Object.Books.Where(x => x.Oid == book.Tag).FirstOrDefault();
                     if (theBook.IsNotNull()) {
-                        foreach (var chapter in theBook.Chapters) {
-                            foreach (var verse in chapter.Verses) {
-                                foreach (var word in verse.VerseWords) {
+                        foreach (var chapter in theBook.Chapters.OrderBy(x => x.NumberOfChapter)) {
+                            foreach (var verse in chapter.Verses.OrderBy(x => x.NumberOfVerse)) {
+                                foreach (var word in verse.VerseWords.OrderBy(x => x.NumberOfVerseWord)) {
                                     word.Delete();
                                 }
                                 verse.Delete();

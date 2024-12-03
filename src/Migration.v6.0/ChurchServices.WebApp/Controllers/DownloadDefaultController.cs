@@ -13,17 +13,21 @@
 
 namespace ChurchServices.WebApp.Controllers {
     public abstract class DownloadDefaultController : Controller {
+        private string DownloadFileName = null;
         protected readonly IConfiguration Configuration;
+        protected readonly IWebHostEnvironment WebHostEnvironment;
         protected abstract ExportSaveFormat Format { get; }
-        public DownloadDefaultController(IConfiguration configuration) {
+        public DownloadDefaultController(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) {
             Configuration = configuration;
+            WebHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get() {
             var qs = Request.QueryString;
 
-            if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length > 5) {
+            if (qs.IsNotNull() && qs.Value.IsNotNullOrEmpty() && qs.Value.Length >= 5) {
+                DownloadFileName = Format.GetCategory();
                 var queryString = HttpUtility.UrlDecode(qs.Value).RemoveAny("?q=");
                 Stream stream;
                 try {
@@ -33,7 +37,8 @@ namespace ChurchServices.WebApp.Controllers {
                     return new RedirectResult("/Account/Index?ReturnUrl=" + Request.Path + HttpUtility.UrlDecode(Request.QueryString.Value));
                 }
                 if (stream.IsNull()) { return NotFound(); }
-                return File(stream, Format.GetDescription(), Format.GetCategory());
+
+                return File(stream, Format.GetDescription(), DownloadFileName);
             }
 
             return NotFound();
@@ -95,6 +100,40 @@ namespace ChurchServices.WebApp.Controllers {
 
                 return new MemoryStream(result);
             }
+            else if (queryString.IsNotNullOrWhiteSpace() && paramsTable.Length == 1) {
+                var translationName = queryString;
+
+                var fileName = $"{ translationName.Replace("+","").Trim()}.{Format.ToString().ToLower()}";
+                DownloadFileName = fileName;
+                var filePath = Path.Combine(WebHostEnvironment.WebRootPath, $"download\\bible\\{fileName}");
+                if (System.IO.File.Exists(filePath)) {
+                    var filePathData = await System.IO.File.ReadAllBytesAsync(filePath);
+                    return new MemoryStream(filePathData);
+                }
+
+                var uow = new UnitOfWork();
+
+                var trans = new XPQuery<Translation>(uow).Where(x => !x.Hidden && x.Name == translationName).FirstOrDefault();
+                if (trans.IsNull() && translationName.EndsWith(" ")) {
+                    translationName = translationName.Trim() + "+";
+                    trans = new XPQuery<Translation>(uow).Where(x => x.Name == translationName).FirstOrDefault();
+                }
+                if (trans.IsNull()) { return default; }
+                if (!trans.OpenAccess && !User.Identity.IsAuthenticated) {
+                    throw new AuthException();
+                }
+
+                byte[] licData = await GetLicData();
+                var host = (this.Request.IsHttps ? "https://" : "http://") + this.Request.Host;
+                var result = new DefaultExporter(licData, host).Export(trans, Format);
+
+                if (!System.IO.File.Exists(filePath) && result != null) {
+                    await System.IO.File.WriteAllBytesAsync(filePath, result);
+                }
+
+                return new MemoryStream(result);
+            }
+
 
             return default;
         }
@@ -114,13 +153,13 @@ namespace ChurchServices.WebApp.Controllers {
     [Route("api/[controller]")]
     public class DownloadDefaultDocxController : DownloadDefaultController {
         protected override ExportSaveFormat Format => ExportSaveFormat.Docx;
-        public DownloadDefaultDocxController(IConfiguration configuration) : base(configuration) { }
+        public DownloadDefaultDocxController(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment) { }
     }
 
     [ApiController]
     [Route("api/[controller]")]
     public class DownloadDefaultPdfController : DownloadDefaultController {
         protected override ExportSaveFormat Format => ExportSaveFormat.Pdf;
-        public DownloadDefaultPdfController(IConfiguration configuration) : base(configuration) { }
+        public DownloadDefaultPdfController(IConfiguration configuration, IWebHostEnvironment webHostEnvironment) : base(configuration, webHostEnvironment) { }
     }
 }

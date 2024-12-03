@@ -37,6 +37,7 @@
 
 	<ItemGroup>
 		<Folder Include="wwwroot\download\journal\2024\" />
+		<Folder Include="wwwroot\download\bible\" />
 		<Folder Include="wwwroot\download\study\" />
 	</ItemGroup>
 
