@@ -10,7 +10,7 @@
     var __host = (this.Context.Request.IsHttps ? "https://" : "http://") + this.Context.Request.Host;
     var permalink = "";
     if (Model != null) {
-        permalink = @"<a href=""" + __host + this.Context.Request.Path + @$""" title=""{Model.Title}"" target=""_blank"">" + Model.Title + "</a>";
+        permalink = "<a href=\"" + __host + this.Context.Request.Path + $@""" title=""{Model.Title}"" target=""_blank"">" + Model.Title + "</a>";
     }
     var __style = "";
     var __styleFont = "";

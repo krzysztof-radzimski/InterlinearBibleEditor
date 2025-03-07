@@ -12,6 +12,6 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         public List<object> Items { get; set; }
 
         public IEnumerable<VerseModel> Verses() => Items != null ? Items.Where(x => x is VerseModel).Cast<VerseModel>().OrderBy(x => x.NumberOfVerse) : null;
-        public bool ShouldSerializeNumberOfVerses() => NumberOfVerses != 0;        
+        public bool ShouldSerializeNumberOfVerses() => NumberOfVerses != 0;  
     }
 }

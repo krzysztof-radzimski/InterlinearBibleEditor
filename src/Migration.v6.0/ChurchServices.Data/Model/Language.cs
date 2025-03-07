@@ -6,20 +6,20 @@
     MIT License
     https://github.com/krzysztof-radzimski/InterlinearBibleEditor/blob/main/LICENSE
 
-	Autor: 2009-2021 ITORG Krzysztof Radzimski
+	Autor: 2009-2025 ITORG Krzysztof Radzimski
 	http://itorg.pl
 
   ===================================================================================*/
 
 namespace ChurchServices.Data.Model {
     public enum Language {
-        [Category("")] None,
-        [Category("H")] Hebrew,
-        [Category("G")] Greek,
-        [Category("L")] Latin,
-        [Category("EN")] English,
-        [Category("PL")] Polish,
-        [Category("UA")] Ukrainian
+        [Description("")][Category("")] None,
+        [Description("hebrajski")][Category("H")] Hebrew,
+        [Description("grecki")][Category("G")] Greek,
+        [Description("łacina")][Category("L")] Latin,
+        [Description("angielski")][Category("EN")] English,
+        [Description("polski")][Category("PL")] Polish,
+        [Description("ukraiński")][Category("UA")] Ukrainian
     }
 }
 

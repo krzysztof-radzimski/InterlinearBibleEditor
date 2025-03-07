@@ -6,7 +6,7 @@
     MIT License
     https://github.com/krzysztof-radzimski/InterlinearBibleEditor/blob/main/LICENSE
 
-	Autor: 2009-2021 ITORG Krzysztof Radzimski
+	Autor: 2009-2025 ITORG Krzysztof Radzimski
 	http://itorg.pl
 
   ===================================================================================*/
@@ -23,8 +23,19 @@ namespace ChurchServices.Data.Export.Model {
         public int LogosBookNumber { get; }
         public List<TranslationInfo> Translations { get; }
         public BibleStructureInfo StructureInfo { get; }
+        public bool IsInterlinear { get; }
+        public Language InterlinearLanguage { get; }
         public TranslationControllerModel(Translation t, string book = null, string chapter = null, string verse = null, List<BookBaseInfo> books = null) {
             Translation = t;
+            if (t != null) {
+                IsInterlinear = t.Type == TranslationType.Interlinear;
+                if (IsInterlinear) {
+                    try {
+                        InterlinearLanguage = t.Books.First().Chapters.First().Verses.First().VerseWords.First().StrongCode.Lang;
+                    }
+                    catch { }
+                }
+            }
             Book = book;
             Chapter = chapter;
             Verse = verse;
@@ -40,7 +51,7 @@ namespace ChurchServices.Data.Export.Model {
                     if (tb != null) {
                         var bookInfo = new BibleBookStructureInfo() {
                             NumberOfBook = b.NumberOfBook,
-                            Title = b.BookTitle,
+                            Title = b.BookTitle.Replace("<br/>", " "),
                             BookShortcut = tb.BookShortcut,
                             BaseBookShortcut = b.BookShortcut,
                             Chapters = new List<BibleBookChapterStructureInfo>(),
@@ -63,6 +74,9 @@ namespace ChurchServices.Data.Export.Model {
                         StructureInfo.Books.Add(bookInfo);
                     }
                 }
+            }
+            else { 
+            
             }
         }
 

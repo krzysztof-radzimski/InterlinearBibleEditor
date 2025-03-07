@@ -13,9 +13,9 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         [XmlText(typeof(string))]
         public List<object> Items { get; set; }
 
-        public FormattedText() { }
-        public FormattedText(string text) {
-            if (Items == null) { Items = new List<object>(); }
+        public FormattedText() { if (Items == null) { Items = new List<object>(); } }
+        public FormattedText(string text) : this() {
+
             Items.Add(text);
         }
 
@@ -34,5 +34,5 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
             }
             return base.ToString();
         }
-    } 
+    }
 }

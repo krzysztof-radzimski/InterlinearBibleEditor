@@ -24,401 +24,385 @@ namespace ChurchServices.WinApp {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
-            this.txtAuthorName = new DevExpress.XtraEditors.MemoEdit();
-            this.labelControl12 = new DevExpress.XtraEditors.LabelControl();
-            this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this.btnCancel = new DevExpress.XtraEditors.SimpleButton();
-            this.btnApply = new DevExpress.XtraEditors.SimpleButton();
-            this.txtStatus = new DevExpress.XtraEditors.LookUpEdit();
-            this.labelControl11 = new DevExpress.XtraEditors.LabelControl();
-            this.txtPreface = new DevExpress.XtraRichEdit.RichEditControl();
-            this.txtSubject = new DevExpress.XtraEditors.TextEdit();
-            this.txtPurpose = new DevExpress.XtraEditors.MemoEdit();
-            this.txtPlaceWhereBookWasWritten = new DevExpress.XtraEditors.TextEdit();
-            this.txtColor = new DevExpress.XtraEditors.TextEdit();
-            this.txtBookTitle = new DevExpress.XtraEditors.TextEdit();
-            this.txtBookName = new DevExpress.XtraEditors.TextEdit();
-            this.txtBookShortcut = new DevExpress.XtraEditors.TextEdit();
-            this.txtNumberOfBook = new DevExpress.XtraEditors.TextEdit();
-            this.labelControl10 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl6 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
-            this.txtTimeOfWriting = new DevExpress.XtraEditors.MemoEdit();
-            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
-            this.tablePanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtAuthorName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
-            this.panelControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtStatus.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSubject.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPurpose.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPlaceWhereBookWasWritten.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtColor.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtBookTitle.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtBookName.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtBookShortcut.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtNumberOfBook.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtTimeOfWriting.Properties)).BeginInit();
-            this.SuspendLayout();
+            tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
+            txtAuthorName = new DevExpress.XtraEditors.MemoEdit();
+            labelControl12 = new DevExpress.XtraEditors.LabelControl();
+            panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            btnCancel = new DevExpress.XtraEditors.SimpleButton();
+            btnApply = new DevExpress.XtraEditors.SimpleButton();
+            txtStatus = new DevExpress.XtraEditors.LookUpEdit();
+            labelControl11 = new DevExpress.XtraEditors.LabelControl();
+            txtPreface = new DevExpress.XtraRichEdit.RichEditControl();
+            txtSubject = new DevExpress.XtraEditors.TextEdit();
+            txtPurpose = new DevExpress.XtraEditors.MemoEdit();
+            txtPlaceWhereBookWasWritten = new DevExpress.XtraEditors.TextEdit();
+            txtColor = new DevExpress.XtraEditors.TextEdit();
+            txtBookTitle = new DevExpress.XtraEditors.TextEdit();
+            txtBookName = new DevExpress.XtraEditors.TextEdit();
+            txtBookShortcut = new DevExpress.XtraEditors.TextEdit();
+            txtNumberOfBook = new DevExpress.XtraEditors.TextEdit();
+            labelControl10 = new DevExpress.XtraEditors.LabelControl();
+            labelControl9 = new DevExpress.XtraEditors.LabelControl();
+            labelControl8 = new DevExpress.XtraEditors.LabelControl();
+            labelControl7 = new DevExpress.XtraEditors.LabelControl();
+            labelControl6 = new DevExpress.XtraEditors.LabelControl();
+            labelControl5 = new DevExpress.XtraEditors.LabelControl();
+            labelControl4 = new DevExpress.XtraEditors.LabelControl();
+            labelControl3 = new DevExpress.XtraEditors.LabelControl();
+            labelControl2 = new DevExpress.XtraEditors.LabelControl();
+            labelControl1 = new DevExpress.XtraEditors.LabelControl();
+            txtTimeOfWriting = new DevExpress.XtraEditors.MemoEdit();
+            ((System.ComponentModel.ISupportInitialize)tablePanel1).BeginInit();
+            tablePanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)txtAuthorName.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)panelControl1).BeginInit();
+            panelControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)txtStatus.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtSubject.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtPurpose.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtPlaceWhereBookWasWritten.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtColor.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtBookTitle.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtBookName.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtBookShortcut.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtNumberOfBook.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)txtTimeOfWriting.Properties).BeginInit();
+            SuspendLayout();
             // 
             // tablePanel1
             // 
-            this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 5F),
-            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F)});
-            this.tablePanel1.Controls.Add(this.txtAuthorName);
-            this.tablePanel1.Controls.Add(this.labelControl12);
-            this.tablePanel1.Controls.Add(this.panelControl1);
-            this.tablePanel1.Controls.Add(this.txtStatus);
-            this.tablePanel1.Controls.Add(this.labelControl11);
-            this.tablePanel1.Controls.Add(this.txtPreface);
-            this.tablePanel1.Controls.Add(this.txtSubject);
-            this.tablePanel1.Controls.Add(this.txtPurpose);
-            this.tablePanel1.Controls.Add(this.txtPlaceWhereBookWasWritten);
-            this.tablePanel1.Controls.Add(this.txtColor);
-            this.tablePanel1.Controls.Add(this.txtBookTitle);
-            this.tablePanel1.Controls.Add(this.txtBookName);
-            this.tablePanel1.Controls.Add(this.txtBookShortcut);
-            this.tablePanel1.Controls.Add(this.txtNumberOfBook);
-            this.tablePanel1.Controls.Add(this.labelControl10);
-            this.tablePanel1.Controls.Add(this.labelControl9);
-            this.tablePanel1.Controls.Add(this.labelControl8);
-            this.tablePanel1.Controls.Add(this.labelControl7);
-            this.tablePanel1.Controls.Add(this.labelControl6);
-            this.tablePanel1.Controls.Add(this.labelControl5);
-            this.tablePanel1.Controls.Add(this.labelControl4);
-            this.tablePanel1.Controls.Add(this.labelControl3);
-            this.tablePanel1.Controls.Add(this.labelControl2);
-            this.tablePanel1.Controls.Add(this.labelControl1);
-            this.tablePanel1.Controls.Add(this.txtTimeOfWriting);
-            this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablePanel1.Location = new System.Drawing.Point(0, 0);
-            this.tablePanel1.Name = "tablePanel1";
-            this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F),
-            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F)});
-            this.tablePanel1.Size = new System.Drawing.Size(963, 832);
-            this.tablePanel1.TabIndex = 0;
+            tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] { new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 5F), new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F) });
+            tablePanel1.Controls.Add(txtAuthorName);
+            tablePanel1.Controls.Add(labelControl12);
+            tablePanel1.Controls.Add(panelControl1);
+            tablePanel1.Controls.Add(txtStatus);
+            tablePanel1.Controls.Add(labelControl11);
+            tablePanel1.Controls.Add(txtPreface);
+            tablePanel1.Controls.Add(txtSubject);
+            tablePanel1.Controls.Add(txtPurpose);
+            tablePanel1.Controls.Add(txtPlaceWhereBookWasWritten);
+            tablePanel1.Controls.Add(txtColor);
+            tablePanel1.Controls.Add(txtBookTitle);
+            tablePanel1.Controls.Add(txtBookName);
+            tablePanel1.Controls.Add(txtBookShortcut);
+            tablePanel1.Controls.Add(txtNumberOfBook);
+            tablePanel1.Controls.Add(labelControl10);
+            tablePanel1.Controls.Add(labelControl9);
+            tablePanel1.Controls.Add(labelControl8);
+            tablePanel1.Controls.Add(labelControl7);
+            tablePanel1.Controls.Add(labelControl6);
+            tablePanel1.Controls.Add(labelControl5);
+            tablePanel1.Controls.Add(labelControl4);
+            tablePanel1.Controls.Add(labelControl3);
+            tablePanel1.Controls.Add(labelControl2);
+            tablePanel1.Controls.Add(labelControl1);
+            tablePanel1.Controls.Add(txtTimeOfWriting);
+            tablePanel1.Dock = DockStyle.Fill;
+            tablePanel1.Location = new Point(0, 0);
+            tablePanel1.Name = "tablePanel1";
+            tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] { new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 100F), new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.AutoSize, 26F) });
+            tablePanel1.Size = new Size(963, 832);
+            tablePanel1.TabIndex = 0;
             // 
             // txtAuthorName
             // 
-            this.tablePanel1.SetColumn(this.txtAuthorName, 1);
-            this.txtAuthorName.Location = new System.Drawing.Point(165, 133);
-            this.txtAuthorName.Name = "txtAuthorName";
-            this.tablePanel1.SetRow(this.txtAuthorName, 5);
-            this.txtAuthorName.Size = new System.Drawing.Size(795, 73);
-            this.txtAuthorName.TabIndex = 5;
+            tablePanel1.SetColumn(txtAuthorName, 1);
+            txtAuthorName.Location = new Point(165, 133);
+            txtAuthorName.Name = "txtAuthorName";
+            tablePanel1.SetRow(txtAuthorName, 5);
+            txtAuthorName.Size = new Size(795, 73);
+            txtAuthorName.TabIndex = 5;
             // 
             // labelControl12
             // 
-            this.tablePanel1.SetColumn(this.labelControl12, 0);
-            this.labelControl12.Location = new System.Drawing.Point(3, 134);
-            this.labelControl12.Name = "labelControl12";
-            this.tablePanel1.SetRow(this.labelControl12, 5);
-            this.labelControl12.Size = new System.Drawing.Size(68, 13);
-            this.labelControl12.TabIndex = 23;
-            this.labelControl12.Text = "Author Name";
+            tablePanel1.SetColumn(labelControl12, 0);
+            labelControl12.Location = new Point(3, 134);
+            labelControl12.Name = "labelControl12";
+            tablePanel1.SetRow(labelControl12, 5);
+            labelControl12.Size = new Size(63, 13);
+            labelControl12.TabIndex = 23;
+            labelControl12.Text = "Author Name";
             // 
             // panelControl1
             // 
-            this.panelControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.tablePanel1.SetColumn(this.panelControl1, 1);
-            this.panelControl1.Controls.Add(this.btnCancel);
-            this.panelControl1.Controls.Add(this.btnApply);
-            this.panelControl1.Location = new System.Drawing.Point(165, 788);
-            this.panelControl1.Name = "panelControl1";
-            this.tablePanel1.SetRow(this.panelControl1, 12);
-            this.panelControl1.Size = new System.Drawing.Size(795, 41);
-            this.panelControl1.TabIndex = 22;
+            panelControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            tablePanel1.SetColumn(panelControl1, 1);
+            panelControl1.Controls.Add(btnCancel);
+            panelControl1.Controls.Add(btnApply);
+            panelControl1.Location = new Point(165, 788);
+            panelControl1.Name = "panelControl1";
+            tablePanel1.SetRow(panelControl1, 12);
+            panelControl1.Size = new Size(795, 41);
+            panelControl1.TabIndex = 22;
             // 
             // btnCancel
             // 
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(630, 8);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 1;
-            this.btnCancel.Text = "Cancel";
+            btnCancel.DialogResult = DialogResult.Cancel;
+            btnCancel.Location = new Point(630, 8);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(75, 23);
+            btnCancel.TabIndex = 1;
+            btnCancel.Text = "Cancel";
             // 
             // btnApply
             // 
-            this.btnApply.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnApply.Location = new System.Drawing.Point(711, 8);
-            this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(75, 23);
-            this.btnApply.TabIndex = 0;
-            this.btnApply.Text = "Apply";
+            btnApply.DialogResult = DialogResult.OK;
+            btnApply.Location = new Point(711, 8);
+            btnApply.Name = "btnApply";
+            btnApply.Size = new Size(75, 23);
+            btnApply.TabIndex = 0;
+            btnApply.Text = "Apply";
             // 
             // txtStatus
             // 
-            this.tablePanel1.SetColumn(this.txtStatus, 1);
-            this.txtStatus.Location = new System.Drawing.Point(165, 442);
-            this.txtStatus.Name = "txtStatus";
-            this.txtStatus.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.tablePanel1.SetRow(this.txtStatus, 10);
-            this.txtStatus.Size = new System.Drawing.Size(795, 20);
-            this.txtStatus.TabIndex = 10;
+            tablePanel1.SetColumn(txtStatus, 1);
+            txtStatus.Location = new Point(165, 442);
+            txtStatus.Name = "txtStatus";
+            txtStatus.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            tablePanel1.SetRow(txtStatus, 10);
+            txtStatus.Size = new Size(795, 20);
+            txtStatus.TabIndex = 10;
             // 
             // labelControl11
             // 
-            this.tablePanel1.SetColumn(this.labelControl11, 0);
-            this.labelControl11.Location = new System.Drawing.Point(3, 445);
-            this.labelControl11.Name = "labelControl11";
-            this.tablePanel1.SetRow(this.labelControl11, 10);
-            this.labelControl11.Size = new System.Drawing.Size(32, 13);
-            this.labelControl11.TabIndex = 20;
-            this.labelControl11.Text = "Status";
+            tablePanel1.SetColumn(labelControl11, 0);
+            labelControl11.Location = new Point(3, 445);
+            labelControl11.Name = "labelControl11";
+            tablePanel1.SetRow(labelControl11, 10);
+            labelControl11.Size = new Size(31, 13);
+            labelControl11.TabIndex = 20;
+            labelControl11.Text = "Status";
             // 
             // txtPreface
             // 
-            this.txtPreface.ActiveViewType = DevExpress.XtraRichEdit.RichEditViewType.Simple;
-            this.tablePanel1.SetColumn(this.txtPreface, 1);
-            this.txtPreface.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtPreface.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
-            this.txtPreface.Location = new System.Drawing.Point(165, 468);
-            this.txtPreface.Name = "txtPreface";
-            this.tablePanel1.SetRow(this.txtPreface, 11);
-            this.txtPreface.Size = new System.Drawing.Size(795, 314);
-            this.txtPreface.TabIndex = 11;
+            txtPreface.ActiveViewType = DevExpress.XtraRichEdit.RichEditViewType.Simple;
+            tablePanel1.SetColumn(txtPreface, 1);
+            txtPreface.Dock = DockStyle.Fill;
+            txtPreface.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
+            txtPreface.Location = new Point(165, 468);
+            txtPreface.Name = "txtPreface";
+            tablePanel1.SetRow(txtPreface, 11);
+            txtPreface.Size = new Size(795, 314);
+            txtPreface.TabIndex = 11;
             // 
             // txtSubject
             // 
-            this.tablePanel1.SetColumn(this.txtSubject, 1);
-            this.txtSubject.Location = new System.Drawing.Point(165, 416);
-            this.txtSubject.Name = "txtSubject";
-            this.tablePanel1.SetRow(this.txtSubject, 9);
-            this.txtSubject.Size = new System.Drawing.Size(795, 20);
-            this.txtSubject.TabIndex = 9;
+            tablePanel1.SetColumn(txtSubject, 1);
+            txtSubject.Location = new Point(165, 416);
+            txtSubject.Name = "txtSubject";
+            tablePanel1.SetRow(txtSubject, 9);
+            txtSubject.Size = new Size(795, 20);
+            txtSubject.TabIndex = 9;
             // 
             // txtPurpose
             // 
-            this.tablePanel1.SetColumn(this.txtPurpose, 1);
-            this.txtPurpose.Location = new System.Drawing.Point(165, 314);
-            this.txtPurpose.Name = "txtPurpose";
-            this.tablePanel1.SetRow(this.txtPurpose, 8);
-            this.txtPurpose.Size = new System.Drawing.Size(795, 96);
-            this.txtPurpose.TabIndex = 8;
+            tablePanel1.SetColumn(txtPurpose, 1);
+            txtPurpose.Location = new Point(165, 314);
+            txtPurpose.Name = "txtPurpose";
+            tablePanel1.SetRow(txtPurpose, 8);
+            txtPurpose.Size = new Size(795, 96);
+            txtPurpose.TabIndex = 8;
             // 
             // txtPlaceWhereBookWasWritten
             // 
-            this.tablePanel1.SetColumn(this.txtPlaceWhereBookWasWritten, 1);
-            this.txtPlaceWhereBookWasWritten.Location = new System.Drawing.Point(165, 288);
-            this.txtPlaceWhereBookWasWritten.Name = "txtPlaceWhereBookWasWritten";
-            this.tablePanel1.SetRow(this.txtPlaceWhereBookWasWritten, 7);
-            this.txtPlaceWhereBookWasWritten.Size = new System.Drawing.Size(795, 20);
-            this.txtPlaceWhereBookWasWritten.TabIndex = 7;
+            tablePanel1.SetColumn(txtPlaceWhereBookWasWritten, 1);
+            txtPlaceWhereBookWasWritten.Location = new Point(165, 288);
+            txtPlaceWhereBookWasWritten.Name = "txtPlaceWhereBookWasWritten";
+            tablePanel1.SetRow(txtPlaceWhereBookWasWritten, 7);
+            txtPlaceWhereBookWasWritten.Size = new Size(795, 20);
+            txtPlaceWhereBookWasWritten.TabIndex = 7;
             // 
             // txtColor
             // 
-            this.tablePanel1.SetColumn(this.txtColor, 1);
-            this.txtColor.Location = new System.Drawing.Point(165, 107);
-            this.txtColor.Name = "txtColor";
-            this.tablePanel1.SetRow(this.txtColor, 4);
-            this.txtColor.Size = new System.Drawing.Size(795, 20);
-            this.txtColor.TabIndex = 4;
+            tablePanel1.SetColumn(txtColor, 1);
+            txtColor.Location = new Point(165, 107);
+            txtColor.Name = "txtColor";
+            tablePanel1.SetRow(txtColor, 4);
+            txtColor.Size = new Size(795, 20);
+            txtColor.TabIndex = 4;
             // 
             // txtBookTitle
             // 
-            this.tablePanel1.SetColumn(this.txtBookTitle, 1);
-            this.txtBookTitle.Location = new System.Drawing.Point(165, 81);
-            this.txtBookTitle.Name = "txtBookTitle";
-            this.tablePanel1.SetRow(this.txtBookTitle, 3);
-            this.txtBookTitle.Size = new System.Drawing.Size(795, 20);
-            this.txtBookTitle.TabIndex = 3;
+            tablePanel1.SetColumn(txtBookTitle, 1);
+            txtBookTitle.Location = new Point(165, 81);
+            txtBookTitle.Name = "txtBookTitle";
+            tablePanel1.SetRow(txtBookTitle, 3);
+            txtBookTitle.Size = new Size(795, 20);
+            txtBookTitle.TabIndex = 3;
             // 
             // txtBookName
             // 
-            this.tablePanel1.SetColumn(this.txtBookName, 1);
-            this.txtBookName.Location = new System.Drawing.Point(165, 55);
-            this.txtBookName.Name = "txtBookName";
-            this.tablePanel1.SetRow(this.txtBookName, 2);
-            this.txtBookName.Size = new System.Drawing.Size(795, 20);
-            this.txtBookName.TabIndex = 2;
+            tablePanel1.SetColumn(txtBookName, 1);
+            txtBookName.Location = new Point(165, 55);
+            txtBookName.Name = "txtBookName";
+            tablePanel1.SetRow(txtBookName, 2);
+            txtBookName.Size = new Size(795, 20);
+            txtBookName.TabIndex = 2;
             // 
             // txtBookShortcut
             // 
-            this.tablePanel1.SetColumn(this.txtBookShortcut, 1);
-            this.txtBookShortcut.Location = new System.Drawing.Point(165, 29);
-            this.txtBookShortcut.Name = "txtBookShortcut";
-            this.tablePanel1.SetRow(this.txtBookShortcut, 1);
-            this.txtBookShortcut.Size = new System.Drawing.Size(795, 20);
-            this.txtBookShortcut.TabIndex = 1;
+            tablePanel1.SetColumn(txtBookShortcut, 1);
+            txtBookShortcut.Location = new Point(165, 29);
+            txtBookShortcut.Name = "txtBookShortcut";
+            tablePanel1.SetRow(txtBookShortcut, 1);
+            txtBookShortcut.Size = new Size(795, 20);
+            txtBookShortcut.TabIndex = 1;
             // 
             // txtNumberOfBook
             // 
-            this.tablePanel1.SetColumn(this.txtNumberOfBook, 1);
-            this.txtNumberOfBook.EditValue = 0;
-            this.txtNumberOfBook.Location = new System.Drawing.Point(165, 3);
-            this.txtNumberOfBook.Name = "txtNumberOfBook";
-            this.tablePanel1.SetRow(this.txtNumberOfBook, 0);
-            this.txtNumberOfBook.Size = new System.Drawing.Size(795, 20);
-            this.txtNumberOfBook.TabIndex = 0;
+            tablePanel1.SetColumn(txtNumberOfBook, 1);
+            txtNumberOfBook.EditValue = 0;
+            txtNumberOfBook.Location = new Point(165, 3);
+            txtNumberOfBook.Name = "txtNumberOfBook";
+            tablePanel1.SetRow(txtNumberOfBook, 0);
+            txtNumberOfBook.Size = new Size(795, 20);
+            txtNumberOfBook.TabIndex = 0;
             // 
             // labelControl10
             // 
-            this.labelControl10.Appearance.Options.UseTextOptions = true;
-            this.labelControl10.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            this.labelControl10.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.tablePanel1.SetColumn(this.labelControl10, 0);
-            this.labelControl10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labelControl10.Location = new System.Drawing.Point(3, 468);
-            this.labelControl10.Name = "labelControl10";
-            this.tablePanel1.SetRow(this.labelControl10, 11);
-            this.labelControl10.Size = new System.Drawing.Size(156, 314);
-            this.labelControl10.TabIndex = 9;
-            this.labelControl10.Text = "Preface";
+            labelControl10.Appearance.Options.UseTextOptions = true;
+            labelControl10.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            labelControl10.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            tablePanel1.SetColumn(labelControl10, 0);
+            labelControl10.Dock = DockStyle.Fill;
+            labelControl10.Location = new Point(3, 468);
+            labelControl10.Name = "labelControl10";
+            tablePanel1.SetRow(labelControl10, 11);
+            labelControl10.Size = new Size(156, 314);
+            labelControl10.TabIndex = 9;
+            labelControl10.Text = "Preface";
             // 
             // labelControl9
             // 
-            this.tablePanel1.SetColumn(this.labelControl9, 0);
-            this.labelControl9.Location = new System.Drawing.Point(3, 419);
-            this.labelControl9.Name = "labelControl9";
-            this.tablePanel1.SetRow(this.labelControl9, 9);
-            this.labelControl9.Size = new System.Drawing.Size(38, 13);
-            this.labelControl9.TabIndex = 8;
-            this.labelControl9.Text = "Subject";
+            tablePanel1.SetColumn(labelControl9, 0);
+            labelControl9.Location = new Point(3, 419);
+            labelControl9.Name = "labelControl9";
+            tablePanel1.SetRow(labelControl9, 9);
+            labelControl9.Size = new Size(36, 13);
+            labelControl9.TabIndex = 8;
+            labelControl9.Text = "Subject";
             // 
             // labelControl8
             // 
-            this.tablePanel1.SetColumn(this.labelControl8, 0);
-            this.labelControl8.Location = new System.Drawing.Point(3, 315);
-            this.labelControl8.Name = "labelControl8";
-            this.tablePanel1.SetRow(this.labelControl8, 8);
-            this.labelControl8.Size = new System.Drawing.Size(42, 13);
-            this.labelControl8.TabIndex = 7;
-            this.labelControl8.Text = "Purpose";
+            tablePanel1.SetColumn(labelControl8, 0);
+            labelControl8.Location = new Point(3, 315);
+            labelControl8.Name = "labelControl8";
+            tablePanel1.SetRow(labelControl8, 8);
+            labelControl8.Size = new Size(39, 13);
+            labelControl8.TabIndex = 7;
+            labelControl8.Text = "Purpose";
             // 
             // labelControl7
             // 
-            this.tablePanel1.SetColumn(this.labelControl7, 0);
-            this.labelControl7.Location = new System.Drawing.Point(3, 291);
-            this.labelControl7.Name = "labelControl7";
-            this.tablePanel1.SetRow(this.labelControl7, 7);
-            this.labelControl7.Size = new System.Drawing.Size(154, 13);
-            this.labelControl7.TabIndex = 6;
-            this.labelControl7.Text = "Place where book was written";
+            tablePanel1.SetColumn(labelControl7, 0);
+            labelControl7.Location = new Point(3, 291);
+            labelControl7.Name = "labelControl7";
+            tablePanel1.SetRow(labelControl7, 7);
+            labelControl7.Size = new Size(143, 13);
+            labelControl7.TabIndex = 6;
+            labelControl7.Text = "Place where book was written";
             // 
             // labelControl6
             // 
-            this.tablePanel1.SetColumn(this.labelControl6, 0);
-            this.labelControl6.Location = new System.Drawing.Point(3, 213);
-            this.labelControl6.Name = "labelControl6";
-            this.tablePanel1.SetRow(this.labelControl6, 6);
-            this.labelControl6.Size = new System.Drawing.Size(78, 13);
-            this.labelControl6.TabIndex = 5;
-            this.labelControl6.Text = "Time of writnig";
+            tablePanel1.SetColumn(labelControl6, 0);
+            labelControl6.Location = new Point(3, 213);
+            labelControl6.Name = "labelControl6";
+            tablePanel1.SetRow(labelControl6, 6);
+            labelControl6.Size = new Size(70, 13);
+            labelControl6.TabIndex = 5;
+            labelControl6.Text = "Time of writnig";
             // 
             // labelControl5
             // 
-            this.tablePanel1.SetColumn(this.labelControl5, 0);
-            this.labelControl5.Location = new System.Drawing.Point(3, 110);
-            this.labelControl5.Name = "labelControl5";
-            this.tablePanel1.SetRow(this.labelControl5, 4);
-            this.labelControl5.Size = new System.Drawing.Size(28, 13);
-            this.labelControl5.TabIndex = 4;
-            this.labelControl5.Text = "Color";
+            tablePanel1.SetColumn(labelControl5, 0);
+            labelControl5.Location = new Point(3, 110);
+            labelControl5.Name = "labelControl5";
+            tablePanel1.SetRow(labelControl5, 4);
+            labelControl5.Size = new Size(25, 13);
+            labelControl5.TabIndex = 4;
+            labelControl5.Text = "Color";
             // 
             // labelControl4
             // 
-            this.tablePanel1.SetColumn(this.labelControl4, 0);
-            this.labelControl4.Location = new System.Drawing.Point(3, 84);
-            this.labelControl4.Name = "labelControl4";
-            this.tablePanel1.SetRow(this.labelControl4, 3);
-            this.labelControl4.Size = new System.Drawing.Size(51, 13);
-            this.labelControl4.TabIndex = 3;
-            this.labelControl4.Text = "Book Title";
+            tablePanel1.SetColumn(labelControl4, 0);
+            labelControl4.Location = new Point(3, 84);
+            labelControl4.Name = "labelControl4";
+            tablePanel1.SetRow(labelControl4, 3);
+            labelControl4.Size = new Size(46, 13);
+            labelControl4.TabIndex = 3;
+            labelControl4.Text = "Book Title";
             // 
             // labelControl3
             // 
-            this.tablePanel1.SetColumn(this.labelControl3, 0);
-            this.labelControl3.Location = new System.Drawing.Point(3, 58);
-            this.labelControl3.Name = "labelControl3";
-            this.tablePanel1.SetRow(this.labelControl3, 2);
-            this.labelControl3.Size = new System.Drawing.Size(58, 13);
-            this.labelControl3.TabIndex = 2;
-            this.labelControl3.Text = "Book Name";
+            tablePanel1.SetColumn(labelControl3, 0);
+            labelControl3.Location = new Point(3, 58);
+            labelControl3.Name = "labelControl3";
+            tablePanel1.SetRow(labelControl3, 2);
+            labelControl3.Size = new Size(53, 13);
+            labelControl3.TabIndex = 2;
+            labelControl3.Text = "Book Name";
             // 
             // labelControl2
             // 
-            this.tablePanel1.SetColumn(this.labelControl2, 0);
-            this.labelControl2.Location = new System.Drawing.Point(3, 32);
-            this.labelControl2.Name = "labelControl2";
-            this.tablePanel1.SetRow(this.labelControl2, 1);
-            this.labelControl2.Size = new System.Drawing.Size(73, 13);
-            this.labelControl2.TabIndex = 1;
-            this.labelControl2.Text = "Book Shortcut";
+            tablePanel1.SetColumn(labelControl2, 0);
+            labelControl2.Location = new Point(3, 32);
+            labelControl2.Name = "labelControl2";
+            tablePanel1.SetRow(labelControl2, 1);
+            labelControl2.Size = new Size(67, 13);
+            labelControl2.TabIndex = 1;
+            labelControl2.Text = "Book Shortcut";
             // 
             // labelControl1
             // 
-            this.tablePanel1.SetColumn(this.labelControl1, 0);
-            this.labelControl1.Location = new System.Drawing.Point(3, 6);
-            this.labelControl1.Name = "labelControl1";
-            this.tablePanel1.SetRow(this.labelControl1, 0);
-            this.labelControl1.Size = new System.Drawing.Size(84, 13);
-            this.labelControl1.TabIndex = 0;
-            this.labelControl1.Text = "Number of Book";
+            tablePanel1.SetColumn(labelControl1, 0);
+            labelControl1.Location = new Point(3, 6);
+            labelControl1.Name = "labelControl1";
+            tablePanel1.SetRow(labelControl1, 0);
+            labelControl1.Size = new Size(76, 13);
+            labelControl1.TabIndex = 0;
+            labelControl1.Text = "Number of Book";
             // 
             // txtTimeOfWriting
             // 
-            this.tablePanel1.SetColumn(this.txtTimeOfWriting, 1);
-            this.txtTimeOfWriting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtTimeOfWriting.Location = new System.Drawing.Point(165, 212);
-            this.txtTimeOfWriting.Name = "txtTimeOfWriting";
-            this.tablePanel1.SetRow(this.txtTimeOfWriting, 6);
-            this.txtTimeOfWriting.Size = new System.Drawing.Size(795, 70);
-            this.txtTimeOfWriting.TabIndex = 6;
+            tablePanel1.SetColumn(txtTimeOfWriting, 1);
+            txtTimeOfWriting.Dock = DockStyle.Fill;
+            txtTimeOfWriting.Location = new Point(165, 212);
+            txtTimeOfWriting.Name = "txtTimeOfWriting";
+            tablePanel1.SetRow(txtTimeOfWriting, 6);
+            txtTimeOfWriting.Size = new Size(795, 70);
+            txtTimeOfWriting.TabIndex = 6;
             // 
             // BaseBookEditForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(963, 832);
-            this.Controls.Add(this.tablePanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "BaseBookEditForm";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Base Book Editor";
-            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
-            this.tablePanel1.ResumeLayout(false);
-            this.tablePanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtAuthorName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
-            this.panelControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtStatus.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSubject.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPurpose.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPlaceWhereBookWasWritten.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtColor.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtBookTitle.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtBookName.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtBookShortcut.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtNumberOfBook.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtTimeOfWriting.Properties)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(6F, 13F);
+            AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancel;
+            ClientSize = new Size(963, 832);
+            Controls.Add(tablePanel1);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "BaseBookEditForm";
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Base Book Editor";
+            ((System.ComponentModel.ISupportInitialize)tablePanel1).EndInit();
+            tablePanel1.ResumeLayout(false);
+            tablePanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)txtAuthorName.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)panelControl1).EndInit();
+            panelControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)txtStatus.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtSubject.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtPurpose.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtPlaceWhereBookWasWritten.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtColor.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtBookTitle.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtBookName.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtBookShortcut.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtNumberOfBook.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)txtTimeOfWriting.Properties).EndInit();
+            ResumeLayout(false);
         }
 
         #endregion

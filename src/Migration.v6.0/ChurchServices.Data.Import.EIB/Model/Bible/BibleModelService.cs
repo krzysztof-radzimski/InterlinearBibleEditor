@@ -61,13 +61,6 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
                         IsTitle = (item as Osis.OsisVerse).IsTitle
                     };
 
-#if DEBUG
-                    //if ((item as Osis.OsisVerse).StartId == "Song.5.16") 
-                    //{ 
-
-                    //}
-#endif
-
                     if (verseOrphans.Count > 0) {
                         verse.Items.AddRange(verseOrphans);
                         verseOrphans = new List<object>();

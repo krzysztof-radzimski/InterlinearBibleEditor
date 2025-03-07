@@ -6,7 +6,7 @@
     MIT License
     https://github.com/krzysztof-radzimski/InterlinearBibleEditor/blob/main/LICENSE
 
-	Autor: 2009-2021 ITORG Krzysztof Radzimski
+	Autor: 2009-2025 ITORG Krzysztof Radzimski
 	http://itorg.pl
 
   ===================================================================================*/

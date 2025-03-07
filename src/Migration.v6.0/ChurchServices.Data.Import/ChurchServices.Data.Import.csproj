@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<Platforms>AnyCPU</Platforms>
@@ -12,8 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.6" />
-		<PackageReference Include="DotNetZip" Version="1.16.0" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.2" />
 		<PackageReference Include="Unidecode.NET" Version="2.1.0" />
 	</ItemGroup>
 

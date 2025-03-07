@@ -452,7 +452,7 @@ namespace ChurchServices.Data.Export {
 
                     DocumentBuilder.MoveTo(footnote.LastParagraph);
                     DocumentBuilder.InsertHtml($"<sup>)</sup>&nbsp;{footnoteText}");
-                    foreach (Inline run in DocumentBuilder.CurrentParagraph.ChildNodes) {
+                    foreach (Inline run in DocumentBuilder.CurrentParagraph.GetChildNodes(NodeType.Run, true)) {
                         run.Font.Size = 8;
                     }
                     DocumentBuilder.MoveTo(par);

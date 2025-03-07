@@ -21,7 +21,7 @@ namespace ChurchServices.WinApp {
             view.Properties.Add(new ViewProperty("Passage", SortDirection.None, "[Passage]", false, true));
             view.Properties.Add(new ViewProperty("Subject", SortDirection.None, "[Subject]", false, true));
             view.Properties.Add(new ViewProperty("AuthorName", SortDirection.None, "[AuthorName]", false, true));
-            view.Properties.Add(new ViewProperty("Date", SortDirection.None, "[Date]", false, true));
+            view.Properties.Add(new ViewProperty("Date", SortDirection.Descending, "[Date]", false, true));
             view.Properties.Add(new ViewProperty("Lead", SortDirection.None, "[Lead]", false, true));
             view.Properties.Add(new ViewProperty("Type", SortDirection.None, "[Type]", false, true));
             view.Properties.Add(new ViewProperty("Hidden", SortDirection.None, "[Hidden]", false, true));

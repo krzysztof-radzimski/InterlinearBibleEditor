@@ -13,7 +13,7 @@ namespace ChurchServices.Data.Export.Tests {
 
         [TestMethod]
         public void GetTextSizeTestMethod() {
-            var bytes = File.ReadAllBytes(@"..\..\..\..\..\..\db\Aspose.Total.lic");
+            var bytes = File.ReadAllBytes(@"..\..\..\..\..\..\db\Aspose.Total.NET.lic");
             var uow = new UnitOfWork();
             var q = new XPQuery<Verse>(uow);
             var verse = q.Where(x => x.Index == "NPI.680.1.2").FirstOrDefault();

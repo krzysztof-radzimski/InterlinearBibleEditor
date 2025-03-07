@@ -65,7 +65,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top mb-5 shadow" id="top-nav">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img id="baptysci-logo" src="~/img/baptysci-logo-2023.svg" />KChB&nbsp;NDM</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="text-align: left; min-width: auto;" aria-label="Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim"><img id="baptysci-logo" src="~/img/baptysci-logo-2023.svg" alt="Kościół Chrześcijan Baptystów w Nowym Dworze Mazowieckim" /><b style="opacity:0.9;">KChB&nbsp;NDM</b></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -431,7 +431,6 @@
             localStorage.setItem('cookiePreferences', JSON.stringify(preferences));
             document.getElementById('cookieConsent').style.display = 'none';
             document.getElementById('cookieOverlay').style.display = 'none';
-
         }
 
         // Funkcja do sprawdzenia, czy href zaczyna się od jednego z podanych ciągów

@@ -1,4 +1,5 @@
-﻿using ChurchServices.Data.Import.EIB.Model;
+﻿using ChurchServices.Data.Import.BPK;
+using ChurchServices.Data.Import.EIB.Model;
 using ChurchServices.Data.Import.EIB.Model.Bible;
 using ChurchServices.Data.Import.EIB.Model.Osis;
 using ChurchServices.Data.Import.Hebrew;
@@ -71,15 +72,19 @@ namespace ChurchServices.Data.Import.EIB.Test {
             }
         }
 
-        private void SetBookInfo(BookModel book, BibleModel model) {
+        private void SetBookInfo(BookModel book, BibleModel model, string translationName) {
             var uow = new UnitOfWork();
+            var t = new XPQuery<ChurchServices.Data.Model.Translation>(uow).Where(_ => _.Name == translationName).FirstOrDefault();
+            int tid = 12; // SNPD
+            if (t != null) { tid = t.Oid; }
+            var tBook = new XPQuery<ChurchServices.Data.Model.Book>(uow).Where(x => x.ParentTranslation != null && x.ParentTranslation.Oid == tid && x.NumberOfBook == book.NumberOfBook).FirstOrDefault();
             var dbBook = new XPQuery<ChurchServices.Data.Model.BookBase>(uow).Where(x => x.NumberOfBook == book.NumberOfBook).FirstOrDefault();
             if (dbBook != null) {
-                book.PlaceWhereBookWasWritten = RecognizeBookInfo(dbBook.PlaceWhereBookWasWritten, model, uow);
-                book.AuthorName = RecognizeBookInfo(dbBook.AuthorName, model, uow);
-                book.TimeOfWriting = RecognizeBookInfo(dbBook.TimeOfWriting, model, uow);
-                book.Purpose = RecognizeBookInfo(dbBook.Purpose, model, uow);
-                book.Subject = RecognizeBookInfo(dbBook.Subject, model, uow);
+                book.PlaceWhereBookWasWritten = RecognizeBookInfo(tBook != null && tBook.PlaceWhereBookWasWritten.IsNotNullOrEmpty() ? tBook.PlaceWhereBookWasWritten : dbBook.PlaceWhereBookWasWritten, model, uow);
+                book.AuthorName = RecognizeBookInfo(tBook != null && tBook.AuthorName.IsNotNullOrEmpty() ? tBook.AuthorName : dbBook.AuthorName, model, uow);
+                book.TimeOfWriting = RecognizeBookInfo(tBook != null && tBook.TimeOfWriting.IsNotNullOrEmpty() ? tBook.TimeOfWriting : dbBook.TimeOfWriting, model, uow);
+                book.Purpose = RecognizeBookInfo(tBook != null && tBook.Purpose.IsNotNullOrEmpty() ? tBook.Purpose : dbBook.Purpose, model, uow);
+                book.Subject = RecognizeBookInfo(tBook != null && tBook.Subject.IsNotNullOrEmpty() ? tBook.Subject : dbBook.Subject, model, uow);
                 if (book.BookName.IsNullOrEmpty()) { book.BookName = dbBook.BookTitle; }
                 if (book.Color.IsNullOrEmpty()) { book.Color = dbBook.Color; }
             }
@@ -1188,9 +1193,24 @@ P – papirus<br />
             });
         }
 
+        private FormattedText RecognizeBreakLines(string text) {
+            var result = new FormattedText() { Items = new List<object>() };
+            if (text.Contains("<br/>") || text.Contains("<br />")) {
+                var t = text.Split(new string[] { "<br/>", "<br />" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var item in t) {
+                    if (item != t[0]) { result.Items.Add(new BreakLineModel()); }
+                    result.Items.Add(RemoveOrphans(item));
+                }
+            }
+            else {
+                result.Items.Add(RemoveOrphans(text));
+            }
+            return result;
+        }
+
         private FormattedText RecognizeBookInfo(string text, BibleModel model, UnitOfWork uow) {
             text = text.Replace("&nbsp;", "\u00A0");
-            var result = text.Contains("<x>") ? new FormattedText() : new FormattedText(RemoveOrphans(text));
+            var result = text.Contains("<x>") ? new FormattedText() : RecognizeBreakLines(text);
             if (result.Items == null) {
                 result.Items = new List<object>();
 
@@ -1198,7 +1218,8 @@ P – papirus<br />
                 var matches = Regex.Matches(text, pattern);
                 foreach (Match match in matches) {
                     if (match.Groups["prefix"] != null && match.Groups["prefix"].Value.IsNotNullOrEmpty()) {
-                        result.Items.Add(RemoveOrphans(match.Groups["prefix"].Value));
+                        result.Items.AddRange(RecognizeBreakLines(match.Groups["prefix"].Value).Items);
+                        //result.Items.Add(RemoveOrphans(match.Groups["prefix"].Value));
                     }
                     var sb = new StringBuilder();
                     var sb2 = new StringBuilder();
@@ -1236,6 +1257,30 @@ P – papirus<br />
         }
 
         [TestMethod]
+        public void GetBPKFromXHtmlFiles() {
+            var dir = @"C:\Users\krzysztof.radzimski\Downloads\biblia-pierwszego-kosciola-ks-remigiusz-popowski-sdb-ebookpoint\OEBPS\Text";
+            var bservice = new BibleModelService();
+            var service = new BPKService();
+            var bmodel = service.GetBibleModel(dir);
+
+            Assert.IsTrue(bmodel.Books.Count > 0);
+
+            var xmlInputFile = @"C:\Users\krzysztof.radzimski\Downloads\biblia-pierwszego-kosciola-ks-remigiusz-popowski-sdb-ebookpoint\bpk.eib.xml";
+            bservice.SaveBibleModelToFile(bmodel, xmlInputFile);
+
+            if (File.Exists(xmlInputFile)) {
+                using (var service2 = new LogosBibleModelService()) {
+                    var bibleModelOutFilePath = @"C:\Users\krzysztof.radzimski\Downloads\biblia-pierwszego-kosciola-ks-remigiusz-popowski-sdb-ebookpoint\bpk.eib.docx";
+                    service2.Export(xmlInputFile, bibleModelOutFilePath, introductionHtml: String.Empty, addTitle: false, repairModel: true);
+                }
+            }
+            else {
+                Assert.Fail();
+            }
+        }
+
+
+        [TestMethod]
         public void GetSNPLFromXHtmlFiles() {
             var dir = @"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPL\XHTML";
             var bservice = new BibleModelService();
@@ -1257,7 +1302,7 @@ P – papirus<br />
             Assert.IsTrue(bmodel.Books.Count > 0);
 
             foreach (var book in bmodel.Books) {
-                SetBookInfo(book, bmodel);
+                SetBookInfo(book, bmodel, "SNP'18");
             }
 
             var xmlInputFile = @"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPL\snpl.eib.xml";
@@ -1271,6 +1316,76 @@ P – papirus<br />
             }
             else {
                 Assert.Fail();
+            }
+        }
+
+        [TestMethod]
+        public void ReplaceSNPLInDatabaseFromEibModel() {
+            const string TRANSLATION = "SNP18";
+            var bservice = new BibleModelService();
+            var bmodel = bservice.GetBibleModelFromFile(@"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPL\snpl.eib.xml");
+            if (bmodel != null) {
+                var uow = new UnitOfWork();
+
+                var subTitles = new XPQuery<Subtitle>(uow).Where(x => x.ParentChapter.Index.StartsWith($"{TRANSLATION}.")).ToList();
+                if (subTitles.Count > 0) {
+                    uow.Delete(subTitles);
+                    uow.CommitChanges();
+                }
+                foreach (var book in bmodel.Books) {
+                    foreach (var chapter in book.Chapters) {
+                        var title = "";
+                        foreach (var item in chapter.Items) {
+                            if (item is FormattedText) {
+                                title = (item as FormattedText).ToString();
+                            }
+                            else if (item is VerseModel) {
+                                var verse = item as VerseModel;
+
+#if DEBUG
+                                if (book.NumberOfBook == 470 && chapter.NumberOfChapter == 1 && verse.NumberOfVerse == 23) {
+
+                                }
+#endif
+
+                                if (title.IsNotNullOrEmpty()) {
+                                    var dbTitle = new Subtitle(uow) {
+                                        BeforeVerseNumber = verse.NumberOfVerse,
+                                        Level = 2,
+                                        ParentChapter = new XPQuery<Chapter>(uow).Where(x => x.Index == $"{TRANSLATION}.{book.NumberOfBook}.{chapter.NumberOfChapter}").FirstOrDefault(),
+                                        Text = title
+                                    };
+                                    dbTitle.Save();
+                                    title = "";
+                                }
+
+                                var _index = $"{TRANSLATION}.{book.NumberOfBook}.{chapter.NumberOfChapter}.{verse.NumberOfVerse}";
+                                var _verse = new XPQuery<Verse>(uow).Where(_ => _.Index == _index).FirstOrDefault();
+                                if (_verse != null) {
+                                    var newText = GetVerseText(verse).Replace("<n></n>", "").Trim();
+                                    if (_verse.Text != newText) {
+                                        _verse.Text = newText;
+                                        _verse.Save();
+                                    }
+                                }
+                                else {
+                                    _verse = new Verse(uow) {
+                                        ParentChapter = new XPQuery<Chapter>(uow).Where(x => x.Index == $"{TRANSLATION}.{book.NumberOfBook}.{chapter.NumberOfChapter}").FirstOrDefault(),
+                                        NumberOfVerse = verse.NumberOfVerse,
+                                        Text = GetVerseText(verse),
+                                        StartFromNewLine = false,
+                                        Index = $"{TRANSLATION}.{book.NumberOfBook}.{chapter.NumberOfChapter}.{verse.NumberOfVerse}"
+                                    };
+                                    _verse.Save();
+                                }
+
+                            }
+                        }
+                    }
+                }
+
+                uow.CommitChanges();
+                uow.PurgeDeletedObjects();
             }
         }
 
@@ -1288,7 +1403,7 @@ P – papirus<br />
                     uow.Delete(subTitles);
                     uow.CommitChanges();
                 }
-                foreach (var book in bmodel.Books) {                    
+                foreach (var book in bmodel.Books) {
                     foreach (var chapter in book.Chapters) {
                         var title = "";
                         foreach (var item in chapter.Items) {
@@ -1301,12 +1416,14 @@ P – papirus<br />
                                     var dbTitle = new Subtitle(uow) {
                                         BeforeVerseNumber = verse.NumberOfVerse,
                                         Level = 2,
-                                        ParentChapter = new XPQuery<Chapter>(uow).Where(x=>x.Index == $"{TRANSLATION}.{book.NumberOfBook}.{chapter.NumberOfChapter}").FirstOrDefault(),
+                                        ParentChapter = new XPQuery<Chapter>(uow).Where(x => x.Index == $"{TRANSLATION}.{book.NumberOfBook}.{chapter.NumberOfChapter}").FirstOrDefault(),
                                         Text = title
                                     };
                                     dbTitle.Save();
                                     title = "";
                                 }
+
+
                             }
                         }
                     }
@@ -1481,7 +1598,11 @@ P – papirus<br />
                         sb.Append($"<J>{RemoveBrakets(item)}</J>");
                     }
                     else if (item is SpanModel) {
-                        sb.Append(RemoveBrakets(item));
+                        var span = item as SpanModel;
+                        if (span.Items.Count == 0) {
+                            span.Items.Add(" ");
+                        }
+                        sb.Append(RemoveBrakets(span));
                     }
                 }
                 return $"{sb}<n>{sbf}</n>";
@@ -1505,7 +1626,7 @@ P – papirus<br />
                     Assert.IsTrue(bmodel.Books.Count > 0);
 
                     foreach (var book in bmodel.Books) {
-                        SetBookInfo(book, bmodel);
+                        SetBookInfo(book, bmodel, "PBD");
                     }
 
                     var xmlInputFile = @"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\snpd.eib.xml";
@@ -1540,15 +1661,18 @@ P – papirus<br />
         }
 
         [TestMethod]
-        public void ExportDbBibleBWToLogosFile() { ExportDbBibleToLogosFile("BW"); }
+        public void ExportDbBibleBWToLogosFile() { ExportDbBibleToLogosFile("BW", true); }
 
         [TestMethod]
-        public void ExportDbBibleEkuToLogosFile() { ExportDbBibleToLogosFile("EKU'18"); }
+        public void ExportDbBibleEkuToLogosFile() { ExportDbBibleToLogosFile("EKU'18", false, true); }
 
         [TestMethod]
-        public void ExportDbBibleBTToLogosFile() { ExportDbBibleToLogosFile("BT'99"); }
+        public void ExportDbBibleBTToLogosFile() { ExportDbBibleToLogosFile("BT'99", false, true); }
 
-        private void ExportDbBibleToLogosFile(string name) {
+        [TestMethod]
+        public void ExportDbBibleUBGToLogosFile() { ExportDbBibleToLogosFile("UBG'18"); }
+
+        private void ExportDbBibleToLogosFile(string name, bool verseStartFromNewLine = false, bool openFile = false) {
             var fn = 1;
             if (name != null) {
                 var srv = new BibleModelService();
@@ -1578,6 +1702,7 @@ P – papirus<br />
                         foreach (var dbChapter in dbBook.Chapters.OrderBy(x => x.NumberOfChapter)) {
                             var chapter = new ChapterModel() {
                                 NumberOfChapter = dbChapter.NumberOfChapter,
+                                NumberOfVerses = dbChapter.NumberOfVerses > 0 ? dbChapter.NumberOfVerses : dbChapter.Verses.Count,
                                 Items = new List<object>()
                             };
                             book.Chapters.Add(chapter);
@@ -1606,6 +1731,7 @@ P – papirus<br />
                                     .Replace("</J>", "{{field-off:words-of-christ}}")
                                     .Replace("<e>", "{{field-on:ot-quote}}")
                                     .Replace("</e>", "{{field-off:ot-quote}}")
+                                    .Replace("</t><t>", "<br/>")
                                     .Replace("<t>", "")
                                     .Replace("</t>", "")
                                     .Replace("<i>", "")
@@ -1616,7 +1742,7 @@ P – papirus<br />
                                     .Replace("</b>", "")
                                     .Replace("<pb>", "")
                                     .Replace("<pb/>", "")
-                                    .Replace("<br/>", "")
+                                    //.Replace("<br/>", "")
                                     .Replace("*", "");
 
                                 text = Regex.Replace(text, @"\<f\>\[[0-9]+\]\<\/f\>", delegate (Match e) {
@@ -1653,7 +1779,7 @@ P – papirus<br />
 
                                 if (text.IsNotNullOrEmpty()) {
                                     text = RemoveOrphans(text);
-                                    verse.Items.Add(new SpanModel(text));
+                                    verse.Items.Add(new SpanModel().Parse(text));
                                 }
                                 chapter.Items.Add(verse);
                             }
@@ -1662,9 +1788,11 @@ P – papirus<br />
 
                     using (var service = new LogosBibleModelService()) {
                         var bibleModelOutFilePath = @$"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\{dbTranslation.Name.Replace("'", "").Replace("+", "")}.docx";
-                        model = service.Export(model, bibleModelOutFilePath, true);
+                        model = service.Export(model, bibleModelOutFilePath, repairModel: true, versesStartFromNewLine: verseStartFromNewLine);
                         srv.SaveBibleModelToFile(model, @$"D:\OneDrive\WBST\2020\Fakultety\Biblistyka\EIB\SNP_BibleEngine\SNP_BibleEngine\SNPD\{dbTranslation.Name.Replace("'", "").Replace("+", "")}.xml");
-                        //System.Diagnostics.Process.Start("explorer.exe", bibleModelOutFilePath);
+                        if (openFile) {
+                            System.Diagnostics.Process.Start("explorer.exe", bibleModelOutFilePath);
+                        }
                     }
                 }
             }

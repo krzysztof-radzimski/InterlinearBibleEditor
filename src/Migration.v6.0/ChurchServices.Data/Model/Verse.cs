@@ -6,7 +6,7 @@
     MIT License
     https://github.com/krzysztof-radzimski/InterlinearBibleEditor/blob/main/LICENSE
 
-	Autor: 2009-2021 ITORG Krzysztof Radzimski
+	Autor: 2009-2025 ITORG Krzysztof Radzimski
 	http://itorg.pl
 
   ===================================================================================*/
@@ -111,12 +111,16 @@ namespace ChurchServices.Data.Model {
 
         public string GetTransliterationText(bool rtl = false) {
             var text = string.Empty;
-            foreach (var item in VerseWords) {
-                if (rtl) {
-                    text = item.Transliteration.ReplaceAnyWith("", new string[] { ";", ",", "." }) + " " + text;
-                }
-                else {
-                    text += item.Transliteration + " ";
+            foreach (var item in VerseWords.OrderBy(_ => _.NumberOfVerseWord)) {
+                if (item.Transliteration != null) {
+                    if (rtl) {
+                        var _text = item.Transliteration.Replace("'", "¯");
+                        text += " " + _text.ReplaceAnyWith("", new string[] { ";", ",", "." });
+                    }
+                    else {
+                        var _text = item.Transliteration.Replace("'", "¯");
+                        text += " " + _text;
+                    }
                 }
             }
             return text.Trim();

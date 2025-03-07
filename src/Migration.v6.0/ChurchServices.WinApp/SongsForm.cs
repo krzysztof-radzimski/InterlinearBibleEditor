@@ -1,13 +1,9 @@
-﻿using DevExpress.Xpo;
-using DevExpress.XtraBars.Ribbon;
-using DevExpress.XtraEditors;
+﻿using ChurchServices.Data.Model;
 using ChurchServices.Extensions;
-using ChurchServices.Data.Model;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using DevExpress.Data.Filtering;
+using DevExpress.Xpo;
+using DevExpress.XtraBars.Ribbon;
+using DevExpress.XtraGrid;
 
 namespace ChurchServices.WinApp {
     public partial class SongsForm : RibbonForm {
@@ -55,6 +51,11 @@ namespace ChurchServices.WinApp {
                     if (dlg.ShowDialog() == DialogResult.OK) {
                         dlg.Save();
                         LoadData();
+
+                        var rowHandle = gridView.LocateByValue("Id", id);
+                        if (rowHandle != GridControl.InvalidRowHandle) {
+                            gridView.FocusedRowHandle = rowHandle;
+                        }
                     }
                 }
             }
@@ -88,6 +89,8 @@ namespace ChurchServices.WinApp {
                 song.Delete();
                 Uow.CommitChanges();
                 LoadData();
+
+             
             }
         }
     }

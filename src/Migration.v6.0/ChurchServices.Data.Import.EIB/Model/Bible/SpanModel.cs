@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace ChurchServices.Data.Import.EIB.Model.Bible {
@@ -18,10 +19,34 @@ namespace ChurchServices.Data.Import.EIB.Model.Bible {
         [XmlElement("a", typeof(Hyperlink))]
         [XmlText(typeof(string))]
         public List<object> Items { get; set; }
-        public SpanModel() { }
-        public SpanModel(string text) {
-            if (Items == null) { Items = new List<object>(); }
+        public SpanModel() { if (Items == null) { Items = new List<object>(); } }
+        public SpanModel(string text) : this() {
             Items.Add(text);
+        }
+        public SpanModel Parse(string text) {
+            try {
+                var e = XElement.Parse($"<root>{text}</root>");
+                if (e != null) {
+                    foreach (var item in e.Nodes()) {
+                        if (item.NodeType == System.Xml.XmlNodeType.Text) {
+                            Items.Add((item as XText).Value);
+                        }
+                        else if (item.NodeType == System.Xml.XmlNodeType.Element) { 
+                        var _e = item as XElement;
+                            if (_e != null) {
+                                if (_e.Name.LocalName == "br") {
+                                    Items.Add(new BreakLineModel());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch {
+                Items.Add(text                   
+                    .Replace("<br/>", ""));
+            }
+            return this;
         }
 
         public bool ShouldSerializeLanguage() => Language != null;

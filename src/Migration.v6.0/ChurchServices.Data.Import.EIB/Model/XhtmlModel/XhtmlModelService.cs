@@ -83,7 +83,7 @@ namespace ChurchServices.Data.Import.EIB.Model {
                                 }
                                 currentChapter.Items.Add(title);
                             }
-                            else if (elem.Name == "p" && ((elem.FirstChild.Name == "sup" && elem.FirstChild.HasClass("ver")) || (elem.HasClass("poezja") && verse != null))) {
+                            else if (elem.Name == "p" && ((elem.FirstChild.Name == "sup" && elem.FirstChild.HasClass("ver")) || (elem.HasClass("poezja") && verse != null) || (verse != null && elem.PreviousSibling != null && GetPreviousSibilingElement(elem, "poezja") != null))) {
                                 foreach (var item in elem.ChildNodes) {
                                     if (item.Name == "sup" && item.HasClass("ver")) {
                                         int verseNum = item.InnerText.Substring(item.InnerText.IndexOf(".")).Replace(".", "").ToInt();
@@ -94,17 +94,21 @@ namespace ChurchServices.Data.Import.EIB.Model {
                                         currentChapter.Items.Add(verse);
                                     }
                                     else if (item.NodeType == HtmlAgilityPack.HtmlNodeType.Text) {
-                                        verse.Items.Add(new SpanModel(GetNodeText(item)));
+                                        verse.Items.Add(new SpanModel(GetNodeText(item).Trim() + " "));
                                     }
                                     else if (item.NodeType == HtmlAgilityPack.HtmlNodeType.Element) {
                                         if (item.Name == "br") {
-                                            //verse.Items.Add(new BreakLineModel());
-                                            if (verse.Items.Last() != null && verse.Items.Last() is SpanModel && !(verse.Items.Last() as SpanModel).ToString().EndsWith(" ")) {
-                                                verse.Items.Add(new SpanModel(" "));
+                                            if (book.NumberOfBook == 230) {
+                                                verse.Items.Add(new BreakLineModel());
+                                            }
+                                            else {
+                                                if (verse.Items.Last() != null && verse.Items.Last() is SpanModel && !(verse.Items.Last() as SpanModel).ToString().EndsWith(" ")) {
+                                                    verse.Items.Add(new SpanModel("\u00A0"));
+                                                }
                                             }
                                         }
                                         else if (item.Name == "i") {
-                                            verse.Items.Add(new SpanModel(GetNodeText(item)) { Italic = true });
+                                            verse.Items.Add(new SpanModel(GetNodeText(item).Trim() + " ") { Italic = true });
                                         }
                                         else if (item.Name == "a" && item.Id != null && item.Id.StartsWith("_ftnref")) {
                                             var note = new NoteModel() {
@@ -127,7 +131,7 @@ namespace ChurchServices.Data.Import.EIB.Model {
                                                             if (footNodeParItem.InnerText.IsNotNullOrEmpty()) {
                                                                 var obj = RecognizeBibleTags(textNode);
                                                                 if (obj == null) {
-                                                                    note.Items.Add(new SpanModel(textNode));
+                                                                    note.Items.Add(new SpanModel(textNode.Trim() + " "));
                                                                 }
                                                                 else {
                                                                     note.Items.AddRange(obj);
@@ -139,7 +143,7 @@ namespace ChurchServices.Data.Import.EIB.Model {
                                                                 if (footNodeParItem.InnerText.IsNotNullOrEmpty()) {
                                                                     var obj = RecognizeBibleTags(textNode);
                                                                     if (obj == null) {
-                                                                        note.Items.Add(new SpanModel(textNode) { Italic = true });
+                                                                        note.Items.Add(new SpanModel(textNode.Trim() + " ") { Italic = true });
                                                                     }
                                                                     else {
                                                                         note.Items.AddRange(obj);
@@ -148,7 +152,7 @@ namespace ChurchServices.Data.Import.EIB.Model {
                                                             }
                                                             else if (footNodeParItem.Name == "span" && footNodeParItem.InnerText.IsNotNullOrEmpty()) {
                                                                 if (footNodeParItem.InnerText.IsNotNullOrEmpty()) {
-                                                                    var span = new SpanModel(textNode);
+                                                                    var span = new SpanModel(textNode.Trim() + " ");
                                                                     if (footNodeParItem.Attributes["lang"] != null) {
                                                                         var lang = footNodeParItem.Attributes["lang"].Value.ToLower();
                                                                         if (lang == "el") { lang = "gr"; }
@@ -181,6 +185,18 @@ namespace ChurchServices.Data.Import.EIB.Model {
                 }
             }
             return default;
+        }
+
+        private HtmlNode GetPreviousSibilingElement(HtmlNode e, string className = null) {
+            if (e != null && e.PreviousSibling != null) {
+                if (e.PreviousSibling.NodeType == HtmlNodeType.Element && (className != null ? e.PreviousSibling.HasClass(className) : true)) {
+                    return e.PreviousSibling;
+                }
+                else {
+                    return GetPreviousSibilingElement(e.PreviousSibling, className);
+                }
+            }
+            return null;
         }
 
         private object[] RecognizeBibleTags(string text) {
@@ -386,7 +402,7 @@ namespace ChurchServices.Data.Import.EIB.Model {
         }
 
         private string GetNodeText(HtmlNode node) {
-            var s = node.InnerText.Replace("&nbsp;", "\u00A0").Replace("\r\n"," "); //.TrimStart();
+            var s = node.InnerText.Replace("&nbsp;", "\u00A0").Replace("\r\n", " "); //.TrimStart();
             if (s.StartsWith("  ")) {
                 s = " " + s.TrimStart();
             }

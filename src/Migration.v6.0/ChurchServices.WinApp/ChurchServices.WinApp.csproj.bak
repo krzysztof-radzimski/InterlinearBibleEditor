@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows7.0</TargetFramework>
+		<Nullable>disable</Nullable>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Platforms>AnyCPU</Platforms>
+		<PackageIcon>bible.png</PackageIcon>
+		<NeutralLanguage>pl</NeutralLanguage>
+		<ApplicationIcon>Resources\BibleIcon.ico</ApplicationIcon>
+	</PropertyGroup>	
+	<ItemGroup>
+	  <None Remove="Resources\bible.svg" />
+	  <None Remove="Resources\pl_PL.aff" />
+	  <None Remove="Resources\pl_PL.dat" />
+	  <None Remove="Resources\PolishAlphabet.dat" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="Resources\BibleIcon.ico" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\bible.svg" />
+	  <EmbeddedResource Include="Resources\pl_PL.aff" />
+	  <EmbeddedResource Include="Resources\pl_PL.dat" />
+	  <EmbeddedResource Include="Resources\PolishAlphabet.dat" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="DevExpress.Win" Version="23.1.5" />
+		<PackageReference Include="DevExpress.Win.Design" Version="23.1.5" />
+		<PackageReference Include="DevExpress.Win.RichEdit" Version="23.1.5" />
+		<PackageReference Include="DevExpress.Win.SpellChecker" Version="23.1.5" />
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1264.42" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ChurchServices.Data.Export\ChurchServices.Data.Export.csproj" />
+		<ProjectReference Include="..\ChurchServices.Data.Import\ChurchServices.Data.Import.csproj" />
+		<ProjectReference Include="..\ChurchServices.Data\ChurchServices.Data.csproj" />
+		<ProjectReference Include="..\ChurchServices.Extensions\ChurchServices.Extensions.csproj" />
+	</ItemGroup>
+</Project>

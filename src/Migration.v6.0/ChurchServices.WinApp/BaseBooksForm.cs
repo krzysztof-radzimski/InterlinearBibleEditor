@@ -16,8 +16,9 @@ namespace ChurchServices.WinApp {
             LoadData();
         }
 
-        private void LoadData() {
-            var view = new XPQuery<BookBase>(new UnitOfWork());
+        private void LoadData(UnitOfWork uow = null) {
+            if (uow == null) { uow = new UnitOfWork(); }
+            var view = new XPQuery<BookBase>(uow);
             grid.DataSource = view;
             gridView.BestFitColumns();
             //{
@@ -52,7 +53,9 @@ namespace ChurchServices.WinApp {
                         dlg.Save();
                         var uow = dlg.Object.Session as UnitOfWork;
                         uow.CommitChanges();
-                        uow.ReloadChangedObjects();
+                        //uow.ReloadChangedObjects();
+
+                        LoadData(uow);
                     }
                 }
             }

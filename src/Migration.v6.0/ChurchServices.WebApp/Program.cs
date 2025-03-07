@@ -48,7 +48,7 @@ app.MapControllerRoute(
     defaults: new { controller = "Translation", action = "Index" });
 
 
-var path = @$"{app.Environment.ContentRootPath}Data\IBE.SQLite3";
+var path = Path.Combine($"{app.Environment.ContentRootPath}", @"Data\IBE.SQLite3");
 
 var connectionString = $"XpoProvider=SQLite;data source={path}";
 new ChurchServices.Data.ConnectionHelper().Connect(connectionString: connectionString);

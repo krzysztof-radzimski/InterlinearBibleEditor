@@ -18,6 +18,31 @@
     src: url(OldLondon.ttf);
 }
 
+@font-face {
+    font-family: "GentiumPlus";
+    src: url(GentiumBookPlus-Bold.ttf);
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: "GentiumPlus";
+    src: url(GentiumBookPlus-BoldItalic.ttf);
+    font-weight: bold;
+    font-style: italic;
+}
+@font-face {
+    font-family: "GentiumPlus";
+    src: url(GentiumBookPlus-Italic.ttf);
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: "GentiumPlus";
+    src: url(GentiumBookPlus-Regular.ttf);
+    font-weight: normal;
+    font-style: normal;
+}
+
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -94,8 +119,15 @@
     width: auto;
 }
 
-@media (max-width:680px) {
-    .article-picture {
+.bible-content {
+    font-family: 'GentiumPlus', sans-serif;
+}
+    .bible-content #bible-content-menu {
+        font-family: 'SBL BibLit';
+    }
+
+    @media (max-width:680px) {
+        .article-picture {
         max-width: inherit;
         min-height: 300px;
     }
@@ -197,19 +229,23 @@
 
 .story {
     min-width: 95%;
-    background-image: url(../img/hr.png);
-    background-position: center bottom;
-    background-repeat: no-repeat;
-    background-size: contain;
-    text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
+    /* background-image: url(../img/hr.png); */
+    /* background-position: center bottom; */
+    /* background-repeat: no-repeat; */
+    /* background-size: contain; */
+    text-shadow: 1px 1px 2px #c8c8c869;
     text-transform: uppercase;
-    font-size: 180% !important;
+    font-size: 130% !important;
+	page-break-after: avoid;
+	break-after: avoid;
 }
 
 .story2 {
     min-width: 95%;
-    text-shadow: 1px 1px 3px rgba(255, 255, 255, 1);
-    font-size: 150% !important;
+    text-shadow: 1px 1px 2px #c8c8c869;
+    font-size: 130% !important;
+    page-break-after: avoid;
+	break-after: avoid;
 }
 
 .white-shadow {
@@ -253,10 +289,10 @@
 }
 
 a.navbar-brand {
-    white-space: normal;
+    /* white-space: normal; */
     text-align: center;
     word-break: break-all;
-    min-width: 150px;
+    /* min-width: 150px; */
 }
 
 /* Provide sufficient contrast against white background */
@@ -379,7 +415,7 @@ html {
 body {
     margin-bottom: 60px;
     background-color: #eef6ff;
-    background-image: url('../img/background-2024.jpg?ID=4');
+    background-image: url('../img/background-2024.jpg?ID=7');
     background-position: top center;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -447,13 +483,13 @@ figure {
     }
 
 #baptysci-logo {
-    width: 30px;
-    height: 24px;
-    opacity: 0.7;
+    width: 34px;
+    height: 34px;
+    opacity: 1;
 }
 
 a:hover #baptysci-logo {
-    opacity: 1 !important;
+    opacity: 0.8 !important;
 }
 
 .fs-90per {
@@ -1045,13 +1081,31 @@ img {
 
 .two-columns {
     column-count: 2;
-    column-gap: 40px; /* Odstêp miêdzy kolumnami */
+    column-gap: 50px; /* Odstêp miêdzy kolumnami */
+	column-rule: none; /* Pionowa linia miêdzy kolumnami */
+}
+.two-columns::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px; /* Gruboœæ linii */
+    background: linear-gradient(to bottom, 
+        rgba(61,61,61,0) 0%, 
+        rgba(61,61,61,1) 12%, 
+        rgba(61,61,61,1) 13%, 
+        rgba(61,61,61,1) 89%, 
+        rgba(61,61,61,0) 99%, 
+        rgba(61,61,61,0) 100%);
+    transform: translateX(-50%); /* Centrowanie linii */
 }
 
 @media (max-width: 900px) {
     .two-columns {
         column-count: 1;
     }
+	.two-columns::before {  background: none;}
 }
 
 #footnotes {
@@ -1086,6 +1140,8 @@ img {
         left: 75vw;
         top: 60px;
         min-height: calc(100vh - 64px);
+		max-height: calc(100vh - 50px);
+		overflow-y: auto;
         font-size: 90% !important;
     }
 
@@ -1135,7 +1191,7 @@ img {
 
     body {
         background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
-        background-image: url('../img/background-2024-dark.jpg?ID=2');
+        background-image: url('../img/background-2024-dark.jpg?ID=5');
     }
 
     h1, h2, h3, h4, h5, .list-group-item {
@@ -1218,7 +1274,7 @@ img {
     }
 
     .bible-content {
-        background-color: rgba(255,255,255,0.05);
+        background-color: rgba(0,0,0,0.35);
     }
 
     .transliteration {
@@ -1297,10 +1353,10 @@ img {
             color: #FFF !important;
         }
 
-    .story, .story2 {
-        text-shadow: none;
-        background-image: none;
-    }
+    /* .story, .story2 { */
+        /* text-shadow: none; */
+        /* background-image: none; */
+    /* } */
 
     .songbook, .song-img {
         background-image: url(../img/songbook-dark.png);
