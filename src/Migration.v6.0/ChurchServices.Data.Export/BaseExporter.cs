@@ -243,54 +243,55 @@ namespace ChurchServices.Data.Export {
         }
 
         protected string FormatVerseText(string text, BiblePart biblePart) {
-            // God's words
-            text = text.Replace("<J>", @"<span style=""color: darkred;"">").Replace("</J>", "</span>");
-            // Added elements
-            text = text.Replace("<n>", @"<span style=""color: darkgray;"">").Replace("</n>", "</span>");
-            // Other formatting
-            text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
+            if (text != null) {
+                // God's words
+                text = text.Replace("<J>", @"<span style=""color: darkred;"">").Replace("</J>", "</span>");
+                // Added elements
+                text = text.Replace("<n>", @"<span style=""color: darkgray;"">").Replace("</n>", "</span>");
+                // Other formatting
+                text = text.Replace("<pb/>", "").Replace("<t>", "").Replace("</t>", "").Replace("<e>", "").Replace("</e>", "");
 
-            // change Lord and Jehova names to Jahwe.
-            if (biblePart == BiblePart.OldTestament) {
-                text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
-                    var prefix = m.Groups["prefix"].Value;
-                    return $"{prefix}JAHWE{m.Value.Last()}";
-                });
-            }
-            if (biblePart == BiblePart.OldTestament) {
-                text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>JHWH)[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
-                    var prefix = m.Groups["prefix"].Value;
-                    return $"{prefix}JAHWE{m.Value.Last()}";
-                });
-            }
-            if (biblePart == BiblePart.OldTestament) {
-                text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(a)?(y)?(ie)?(ę)?(o)?)[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
-                    var prefix = m.Groups["prefix"].Value;
-                    return $"{prefix}JAHWE{m.Value.Last()}";
-                });
-            }
-            if (biblePart == BiblePart.NewTestament) {
-                text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(?<ending>(a)?(y)?(ie)?(ę)?(o)?))[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
-                    var prefix = m.Groups["prefix"].Value;
-                    var ending = m.Groups["ending"].Value;
-                    var root = "Pan";
-                    if (ending == "ie") { root += "u"; }
-                    if (ending == "o") { root += "ie"; }
-                    if (ending == "y" || ending == "ę") { root += "a"; }
-                    return $"{prefix}{root}{m.Value.Last()}";
-                });
-            }
+                // change Lord and Jehova names to Jahwe.
+                if (biblePart == BiblePart.OldTestament) {
+                    text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>PAN(A)?(EM)?(U)?(IE)?)[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
+                        var prefix = m.Groups["prefix"].Value;
+                        return $"{prefix}JAHWE{m.Value.Last()}";
+                    });
+                }
+                if (biblePart == BiblePart.OldTestament) {
+                    text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>JHWH)[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
+                        var prefix = m.Groups["prefix"].Value;
+                        return $"{prefix}JAHWE{m.Value.Last()}";
+                    });
+                }
+                if (biblePart == BiblePart.OldTestament) {
+                    text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(a)?(y)?(ie)?(ę)?(o)?)[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
+                        var prefix = m.Groups["prefix"].Value;
+                        return $"{prefix}JAHWE{m.Value.Last()}";
+                    });
+                }
+                if (biblePart == BiblePart.NewTestament) {
+                    text = Regex.Replace(text, @"(?<prefix>[\s\”\""\„ʼ])(?<name>Jehow(?<ending>(a)?(y)?(ie)?(ę)?(o)?))[\s\,\.\:\""\'\”ʼ]", delegate (Match m) {
+                        var prefix = m.Groups["prefix"].Value;
+                        var ending = m.Groups["ending"].Value;
+                        var root = "Pan";
+                        if (ending == "ie") { root += "u"; }
+                        if (ending == "o") { root += "ie"; }
+                        if (ending == "y" || ending == "ę") { root += "a"; }
+                        return $"{prefix}{root}{m.Value.Last()}";
+                    });
+                }
 
-            // remove orphans
-            text = Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (Match m) {
-                return " " + m.Value.Trim() + "&nbsp;";
-            }, RegexOptions.IgnoreCase);
+                // remove orphans
+                text = Regex.Replace(text, @"[\s\(\,\;][a,i,o,w,z]\s", delegate (Match m) {
+                    return " " + m.Value.Trim() + "&nbsp;";
+                }, RegexOptions.IgnoreCase);
 
-            // remove empty footnotes
-            text = Regex.Replace(text, @"\[[0-9]+\]", delegate (Match m) {
-                return String.Empty;
-            }, RegexOptions.IgnoreCase);
-
+                // remove empty footnotes
+                text = Regex.Replace(text, @"\[[0-9]+\]", delegate (Match m) {
+                    return String.Empty;
+                }, RegexOptions.IgnoreCase);
+            }
             return text;
         }
     }

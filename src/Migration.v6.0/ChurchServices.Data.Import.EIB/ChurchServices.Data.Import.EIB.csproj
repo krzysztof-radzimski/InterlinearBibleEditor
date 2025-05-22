@@ -9,8 +9,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\ChurchServices.Extensions\ChurchServices.Extensions.csproj" />
 		<PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
-		<PackageReference Include="HtmlAgilityPack" Version="1.11.74" />
-		<PackageReference Include="HtmlToOpenXml.dll" Version="3.2.2" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
+		<PackageReference Include="HtmlToOpenXml.dll" Version="3.2.5" />
 	</ItemGroup>
 
 	<ItemGroup>

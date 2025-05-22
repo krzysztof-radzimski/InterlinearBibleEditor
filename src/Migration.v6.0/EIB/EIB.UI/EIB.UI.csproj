@@ -9,12 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DevExpress.Utils" Version="24.2.5" />
-    <PackageReference Include="DevExpress.Win" Version="24.2.5" />
-    <PackageReference Include="DevExpress.Win.Design" Version="24.2.5" />
-    <PackageReference Include="DevExpress.Win.Dialogs" Version="24.2.5" />
-    <PackageReference Include="DevExpress.Win.Dialogs.Core" Version="24.2.5" />
-    <PackageReference Include="DevExpress.Win.RichEdit" Version="24.2.5" />
+    <PackageReference Include="DevExpress.Utils" Version="24.2.7" />
+    <PackageReference Include="DevExpress.Win" Version="24.2.7" />
+    <PackageReference Include="DevExpress.Win.Design" Version="24.2.7" />
+    <PackageReference Include="DevExpress.Win.Dialogs" Version="24.2.7" />
+    <PackageReference Include="DevExpress.Win.Dialogs.Core" Version="24.2.7" />
+    <PackageReference Include="DevExpress.Win.RichEdit" Version="24.2.7" />
     
   </ItemGroup>
 

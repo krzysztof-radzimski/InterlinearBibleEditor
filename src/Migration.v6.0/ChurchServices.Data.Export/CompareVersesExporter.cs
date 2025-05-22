@@ -77,16 +77,18 @@ namespace ChurchServices.Data.Export {
                 foreach (var hItem in itemHtml) {
                     if (hItem.Footnote) {
                         var footnoteText = hItem.Text;
-                        if (footnoteText.Contains("<x>")) {
-                            footnoteText = bibleTag.GetInternalVerseRangeText(footnoteText, transModel);
-                            footnoteText = bibleTag.GetInternalVerseText(footnoteText, transModel);
-                            footnoteText = bibleTag.GetExternalVerseRangeText(footnoteText, transModel);
-                            footnoteText = bibleTag.GetExternalVerseText(footnoteText, transModel);
-                            footnoteText = bibleTag.GetInternalVerseListText(footnoteText, transModel);
-                            footnoteText = bibleTag.GetMultiChapterRangeText(footnoteText, transModel);
+                        if (footnoteText != null) {
+                            if (footnoteText.Contains("<x>")) {
+                                footnoteText = bibleTag.GetInternalVerseRangeText(footnoteText, transModel);
+                                footnoteText = bibleTag.GetInternalVerseText(footnoteText, transModel);
+                                footnoteText = bibleTag.GetExternalVerseRangeText(footnoteText, transModel);
+                                footnoteText = bibleTag.GetExternalVerseText(footnoteText, transModel);
+                                footnoteText = bibleTag.GetInternalVerseListText(footnoteText, transModel);
+                                footnoteText = bibleTag.GetMultiChapterRangeText(footnoteText, transModel);
+                            }
+                            footnoteText = footnoteText.Replace("&nbsp;", " ");
+                            builder.InsertFootnote(FootnoteType.Footnote, footnoteText, $"{hItem.FootNoteNumber})");
                         }
-                        footnoteText = footnoteText.Replace("&nbsp;", " ");
-                        builder.InsertFootnote(FootnoteType.Footnote, footnoteText, $"{hItem.FootNoteNumber})");
                     }
                     else {
                         builder.InsertHtml(hItem.Text);

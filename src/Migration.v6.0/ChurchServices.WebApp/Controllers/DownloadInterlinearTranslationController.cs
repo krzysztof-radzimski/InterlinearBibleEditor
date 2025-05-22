@@ -11,7 +11,10 @@
 
   ===================================================================================*/
 
+using ChurchServices.WebApp.Filters;
+
 namespace ChurchServices.WebApp.Controllers {
+    [BlockGoogleBots]
     public abstract class DownloadInterlinearTranslationController : Controller {
         protected readonly IConfiguration Configuration;
         protected abstract ExportSaveFormat Format { get; }

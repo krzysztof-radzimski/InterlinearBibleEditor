@@ -21,11 +21,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Aspose.Words" Version="25.3.0" />
-		<PackageReference Include="DevExpress.Xpo" Version="24.2.5" />
-		<PackageReference Include="HtmlAgilityPack" Version="1.11.74" />
+		<PackageReference Include="Aspose.Words" Version="25.4.0" />
+		<PackageReference Include="DevExpress.Xpo" Version="24.2.7" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
 		<PackageReference Include="LinqKit.Core" Version="1.2.8" />
-		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.2" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.4" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 

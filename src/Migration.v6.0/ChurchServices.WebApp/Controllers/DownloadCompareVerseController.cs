@@ -11,9 +11,10 @@
 
   ===================================================================================*/
 
-using System;
+using ChurchServices.WebApp.Filters;
 
 namespace ChurchServices.WebApp.Controllers {
+    [BlockGoogleBots]
     public abstract class DownloadCompareVerseController : Controller {
         protected readonly IConfiguration Configuration;
         protected readonly IBibleTagController BibleTag;

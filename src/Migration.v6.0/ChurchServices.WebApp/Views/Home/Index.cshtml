@@ -13,7 +13,7 @@
     <div class="embed-responsive embed-responsive-16by9 shadow-lg">
         <iframe id="YouTubeFrame" width="560" height="600" src="https://www.youtube.com/embed/videoseries?list=PLUYRCCWSMh6_oq4Lj7JWva8JCxRgpf_o5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
-    <br/>
+    
     @await Html.PartialAsync("~/Views/Shared/_ChatGPT.cshtml")
 
     @if (Model.IsNotNull() && Model.Articles.IsNotNull() && Model.Articles.Count > 0) {
@@ -45,8 +45,7 @@
         <div class="d-flex flex-row-reverse mt-3">
             <a href="/Articles" class="btn btn-success"><i class="fa-regular fa-newspaper"></i>&nbsp;Więcej...</a>
         </div>
-        <br />
-    }
+       }
     
 @*     <p id="start-button-p">
         <a id="start-button" class="btn btn-warning"

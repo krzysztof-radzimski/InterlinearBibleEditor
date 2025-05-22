@@ -8,8 +8,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Aspose.Words" Version="25.3.0" />
-		<PackageReference Include="DevExpress.Xpo" Version="24.2.5" />
+		<PackageReference Include="Aspose.Words" Version="25.4.0" />
+		<PackageReference Include="DevExpress.Xpo" Version="24.2.7" />
 		<PackageReference Include="LinqKit.Core" Version="1.2.8" />
 	</ItemGroup>
 

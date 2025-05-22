@@ -12,7 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.2" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.4" />
 		<PackageReference Include="Unidecode.NET" Version="2.1.0" />
 	</ItemGroup>
 

@@ -26,12 +26,12 @@
 	  <EmbeddedResource Include="Resources\PolishAlphabet.dat" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="DevExpress.Win" Version="23.1.5" />
-		<PackageReference Include="DevExpress.Win.Design" Version="23.1.5" />
-		<PackageReference Include="DevExpress.Win.RichEdit" Version="23.1.5" />
-		<PackageReference Include="DevExpress.Win.SpellChecker" Version="23.1.5" />
-		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1264.42" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="DevExpress.Win" Version="24.2.5" />
+		<PackageReference Include="DevExpress.Win.Design" Version="24.2.5" />
+		<PackageReference Include="DevExpress.Win.RichEdit" Version="24.2.5" />
+		<PackageReference Include="DevExpress.Win.SpellChecker" Version="24.2.5" />
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3179.45" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\ChurchServices.Data.Export\ChurchServices.Data.Export.csproj" />

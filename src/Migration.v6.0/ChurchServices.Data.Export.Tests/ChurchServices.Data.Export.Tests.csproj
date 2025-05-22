@@ -10,17 +10,17 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-		<PackageReference Include="MSTest.TestAdapter" Version="3.8.2" />
-		<PackageReference Include="MSTest.TestFramework" Version="3.8.2" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
 		<PackageReference Include="coverlet.collector" Version="6.0.4">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 
-		<PackageReference Include="Aspose.Words" Version="25.3.0" />
-		<PackageReference Include="DevExpress.Xpo" Version="24.2.5" />
+		<PackageReference Include="Aspose.Words" Version="25.4.0" />
+		<PackageReference Include="DevExpress.Xpo" Version="24.2.7" />
 		<PackageReference Include="LinqKit.Core" Version="1.2.8" />
-		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.2" />
+		<PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>

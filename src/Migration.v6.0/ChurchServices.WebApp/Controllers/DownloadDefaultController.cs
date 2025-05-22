@@ -11,11 +11,13 @@
 
   ===================================================================================*/
 
+using ChurchServices.WebApp.Filters;
 using HtmlAgilityPack;
 using System.IO;
 using System.Xml.Serialization;
 
 namespace ChurchServices.WebApp.Controllers {
+    [BlockGoogleBots]
     public abstract class DownloadDefaultController : Controller {
         private string DownloadFileName = null;
         protected readonly IConfiguration Configuration;
